@@ -30,10 +30,12 @@ public class MoonWalkerPhysicsRules extends PhysicsRules {
     World world;
     Map<Renderable, Body> renderableBodyMap = new HashMap<Renderable, Body>();
     private final float keyStrokeAcceleration = 10f;
+    private GameInfo gameInfo;
 
     public MoonWalkerPhysicsRules(int worldX, int worldY) {
         super(worldX, worldY);
         createWorld();
+        gameInfo = GameInfo.getInstance();
     }
 
     private void createWorld() {
@@ -44,7 +46,6 @@ public class MoonWalkerPhysicsRules extends PhysicsRules {
         // the second parameter allows the bodies that this world contains to sleep,
         // in order for the game to not calculate the bodies' position all the time, when the bodies are not moving
         world = new World(new Vector2(0, -9.8f), true);
-        world.step(Gdx.graphics.getDeltaTime(), 6, 2);
         world.setContactListener(this);
     }
 
@@ -71,7 +72,7 @@ public class MoonWalkerPhysicsRules extends PhysicsRules {
         // Get a sprite for this world object type
         switch (sType) {
             case "PLAYER":
-                bToReturn = createBody(BodyDef.BodyType.DynamicBody, 100, 100, renderable.getX(), renderable.getY());
+                bToReturn = createBody(BodyDef.BodyType.DynamicBody, (float) (gameInfo.getScreenWidth() * 0.2), (float) (gameInfo.getScreenWidth() * 0.2), renderable.getX(), renderable.getY());
                 break;
         }
         if(bToReturn == null)
@@ -86,7 +87,8 @@ public class MoonWalkerPhysicsRules extends PhysicsRules {
 
         Body body = world.createBody(bodyDef);
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width , height);
+        // IMPORTANT shape takes half-width and half-height parameters, according to documentation
+        shape.setAsBox(width / 2 , height / 2);
         FixtureDef fixtureDef = new FixtureDef();
 
         fixtureDef.shape = shape;
@@ -101,18 +103,18 @@ public class MoonWalkerPhysicsRules extends PhysicsRules {
         MoonWalkerGameState currentState = (MoonWalkerGameState) gsCurrent;
         if(userAction != null)
             handleUserAction(userAction, currentState);
-        else
-            setBodyToDefault(currentState.getPlayer());
-        // how many times to calculate physics in a second
-        // delta time is the time between 2 frames
-        // the second and third parameter defines how many calculations
-        // will be done when 2 bodies collide
+
         for(Renderable renderable: currentState.getRenderableList()) {
             Body body = getResourceFor(renderable);
             //System.out.println(body.getPosition().x + ", " + body.getPosition().y);
             renderable.setX(body.getPosition().x);
             renderable.setY(body.getPosition().y);
         }
+        // how many times to calculate physics in a second
+        // delta time is the time between 2 frames
+        // the second and third parameter defines how many calculations
+        // will be done when 2 bodies collide
+        world.step(Gdx.graphics.getDeltaTime(), 6, 2);
         return super.getNextState(gsCurrent, userAction);
     }
 
@@ -138,7 +140,6 @@ public class MoonWalkerPhysicsRules extends PhysicsRules {
                 event = new GameEvent("PLAYER_SPRITE_MOVEMENT");
                 break;
             default:
-                setBodyToDefault(pPlayer);
                 break;
         }
         if(event != null) {
@@ -146,8 +147,4 @@ public class MoonWalkerPhysicsRules extends PhysicsRules {
         }
     }
 
-    private void setBodyToDefault(Positionable positionable) {
-//        positionable.setXAxisVelocity(0f);
-//        positionable.setXAxisVelocity(0f);
-    }
 }

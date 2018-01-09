@@ -100,7 +100,7 @@ public class MoonWalkerRenderingEngine implements org.scify.engine.RenderingEngi
             case "PLAYER":
                 Texture playerImg = new Texture("knight.png");
                 Sprite playerSprite = new Sprite(playerImg);
-                playerSprite.setSize(100, 100);
+                playerSprite.setSize((float) (gameInfo.getScreenWidth() * 0.2), (float) (gameInfo.getScreenWidth() * 0.2));
                 sToReturn = playerSprite;
                 break;
         }
@@ -189,7 +189,6 @@ public class MoonWalkerRenderingEngine implements org.scify.engine.RenderingEngi
         debugRenderer.render(world, box2DCamera.combined);
         batch.setProjectionMatrix(mainCamera.combined);
         mainCamera.update();
-        world.step(Gdx.graphics.getDeltaTime(), 6, 2);
     }
 
     @Override
