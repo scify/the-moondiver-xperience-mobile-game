@@ -19,7 +19,7 @@ public class UserInputHandlerImpl implements UserInputHandler, ContactListener {
     /**
      * List of actions captured by the user interaction. User in the Player-derived methods.
      */
-    List<UserAction> pendingUserActions = Collections.synchronizedList(new ArrayList<UserAction>());
+    private List<UserAction> pendingUserActions = Collections.synchronizedList(new ArrayList<UserAction>());
 
     public UserInputHandlerImpl() {
     }
