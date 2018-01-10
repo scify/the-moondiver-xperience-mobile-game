@@ -1,7 +1,6 @@
 package org.scify.moonwalker.app.rules;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -13,23 +12,20 @@ import com.badlogic.gdx.physics.box2d.World;
 import org.scify.engine.GameEvent;
 import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.moonwalker.app.actors.MoonWalkerPlayer;
-import org.scify.moonwalker.app.actors.Player;
-import org.scify.moonwalker.app.actors.Positionable;
-import org.scify.moonwalker.app.actors.Renderable;
-import org.scify.moonwalker.app.game.GameState;
+import org.scify.engine.Renderable;
+import org.scify.engine.GameState;
 import org.scify.engine.UserAction;
 import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.ui.UnsupportedRenderableTypeException;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MoonWalkerPhysicsRules extends PhysicsRules {
 
     World world;
     Map<Renderable, Body> renderableBodyMap = new HashMap<Renderable, Body>();
-    private final float keyStrokeAcceleration = 10f;
+    private final float keyStrokeAcceleration = 70f;
     private GameInfo gameInfo;
 
     public MoonWalkerPhysicsRules(int worldX, int worldY) {
@@ -103,10 +99,9 @@ public class MoonWalkerPhysicsRules extends PhysicsRules {
         MoonWalkerGameState currentState = (MoonWalkerGameState) gsCurrent;
         if(userAction != null)
             handleUserAction(userAction, currentState);
-
+        handlePositionRules(currentState);
         for(Renderable renderable: currentState.getRenderableList()) {
             Body body = getResourceFor(renderable);
-            //System.out.println(body.getPosition().x + ", " + body.getPosition().y);
             renderable.setX(body.getPosition().x);
             renderable.setY(body.getPosition().y);
         }
@@ -125,25 +120,39 @@ public class MoonWalkerPhysicsRules extends PhysicsRules {
         switch (userAction.getActionCode()) {
             case UP:
                 body.setLinearVelocity(body.getLinearVelocity().x, +keyStrokeAcceleration);
-                event = new GameEvent("PLAYER_SPRITE_MOVEMENT");
                 break;
             case DOWN:
                 body.setLinearVelocity(body.getLinearVelocity().x, -keyStrokeAcceleration);
-                event = new GameEvent("PLAYER_SPRITE_MOVEMENT");
                 break;
             case LEFT:
                 body.setLinearVelocity(-keyStrokeAcceleration, body.getLinearVelocity().y);
-                event = new GameEvent("PLAYER_SPRITE_MOVEMENT");
                 break;
             case RIGHT:
                 body.setLinearVelocity(+keyStrokeAcceleration, body.getLinearVelocity().y);
-                event = new GameEvent("PLAYER_SPRITE_MOVEMENT");
                 break;
             default:
                 break;
         }
         if(event != null) {
             gameState.getEventQueue().add(event);
+        }
+    }
+
+    private void handlePositionRules(MoonWalkerGameState gameState) {
+        MoonWalkerPlayer pPlayer = gameState.getPlayer();
+        Body body = getResourceFor(pPlayer);
+        if(body.getPosition().x > gameInfo.getScreenWidth()) {
+            body.setLinearVelocity(-keyStrokeAcceleration, body.getLinearVelocity().y);
+        }
+        if(body.getPosition().x < 0 ) {
+            body.setLinearVelocity(+keyStrokeAcceleration, body.getLinearVelocity().y);
+        }
+        if(body.getPosition().y < 0 ) {
+            body.setLinearVelocity(body.getLinearVelocity().x, +keyStrokeAcceleration);
+            gameState.getEventQueue().add(new GameEvent("PLAYER_BOTTOM"));
+        }
+        if(body.getPosition().x < 0 ) {
+            body.setLinearVelocity(body.getLinearVelocity().x, -keyStrokeAcceleration);
         }
     }
 

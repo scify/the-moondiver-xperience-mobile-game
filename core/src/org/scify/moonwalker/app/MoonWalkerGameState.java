@@ -3,14 +3,12 @@ package org.scify.moonwalker.app;
 import com.badlogic.gdx.physics.box2d.World;
 
 import org.scify.engine.GameEvent;
-import org.scify.moonwalker.app.actors.Renderable;
-import org.scify.moonwalker.app.game.GameState;
+import org.scify.engine.Renderable;
+import org.scify.engine.GameState;
 import org.scify.moonwalker.app.actors.MoonWalkerPlayer;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 public class MoonWalkerGameState extends GameState {
 

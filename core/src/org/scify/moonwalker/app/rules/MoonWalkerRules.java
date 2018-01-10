@@ -1,19 +1,16 @@
 package org.scify.moonwalker.app.rules;
 
 import org.scify.engine.*;
+import org.scify.engine.Positionable;
 import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.moonwalker.app.actors.*;
-import org.scify.moonwalker.app.game.GameState;
+import org.scify.engine.GameState;
 import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.engine.UserAction;
 
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
-public class MoonWalkerRules implements Rules {
+public abstract class MoonWalkerRules implements Rules {
 
     protected int worldX;
     protected int worldY;
@@ -44,15 +41,17 @@ public class MoonWalkerRules implements Rules {
     @Override
     public GameState getNextState(GameState gsCurrent, UserAction userAction) {
         gsCurrent = physics.getNextState(gsCurrent, userAction); // Update physics
-
         handlePositionEvents(gsCurrent);
         return new MoonWalkerGameState(gsCurrent.getEventQueue(), pPlayer, physics.world);
     }
 
-    private void handlePositionEvents(GameState gameState) {
-        if(pPlayer.getX() < gameInfo.getScreenWidth() / 2f) {
-//            gameState.getEventQueue().add(new GameEvent("NEW_CLOUD",
-//                    new Point2D.Float(gameInfo.getScreenWidth() / 2f, (gameInfo.getScreenHeight() / 2f) - 100f)));
+    protected void handlePositionEvents(GameState gameState) {
+        if(gameState.eventsQueueContainsEvent("PLAYER_BOTTOM")) {
+            if (!gameState.eventsQueueContainsEvent("DIALOG_1")) {
+                gameState.getEventQueue().add(new GameEvent("DIALOG_1"));
+                // TODO add dialog object in game event?
+                gameState.getEventQueue().add(new GameEvent("ADD_DIALOG_UI"));
+            }
         }
     }
 

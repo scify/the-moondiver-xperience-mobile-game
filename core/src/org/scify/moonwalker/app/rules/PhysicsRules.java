@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import org.scify.engine.Rules;
-import org.scify.moonwalker.app.game.GameState;
+import org.scify.engine.GameState;
 import org.scify.engine.UserAction;
 
 public class PhysicsRules implements Rules, ContactListener {

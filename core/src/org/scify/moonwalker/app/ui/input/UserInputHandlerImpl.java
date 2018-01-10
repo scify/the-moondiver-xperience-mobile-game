@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
+import org.scify.engine.Renderable;
 import org.scify.engine.UserAction;
 import org.scify.engine.UserInputHandler;
 
@@ -37,7 +38,7 @@ public class UserInputHandlerImpl implements UserInputHandler, ContactListener {
     }
 
     @Override
-    public org.scify.engine.UserAction getNextUserAction() {
+    public UserAction getNextUserAction() {
         listenForUserInput();
         org.scify.engine.UserAction toReturn = null;
         if(!pendingUserActions.isEmpty()) {
@@ -45,6 +46,12 @@ public class UserInputHandlerImpl implements UserInputHandler, ContactListener {
             pendingUserActions.remove(0);
         }
         return toReturn;
+    }
+
+    @Override
+    public void addUserActionForRenderable(Renderable renderable, Object payload) {
+        System.out.println("interacted with " + renderable.getType());
+        System.out.println("result " + payload);
     }
 
     @Override

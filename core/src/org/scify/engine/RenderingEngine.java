@@ -2,8 +2,6 @@ package org.scify.engine;
 
 import com.badlogic.gdx.Screen;
 
-import org.scify.moonwalker.app.game.GameState;
-
 public interface RenderingEngine<T extends GameState> extends Screen {
     /**
      * This method is expected to <ul><li> render the game state and depict the current status</li>

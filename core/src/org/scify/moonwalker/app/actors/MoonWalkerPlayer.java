@@ -1,10 +1,11 @@
 package org.scify.moonwalker.app.actors;
 
+import org.scify.engine.Renderable;
+import org.scify.engine.UserInputHandler;
+
 public class MoonWalkerPlayer extends Player implements Renderable {
 
     protected float x,y;
-    protected float xAxisVelocity = 0f;
-    protected float yAxisVelocity = 0f;
 
     public MoonWalkerPlayer(String sName, float x, float y) {
         setName(sName);
@@ -38,20 +39,7 @@ public class MoonWalkerPlayer extends Player implements Renderable {
     }
 
     @Override
-    public float getXAxisVelocity() {
-        return xAxisVelocity;
-    }
+    public void setInputHandler(UserInputHandler userInputHandler) {
 
-    public void setXAxisVelocity(float xAxisVelocity) {
-        this.xAxisVelocity = xAxisVelocity;
-    }
-
-    @Override
-    public float getYAxisVelocity() {
-        return yAxisVelocity;
-    }
-
-    public void setYAxisVelocity(float yAxisVelocity) {
-        this.yAxisVelocity = yAxisVelocity;
     }
 }

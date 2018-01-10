@@ -3,7 +3,6 @@ package org.scify.engine;
 import org.scify.moonwalker.app.MoonWalker;
 import org.scify.moonwalker.app.game.GameEndState;
 import org.scify.moonwalker.app.game.GameProps;
-import org.scify.moonwalker.app.game.GameState;
 import org.scify.moonwalker.app.rules.RulesFactory;
 import org.scify.moonwalker.app.helpers.UnsupportedGameTypeException;
 

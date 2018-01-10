@@ -5,26 +5,28 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.scify.engine.GameEvent;
+import org.scify.engine.RenderingEngine;
+import org.scify.engine.UserInputHandler;
 import org.scify.moonwalker.app.MoonWalkerGameState;
-import org.scify.moonwalker.app.actors.Renderable;
+import org.scify.engine.Renderable;
 import org.scify.moonwalker.app.helpers.GameInfo;
+import org.scify.moonwalker.app.ui.components.ActionDialog;
+import org.scify.moonwalker.app.ui.components.SelectDialog;
 
 import java.util.*;
 
-public class MoonWalkerRenderingEngine implements org.scify.engine.RenderingEngine<MoonWalkerGameState>, Screen {
+public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGameState>, Screen {
     /**
      * The rendering engine processes the game events, one at a time.
      * The currently processed {@link GameEvent} may block any UI input.
@@ -43,8 +45,11 @@ public class MoonWalkerRenderingEngine implements org.scify.engine.RenderingEngi
     private Map<Renderable, Sprite> renderableSpriteMap = new HashMap<>();
     private Stage stage;
     private Skin skin;
+    BitmapFont customFont;
+    private UserInputHandler userInputHandler;
 
-    public MoonWalkerRenderingEngine() {
+    public MoonWalkerRenderingEngine(UserInputHandler userInputHandler) {
+        this.userInputHandler = userInputHandler;
         gameInfo = GameInfo.getInstance();
         initCamera();
         batch = new SpriteBatch();
@@ -53,6 +58,7 @@ public class MoonWalkerRenderingEngine implements org.scify.engine.RenderingEngi
         worldImg.setWidth(gameInfo.getScreenWidth());
         worldImg.setHeight(gameInfo.getScreenHeight());
         skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+        customFont = new BitmapFont(Gdx.files.internal("data/custom.fnt"));
     }
 
     @Override
@@ -131,28 +137,26 @@ public class MoonWalkerRenderingEngine implements org.scify.engine.RenderingEngi
     }
 
     private void handleGameEvents(List<GameEvent> eventsList) {
-        long lNewTime = new Date().getTime();
-        if (lNewTime - lLastUpdate < 100L) {// If no less than 1/10 sec has passed
-            Thread.yield();
-            return; // Do nothing
-        } else {
-            lLastUpdate = lNewTime;
+
             // synchronized ensures that iterator.remove will be thread safe
             // on the passed list instance.
             synchronized (eventsList) {
                 ListIterator<GameEvent> listIterator = eventsList.listIterator();
-                System.out.println(eventsList.size());
                 while (listIterator.hasNext()) {
                     currentGameEvent = listIterator.next();
                     handleCurrentGameEvent(listIterator);
                 }
             }
-        }
+
     }
 
     private void handleCurrentGameEvent(ListIterator<GameEvent> listIterator) {
         String eventType = currentGameEvent.type;
         switch (eventType) {
+            case "ADD_DIALOG_UI":
+                showDialog();
+                listIterator.remove();
+                break;
             default:
                 listIterator.remove();
                 break;
@@ -185,49 +189,40 @@ public class MoonWalkerRenderingEngine implements org.scify.engine.RenderingEngi
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.act(delta);
-        stage.draw();
-        batch.begin();
-        if(!dialog)
-            showDialog();
-        drawGameState(currentGameState);
-        batch.end();
-        debugRenderer.render(world, box2DCamera.combined);
-        batch.setProjectionMatrix(mainCamera.combined);
-        mainCamera.update();
+        long lNewTime = new Date().getTime();
+        if (lNewTime - lLastUpdate < 50L) {// If no less than 1/10 sec has passed
+            Thread.yield();
+            return; // Do nothing
+        } else {
+            lLastUpdate = lNewTime;
+            Gdx.gl.glClearColor(1, 0, 0, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            stage.act(delta);
+            stage.draw();
+
+            batch.begin();
+
+            drawGameState(currentGameState);
+            batch.end();
+            debugRenderer.render(world, box2DCamera.combined);
+            batch.setProjectionMatrix(mainCamera.combined);
+            mainCamera.update();
+        }
     }
 
-    boolean dialog = false;
-
     void showDialog() {
-        dialog = true;
-        final TextButton textButton = new TextButton("Click me", skin, "default");
-
-        textButton.setWidth(200f);
-        textButton.setHeight(40f);
-        textButton.setPosition(Gdx.graphics.getWidth() /2 - 100f, Gdx.graphics.getHeight()/2 - 10f);
-
-        textButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                System.out.println("click");
-            }
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                textButton.setText("You clicked the button");
-                return super.touchDown(event, x, y, pointer, button);
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                textButton.setText("Click me again");
-                super.touchUp(event, x, y, pointer, button);
-            }
-        });
-        stage.addActor(textButton);
+        ActionDialog dialog1 = new SelectDialog(
+                "Ερώτηση",
+                "Πώς λεγόταν το πρόγραμμα της Σοβιετικής \nΈνωσης που έφτασε στο φεγγάρι το 1959;",
+                skin
+        );
+        dialog1.setInputHandler(userInputHandler);
+        dialog1.alignCenter();
+        dialog1.addButton("Λούνα", 1);
+        dialog1.addButton("Apollo", 2);
+        dialog1.addButton("NASA", 3);
+        dialog1.addButton("Eclipse", 4);
+        stage.addActor(dialog1.getDialog());
     }
 
     @Override
@@ -252,10 +247,12 @@ public class MoonWalkerRenderingEngine implements org.scify.engine.RenderingEngi
 
     @Override
     public void dispose() {
+        customFont.dispose();
         stage.dispose();
         world.dispose();
         debugRenderer.dispose();
         disposeDrawables();
+        // TODO call physics engine to dispose bodies?
     }
 
 }

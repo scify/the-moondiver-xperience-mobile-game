@@ -2,6 +2,7 @@ package org.scify.moonwalker.app.screens;
 
 import com.badlogic.gdx.Screen;
 
+import org.scify.engine.UserInputHandler;
 import org.scify.moonwalker.app.MoonWalker;
 import org.scify.moonwalker.app.game.GameEndState;
 import org.scify.engine.GameEngine;
@@ -9,6 +10,7 @@ import org.scify.moonwalker.app.game.GameLevel;
 import org.scify.moonwalker.app.game.GameProps;
 import org.scify.moonwalker.app.game.GameType;
 import org.scify.moonwalker.app.rules.MoonWalkerRules;
+import org.scify.moonwalker.app.rules.SinglePlayerRules;
 import org.scify.moonwalker.app.ui.MoonWalkerRenderingEngine;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 
@@ -27,7 +29,8 @@ public class GameLauncher implements Screen {
     }
 
     private void initializeGameEngine() {
-        GameProps props = new GameProps(new MoonWalkerRenderingEngine(), new MoonWalkerRules(), new UserInputHandlerImpl(), GameType.SINGLE_PLAYER, new GameLevel());
+        UserInputHandler userInputHandler = new UserInputHandlerImpl();
+        GameProps props = new GameProps(new MoonWalkerRenderingEngine(userInputHandler), new SinglePlayerRules(), userInputHandler, GameType.SINGLE_PLAYER, new GameLevel());
         this.gameEngine = new GameEngine(app);
         this.gameEngine.initialize(props);
     }

@@ -9,7 +9,7 @@ public class RulesFactory {
     public Rules createRules(GameType gameType) throws UnsupportedGameTypeException {
         switch (gameType) {
             case SINGLE_PLAYER:
-                return new MoonWalkerRules();
+                return new SinglePlayerRules();
             default:
                 throw new UnsupportedGameTypeException("Unsupported game type: " + gameType);
         }
