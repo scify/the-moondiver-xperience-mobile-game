@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import javafx.util.Pair;
@@ -28,6 +27,7 @@ import org.scify.moonwalker.app.game.quiz.Answer;
 import org.scify.moonwalker.app.game.quiz.Question;
 import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.ui.components.ActionDialog;
+import org.scify.moonwalker.app.ui.components.GameHUD;
 
 import java.util.*;
 
@@ -50,8 +50,9 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private Map<Renderable, Sprite> renderableSpriteMap = new HashMap<>();
     private Stage stage;
     private Skin skin;
-    private BitmapFont customFont;
+    private BitmapFont font;
     private UserInputHandler userInputHandler;
+    private GameHUD gameHUD;
 
     public MoonWalkerRenderingEngine(UserInputHandler userInputHandler) {
         this.userInputHandler = userInputHandler;
@@ -63,7 +64,9 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         worldImg.setWidth(gameInfo.getScreenWidth());
         worldImg.setHeight(gameInfo.getScreenHeight());
         skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-        customFont = new BitmapFont(Gdx.files.internal("data/custom.fnt"));
+        font = new BitmapFont(Gdx.files.internal("data/custom.fnt"));
+        gameHUD = new GameHUD(skin, font);
+
     }
 
     @Override
@@ -91,6 +94,8 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     @Override
     public void setGameState(MoonWalkerGameState gameState) {
         this.currentGameState = gameState;
+        this.gameHUD.setLives(gameState.getPlayer().getLives());
+        this.gameHUD.setScore(gameState.getPlayer().getScore());
     }
 
     protected Sprite getResourceFor(Renderable toDraw) {
@@ -189,6 +194,8 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     public void show() {
         Gdx.input.setInputProcessor(stage);
         stage.addActor(worldImg);
+        stage.addActor(gameHUD.getLivesTable());
+        stage.addActor(gameHUD.getScoreTable());
     }
 
     @Override
@@ -286,7 +293,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
 
     @Override
     public void dispose() {
-        customFont.dispose();
+        font.dispose();
         stage.dispose();
         world.dispose();
         debugRenderer.dispose();

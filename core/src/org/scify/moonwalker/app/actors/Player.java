@@ -3,8 +3,8 @@ package org.scify.moonwalker.app.actors;
 
 public abstract class Player {
     protected String name;
-    protected float score;
-    protected float lives;
+    protected int score = 0;
+    protected int lives = 0;
 
     public String getName() {
         return name;
@@ -14,19 +14,19 @@ public abstract class Player {
         this.name = name;
     }
 
-    public float getScore() {
+    public int getScore() {
         return score;
     }
 
-    public void setScore(float score) {
+    public void setScore(int score) {
         this.score = score;
     }
 
-    public float getLives() {
+    public int getLives() {
         return lives;
     }
 
-    public void setLives(float lives) {
+    public void setLives(int lives) {
         this.lives = lives;
     }
 }
