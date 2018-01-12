@@ -19,7 +19,6 @@ public class PhysicsRules implements Rules, ContactListener {
 
     @Override
     public GameState getInitialState() {
-        // TODO use decorator pattern to add world to game state
         return null;
     }
 
@@ -33,6 +32,10 @@ public class PhysicsRules implements Rules, ContactListener {
         return false;
     }
 
+    @Override
+    public boolean isGamePaused(GameState gsCurrent) {
+        return false;
+    }
 
     @Override
     public void beginContact(Contact contact) {

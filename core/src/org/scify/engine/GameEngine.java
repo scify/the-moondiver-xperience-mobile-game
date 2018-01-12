@@ -21,6 +21,8 @@ public class GameEngine implements Game<GameEndState> {
 
     private void doGameLoop() {
         final GameState toHandle = currentGameState;
+//        System.err.println("New loop");
+//        System.out.println(currentGameState.toString());
         // Ask to draw the state
         renderingEngine.setGameState(toHandle);
         // and keep on doing the loop in this thread

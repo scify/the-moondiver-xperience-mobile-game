@@ -1,62 +1,58 @@
 package org.scify.moonwalker.app.rules;
 
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import javafx.util.Pair;
 import org.scify.engine.*;
-import org.scify.engine.Positionable;
 import org.scify.moonwalker.app.MoonWalkerGameState;
-import org.scify.moonwalker.app.actors.*;
 import org.scify.engine.GameState;
-import org.scify.moonwalker.app.helpers.GameInfo;
+import org.scify.moonwalker.app.game.quiz.Answer;
 import org.scify.engine.UserAction;
-
-import java.util.*;
+import org.scify.moonwalker.app.game.quiz.Question;
 
 public abstract class MoonWalkerRules implements Rules {
 
     protected int worldX;
     protected int worldY;
-    protected MoonWalkerPlayer pPlayer;
-    protected Cloud cCloud;
-    protected List<Positionable> lClouds;
-    protected MoonWalkerPhysicsRules physics;
-    protected GameInfo gameInfo;
-
-    public MoonWalkerRules() {
-        gameInfo = GameInfo.getInstance();
-        worldX = gameInfo.getScreenWidth();
-        worldY = gameInfo.getScreenHeight();
-        pPlayer = new MoonWalkerPlayer("Paul", worldX / 2f,  worldY / 2f);
-        pPlayer.setLives(5);
-        pPlayer.setScore(0);
-        cCloud = new Cloud(0, 10);
-        lClouds = new ArrayList<>();
-        physics = new MoonWalkerPhysicsRules(worldX, worldY);
-    }
-
-    @Override
-    public GameState getInitialState() {
-        List<GameEvent> eventQueue = Collections.synchronizedList(new LinkedList<GameEvent>());
-        return new MoonWalkerGameState(eventQueue, pPlayer, physics.world);
-    }
 
     @Override
     public GameState getNextState(GameState gsCurrent, UserAction userAction) {
-        gsCurrent = physics.getNextState(gsCurrent, userAction); // Update physics
-        handlePositionEvents(gsCurrent);
-        return new MoonWalkerGameState(gsCurrent.getEventQueue(), pPlayer, physics.world);
-    }
-
-    protected void handlePositionEvents(GameState gameState) {
-        if(gameState.eventsQueueContainsEvent("PLAYER_BOTTOM")) {
-            if (!gameState.eventsQueueContainsEvent("DIALOG_1")) {
-                gameState.getEventQueue().add(new GameEvent("DIALOG_1"));
-                // TODO add dialog object in game event?
-                gameState.getEventQueue().add(new GameEvent("ADD_DIALOG_UI"));
-            }
-        }
+        MoonWalkerGameState gameState = (MoonWalkerGameState) gsCurrent;
+        if(userAction != null)
+            handleUserAction(userAction, gameState);
+        return gameState;
     }
 
     @Override
-    public boolean isGameFinished(GameState gsCurrent) {
-        return false;
+    public boolean isGamePaused(GameState gsCurrent) {
+        return gsCurrent.eventsQueueContainsEvent("PAUSE_GAME");
     }
+
+    private void handleUserAction(UserAction userAction, MoonWalkerGameState gameState) {
+        switch (userAction.getActionCode()) {
+            case ANSWER_SELECTION:
+                Answer answer = (Answer) userAction.getActionPayload();
+                addEventsForAnswer(gameState, answer.isCorrect());
+                break;
+            case ANSWER_TEXT:
+                Pair<Question, TextField> questionText = (Pair<Question, TextField>) userAction.getActionPayload();
+                TextField textField = questionText.getValue();
+                Question question = questionText.getKey();
+                String userAnswer = textField.getText();
+                boolean correctAns = question.isTextAnswerCorrect(userAnswer);
+                addEventsForAnswer(gameState, correctAns);
+                break;
+        }
+    }
+
+    private void addEventsForAnswer(MoonWalkerGameState gameState, boolean isAnswerCorrect) {
+        if(isAnswerCorrect) {
+            gameState.getEventQueue().add(new GameEvent("CORRECT_ANSWER"));
+            gameState.removeGameEventsWithType("PAUSE_GAME");
+        }
+        else {
+            gameState.getEventQueue().add(new GameEvent("WRONG_ANSWER"));
+            gameState.removeGameEventsWithType("PAUSE_GAME");
+        }
+    }
+
 }

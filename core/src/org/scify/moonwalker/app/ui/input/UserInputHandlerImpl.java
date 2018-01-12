@@ -10,7 +10,11 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import org.scify.engine.Renderable;
 import org.scify.engine.UserAction;
 import org.scify.engine.UserInputHandler;
+import org.scify.moonwalker.app.game.quiz.Answer;
+import org.scify.moonwalker.app.game.quiz.Question;
 
+import java.awt.*;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,13 +31,13 @@ public class UserInputHandlerImpl implements UserInputHandler, ContactListener {
 
     private void listenForUserInput() {
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            pendingUserActions.add(new org.scify.engine.UserAction(org.scify.moonwalker.app.ui.input.UserActionCode.LEFT));
+            pendingUserActions.add(new UserAction(UserActionCode.LEFT));
         } else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            pendingUserActions.add(new org.scify.engine.UserAction(org.scify.moonwalker.app.ui.input.UserActionCode.RIGHT));
+            pendingUserActions.add(new UserAction(UserActionCode.RIGHT));
         } else if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            pendingUserActions.add(new org.scify.engine.UserAction(org.scify.moonwalker.app.ui.input.UserActionCode.UP));
+            pendingUserActions.add(new UserAction(UserActionCode.UP));
         } else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            pendingUserActions.add(new org.scify.engine.UserAction(org.scify.moonwalker.app.ui.input.UserActionCode.DOWN));
+            pendingUserActions.add(new UserAction(UserActionCode.DOWN));
         }
     }
 
@@ -50,8 +54,10 @@ public class UserInputHandlerImpl implements UserInputHandler, ContactListener {
 
     @Override
     public void addUserActionForRenderable(Renderable renderable, Object payload) {
-        System.out.println("interacted with " + renderable.getType());
-        System.out.println("result " + payload);
+        if(payload instanceof Answer)
+            pendingUserActions.add(new UserAction(UserActionCode.ANSWER_SELECTION, payload));
+        else
+            pendingUserActions.add(new UserAction(UserActionCode.ANSWER_TEXT, payload));
     }
 
     @Override

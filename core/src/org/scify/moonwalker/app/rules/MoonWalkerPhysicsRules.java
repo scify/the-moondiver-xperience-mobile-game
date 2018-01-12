@@ -143,16 +143,19 @@ public class MoonWalkerPhysicsRules extends PhysicsRules {
         Body body = getResourceFor(pPlayer);
         if(body.getPosition().x > gameInfo.getScreenWidth()) {
             body.setLinearVelocity(-keyStrokeAcceleration, body.getLinearVelocity().y);
+            gameState.getEventQueue().add(new GameEvent("PLAYER_TOP_BORDER"));
         }
         if(body.getPosition().x < 0 ) {
             body.setLinearVelocity(+keyStrokeAcceleration, body.getLinearVelocity().y);
+            gameState.getEventQueue().add(new GameEvent("PLAYER_RIGHT_BORDER"));
         }
         if(body.getPosition().y < 0 ) {
             body.setLinearVelocity(body.getLinearVelocity().x, +keyStrokeAcceleration);
-            gameState.getEventQueue().add(new GameEvent("PLAYER_BOTTOM"));
+            gameState.getEventQueue().add(new GameEvent("PLAYER_BOTTOM_BORDER"));
         }
         if(body.getPosition().x < 0 ) {
             body.setLinearVelocity(body.getLinearVelocity().x, -keyStrokeAcceleration);
+            gameState.getEventQueue().add(new GameEvent("PLAYER_LEFT_BORDER"));
         }
     }
 

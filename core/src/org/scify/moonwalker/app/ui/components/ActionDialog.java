@@ -8,7 +8,7 @@ import org.scify.moonwalker.app.helpers.GameInfo;
 
 import java.awt.geom.Point2D;
 
-public abstract class ActionDialog implements Renderable {
+public class ActionDialog implements Renderable {
 
     protected Dialog dialog;
     protected UserInputHandler inputHandler;
@@ -16,10 +16,9 @@ public abstract class ActionDialog implements Renderable {
     protected String title;
     protected Point2D.Float position;
     protected GameInfo gameInfo;
-    private ActionDialog instance;
+    private ActionDialog instance = this;
 
     public ActionDialog(String title, String bodyText, Skin sKin) {
-        instance = this;
         gameInfo = GameInfo.getInstance();
         this.skin = sKin;
         this.title = title;
@@ -47,7 +46,32 @@ public abstract class ActionDialog implements Renderable {
     }
 
     @Override
+    public String getType() {
+        return "ACTION_DIALOG";
+    }
+
+    @Override
     public void setInputHandler(UserInputHandler userInputHandler) {
         this.inputHandler = userInputHandler;
+    }
+
+    @Override
+    public float getX() {
+        return position.x;
+    }
+
+    @Override
+    public float getY() {
+        return position.y;
+    }
+
+    @Override
+    public void setX(float fX) {
+
+    }
+
+    @Override
+    public void setY(float fY) {
+
     }
 }

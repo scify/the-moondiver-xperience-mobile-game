@@ -11,6 +11,11 @@ public class UserAction {
         this.actionCode = actionCode;
     }
 
+    public UserAction(UserActionCode actionCode, Object payload) {
+        this.actionCode = actionCode;
+        this.payload = payload;
+    }
+
     public UserAction(UserActionCode actionCode, Object payload, long timestamp) {
         this.actionCode = actionCode;
         this.payload = payload;

@@ -13,16 +13,21 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import javafx.util.Pair;
 import org.scify.engine.GameEvent;
 import org.scify.engine.RenderingEngine;
 import org.scify.engine.UserInputHandler;
 import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.engine.Renderable;
+import org.scify.moonwalker.app.game.quiz.Answer;
+import org.scify.moonwalker.app.game.quiz.Question;
 import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.ui.components.ActionDialog;
-import org.scify.moonwalker.app.ui.components.SelectDialog;
 
 import java.util.*;
 
@@ -45,7 +50,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private Map<Renderable, Sprite> renderableSpriteMap = new HashMap<>();
     private Stage stage;
     private Skin skin;
-    BitmapFont customFont;
+    private BitmapFont customFont;
     private UserInputHandler userInputHandler;
 
     public MoonWalkerRenderingEngine(UserInputHandler userInputHandler) {
@@ -144,21 +149,20 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 ListIterator<GameEvent> listIterator = eventsList.listIterator();
                 while (listIterator.hasNext()) {
                     currentGameEvent = listIterator.next();
-                    handleCurrentGameEvent(listIterator);
+                    handleCurrentGameEvent(currentGameEvent, listIterator);
                 }
             }
 
     }
 
-    private void handleCurrentGameEvent(ListIterator<GameEvent> listIterator) {
+    private void handleCurrentGameEvent(GameEvent gameEvent, ListIterator<GameEvent> listIterator) {
         String eventType = currentGameEvent.type;
         switch (eventType) {
-            case "ADD_DIALOG_UI":
-                showDialog();
+            case "QUESTION_UI":
+                handleQuestion(gameEvent);
                 listIterator.remove();
                 break;
             default:
-                listIterator.remove();
                 break;
         }
     }
@@ -210,19 +214,54 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         }
     }
 
-    void showDialog() {
-        ActionDialog dialog1 = new SelectDialog(
-                "Ερώτηση",
-                "Πώς λεγόταν το πρόγραμμα της Σοβιετικής \nΈνωσης που έφτασε στο φεγγάρι το 1959;",
+    protected void handleQuestion(GameEvent gameEvent) {
+        Question question = (Question) gameEvent.parameters;
+        switch (question.type) {
+            case FREE_TEXT:
+                showTextInputDialog(question);
+                break;
+            case MULTIPLE_CHOICE:
+                showMultipleSelectDialog(question);
+                break;
+            default:
+                throw new UnsupportedOperationException("Question type " + question.type + " not supported");
+        }
+    }
+
+    void showMultipleSelectDialog(Question question) {
+        ActionDialog dialog = new ActionDialog(
+                question.getTitle(),
+                question.getBody(),
                 skin
         );
-        dialog1.setInputHandler(userInputHandler);
-        dialog1.alignCenter();
-        dialog1.addButton("Λούνα", 1);
-        dialog1.addButton("Apollo", 2);
-        dialog1.addButton("NASA", 3);
-        dialog1.addButton("Eclipse", 4);
-        stage.addActor(dialog1.getDialog());
+        dialog.setInputHandler(userInputHandler);
+        dialog.alignCenter();
+        for(Answer a: question.getAnswers()) {
+            dialog.addButton(a.getText(), a);
+        }
+        stage.addActor(dialog.getDialog());
+    }
+
+    void showTextInputDialog(Question question) {
+        ActionDialog dialog = new ActionDialog(
+                question.getTitle(),
+                "",
+                skin
+        );
+        dialog.setInputHandler(userInputHandler);
+        TextField textField = new TextField("", skin);
+        Table table = new Table();
+        table.setSkin(skin);
+        table.setFillParent(true);
+        stage.addActor(table);
+        table.add(question.getBody()).padBottom(10f);
+        table.row();
+        table.add(textField).padBottom(10f);
+        table.row();
+        dialog.getDialog().addActor(table);
+        dialog.alignCenter();
+        dialog.addButton("OK", new Pair<>(question, textField));
+        stage.addActor(dialog.getDialog());
     }
 
     @Override

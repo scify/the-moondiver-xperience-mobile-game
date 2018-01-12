@@ -5,5 +5,7 @@ public enum UserActionCode {
     LEFT,
     RIGHT,
     UP,
-    DOWN
+    DOWN,
+    ANSWER_SELECTION,
+    ANSWER_TEXT
 }
