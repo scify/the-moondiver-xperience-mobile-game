@@ -55,20 +55,16 @@ public class SinglePlayerRules extends MoonWalkerRules {
 
     protected void handlePositionEvents(GameState gameState) {
         if(gameState.eventsQueueContainsEvent("PLAYER_BOTTOM_BORDER")) {
-            if (!gameState.eventsQueueContainsEvent("QUESTION_1")) {
-                gameState.getEventQueue().add(new GameEvent("QUESTION_1"));
-                // add dialog object in game event
-                gameState.getEventQueue().add(new GameEvent("QUESTION_UI", createSelectionQuestion((MoonWalkerGameState) gameState)));
-                gameState.getEventQueue().add(new GameEvent("PAUSE_GAME"));
-            }
+            // add dialog object in game event
+            gameState.getEventQueue().add(new GameEvent("QUESTION_UI", createSelectionQuestion((MoonWalkerGameState) gameState)));
+            gameState.getEventQueue().add(new GameEvent("PAUSE_GAME"));
+            gameState.removeGameEventsWithType("PLAYER_BOTTOM_BORDER");
         }
         if(gameState.eventsQueueContainsEvent("PLAYER_LEFT_BORDER")) {
-            if (!gameState.eventsQueueContainsEvent("QUESTION_2")) {
-                gameState.getEventQueue().add(new GameEvent("QUESTION_2"));
-                // add dialog object in game event
-                gameState.getEventQueue().add(new GameEvent("QUESTION_UI", createTextQuestion((MoonWalkerGameState) gameState)));
-                gameState.getEventQueue().add(new GameEvent("PAUSE_GAME"));
-            }
+            // add dialog object in game event
+            gameState.getEventQueue().add(new GameEvent("QUESTION_UI", createTextQuestion((MoonWalkerGameState) gameState)));
+            gameState.getEventQueue().add(new GameEvent("PAUSE_GAME"));
+            gameState.removeGameEventsWithType("PLAYER_LEFT_BORDER");
         }
     }
 
