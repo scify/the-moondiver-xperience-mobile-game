@@ -48,10 +48,13 @@ public abstract class MoonWalkerRules implements Rules {
         if(isAnswerCorrect) {
             gameState.getEventQueue().add(new GameEvent("CORRECT_ANSWER"));
             gameState.removeGameEventsWithType("PAUSE_GAME");
-        }
-        else {
+            gameState.getPlayer().setScore(gameState.getPlayer().getScore() + 1);
+            gameState.getEventQueue().add(new GameEvent("PLAYER_SCORE", gameState.getPlayer().getScore()));
+        } else {
             gameState.getEventQueue().add(new GameEvent("WRONG_ANSWER"));
             gameState.removeGameEventsWithType("PAUSE_GAME");
+            gameState.getPlayer().setLives(gameState.getPlayer().getLives() - 1);
+            gameState.getEventQueue().add(new GameEvent("PLAYER_LIVES", gameState.getPlayer().getLives()));
         }
     }
 

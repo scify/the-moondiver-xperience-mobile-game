@@ -167,6 +167,16 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 handleQuestion(gameEvent);
                 listIterator.remove();
                 break;
+            case "PLAYER_SCORE":
+                int newScore = (int) gameEvent.parameters;
+                gameHUD.setScore(newScore);
+                listIterator.remove();
+                break;
+            case "PLAYER_LIVES":
+                int newLives = (int) gameEvent.parameters;
+                gameHUD.setLives(newLives);
+                listIterator.remove();
+                break;
             default:
                 break;
         }

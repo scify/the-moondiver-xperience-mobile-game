@@ -98,6 +98,7 @@ public class SinglePlayerRules extends MoonWalkerRules {
 
     @Override
     public boolean isGameFinished(GameState gsCurrent) {
-        return false;
+        MoonWalkerGameState gameState = (MoonWalkerGameState) gsCurrent;
+        return gameState.getPlayer().getLives() == 0;
     }
 }
