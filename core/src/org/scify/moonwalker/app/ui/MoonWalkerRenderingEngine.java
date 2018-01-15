@@ -17,7 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import javafx.util.Pair;
 import org.scify.engine.GameEvent;
 import org.scify.engine.RenderingEngine;
 import org.scify.engine.UserInputHandler;
@@ -277,7 +276,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         table.row();
         dialog.getDialog().addActor(table);
         dialog.alignCenter();
-        dialog.addButton("OK", new Pair<>(question, textField));
+        dialog.addButton("OK", new HashMap.SimpleEntry<>(question, textField));
         stage.addActor(dialog.getDialog());
     }
 

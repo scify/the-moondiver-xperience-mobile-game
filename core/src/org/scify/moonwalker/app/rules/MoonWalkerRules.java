@@ -1,7 +1,6 @@
 package org.scify.moonwalker.app.rules;
 
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import javafx.util.Pair;
 import org.scify.engine.*;
 import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.engine.GameState;
@@ -12,6 +11,7 @@ import org.scify.moonwalker.app.game.quiz.QuestionService;
 import org.scify.moonwalker.app.game.quiz.QuestionServiceJSON;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public abstract class MoonWalkerRules implements Rules {
@@ -48,7 +48,7 @@ public abstract class MoonWalkerRules implements Rules {
                 addEventsForAnswer(gameState, answer.isCorrect());
                 break;
             case ANSWER_TEXT:
-                Pair<Question, TextField> questionText = (Pair<Question, TextField>) userAction.getActionPayload();
+                HashMap.SimpleEntry<Question, TextField> questionText = (HashMap.SimpleEntry<Question, TextField>) userAction.getActionPayload();
                 TextField textField = questionText.getValue();
                 Question question = questionText.getKey();
                 String userAnswer = textField.getText();
