@@ -6,8 +6,6 @@ package org.scify.engine;
 
 import java.util.concurrent.Callable;
 
-public interface Game<T> extends Callable<T> {
-    void initialize(GameProps props);
-    T call();
-    void finalize();
+public interface Game {
+
 }

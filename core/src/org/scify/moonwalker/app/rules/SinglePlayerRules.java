@@ -102,4 +102,9 @@ public class SinglePlayerRules extends MoonWalkerRules {
         MoonWalkerGameState gameState = (MoonWalkerGameState) gsCurrent;
         return gameState.getPlayer().getLives() == 0;
     }
+
+    @Override
+    public void disposeResources() {
+        physics.disposeResources();
+    }
 }

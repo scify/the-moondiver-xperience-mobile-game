@@ -4,7 +4,7 @@ import org.scify.moonwalker.app.game.GameEndState;
 import org.scify.moonwalker.app.rules.RulesFactory;
 import org.scify.moonwalker.app.helpers.UnsupportedGameTypeException;
 
-public class GameEngine implements Game<GameEndState> {
+public class GameEngine implements Game {
 
     protected RenderingEngine renderingEngine;
     protected RulesFactory rulesFactory;
@@ -27,7 +27,6 @@ public class GameEngine implements Game<GameEndState> {
         currentGameState = rules.getNextState(currentGameState, uaToHandle);
     }
 
-    @Override
     public void initialize(GameProps props) {
         final GameState initialState;
         rulesFactory = new RulesFactory();
@@ -45,7 +44,6 @@ public class GameEngine implements Game<GameEndState> {
         currentGameState = initialState;
     }
 
-    @Override
     public GameEndState call() {
         while (!rules.isGameFinished(currentGameState)) {
             doGameLoop();
@@ -53,6 +51,7 @@ public class GameEngine implements Game<GameEndState> {
                 Thread.sleep(20L); // Allow repainting
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                return GameEndState.GAME_INTERRUPTED;
             }
         }
         // here the game has ended
@@ -60,8 +59,7 @@ public class GameEngine implements Game<GameEndState> {
         return GameEndState.GAME_FINISHED;
     }
 
-    @Override
-    public void finalize() {
-
+    public Rules getRules() {
+        return rules;
     }
 }

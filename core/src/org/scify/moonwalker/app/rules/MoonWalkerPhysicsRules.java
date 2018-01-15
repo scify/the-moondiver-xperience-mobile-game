@@ -159,4 +159,11 @@ public class MoonWalkerPhysicsRules extends PhysicsRules {
         }
     }
 
+    @Override
+    public void disposeResources() {
+        for(Map.Entry<Renderable, Body> entry : renderableBodyMap.entrySet()) {
+            world.destroyBody(entry.getValue());
+        }
+        world.dispose();
+    }
 }

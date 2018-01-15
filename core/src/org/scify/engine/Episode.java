@@ -1,6 +1,8 @@
 package org.scify.engine;
 
-public abstract class Episode {
+import java.util.concurrent.Callable;
+
+public abstract class Episode<T> implements Callable<T> {
 
     // each episode uses a game engine when executing
     protected GameEngine gameEngine;
@@ -20,11 +22,12 @@ public abstract class Episode {
         return true;
     }
 
-    public void initialize(GameProps props) {
-        this.gameEngine.initialize(props);
-    }
-
     public void execute() {
         System.out.println("execute");
+    }
+
+    public void disposeResources() {
+        renderingEngine.disposeResources();
+        gameEngine.getRules().disposeResources();
     }
 }

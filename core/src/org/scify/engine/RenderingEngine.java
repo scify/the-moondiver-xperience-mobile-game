@@ -23,4 +23,6 @@ public interface RenderingEngine<T extends GameState> extends Screen {
     void setGameState(T toHandle);
 
     void initializeGameState(T initialState);
+
+    void disposeResources();
 }

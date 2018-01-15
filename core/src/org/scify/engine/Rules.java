@@ -6,4 +6,5 @@ public interface Rules {
     GameState getNextState(GameState gsCurrent, UserAction userAction);
     boolean isGameFinished(GameState gsCurrent);
     boolean isGamePaused(GameState gsCurrent);
+    void disposeResources();
 }

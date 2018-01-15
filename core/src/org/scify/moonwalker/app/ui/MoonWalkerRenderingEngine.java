@@ -310,12 +310,15 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
 
     @Override
     public void dispose() {
+    }
+
+    @Override
+    public void disposeResources() {
         font.dispose();
         stage.dispose();
-        world.dispose();
         debugRenderer.dispose();
         disposeDrawables();
-        // TODO call physics engine to dispose bodies?
+        batch.dispose();
     }
 
 }

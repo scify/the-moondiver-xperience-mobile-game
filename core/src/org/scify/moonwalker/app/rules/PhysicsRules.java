@@ -8,7 +8,7 @@ import org.scify.engine.Rules;
 import org.scify.engine.GameState;
 import org.scify.engine.UserAction;
 
-public class PhysicsRules implements Rules, ContactListener {
+public abstract class PhysicsRules implements Rules, ContactListener {
 
     protected int wordX, worldY;
 

@@ -44,8 +44,9 @@ public class GameLauncher implements Screen {
     }
 
     private void startScenario(Scenario scenario) {
+        Episode currentEpisode = scenario.getCurrentEpisode();
         ExecutorService es = Executors.newFixedThreadPool(1);
-        Future<GameEndState> future = es.submit(scenario.getCurrentEpisode().getGameEngine());
+        Future<GameEndState> future = es.submit(currentEpisode);
         es.shutdown();
         //this code will execute once the user exits the app
         // (either to go to next level or to exit)
@@ -55,6 +56,7 @@ public class GameLauncher implements Screen {
         } catch (InterruptedException | ExecutionException e) {
 
         }
+        currentEpisode.disposeResources();
     }
 
     @Override
