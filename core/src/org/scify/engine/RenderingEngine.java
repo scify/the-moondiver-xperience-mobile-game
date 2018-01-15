@@ -9,11 +9,6 @@ public interface RenderingEngine<T extends GameState> {
      */
     void drawGameState(T currentState);
 
-    /**
-     * Method to play game over sounds, graphics, etc (e.g a game over message)
-     */
-    void playGameOver();
-
     void cancelCurrentRendering();
 
     void disposeDrawables();

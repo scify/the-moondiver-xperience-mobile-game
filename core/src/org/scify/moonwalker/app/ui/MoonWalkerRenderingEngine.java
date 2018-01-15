@@ -185,11 +185,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     }
 
     @Override
-    public void playGameOver() {
-
-    }
-
-    @Override
     public void cancelCurrentRendering() {
 
     }
