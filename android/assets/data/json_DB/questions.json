@@ -1,0 +1,48 @@
+[
+  {
+    "title":"",
+    "body":"Πόσες φορές μικρότερή είναι η βαρύτητα στη Σελήνη\nσε σχέση με τη Γή;",
+    "answers":[
+      {
+        "text":"6",
+        "isCorrect": true
+      },
+      {
+        "text":"Έξι",
+        "isCorrect": true
+      },
+      {
+        "text":"Εξι",
+        "isCorrect": true
+      },
+      {
+        "text":"Six",
+        "isCorrect": true
+      }
+    ],
+    "type":"FREE_TEXT"
+  },
+  {
+    "title":"",
+    "body":"Πώς λεγόταν το πρόγραμμα της Σοβιετικής\nΈνωσης που έφτασε στο φεγγάρι το 1959;",
+    "answers":[
+      {
+        "text":"Λούνα",
+        "isCorrect": true
+      },
+      {
+        "text":"Apollo",
+        "isCorrect": false
+      },
+      {
+        "text":"NASA",
+        "isCorrect": false
+      },
+      {
+        "text":"Eclipse",
+        "isCorrect": false
+      }
+    ],
+    "type":"MULTIPLE_CHOICE"
+  }
+]

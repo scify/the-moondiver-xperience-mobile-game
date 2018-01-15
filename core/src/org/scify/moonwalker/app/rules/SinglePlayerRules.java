@@ -7,9 +7,6 @@ import org.scify.engine.UserAction;
 import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.moonwalker.app.actors.Cloud;
 import org.scify.moonwalker.app.actors.MoonWalkerPlayer;
-import org.scify.moonwalker.app.game.quiz.Answer;
-import org.scify.moonwalker.app.game.quiz.Question;
-import org.scify.moonwalker.app.game.quiz.QuestionType;
 import org.scify.moonwalker.app.helpers.GameInfo;
 
 import java.util.ArrayList;
@@ -26,6 +23,7 @@ public class SinglePlayerRules extends MoonWalkerRules {
     protected GameInfo gameInfo;
 
     public SinglePlayerRules() {
+        super();
         gameInfo = GameInfo.getInstance();
         worldX = gameInfo.getScreenWidth();
         worldY = gameInfo.getScreenHeight();
@@ -35,6 +33,7 @@ public class SinglePlayerRules extends MoonWalkerRules {
         cCloud = new Cloud(0, 10);
         lClouds = new ArrayList<>();
         physics = new MoonWalkerPhysicsRules(worldX, worldY);
+        System.out.println(allQuestions.size());
     }
 
     @Override
@@ -56,45 +55,47 @@ public class SinglePlayerRules extends MoonWalkerRules {
     protected void handlePositionEvents(GameState gameState) {
         if(gameState.eventsQueueContainsEvent("PLAYER_BOTTOM_BORDER")) {
             // add dialog object in game event
-            gameState.getEventQueue().add(new GameEvent("QUESTION_UI", createSelectionQuestion((MoonWalkerGameState) gameState)));
+            gameState.getEventQueue().add(new GameEvent("QUESTION_UI", nextQuestion((MoonWalkerGameState)gameState)));
             gameState.getEventQueue().add(new GameEvent("PAUSE_GAME"));
             gameState.removeGameEventsWithType("PLAYER_BOTTOM_BORDER");
         }
         if(gameState.eventsQueueContainsEvent("PLAYER_LEFT_BORDER")) {
             // add dialog object in game event
-            gameState.getEventQueue().add(new GameEvent("QUESTION_UI", createTextQuestion((MoonWalkerGameState) gameState)));
+            gameState.getEventQueue().add(new GameEvent("QUESTION_UI", nextQuestion((MoonWalkerGameState) gameState)));
             gameState.getEventQueue().add(new GameEvent("PAUSE_GAME"));
             gameState.removeGameEventsWithType("PLAYER_LEFT_BORDER");
         }
     }
 
-    protected Question createTextQuestion(MoonWalkerGameState gameState) {
-        List answers = new LinkedList();
-        answers.add(new Answer("6", true));
-        answers.add(new Answer("Έξι", true));
-        answers.add(new Answer("Έξι", true));
-        answers.add(new Answer("Six", true));
-        Collections.shuffle(answers);
-        return new Question(
-                "Πόσες φορές μικρότερή είναι η βαρύτητα στη Σελήνη \nσε σχέση με τη Γή;",
-                answers,
-                QuestionType.FREE_TEXT
-        );
-    }
 
-    protected Question createSelectionQuestion(MoonWalkerGameState gameState) {
-        List answers = new LinkedList();
-        answers.add(new Answer("Λούνα", true));
-        answers.add(new Answer("Apollo"));
-        answers.add(new Answer("NASA"));
-        answers.add(new Answer("Eclipse"));
-        Collections.shuffle(answers);
-        return new Question(
-                "Πώς λεγόταν το πρόγραμμα της Σοβιετικής \nΈνωσης που έφτασε στο φεγγάρι το 1959;",
-                answers,
-                QuestionType.MULTIPLE_CHOICE
-        );
-    }
+
+//    protected Question createTextQuestion(MoonWalkerGameState gameState) {
+//        List answers = new LinkedList();
+//        answers.add(new Answer("6", true));
+//        answers.add(new Answer("Έξι", true));
+//        answers.add(new Answer("Εξι", true));
+//        answers.add(new Answer("Six", true));
+//        Collections.shuffle(answers);
+//        return new Question(
+//                "Πόσες φορές μικρότερή είναι η βαρύτητα στη Σελήνη \nσε σχέση με τη Γή;",
+//                answers,
+//                QuestionType.FREE_TEXT
+//        );
+//    }
+//
+//    protected Question createSelectionQuestion(MoonWalkerGameState gameState) {
+//        List answers = new LinkedList();
+//        answers.add(new Answer("Λούνα", true));
+//        answers.add(new Answer("Apollo"));
+//        answers.add(new Answer("NASA"));
+//        answers.add(new Answer("Eclipse"));
+//        Collections.shuffle(answers);
+//        return new Question(
+//                "Πώς λεγόταν το πρόγραμμα της Σοβιετικής \nΈνωσης που έφτασε στο φεγγάρι το 1959;",
+//                answers,
+//                QuestionType.MULTIPLE_CHOICE
+//        );
+//    }
 
     @Override
     public boolean isGameFinished(GameState gsCurrent) {

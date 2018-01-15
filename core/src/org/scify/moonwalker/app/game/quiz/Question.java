@@ -20,6 +20,9 @@ public class Question {
         return this.answers;
     }
 
+    public Question() {
+    }
+
     public Question(String title, String body, List<Answer> answers, QuestionType type) {
         this.title = title;
         this.body = body;

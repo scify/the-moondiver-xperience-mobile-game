@@ -225,7 +225,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
 
             drawGameState(currentGameState);
             batch.end();
-            debugRenderer.render(world, box2DCamera.combined);
+            //debugRenderer.render(world, box2DCamera.combined);
             batch.setProjectionMatrix(mainCamera.combined);
             mainCamera.update();
         }

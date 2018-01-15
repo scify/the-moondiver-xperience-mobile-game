@@ -13,6 +13,9 @@ public class Answer {
         return isCorrect;
     }
 
+    public Answer() {
+    }
+
     public Answer(String text) {
         this.text = text;
         this.isCorrect = false;

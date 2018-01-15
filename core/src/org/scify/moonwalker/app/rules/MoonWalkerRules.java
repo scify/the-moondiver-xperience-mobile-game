@@ -8,11 +8,25 @@ import org.scify.engine.GameState;
 import org.scify.moonwalker.app.game.quiz.Answer;
 import org.scify.engine.UserAction;
 import org.scify.moonwalker.app.game.quiz.Question;
+import org.scify.moonwalker.app.game.quiz.QuestionService;
+import org.scify.moonwalker.app.game.quiz.QuestionServiceJSON;
+
+import java.util.Collections;
+import java.util.List;
 
 public abstract class MoonWalkerRules implements Rules {
 
     protected int worldX;
     protected int worldY;
+    protected List<Question> allQuestions;
+    protected QuestionService questionService;
+    protected int questionIndex = 0;
+
+    public MoonWalkerRules() {
+        questionService = QuestionServiceJSON.getInstance();
+        allQuestions = questionService.getQuestions();
+        Collections.shuffle(allQuestions);
+    }
 
     @Override
     public GameState getNextState(GameState gsCurrent, UserAction userAction) {
@@ -56,6 +70,14 @@ public abstract class MoonWalkerRules implements Rules {
             gameState.getPlayer().setLives(gameState.getPlayer().getLives() - 1);
             gameState.getEventQueue().add(new GameEvent("PLAYER_LIVES", gameState.getPlayer().getLives()));
         }
+    }
+
+    protected Question nextQuestion(MoonWalkerGameState gameState) {
+        if(questionIndex == allQuestions.size())
+            questionIndex = 0;
+        Question question = allQuestions.get(questionIndex);
+        questionIndex++;
+        return question;
     }
 
 }
