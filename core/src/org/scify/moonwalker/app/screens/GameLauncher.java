@@ -2,15 +2,10 @@ package org.scify.moonwalker.app.screens;
 
 import com.badlogic.gdx.Screen;
 
-import org.scify.engine.UserInputHandler;
+import org.scify.engine.*;
+import org.scify.moonwalker.app.KnightRaceEpisode;
 import org.scify.moonwalker.app.MoonWalker;
 import org.scify.moonwalker.app.game.GameEndState;
-import org.scify.engine.GameEngine;
-import org.scify.moonwalker.app.game.GameLevel;
-import org.scify.moonwalker.app.game.GameProps;
-import org.scify.moonwalker.app.game.GameType;
-import org.scify.moonwalker.app.rules.MoonWalkerRules;
-import org.scify.moonwalker.app.rules.SinglePlayerRules;
 import org.scify.moonwalker.app.ui.MoonWalkerRenderingEngine;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 
@@ -22,17 +17,9 @@ import java.util.concurrent.Future;
 public class GameLauncher implements Screen {
 
     private final MoonWalker app;
-    protected GameEngine gameEngine = null;
 
     public GameLauncher(MoonWalker app) {
         this.app = app;
-    }
-
-    private void initializeGameEngine() {
-        UserInputHandler userInputHandler = new UserInputHandlerImpl();
-        GameProps props = new GameProps(new MoonWalkerRenderingEngine(userInputHandler), new SinglePlayerRules(), userInputHandler, GameType.SINGLE_PLAYER, new GameLevel());
-        this.gameEngine = new GameEngine(app);
-        this.gameEngine.initialize(props);
     }
 
     @Override
@@ -41,21 +28,24 @@ public class GameLauncher implements Screen {
     }
 
     private void startNewGame() {
-        // initialize should happen in the Main Thread to avoid Exception when initializing
-        // new SpriteBatch in the Rendering Engine
-        initializeGameEngine();
+        // TODO add GameScreen class that will take the rendering engine and the userInputHandler as parameter
+        UserInputHandler userInputHandler = new UserInputHandlerImpl();
+        RenderingEngine renderingEngine = new MoonWalkerRenderingEngine(userInputHandler);
+        Episode firstEpisode = new KnightRaceEpisode(renderingEngine, userInputHandler);
+        final Scenario mainGameScenario = new Scenario(firstEpisode);
+        app.setScreen(renderingEngine);
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                startGameThread();
+                startScenario(mainGameScenario);
             }
         });
         thread.start();
     }
 
-    private void startGameThread() {
+    private void startScenario(Scenario scenario) {
         ExecutorService es = Executors.newFixedThreadPool(1);
-        Future<GameEndState> future = es.submit(gameEngine);
+        Future<GameEndState> future = es.submit(scenario.getCurrentEpisode().getGameEngine());
         es.shutdown();
         //this code will execute once the user exits the app
         // (either to go to next level or to exit)

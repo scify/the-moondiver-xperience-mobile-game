@@ -1,8 +1,6 @@
 package org.scify.engine;
 
-import org.scify.moonwalker.app.MoonWalker;
 import org.scify.moonwalker.app.game.GameEndState;
-import org.scify.moonwalker.app.game.GameProps;
 import org.scify.moonwalker.app.rules.RulesFactory;
 import org.scify.moonwalker.app.helpers.UnsupportedGameTypeException;
 
@@ -13,16 +11,12 @@ public class GameEngine implements Game<GameEndState> {
     protected Rules rules;
     protected UserInputHandler inputHandler;
     protected GameState currentGameState;
-    protected MoonWalker app;
 
-    public GameEngine(MoonWalker app) {
-        this.app = app;
+    public GameEngine() {
     }
 
     private void doGameLoop() {
         final GameState toHandle = currentGameState;
-//        System.err.println("New loop");
-//        System.out.println(currentGameState.toString());
         // Ask to draw the state
         renderingEngine.setGameState(toHandle);
         // and keep on doing the loop in this thread
@@ -40,14 +34,14 @@ public class GameEngine implements Game<GameEndState> {
         renderingEngine = props.renderingEngine;
         inputHandler = props.userInputHandler;
         try {
-            rules = rulesFactory.createRules(props.gameType);
+            rules = props.rules;
         } catch (UnsupportedGameTypeException e) {
             e.printStackTrace();
         }
         initialState = rules.getInitialState();
         renderingEngine.setGameState(initialState);
         renderingEngine.initializeGameState(initialState);
-        app.setScreen(renderingEngine);
+
         currentGameState = initialState;
     }
 

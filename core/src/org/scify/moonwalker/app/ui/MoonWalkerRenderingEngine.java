@@ -2,6 +2,7 @@ package org.scify.moonwalker.app.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,10 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.scify.engine.GameEvent;
@@ -29,6 +27,7 @@ import org.scify.moonwalker.app.ui.components.ActionDialog;
 import org.scify.moonwalker.app.ui.components.GameHUD;
 
 import java.util.*;
+import java.util.List;
 
 public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGameState>, Screen {
     /**
@@ -52,6 +51,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private BitmapFont font;
     private UserInputHandler userInputHandler;
     private GameHUD gameHUD;
+    private Label fpsLabel;
 
     public MoonWalkerRenderingEngine(UserInputHandler userInputHandler) {
         this.userInputHandler = userInputHandler;
@@ -65,7 +65,10 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         skin = new Skin(Gdx.files.internal("data/uiskin.json"));
         font = new BitmapFont(Gdx.files.internal("data/custom.fnt"));
         gameHUD = new GameHUD(skin, font);
-
+        fpsLabel = new Label("", new Label.LabelStyle(font, Color.RED));
+        fpsLabel.setFontScale(3, 3);
+        fpsLabel.setSize(50,50);
+        fpsLabel.setPosition(20, 20);
     }
 
     @Override
@@ -209,24 +212,29 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
 
     @Override
     public void render(float delta) {
+
         long lNewTime = new Date().getTime();
         if (lNewTime - lLastUpdate < 50L) {// If no less than 1/10 sec has passed
             Thread.yield();
             return; // Do nothing
         } else {
-            lLastUpdate = lNewTime;
+
             Gdx.gl.glClearColor(1, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             stage.act(delta);
             stage.draw();
+            synchronized (batch) {
+                batch.begin();
+                fpsLabel.setText(String.valueOf(1000 / (lNewTime - lLastUpdate)));
+                fpsLabel.draw(batch, 1);
+                drawGameState(currentGameState);
+                batch.end();
+                debugRenderer.render(world, box2DCamera.combined);
+                batch.setProjectionMatrix(mainCamera.combined);
+                mainCamera.update();
+            }
 
-            batch.begin();
-
-            drawGameState(currentGameState);
-            batch.end();
-            //debugRenderer.render(world, box2DCamera.combined);
-            batch.setProjectionMatrix(mainCamera.combined);
-            mainCamera.update();
+            lLastUpdate = lNewTime;
         }
     }
 
