@@ -1,8 +1,6 @@
 package org.scify.engine;
 
-import com.badlogic.gdx.Screen;
-
-public interface RenderingEngine<T extends GameState> extends Screen {
+public interface RenderingEngine<T extends GameState> {
     /**
      * This method is expected to <ul><li> render the game state and depict the current status</li>
      * <li>handle all the events in the game state, ignoring the ones it does not know how to handle. The
@@ -25,4 +23,10 @@ public interface RenderingEngine<T extends GameState> extends Screen {
     void initializeGameState(T initialState);
 
     void disposeResources();
+
+    void initialize();
+
+    void render(float delta);
+
+    void resize(int width, int height);
 }

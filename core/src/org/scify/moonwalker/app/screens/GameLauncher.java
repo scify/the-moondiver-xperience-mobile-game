@@ -30,10 +30,10 @@ public class GameLauncher implements Screen {
     private void startNewGame() {
         // TODO add GameScreen class that will take the rendering engine and the userInputHandler as parameter
         UserInputHandler userInputHandler = new UserInputHandlerImpl();
-        RenderingEngine renderingEngine = new MoonWalkerRenderingEngine(userInputHandler);
+        MoonWalkerRenderingEngine renderingEngine = new MoonWalkerRenderingEngine(userInputHandler);
         Episode firstEpisode = new KnightRaceEpisode(renderingEngine, userInputHandler);
         final Scenario mainGameScenario = new Scenario(firstEpisode);
-        app.setScreen(renderingEngine);
+        app.setScreen(new GamePlayScreen(renderingEngine));
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {

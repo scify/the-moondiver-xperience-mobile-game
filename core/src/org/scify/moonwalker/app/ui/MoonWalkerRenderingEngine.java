@@ -29,7 +29,7 @@ import org.scify.moonwalker.app.ui.components.GameHUD;
 import java.util.*;
 import java.util.List;
 
-public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGameState>, Screen {
+public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGameState> {
     /**
      * The rendering engine processes the game events, one at a time.
      * The currently processed {@link GameEvent} may block any UI input.
@@ -203,7 +203,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     }
 
     @Override
-    public void show() {
+    public void initialize() {
         Gdx.input.setInputProcessor(stage);
         stage.addActor(worldImg);
         stage.addActor(gameHUD.getLivesTable());
@@ -211,6 +211,19 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     }
 
     @Override
+    public void resize(int width, int height) {
+        gameViewport.update(width, height);
+    }
+
+    @Override
+    public void disposeResources() {
+        font.dispose();
+        stage.dispose();
+        debugRenderer.dispose();
+        disposeDrawables();
+        batch.dispose();
+    }
+
     public void render(float delta) {
 
         long lNewTime = new Date().getTime();
@@ -286,39 +299,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         dialog.alignCenter();
         dialog.addButton("OK", new HashMap.SimpleEntry<>(question, textField));
         stage.addActor(dialog.getDialog());
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        gameViewport.update(width, height);
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-    }
-
-    @Override
-    public void disposeResources() {
-        font.dispose();
-        stage.dispose();
-        debugRenderer.dispose();
-        disposeDrawables();
-        batch.dispose();
     }
 
 }
