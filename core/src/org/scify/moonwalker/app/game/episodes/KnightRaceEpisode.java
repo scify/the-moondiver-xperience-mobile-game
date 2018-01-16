@@ -1,9 +1,9 @@
-package org.scify.moonwalker.app;
+package org.scify.moonwalker.app.game.episodes;
 
 import org.scify.engine.*;
 import org.scify.engine.EpisodeEndState;
 import org.scify.moonwalker.app.game.GameLevel;
-import org.scify.moonwalker.app.rules.SinglePlayerRules;
+import org.scify.moonwalker.app.game.rules.SinglePlayerRules;
 
 public class KnightRaceEpisode extends Episode<EpisodeEndState>{
 

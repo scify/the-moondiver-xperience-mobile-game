@@ -1,4 +1,4 @@
-package org.scify.moonwalker.app.rules;
+package org.scify.moonwalker.app.game.rules;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
@@ -21,7 +21,7 @@ import org.scify.moonwalker.app.ui.UnsupportedRenderableTypeException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MoonWalkerPhysicsRules extends PhysicsRules {
+public class MoonWalkerPhysicsRules extends org.scify.moonwalker.app.game.rules.PhysicsRules {
 
     World world;
     Map<Renderable, Body> renderableBodyMap = new HashMap<Renderable, Body>();

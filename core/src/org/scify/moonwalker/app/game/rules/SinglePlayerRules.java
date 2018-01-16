@@ -1,4 +1,4 @@
-package org.scify.moonwalker.app.rules;
+package org.scify.moonwalker.app.game.rules;
 
 import org.scify.engine.GameEvent;
 import org.scify.engine.GameState;
@@ -14,12 +14,12 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SinglePlayerRules extends MoonWalkerRules {
+public class SinglePlayerRules extends org.scify.moonwalker.app.game.rules.MoonWalkerRules {
 
     protected MoonWalkerPlayer pPlayer;
     protected Cloud cCloud;
     protected List<Positionable> lClouds;
-    protected MoonWalkerPhysicsRules physics;
+    protected org.scify.moonwalker.app.game.rules.MoonWalkerPhysicsRules physics;
     protected GameInfo gameInfo;
 
     public SinglePlayerRules() {
@@ -32,7 +32,7 @@ public class SinglePlayerRules extends MoonWalkerRules {
         pPlayer.setScore(0);
         cCloud = new Cloud(0, 10);
         lClouds = new ArrayList<>();
-        physics = new MoonWalkerPhysicsRules(worldX, worldY);
+        physics = new org.scify.moonwalker.app.game.rules.MoonWalkerPhysicsRules(worldX, worldY);
         System.out.println(allQuestions.size());
     }
 

@@ -1,4 +1,4 @@
-package org.scify.moonwalker.app.rules;
+package org.scify.moonwalker.app.game.rules;
 
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import org.scify.engine.*;

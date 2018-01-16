@@ -1,4 +1,4 @@
-package org.scify.moonwalker.app.rules;
+package org.scify.moonwalker.app.game.rules;
 
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;

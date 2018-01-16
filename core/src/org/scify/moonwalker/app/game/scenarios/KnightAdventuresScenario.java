@@ -4,7 +4,7 @@ import org.scify.engine.Episode;
 import org.scify.engine.RenderingEngine;
 import org.scify.engine.Scenario;
 import org.scify.engine.UserInputHandler;
-import org.scify.moonwalker.app.KnightRaceEpisode;
+import org.scify.moonwalker.app.game.episodes.KnightRaceEpisode;
 
 import java.util.ArrayList;
 
