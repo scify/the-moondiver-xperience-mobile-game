@@ -212,11 +212,11 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
 
     @Override
     public void disposeResources() {
+        System.out.println("disposing rendering engine resources...");
         font.dispose();
         stage.dispose();
         debugRenderer.dispose();
         disposeDrawables();
-        batch.dispose();
     }
 
     public void render(Float delta) {

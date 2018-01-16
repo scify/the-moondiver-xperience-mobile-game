@@ -24,7 +24,7 @@ public class ActionDialog implements Renderable {
         this.title = title;
         dialog = new Dialog(title, skin, "dialog") {
             public void result(Object obj) {
-                // TODO add inputHandler call here
+                // TODO add inputHandler execute here
                 if (inputHandler != null)
                     inputHandler.addUserActionForRenderable(instance, obj);
             }

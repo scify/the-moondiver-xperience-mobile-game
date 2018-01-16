@@ -141,21 +141,21 @@ public class MoonWalkerPhysicsRules extends org.scify.moonwalker.app.game.rules.
     private void handlePositionRules(MoonWalkerGameState gameState) {
         MoonWalkerPlayer pPlayer = gameState.getPlayer();
         Body body = getResourceFor(pPlayer);
-        if(body.getPosition().x > gameInfo.getScreenWidth()) {
-            body.setLinearVelocity(-keyStrokeAcceleration, body.getLinearVelocity().y);
+        if(body.getPosition().y > gameInfo.getScreenHeight()) {
+            body.setLinearVelocity(body.getLinearVelocity().x, -keyStrokeAcceleration);
             gameState.getEventQueue().add(new GameEvent("PLAYER_TOP_BORDER"));
         }
         if(body.getPosition().x < 0 ) {
             body.setLinearVelocity(+keyStrokeAcceleration, body.getLinearVelocity().y);
-            gameState.getEventQueue().add(new GameEvent("PLAYER_RIGHT_BORDER"));
+            gameState.getEventQueue().add(new GameEvent("PLAYER_LEFT_BORDER"));
         }
         if(body.getPosition().y < 0 ) {
             body.setLinearVelocity(body.getLinearVelocity().x, +keyStrokeAcceleration);
             gameState.getEventQueue().add(new GameEvent("PLAYER_BOTTOM_BORDER"));
         }
-        if(body.getPosition().x < 0 ) {
-            body.setLinearVelocity(body.getLinearVelocity().x, -keyStrokeAcceleration);
-            gameState.getEventQueue().add(new GameEvent("PLAYER_LEFT_BORDER"));
+        if(body.getPosition().x > gameInfo.getScreenWidth() ) {
+            body.setLinearVelocity(-keyStrokeAcceleration, body.getLinearVelocity().y);
+            gameState.getEventQueue().add(new GameEvent("PLAYER_RIGHT_BORDER"));
         }
     }
 
