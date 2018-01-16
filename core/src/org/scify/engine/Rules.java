@@ -7,4 +7,5 @@ public interface Rules {
     boolean isGameFinished(GameState gsCurrent);
     boolean isGamePaused(GameState gsCurrent);
     void disposeResources();
+    EpisodeEndState determineEndState(GameState gsCurrent);
 }

@@ -44,8 +44,8 @@ public class GameEngine implements Game {
             }
         }
         // here the game has ended
-        // TODO change
-        return EpisodeEndState.EPISODE_FINISHED;
+        // TODO Ask ggianna
+        return rules.determineEndState(currentGameState);
     }
 
     public Rules getRules() {

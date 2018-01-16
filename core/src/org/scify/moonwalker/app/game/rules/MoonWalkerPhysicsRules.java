@@ -9,12 +9,9 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-import org.scify.engine.GameEvent;
+import org.scify.engine.*;
 import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.moonwalker.app.actors.MoonWalkerPlayer;
-import org.scify.engine.Renderable;
-import org.scify.engine.GameState;
-import org.scify.engine.UserAction;
 import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.ui.UnsupportedRenderableTypeException;
 
@@ -165,5 +162,10 @@ public class MoonWalkerPhysicsRules extends org.scify.moonwalker.app.game.rules.
             world.destroyBody(entry.getValue());
         }
         world.dispose();
+    }
+
+    @Override
+    public EpisodeEndState determineEndState(GameState gsCurrent) {
+        return null;
     }
 }

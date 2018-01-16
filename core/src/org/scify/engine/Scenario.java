@@ -1,14 +1,9 @@
 package org.scify.engine;
 
-import com.badlogic.gdx.Gdx;
-
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public abstract class Scenario {
 
@@ -21,44 +16,34 @@ public abstract class Scenario {
     }
 
     public void play() {
-        final Episode currentEpisode = getCurrentEpisode();
-        ExecutorService es = Executors.newFixedThreadPool(1);
-        Future<EpisodeEndState> future = es.submit(currentEpisode);
-        es.shutdown();
-        //this code will execute once the user exits the app
-        // (either to go to next level or to exit)
-        try {
-            EpisodeEndState result = future.get();
-            System.out.println("Game result: " + result);
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-                // process the result, e.g. add it to an Array<Result> field of the ApplicationListener.
-                currentEpisode.disposeResources();
-            }
-        });
+        if(currentEpisode == null)
+            return;
+        System.out.println("Ready to play episode: " + currentEpisode.getName());
+        EpisodeEndState endState = (EpisodeEndState) currentEpisode.play();
+        System.err.println(endState);
+        currentEpisode = getNextEpisode(currentEpisode, endState);
+        play();
     }
 
-    public void addEpisodeAfter(Episode newEpisode, Episode episodeBefore) {
-        // add newEpisode as a possible next episode for episodeBefore
-        // add newEpisode to episodes
+    protected void addEpisodeAfter(Episode episodeBefore, Episode newEpisode) {
+        List<Episode> episodesAfter = episodeListMap.get(episodeBefore);
+        episodesAfter.add(newEpisode);
     }
 
-    public Episode getFirstEpisode() {
-        return null;
+    protected void setFirstEpisode(Episode firstEpisode) {
+        episodeListMap = new HashMap<>();
+        episodeListMap.put(firstEpisode, new ArrayList<Episode>());
+        currentEpisode = firstEpisode;
     }
 
-    public Episode getCurrentEpisode() {
-        return currentEpisode;
-    }
-
-    public Episode getNextEpisode(ScenarioState state) {
+    protected Episode getNextEpisode(Episode episode, EpisodeEndState state) {
         // get possible next episodes for
-        // current episode, given the scenario state
+        // current episode, given the last episode end state state
+        List<Episode> possibleNextEpisodes = episodeListMap.get(episode);
+        for(Episode candidateEpisode : possibleNextEpisodes) {
+            if(candidateEpisode.isAccessible(state))
+                return candidateEpisode;
+        }
         // check if the possible episode is accessible
         return null;
     }

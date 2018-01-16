@@ -1,9 +1,6 @@
 package org.scify.moonwalker.app.game.rules;
 
-import org.scify.engine.GameEvent;
-import org.scify.engine.GameState;
-import org.scify.engine.Positionable;
-import org.scify.engine.UserAction;
+import org.scify.engine.*;
 import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.moonwalker.app.actors.Cloud;
 import org.scify.moonwalker.app.actors.MoonWalkerPlayer;
@@ -105,5 +102,10 @@ public class SinglePlayerRules extends MoonWalkerRules {
     @Override
     public void disposeResources() {
         physics.disposeResources();
+    }
+
+    @Override
+    public EpisodeEndState determineEndState(GameState gsCurrent) {
+        return null;
     }
 }
