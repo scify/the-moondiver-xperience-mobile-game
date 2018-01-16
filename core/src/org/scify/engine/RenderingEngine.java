@@ -21,7 +21,7 @@ public interface RenderingEngine<T extends GameState> {
 
     void initialize();
 
-    void render(float delta);
+    void render(Float delta);
 
     void resize(int width, int height);
 }

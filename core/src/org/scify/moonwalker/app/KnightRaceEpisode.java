@@ -1,23 +1,22 @@
 package org.scify.moonwalker.app;
 
 import org.scify.engine.*;
-import org.scify.moonwalker.app.game.GameEndState;
+import org.scify.engine.EpisodeEndState;
 import org.scify.moonwalker.app.game.GameLevel;
-import org.scify.moonwalker.app.game.GameType;
-import org.scify.moonwalker.app.rules.RulesFactory;
+import org.scify.moonwalker.app.rules.SinglePlayerRules;
 
-public class KnightRaceEpisode extends Episode<GameEndState>{
+public class KnightRaceEpisode extends Episode<EpisodeEndState>{
 
     public KnightRaceEpisode(RenderingEngine renderingEngine, UserInputHandler userInputHandler) {
         super(renderingEngine, userInputHandler);
-        RulesFactory rulesFactory = new RulesFactory();
-        GameProps gameProps = new GameProps(renderingEngine, rulesFactory.createRules(GameType.SINGLE_PLAYER), userInputHandler, new GameLevel());
+
+        GameProps gameProps = new GameProps(renderingEngine, new SinglePlayerRules(), userInputHandler, new GameLevel());
         gameEngine = new GameEngine();
         gameEngine.initialize(gameProps);
     }
 
     @Override
-    public GameEndState call() {
+    public EpisodeEndState call() {
         return gameEngine.call();
     }
 

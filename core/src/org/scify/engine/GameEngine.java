@@ -1,13 +1,10 @@
 package org.scify.engine;
 
-import org.scify.moonwalker.app.game.GameEndState;
-import org.scify.moonwalker.app.rules.RulesFactory;
 import org.scify.moonwalker.app.helpers.UnsupportedGameTypeException;
 
 public class GameEngine implements Game {
 
     protected RenderingEngine renderingEngine;
-    protected RulesFactory rulesFactory;
     protected Rules rules;
     protected UserInputHandler inputHandler;
     protected GameState currentGameState;
@@ -29,7 +26,6 @@ public class GameEngine implements Game {
 
     public void initialize(GameProps props) {
         final GameState initialState;
-        rulesFactory = new RulesFactory();
         renderingEngine = props.renderingEngine;
         inputHandler = props.userInputHandler;
         try {
@@ -44,19 +40,19 @@ public class GameEngine implements Game {
         currentGameState = initialState;
     }
 
-    public GameEndState call() {
+    public EpisodeEndState call() {
         while (!rules.isGameFinished(currentGameState)) {
             doGameLoop();
             try {
                 Thread.sleep(20L); // Allow repainting
             } catch (InterruptedException e) {
                 e.printStackTrace();
-                return GameEndState.GAME_INTERRUPTED;
+                return EpisodeEndState.EPISODE_INTERRUPTED;
             }
         }
         // here the game has ended
         // TODO change
-        return GameEndState.GAME_FINISHED;
+        return EpisodeEndState.EPISODE_FINISHED;
     }
 
     public Rules getRules() {

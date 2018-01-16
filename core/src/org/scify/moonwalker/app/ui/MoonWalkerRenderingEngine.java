@@ -219,7 +219,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         batch.dispose();
     }
 
-    public void render(float delta) {
+    public void render(Float delta) {
 
         long lNewTime = new Date().getTime();
         if (lNewTime - lLastUpdate < 50L) {// If no less than 1/10 sec has passed

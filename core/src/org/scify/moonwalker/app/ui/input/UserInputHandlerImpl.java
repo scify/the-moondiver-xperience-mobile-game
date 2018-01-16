@@ -79,4 +79,9 @@ public class UserInputHandlerImpl implements UserInputHandler, ContactListener {
     public void postSolve(Contact contact, ContactImpulse impulse) {
 
     }
+
+    @Override
+    public void disposeResources() {
+
+    }
 }
