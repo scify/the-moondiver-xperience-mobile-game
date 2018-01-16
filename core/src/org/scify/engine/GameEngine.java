@@ -1,7 +1,5 @@
 package org.scify.engine;
 
-import org.scify.moonwalker.app.helpers.UnsupportedGameTypeException;
-
 public class GameEngine implements Game {
 
     protected RenderingEngine renderingEngine;
@@ -24,23 +22,18 @@ public class GameEngine implements Game {
         currentGameState = rules.getNextState(currentGameState, uaToHandle);
     }
 
-    public void initialize(GameProps props) {
+    public void initialize(RenderingEngine renderingEngine, UserInputHandler userInputHandler, Rules rules) {
         final GameState initialState;
-        renderingEngine = props.renderingEngine;
-        inputHandler = props.userInputHandler;
-        try {
-            rules = props.rules;
-        } catch (UnsupportedGameTypeException e) {
-            e.printStackTrace();
-        }
+        this.renderingEngine = renderingEngine;
+        this.inputHandler = userInputHandler;
+        this.rules = rules;
         initialState = rules.getInitialState();
         renderingEngine.setGameState(initialState);
         renderingEngine.initializeGameState(initialState);
-
         currentGameState = initialState;
     }
 
-    public EpisodeEndState call() {
+    public EpisodeEndState execute() {
         while (!rules.isGameFinished(currentGameState)) {
             doGameLoop();
             try {

@@ -14,19 +14,13 @@ public abstract class Episode<T> implements Callable<T> {
         this.userInputHandler = userInputHandler;
     }
 
-    public GameEngine getGameEngine() {
-        return gameEngine;
-    }
-
     public boolean isAccessible(ScenarioState state){
         return true;
     }
 
-    public void execute() {
-        System.out.println("execute");
-    }
 
     public void disposeResources() {
+        System.out.println("disposing episode resources...");
         renderingEngine.disposeResources();
         gameEngine.getRules().disposeResources();
     }

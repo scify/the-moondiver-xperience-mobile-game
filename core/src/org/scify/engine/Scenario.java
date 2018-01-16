@@ -1,5 +1,7 @@
 package org.scify.engine;
 
+import com.badlogic.gdx.Gdx;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,7 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class Scenario {
+public abstract class Scenario {
 
     protected Episode currentEpisode;
     protected Map<Episode, List<Episode>> episodeListMap;
@@ -18,10 +20,8 @@ public class Scenario {
         episodeListMap = new HashMap<>();
     }
 
-    public void createEpisodes() {}
-
     public void play() {
-        Episode currentEpisode = getCurrentEpisode();
+        final Episode currentEpisode = getCurrentEpisode();
         ExecutorService es = Executors.newFixedThreadPool(1);
         Future<EpisodeEndState> future = es.submit(currentEpisode);
         es.shutdown();
@@ -31,10 +31,16 @@ public class Scenario {
             EpisodeEndState result = future.get();
             System.out.println("Game result: " + result);
         } catch (InterruptedException | ExecutionException e) {
-
-        } finally {
-            currentEpisode.disposeResources();
+            e.printStackTrace();
         }
+
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                // process the result, e.g. add it to an Array<Result> field of the ApplicationListener.
+                currentEpisode.disposeResources();
+            }
+        });
     }
 
     public void addEpisodeAfter(Episode newEpisode, Episode episodeBefore) {
