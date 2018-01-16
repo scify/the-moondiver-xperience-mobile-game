@@ -15,14 +15,16 @@ public abstract class Scenario {
         episodeListMap = new HashMap<>();
     }
 
-    public void play() {
-        if(currentEpisode == null)
+    public void start() {
+        if(currentEpisode == null) {
+            System.out.println("Scenario ended");
             return;
-        System.out.println("Ready to play episode: " + currentEpisode.getName());
-        EpisodeEndState endState = (EpisodeEndState) currentEpisode.play();
+        }
+        System.out.println("Ready to start episode: " + currentEpisode.getName());
+        final EpisodeEndState endState = (EpisodeEndState) currentEpisode.play();
         System.err.println(endState);
         currentEpisode = getNextEpisode(currentEpisode, endState);
-        play();
+        start();
     }
 
     protected void addEpisodeAfter(Episode episodeBefore, Episode newEpisode) {
@@ -40,6 +42,8 @@ public abstract class Scenario {
         // get possible next episodes for
         // current episode, given the last episode end state state
         List<Episode> possibleNextEpisodes = episodeListMap.get(episode);
+        if(possibleNextEpisodes == null)
+            return null;
         for(Episode candidateEpisode : possibleNextEpisodes) {
             if(candidateEpisode.isAccessible(state))
                 return candidateEpisode;

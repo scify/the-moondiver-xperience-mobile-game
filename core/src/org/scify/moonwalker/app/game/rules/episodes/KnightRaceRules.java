@@ -9,7 +9,10 @@ public class KnightRaceRules extends SinglePlayerRules {
 
     @Override
     public GameState getNextState(GameState gsCurrent, UserAction userAction) {
-        return super.getNextState(gsCurrent, userAction);
+        gsCurrent = super.getNextState(gsCurrent, userAction);
+        if(isGamePaused(gsCurrent))
+            return gsCurrent;
+        return gsCurrent;
     }
 
     @Override

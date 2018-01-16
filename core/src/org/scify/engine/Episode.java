@@ -27,11 +27,8 @@ public abstract class Episode<T> implements Callable<T> {
         ExecutorService es = Executors.newFixedThreadPool(1);
         Future<T> future = es.submit(this);
         es.shutdown();
-        //this code will execute once the user exits the app
-        // (either to go to next level or to exit)
         try {
             result = future.get();
-            System.out.println("Game result: " + result);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -39,8 +36,8 @@ public abstract class Episode<T> implements Callable<T> {
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {
-                // process the result, e.g. add it to an Array<Result> field of the ApplicationListener.
-                disposeResources();
+                // TODO fix
+                //disposeResources();
             }
         });
         return result;

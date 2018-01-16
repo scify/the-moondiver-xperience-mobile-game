@@ -9,6 +9,7 @@ public class KnightQuestionsEpisode extends Episode<EpisodeEndState> {
         super(renderingEngine, userInputHandler, "KnightQuestionsEpisode");
         gameEngine = new GameEngine();
         gameEngine.initialize(this.renderingEngine, this.userInputHandler, new KnightQuestionsRules());
+
     }
 
     @Override
@@ -16,4 +17,5 @@ public class KnightQuestionsEpisode extends Episode<EpisodeEndState> {
         EpisodeEndState endState = gameEngine.execute();
         return endState;
     }
+
 }

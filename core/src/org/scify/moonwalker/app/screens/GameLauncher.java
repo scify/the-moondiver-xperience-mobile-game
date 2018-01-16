@@ -32,7 +32,7 @@ public class GameLauncher implements Screen {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                mainGameScenario.play();
+                mainGameScenario.start();
             }
         });
         thread.start();
