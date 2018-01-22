@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.scify.engine.GameEvent;
@@ -177,6 +178,11 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             case "PLAYER_LIVES":
                 int newLives = (int) gameEvent.parameters;
                 gameHUD.setLives(newLives);
+                listIterator.remove();
+                break;
+            case "BACKGROUND_IMG_UI":
+                String imgPath = (String) gameEvent.parameters;
+                worldImg.setDrawable(new SpriteDrawable(new Sprite(new Texture(imgPath))));
                 listIterator.remove();
                 break;
             default:

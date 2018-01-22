@@ -31,6 +31,7 @@ public class KnightQuestionsRules extends SinglePlayerRules {
         gsCurrent = super.getNextState(gsCurrent, userAction);
         if(isGamePaused(gsCurrent))
             return gsCurrent;
+        handleGameStartingRules(gsCurrent);
         handlePositionEvents(gsCurrent);
         return gsCurrent;
     }
@@ -49,6 +50,13 @@ public class KnightQuestionsRules extends SinglePlayerRules {
         if(gsFinal.eventsQueueContainsEvent("CORRECT_ANSWER"))
             return EpisodeEndState.EPISODE_FINISHED_SUCCESS;
         return EpisodeEndState.EPISODE_FINISHED_FAILURE;
+    }
+
+    protected void handleGameStartingRules(GameState gsCurrent) {
+        if(!gsCurrent.eventsQueueContainsEvent("BACKGROUND_IMG")) {
+            gsCurrent.getEventQueue().add(new GameEvent("BACKGROUND_IMG"));
+            gsCurrent.getEventQueue().add(new GameEvent("BACKGROUND_IMG_UI", "img/forest.jpg"));
+        }
     }
 
     protected void handlePositionEvents(GameState gameState) {
