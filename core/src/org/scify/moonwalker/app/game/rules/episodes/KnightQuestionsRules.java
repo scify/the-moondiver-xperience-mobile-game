@@ -64,7 +64,7 @@ public class KnightQuestionsRules extends SinglePlayerRules {
     protected void handleGameStartingRules(GameState gsCurrent) {
         if(!gsCurrent.eventsQueueContainsEvent("BACKGROUND_IMG")) {
             gsCurrent.getEventQueue().add(new GameEvent("BACKGROUND_IMG"));
-            gsCurrent.getEventQueue().add(new GameEvent("BACKGROUND_IMG_UI", "img/forest.jpg"));
+            gsCurrent.getEventQueue().add(new GameEvent("BACKGROUND_IMG_UI", "img/episode_2/forest.jpg"));
         }
     }
 

@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import org.scify.engine.GameEvent;
 import org.scify.engine.RenderingEngine;
 import org.scify.engine.UserInputHandler;
+import org.scify.engine.audio.AudioEngine;
 import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.engine.Renderable;
 import org.scify.moonwalker.app.game.quiz.Answer;
@@ -22,6 +23,7 @@ import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.components.ActionDialog;
 import org.scify.moonwalker.app.ui.components.GameHUD;
+import org.scify.moonwalker.app.ui.sound.GdxAudioEngine;
 
 import java.util.*;
 import java.util.List;
@@ -36,8 +38,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private long lLastUpdate = -1L;
     private Image worldImg;
     private MoonWalkerGameState currentGameState;
-
-
+    private AudioEngine audioEngine;
     private OrthographicCamera box2DCamera;
     private Box2DDebugRenderer debugRenderer;
     private GameInfo gameInfo;
@@ -57,6 +58,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     public MoonWalkerRenderingEngine(UserInputHandler userInputHandler, SpriteBatch batch, Stage stage) {
         this.resourceLocator = new ResourceLocator();
         this.userInputHandler = userInputHandler;
+        audioEngine = new GdxAudioEngine();
         gameInfo = GameInfo.getInstance();
         initCamera();
         this.batch = batch;
@@ -73,6 +75,8 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         fpsLabel.setFontScale(3, 3);
         fpsLabel.setSize(50,50);
         fpsLabel.setPosition(20, 20);
+        audioEngine.pauseCurrentlyPlayingAudios();
+        audioEngine.playSoundLoop("audio/episode_1/music.wav");
     }
 
     @Override
@@ -122,7 +126,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         // Get a sprite for this world object type
         switch (sType) {
             case "PLAYER":
-                Texture playerImg = new Texture(resourceLocator.getFilePath("img/knight.png"));
+                Texture playerImg = new Texture(resourceLocator.getFilePath("img/player.png"));
                 Sprite playerSprite = new Sprite(playerImg);
                 playerSprite.setSize((float) (gameInfo.getScreenWidth() * 0.2), (float) (gameInfo.getScreenWidth() * 0.2));
                 sToReturn = playerSprite;
