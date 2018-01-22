@@ -33,7 +33,16 @@ public class KnightQuestionsRules extends SinglePlayerRules {
             return gsCurrent;
         handleGameStartingRules(gsCurrent);
         handlePositionEvents(gsCurrent);
+        if(isGameFinished(gsCurrent))
+            handleGameFinishedEvents(gsCurrent);
         return gsCurrent;
+    }
+
+    private void handleGameFinishedEvents(GameState gsCurrent) {
+        if(!gsCurrent.eventsQueueContainsEvent("EPISODE_FINISHED")) {
+            gsCurrent.getEventQueue().add(new GameEvent("EPISODE_FINISHED"));
+            gsCurrent.getEventQueue().add(new GameEvent("BACKGROUND_IMG_UI", "img/forest.jpg"));
+        }
     }
 
     @Override

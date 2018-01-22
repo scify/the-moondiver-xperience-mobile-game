@@ -2,18 +2,42 @@ package org.scify.moonwalker.app.screens;
 
 import com.badlogic.gdx.Screen;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import org.scify.engine.*;
 import org.scify.moonwalker.app.MoonWalker;
 import org.scify.moonwalker.app.game.scenarios.KnightAdventuresScenario;
+import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.ui.MoonWalkerRenderingEngine;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 
 public class GameLauncher implements Screen {
 
     private final MoonWalker app;
+    private Stage stage;
+    private SpriteBatch batch;
+    private Viewport gameViewport;
+    private OrthographicCamera mainCamera;
+    private GameInfo gameInfo;
 
     public GameLauncher(MoonWalker app) {
         this.app = app;
+        batch = new SpriteBatch();
+        gameInfo = GameInfo.getInstance();
+        int width = gameInfo.getScreenWidth();
+        int height = gameInfo.getScreenHeight();
+        mainCamera = new OrthographicCamera(width * gameInfo.getAspectRatio(), height);
+        mainCamera.position.set(width / 2f, height / 2, 0);
+
+        gameViewport = new StretchViewport(width, height,
+                mainCamera);
+        stage = new Stage(gameViewport, batch);
     }
 
     @Override
@@ -23,11 +47,27 @@ public class GameLauncher implements Screen {
 
     private void startNewGame() {
         UserInputHandler userInputHandler = new UserInputHandlerImpl();
-        RenderingEngine renderingEngine = new MoonWalkerRenderingEngine(userInputHandler);
+        final RenderingEngine renderingEngine = new MoonWalkerRenderingEngine(userInputHandler, batch, stage);
 
         final Scenario mainGameScenario = new KnightAdventuresScenario(renderingEngine, userInputHandler);
 
+        //app.setScreen(new GamePlayScreen(renderingEngine));
+//        Thread thread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                mainGameScenario.start();
+//            }
+//        });
+//        thread.start();
+
         app.setScreen(new GamePlayScreen(renderingEngine));
+//        RunnableAction run = new RunnableAction();
+//        run.setRunnable(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//            }
+//        });
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -35,6 +75,11 @@ public class GameLauncher implements Screen {
             }
         });
         thread.start();
+//        SequenceAction sa = new SequenceAction();
+//        sa.addAction(Actions.fadeOut(1f));
+//        sa.addAction(run);
+//
+//        stage.addAction(sa);
     }
 
     @Override

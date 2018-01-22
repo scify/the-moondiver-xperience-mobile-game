@@ -2,10 +2,7 @@ package org.scify.moonwalker.app.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -36,30 +33,35 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
      * The currently processed {@link GameEvent} may block any UI input.
      */
     private GameEvent currentGameEvent;
-    private SpriteBatch batch;
+
     private long lLastUpdate = -1L;
     private Image worldImg;
     private MoonWalkerGameState currentGameState;
-    private OrthographicCamera mainCamera;
-    private Viewport gameViewport;
+
+
     private OrthographicCamera box2DCamera;
     private Box2DDebugRenderer debugRenderer;
     private GameInfo gameInfo;
     private World world;
     private Map<Renderable, Sprite> renderableSpriteMap = new HashMap<>();
-    private Stage stage;
     private Skin skin;
     private BitmapFont font;
     private UserInputHandler userInputHandler;
     private GameHUD gameHUD;
     private Label fpsLabel;
+    private SpriteBatch batch;
+    private Stage stage;
+    private Viewport gameViewport;
+    private Camera mainCamera;
 
-    public MoonWalkerRenderingEngine(UserInputHandler userInputHandler) {
+    public MoonWalkerRenderingEngine(UserInputHandler userInputHandler, SpriteBatch batch, Stage stage) {
         this.userInputHandler = userInputHandler;
         gameInfo = GameInfo.getInstance();
         initCamera();
-        batch = new SpriteBatch();
-        stage = new Stage(gameViewport, batch);
+        this.batch = batch;
+        this.stage = stage;
+        gameViewport = stage.getViewport();
+        mainCamera = stage.getCamera();
         worldImg = new Image(new Texture("theworld.png"));
         worldImg.setWidth(gameInfo.getScreenWidth());
         worldImg.setHeight(gameInfo.getScreenHeight());
@@ -80,11 +82,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private void initCamera() {
         int width = gameInfo.getScreenWidth();
         int height = gameInfo.getScreenHeight();
-        mainCamera = new OrthographicCamera(width * gameInfo.getAspectRatio(), height);
-        mainCamera.position.set(width / 2f, height / 2, 0);
 
-        gameViewport = new StretchViewport(width, height,
-                mainCamera);
 
         box2DCamera = new OrthographicCamera();
         box2DCamera.setToOrtho(false, width,
