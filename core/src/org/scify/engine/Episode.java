@@ -37,7 +37,7 @@ public abstract class Episode<T> implements Callable<T> {
             @Override
             public void run() {
                 // TODO fix
-                //disposeResources();
+                disposeResources();
             }
         });
         return result;
@@ -45,7 +45,6 @@ public abstract class Episode<T> implements Callable<T> {
 
     public void disposeResources() {
         System.out.println("disposing episode resources...");
-        renderingEngine.disposeResources();
         gameEngine.getRules().disposeResources();
     }
 

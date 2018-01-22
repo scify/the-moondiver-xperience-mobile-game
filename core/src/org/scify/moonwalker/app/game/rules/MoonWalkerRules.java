@@ -24,12 +24,21 @@ public abstract class MoonWalkerRules implements Rules {
         MoonWalkerGameState gameState = (MoonWalkerGameState) gsCurrent;
         if(userAction != null)
             handleUserAction(userAction, gameState);
+
         return gameState;
     }
 
     @Override
     public boolean isGamePaused(GameState gsCurrent) {
         return gsCurrent.eventsQueueContainsEvent("PAUSE_GAME");
+    }
+
+    protected void handleGameFinishedEvents(GameState gsCurrent) {
+        if(!gsCurrent.eventsQueueContainsEvent("EPISODE_FINISHED")) {
+            gsCurrent.getEventQueue().add(new GameEvent("EPISODE_FINISHED"));
+            gsCurrent.getEventQueue().add(new GameEvent("DISPOSE_RESOURCES_UI"));
+            gsCurrent.getEventQueue().add(new GameEvent("EPISODE_SUCCESS_UI"));
+        }
     }
 
     private void handleUserAction(UserAction userAction, MoonWalkerGameState gameState) {
@@ -62,5 +71,4 @@ public abstract class MoonWalkerRules implements Rules {
             gameState.getEventQueue().add(new GameEvent("PLAYER_LIVES", gameState.getPlayer().getLives()));
         }
     }
-
 }

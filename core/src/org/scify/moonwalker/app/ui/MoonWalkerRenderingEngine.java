@@ -192,9 +192,25 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 audioEngine.playSound("audio/bump.wav");
                 listIterator.remove();
                 break;
+            case "EPISODE_SUCCESS_UI":
+                audioEngine.playSound("audio/success.wav");
+                listIterator.remove();
+                break;
+            case "DISPOSE_RESOURCES_UI":
+                disposeDrawables();
+                listIterator.remove();
+                break;
+            case "RESET_RENDERING_ENGINE":
+                reset();
+                listIterator.remove();
+                break;
             default:
                 break;
         }
+    }
+
+    protected void reset() {
+        renderableSpriteMap = new HashMap<>();
     }
 
     @Override
@@ -204,7 +220,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
 
     @Override
     public void disposeDrawables() {
-        batch.dispose();
         for (Map.Entry<Renderable, Sprite> entry : renderableSpriteMap.entrySet()) {
             entry.getValue().getTexture().dispose();
         }
@@ -227,9 +242,8 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     public void disposeResources() {
         System.out.println("disposing rendering engine resources...");
         font.dispose();
-        stage.dispose();
         debugRenderer.dispose();
-        disposeDrawables();
+        audioEngine.disposeResources();
     }
 
     public void render(Float delta) {

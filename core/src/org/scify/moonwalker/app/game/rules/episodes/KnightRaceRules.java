@@ -14,6 +14,10 @@ public class KnightRaceRules extends SinglePlayerRules {
         if(isGamePaused(gsCurrent))
             return gsCurrent;
         handleGameStartingRules(gsCurrent);
+        if(rulesFinished(gsCurrent)) {
+            super.handleGameFinishedEvents(gsCurrent);
+            this.handleGameFinishedEvents(gsCurrent);
+        }
         return gsCurrent;
     }
 
@@ -24,9 +28,13 @@ public class KnightRaceRules extends SinglePlayerRules {
         }
     }
 
+    protected boolean rulesFinished(GameState gsCurrent) {
+        return gsCurrent.eventsQueueContainsEvent("PLAYER_TOP_BORDER") || super.isGameFinished(gsCurrent);
+    }
+
     @Override
     public boolean isGameFinished(GameState gsCurrent) {
-        return gsCurrent.eventsQueueContainsEvent("PLAYER_TOP_BORDER") || super.isGameFinished(gsCurrent);
+        return rulesFinished(gsCurrent) && gsCurrent.eventsQueueContainsEvent("EPISODE_FINISHED");
     }
 
     @Override

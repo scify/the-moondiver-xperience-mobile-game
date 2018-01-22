@@ -47,36 +47,6 @@ public class SinglePlayerRules extends MoonWalkerRules {
         return gsCurrent;
     }
 
-
-
-//    protected Question createTextQuestion(MoonWalkerGameState gameState) {
-//        List answers = new LinkedList();
-//        answers.add(new Answer("6", true));
-//        answers.add(new Answer("Έξι", true));
-//        answers.add(new Answer("Εξι", true));
-//        answers.add(new Answer("Six", true));
-//        Collections.shuffle(answers);
-//        return new Question(
-//                "Πόσες φορές μικρότερή είναι η βαρύτητα στη Σελήνη \nσε σχέση με τη Γή;",
-//                answers,
-//                QuestionType.FREE_TEXT
-//        );
-//    }
-//
-//    protected Question createSelectionQuestion(MoonWalkerGameState gameState) {
-//        List answers = new LinkedList();
-//        answers.add(new Answer("Λούνα", true));
-//        answers.add(new Answer("Apollo"));
-//        answers.add(new Answer("NASA"));
-//        answers.add(new Answer("Eclipse"));
-//        Collections.shuffle(answers);
-//        return new Question(
-//                "Πώς λεγόταν το πρόγραμμα της Σοβιετικής \nΈνωσης που έφτασε στο φεγγάρι το 1959;",
-//                answers,
-//                QuestionType.MULTIPLE_CHOICE
-//        );
-//    }
-
     @Override
     public boolean isGameFinished(GameState gsCurrent) {
         MoonWalkerGameState gameState = (MoonWalkerGameState) gsCurrent;

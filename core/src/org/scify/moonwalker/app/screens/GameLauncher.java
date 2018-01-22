@@ -51,23 +51,7 @@ public class GameLauncher implements Screen {
 
         final Scenario mainGameScenario = new KnightAdventuresScenario(renderingEngine, userInputHandler);
 
-        //app.setScreen(new GamePlayScreen(renderingEngine));
-//        Thread thread = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                mainGameScenario.start();
-//            }
-//        });
-//        thread.start();
-
         app.setScreen(new GamePlayScreen(renderingEngine));
-//        RunnableAction run = new RunnableAction();
-//        run.setRunnable(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//            }
-//        });
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -75,11 +59,6 @@ public class GameLauncher implements Screen {
             }
         });
         thread.start();
-//        SequenceAction sa = new SequenceAction();
-//        sa.addAction(Actions.fadeOut(1f));
-//        sa.addAction(run);
-//
-//        stage.addAction(sa);
     }
 
     @Override
@@ -109,6 +88,6 @@ public class GameLauncher implements Screen {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
     }
 }

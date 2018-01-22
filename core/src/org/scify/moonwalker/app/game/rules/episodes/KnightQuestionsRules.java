@@ -33,25 +33,31 @@ public class KnightQuestionsRules extends SinglePlayerRules {
             return gsCurrent;
         handleGameStartingRules(gsCurrent);
         handlePositionEvents(gsCurrent);
-        if(isGameFinished(gsCurrent))
-            handleGameFinishedEvents(gsCurrent);
+        if(rulesFinished(gsCurrent)) {
+            super.handleGameFinishedEvents(gsCurrent);
+            this.handleGameFinishedEvents(gsCurrent);
+        }
         return gsCurrent;
     }
 
-    private void handleGameFinishedEvents(GameState gsCurrent) {
+    protected void handleGameFinishedEvents(GameState gsCurrent) {
         if(!gsCurrent.eventsQueueContainsEvent("EPISODE_FINISHED")) {
             gsCurrent.getEventQueue().add(new GameEvent("EPISODE_FINISHED"));
-            gsCurrent.getEventQueue().add(new GameEvent("BACKGROUND_IMG_UI", "img/episode_2/forest.jpg"));
+            gsCurrent.getEventQueue().add(new GameEvent("DISPOSE_RESOURCES_UI"));
         }
     }
 
-    @Override
-    public boolean isGameFinished(GameState gsCurrent) {
+    protected boolean rulesFinished(GameState gsCurrent) {
         MoonWalkerGameState gameState = (MoonWalkerGameState) gsCurrent;
         Player player = gameState.getPlayer();
         if(player.getScore() >= 2)
             return true;
         return super.isGameFinished(gsCurrent);
+    }
+
+    @Override
+    public boolean isGameFinished(GameState gsCurrent) {
+        return rulesFinished(gsCurrent) && gsCurrent.eventsQueueContainsEvent("EPISODE_FINISHED");
     }
 
     @Override

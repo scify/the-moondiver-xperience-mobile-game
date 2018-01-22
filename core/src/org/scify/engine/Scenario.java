@@ -16,6 +16,10 @@ public abstract class Scenario {
     }
 
     public void start() {
+        playCurrentEpisode();
+    }
+
+    protected void playCurrentEpisode() {
         if(currentEpisode == null) {
             System.out.println("Scenario ended");
             return;
@@ -24,7 +28,7 @@ public abstract class Scenario {
         final EpisodeEndState endState = (EpisodeEndState) currentEpisode.play();
         System.err.println(endState);
         currentEpisode = getNextEpisode(currentEpisode, endState);
-        start();
+        playCurrentEpisode();
     }
 
     protected void addEpisodeAfter(Episode episodeBefore, Episode newEpisode) {
