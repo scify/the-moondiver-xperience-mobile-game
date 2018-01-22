@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import org.scify.moonwalker.app.helpers.GameInfo;
+import org.scify.moonwalker.app.helpers.ResourceLocator;
 
 public class GameHUD {
     private int score, lives;
@@ -20,12 +21,14 @@ public class GameHUD {
     private Table scoreTable;
     private Table livesTable;
     private GameInfo gameInfo;
+    private ResourceLocator resourceLocator;
 
     public GameHUD(Skin skin, BitmapFont font) {
+        resourceLocator = new ResourceLocator();
         gameInfo = GameInfo.getInstance();
         BitmapFont hudFont = font;
         hudFont.getData().setScale((float)1.2, (float)1.2);
-        scoreSprite = new Sprite(new Texture("img/coin.png"));
+        scoreSprite = new Sprite(new Texture(resourceLocator.getFilePath("img/coin.png")));
         scoreSprite.setSize((float) (gameInfo.getScreenWidth() * 0.1), (float) (gameInfo.getScreenWidth() * 0.1));
         scoreImg = new Image(new SpriteDrawable(scoreSprite));
         scoreLabel = new Label("x" + getScore(), new Label.LabelStyle(hudFont, Color.BLACK));
@@ -36,7 +39,7 @@ public class GameHUD {
         scoreTable.add(scoreLabel).padLeft(5);
         scoreTable.row();
 
-        livesSprite = new Sprite(new Texture("img/heart.png"));
+        livesSprite = new Sprite(new Texture(resourceLocator.getFilePath("img/heart.png")));
         livesSprite.setSize((float) (gameInfo.getScreenWidth() * 0.1), (float) (gameInfo.getScreenWidth() * 0.1));
         livesImg = new Image(new SpriteDrawable(livesSprite));
         livesLabel = new Label("x" + getLives(), new Label.LabelStyle(hudFont, Color.BLACK));

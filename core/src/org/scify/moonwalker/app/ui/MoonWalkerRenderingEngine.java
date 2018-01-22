@@ -1,7 +1,6 @@
 package org.scify.moonwalker.app.ui;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -11,7 +10,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.scify.engine.GameEvent;
 import org.scify.engine.RenderingEngine;
@@ -21,6 +19,7 @@ import org.scify.engine.Renderable;
 import org.scify.moonwalker.app.game.quiz.Answer;
 import org.scify.moonwalker.app.game.quiz.Question;
 import org.scify.moonwalker.app.helpers.GameInfo;
+import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.components.ActionDialog;
 import org.scify.moonwalker.app.ui.components.GameHUD;
 
@@ -53,8 +52,10 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private Stage stage;
     private Viewport gameViewport;
     private Camera mainCamera;
+    private ResourceLocator resourceLocator;
 
     public MoonWalkerRenderingEngine(UserInputHandler userInputHandler, SpriteBatch batch, Stage stage) {
+        this.resourceLocator = new ResourceLocator();
         this.userInputHandler = userInputHandler;
         gameInfo = GameInfo.getInstance();
         initCamera();
@@ -121,7 +122,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         // Get a sprite for this world object type
         switch (sType) {
             case "PLAYER":
-                Texture playerImg = new Texture("knight.png");
+                Texture playerImg = new Texture(resourceLocator.getFilePath("img/knight.png"));
                 Sprite playerSprite = new Sprite(playerImg);
                 playerSprite.setSize((float) (gameInfo.getScreenWidth() * 0.2), (float) (gameInfo.getScreenWidth() * 0.2));
                 sToReturn = playerSprite;
@@ -180,7 +181,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 break;
             case "BACKGROUND_IMG_UI":
                 String imgPath = (String) gameEvent.parameters;
-                worldImg.setDrawable(new SpriteDrawable(new Sprite(new Texture(imgPath))));
+                worldImg.setDrawable(new SpriteDrawable(new Sprite(new Texture(resourceLocator.getFilePath(imgPath)))));
                 listIterator.remove();
                 break;
             default:
