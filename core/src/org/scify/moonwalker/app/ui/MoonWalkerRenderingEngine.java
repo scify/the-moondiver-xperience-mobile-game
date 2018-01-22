@@ -188,6 +188,10 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 worldImg.setDrawable(new SpriteDrawable(new Sprite(new Texture(resourceLocator.getFilePath(imgPath)))));
                 listIterator.remove();
                 break;
+            case "BORDER_UI":
+                audioEngine.playSound("audio/bump.wav");
+                listIterator.remove();
+                break;
             default:
                 break;
         }
