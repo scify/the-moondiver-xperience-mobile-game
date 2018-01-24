@@ -1,15 +1,14 @@
 package org.scify.engine;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public abstract class GameState {
     protected List<GameEvent> eventQueue;
-
+    protected List<Renderable> renderableList;
 
     public GameState(List<GameEvent> eventQueue) {
         this.eventQueue = eventQueue;
+        renderableList = Collections.synchronizedList(new LinkedList<Renderable>());
     }
 
     /**
@@ -54,5 +53,26 @@ public abstract class GameState {
                     listIterator.remove();
             }
         }
+    }
+
+    public List<Renderable> getRenderableList() {
+        return renderableList;
+    }
+
+    public void addRenderable(Renderable r) {
+        renderableList.add(r);
+    }
+
+    public GameEvent getEventWithType(String gameEventType) {
+        GameEvent toReturn = null;
+        synchronized (eventQueue) {
+            ListIterator<GameEvent> listIterator = eventQueue.listIterator();
+            while (listIterator.hasNext()) {
+                GameEvent currentGameEvent = listIterator.next();
+                if(currentGameEvent.type.equals(gameEventType))
+                    toReturn = currentGameEvent;
+            }
+        }
+        return toReturn;
     }
 }

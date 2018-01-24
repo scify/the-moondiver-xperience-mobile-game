@@ -1,10 +1,17 @@
 package org.scify.moonwalker.app.actors;
 
 
-public abstract class Player {
+import org.scify.engine.Renderable;
+
+public class Player extends Renderable {
+
     protected String name;
     protected int score = 0;
     protected int lives = 0;
+
+    public Player(float xPos, float yPos, float width, float height, String type, String id) {
+        super(xPos, yPos, width, height, type, id);
+    }
 
     public String getName() {
         return name;

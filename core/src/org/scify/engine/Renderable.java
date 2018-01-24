@@ -1,6 +1,25 @@
 package org.scify.engine;
 
-public interface Renderable extends Positionable {
-    String getType();
-    void setInputHandler(UserInputHandler userInputHandler);
+public class Renderable extends Positionable {
+    protected String type;
+    protected String id;
+    protected UserInputHandler userInputHandler;
+
+    public Renderable(float xPos, float yPos, float width, float height, String type, String id) {
+        super(xPos, yPos, width, height);
+        this.type = type;
+        this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setUserInputHandler(UserInputHandler userInputHandler) {
+        this.userInputHandler = userInputHandler;
+    }
 }

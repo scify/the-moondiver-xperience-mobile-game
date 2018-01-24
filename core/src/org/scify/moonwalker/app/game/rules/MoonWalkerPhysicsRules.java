@@ -11,9 +11,8 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import org.scify.engine.*;
 import org.scify.moonwalker.app.MoonWalkerGameState;
-import org.scify.moonwalker.app.actors.MoonWalkerPlayer;
+import org.scify.moonwalker.app.actors.Player;
 import org.scify.moonwalker.app.helpers.GameInfo;
-import org.scify.moonwalker.app.ui.UnsupportedRenderableTypeException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,18 +42,20 @@ public class MoonWalkerPhysicsRules extends org.scify.moonwalker.app.game.rules.
     }
 
     protected Body getResourceFor(Renderable renderable) {
-        Body resource;
+        Body resource = null;
         // If I have an existing sprite
         if(renderableBodyMap.containsKey(renderable)) {
             // reuse it
             resource = renderableBodyMap.get(renderable);
         } else {
             // else
-            // getResourceForType
+            // createSpriteResourceForType
             Body newResourceForRenderable = getResourceForRenderable(renderable);
-            // and map it to the object
-            renderableBodyMap.put(renderable, newResourceForRenderable);
-            resource = newResourceForRenderable;
+            if(newResourceForRenderable != null) {
+                // and map it to the object
+                renderableBodyMap.put(renderable, newResourceForRenderable);
+                resource = newResourceForRenderable;
+            }
         }
         return resource;
     }
@@ -64,12 +65,10 @@ public class MoonWalkerPhysicsRules extends org.scify.moonwalker.app.game.rules.
         Body bToReturn = null;
         // Get a sprite for this world object type
         switch (sType) {
-            case "PLAYER":
-                bToReturn = createBody(BodyDef.BodyType.DynamicBody, (float) (gameInfo.getScreenWidth() * 0.2), (float) (gameInfo.getScreenWidth() * 0.2), renderable.getX(), renderable.getY());
+            case "player":
+                bToReturn = createBody(BodyDef.BodyType.DynamicBody, renderable.getWidth(), renderable.getHeight(), renderable.getxPos(), renderable.getyPos());
                 break;
         }
-        if(bToReturn == null)
-            throw new UnsupportedRenderableTypeException("Renderable: " + sType + " is not supported.");
         return bToReturn;
     }
 
@@ -99,8 +98,10 @@ public class MoonWalkerPhysicsRules extends org.scify.moonwalker.app.game.rules.
         handlePositionRules(currentState);
         for(Renderable renderable: currentState.getRenderableList()) {
             Body body = getResourceFor(renderable);
-            renderable.setX(body.getPosition().x);
-            renderable.setY(body.getPosition().y);
+            if(body != null) {
+                renderable.setxPos(body.getPosition().x);
+                renderable.setyPos(body.getPosition().y);
+            }
         }
         // how many times to calculate physics in a second
         // delta time is the time between 2 frames
@@ -111,7 +112,7 @@ public class MoonWalkerPhysicsRules extends org.scify.moonwalker.app.game.rules.
     }
 
     private void handleUserAction(UserAction userAction, MoonWalkerGameState gameState) {
-        MoonWalkerPlayer pPlayer = gameState.getPlayer();
+        Player pPlayer = gameState.getPlayer();
         Body body = getResourceFor(pPlayer);
         GameEvent event = null;
         switch (userAction.getActionCode()) {
@@ -136,27 +137,43 @@ public class MoonWalkerPhysicsRules extends org.scify.moonwalker.app.game.rules.
     }
 
     private void handlePositionRules(MoonWalkerGameState gameState) {
-        MoonWalkerPlayer pPlayer = gameState.getPlayer();
+        Player pPlayer = gameState.getPlayer();
         Body body = getResourceFor(pPlayer);
-        if(body.getPosition().y > gameInfo.getScreenHeight()) {
+        if(body.getPosition().y + pPlayer.getHeight() / 2f > gameInfo.getScreenHeight()) {
             body.setLinearVelocity(body.getLinearVelocity().x, -keyStrokeAcceleration);
-            gameState.getEventQueue().add(new GameEvent("PLAYER_TOP_BORDER"));
-            gameState.getEventQueue().add(new GameEvent("BORDER_UI"));
+            playerBorderEvents(gameState, 0);
         }
-        if(body.getPosition().y < 0 ) {
+        if(body.getPosition().y - pPlayer.getHeight() / 2f < 0 ) {
             body.setLinearVelocity(body.getLinearVelocity().x, +keyStrokeAcceleration);
-            gameState.getEventQueue().add(new GameEvent("PLAYER_BOTTOM_BORDER"));
-            gameState.getEventQueue().add(new GameEvent("BORDER_UI"));
+            playerBorderEvents(gameState, 1);
         }
-        if(body.getPosition().x < 0 ) {
+        if(body.getPosition().x - pPlayer.getHeight() / 2f < 0 ) {
             body.setLinearVelocity(+keyStrokeAcceleration, body.getLinearVelocity().y);
-            gameState.getEventQueue().add(new GameEvent("PLAYER_LEFT_BORDER"));
-            gameState.getEventQueue().add(new GameEvent("BORDER_UI"));
+            playerBorderEvents(gameState, 2);
         }
-        if(body.getPosition().x > gameInfo.getScreenWidth() ) {
+        if(body.getPosition().x + pPlayer.getHeight() / 2f > gameInfo.getScreenWidth() ) {
             body.setLinearVelocity(-keyStrokeAcceleration, body.getLinearVelocity().y);
-            gameState.getEventQueue().add(new GameEvent("PLAYER_RIGHT_BORDER"));
-            gameState.getEventQueue().add(new GameEvent("BORDER_UI"));
+            playerBorderEvents(gameState, 3);
+        }
+    }
+
+    protected void playerBorderEvents(GameState gameState, int direction) {
+
+        gameState.getEventQueue().add(new GameEvent("BORDER_UI"));
+        gameState.getEventQueue().add(new GameEvent("PLAYER_BORDER"));
+        switch (direction) {
+            case 0:
+                gameState.getEventQueue().add(new GameEvent("PLAYER_TOP_BORDER"));
+                break;
+            case 1:
+                gameState.getEventQueue().add(new GameEvent("PLAYER_BOTTOM_BORDER"));
+                break;
+            case 2:
+                gameState.getEventQueue().add(new GameEvent("PLAYER_LEFT_BORDER"));
+                break;
+            case 3:
+                gameState.getEventQueue().add(new GameEvent("PLAYER_RIGHT_BORDER"));
+                break;
         }
     }
 

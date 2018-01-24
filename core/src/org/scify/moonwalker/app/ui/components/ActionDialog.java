@@ -8,17 +8,17 @@ import org.scify.moonwalker.app.helpers.GameInfo;
 
 import java.awt.geom.Point2D;
 
-public class ActionDialog implements Renderable {
+public class ActionDialog extends Renderable {
 
     protected Dialog dialog;
     protected UserInputHandler inputHandler;
     protected Skin skin;
     protected String title;
-    protected Point2D.Float position;
     protected GameInfo gameInfo;
     private ActionDialog instance = this;
 
-    public ActionDialog(String title, String bodyText, Skin sKin) {
+    public ActionDialog(float xPos, float yPos, float width, float height, String title, String bodyText, Skin sKin) {
+        super(xPos, yPos, width, height, "dialog", title);
         gameInfo = GameInfo.getInstance();
         this.skin = sKin;
         this.title = title;
@@ -29,6 +29,8 @@ public class ActionDialog implements Renderable {
                     inputHandler.addUserActionForRenderable(instance, obj);
             }
         };
+        dialog.setWidth(width);
+        dialog.setPosition(xPos - width / 2f, yPos - height / 2f);
         dialog.text(bodyText);
     }
 
@@ -40,38 +42,4 @@ public class ActionDialog implements Renderable {
         return dialog;
     }
 
-    public void alignCenter() {
-        dialog.setWidth(gameInfo.getScreenWidth() * 0.8f);
-        dialog.setPosition(gameInfo.getScreenWidth() / 2f - dialog.getWidth() / 2f, gameInfo.getScreenHeight() / 2f - dialog.getHeight() / 2f);
-    }
-
-    @Override
-    public String getType() {
-        return "ACTION_DIALOG";
-    }
-
-    @Override
-    public void setInputHandler(UserInputHandler userInputHandler) {
-        this.inputHandler = userInputHandler;
-    }
-
-    @Override
-    public float getX() {
-        return position.x;
-    }
-
-    @Override
-    public float getY() {
-        return position.y;
-    }
-
-    @Override
-    public void setX(float fX) {
-
-    }
-
-    @Override
-    public void setY(float fY) {
-
-    }
 }
