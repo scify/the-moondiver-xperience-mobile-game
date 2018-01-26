@@ -6,8 +6,8 @@ import org.scify.engine.Renderable;
 public class Player extends Renderable {
 
     protected String name;
-    protected int score = 0;
-    protected int lives = 0;
+    protected int score;
+    protected int lives;
 
     public Player(float xPos, float yPos, float width, float height, String type, String id) {
         super(xPos, yPos, width, height, type, id);
@@ -25,8 +25,8 @@ public class Player extends Renderable {
         return score;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void incrementScore() {
+        this.score += 1;
     }
 
     public int getLives() {
@@ -35,5 +35,9 @@ public class Player extends Renderable {
 
     public void setLives(int lives) {
         this.lives = lives;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

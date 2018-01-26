@@ -22,7 +22,7 @@ public class SinglePlayerRules extends MoonWalkerRules {
         gameInfo = GameInfo.getInstance();
         worldX = gameInfo.getScreenWidth();
         worldY = gameInfo.getScreenHeight();
-        pPlayer = new Player(worldX / 2f, worldY / 2f,  150, 150, "player", "player");
+        pPlayer = new Player(worldX / 2f + 100, worldY / 2f - 100,  150, 150, "player", "player");
         pPlayer.setLives(5);
         pPlayer.setScore(0);
 

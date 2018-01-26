@@ -6,13 +6,13 @@ public class ConversationState {
     protected String text;
     protected String prerequisites;
     protected String triggerEvent;
+    protected int nextOrder;
 
-    public ConversationState(int order, String speakerId, String text, String prerequisites, String triggerEvent) {
-        this.order = order;
-        this.speakerId = speakerId;
-        this.text = text;
-        this.prerequisites = prerequisites;
-        this.triggerEvent = triggerEvent;
+    public ConversationState() {
+    }
+
+    public int getNextOrder() {
+        return nextOrder;
     }
 
     public int getOrder() {

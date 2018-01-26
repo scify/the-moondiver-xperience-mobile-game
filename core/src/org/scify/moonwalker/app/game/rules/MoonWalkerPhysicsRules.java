@@ -128,7 +128,7 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
                 break;
         }
         if(event != null) {
-            gameState.getEventQueue().add(event);
+            gameState.addGameEvent(event);
         }
     }
 
@@ -155,20 +155,20 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
 
     protected void addPlayerBorderEvents(GameState gameState, int direction) {
 
-        gameState.getEventQueue().add(new GameEvent("BORDER_UI"));
-        gameState.getEventQueue().add(new GameEvent("PLAYER_BORDER"));
+        gameState.addGameEvent(new GameEvent("BORDER_UI"));
+        gameState.addGameEvent(new GameEvent("PLAYER_BORDER"));
         switch (direction) {
             case 0:
-                gameState.getEventQueue().add(new GameEvent("PLAYER_TOP_BORDER"));
+                gameState.addGameEvent(new GameEvent("PLAYER_TOP_BORDER"));
                 break;
             case 1:
-                gameState.getEventQueue().add(new GameEvent("PLAYER_BOTTOM_BORDER"));
+                gameState.addGameEvent(new GameEvent("PLAYER_BOTTOM_BORDER"));
                 break;
             case 2:
-                gameState.getEventQueue().add(new GameEvent("PLAYER_LEFT_BORDER"));
+                gameState.addGameEvent(new GameEvent("PLAYER_LEFT_BORDER"));
                 break;
             case 3:
-                gameState.getEventQueue().add(new GameEvent("PLAYER_RIGHT_BORDER"));
+                gameState.addGameEvent(new GameEvent("PLAYER_RIGHT_BORDER"));
                 break;
         }
     }

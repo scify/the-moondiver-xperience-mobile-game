@@ -2,6 +2,8 @@ package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
 import org.scify.moonwalker.app.actors.Player;
+import org.scify.moonwalker.app.game.conversation.Conversation;
+import org.scify.moonwalker.app.game.conversation.ConversationState;
 import org.scify.moonwalker.app.game.rules.SinglePlayerRules;
 
 import java.util.Date;
@@ -9,8 +11,9 @@ import java.util.HashMap;
 
 public class KnightRaceRules extends SinglePlayerRules {
 
-    Renderable messagesLabel;
-    String mainLabelText = "Episode goal: Help the player reach the top edge of the screen.";
+    protected Renderable messagesLabel;
+    protected String mainLabelText = "Episode goal: Help the player reach the top edge of the screen.";
+    protected Conversation conversation;
 
     @Override
     public GameState getNextState(GameState gsCurrent, UserAction userAction) {
@@ -19,7 +22,7 @@ public class KnightRaceRules extends SinglePlayerRules {
             return gsCurrent;
         handleGameStartingRules(gsCurrent);
         handlePositionRules(gsCurrent);
-        handleConversationRules(gsCurrent);
+        handleConversationRules(gsCurrent, userAction);
         if(rulesFinished(gsCurrent)) {
             super.handleGameFinishedEvents(gsCurrent);
             this.handleGameFinishedEvents(gsCurrent);
@@ -29,11 +32,11 @@ public class KnightRaceRules extends SinglePlayerRules {
 
     protected void handleGameStartingRules(GameState gsCurrent) {
         if(!gsCurrent.eventsQueueContainsEvent("EPISODE_STARTED")) {
-            gsCurrent.getEventQueue().add(new GameEvent("EPISODE_STARTED"));
-            gsCurrent.getEventQueue().add(new GameEvent("BACKGROUND_IMG_UI", "img/episode_1/mushroom.jpg"));
+            gsCurrent.addGameEvent(new GameEvent("EPISODE_STARTED"));
+            gsCurrent.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/episode_1/mushroom.jpg"));
             messagesLabel = new Renderable(gameInfo.getScreenWidth() - 200, gameInfo.getScreenHeight() / 2f, 200, 200, "label", "messagesLabel");
             gsCurrent.addRenderable(messagesLabel);
-            gsCurrent.getEventQueue().add(new GameEvent("UPDATE_LABEL_TEXT_UI", new HashMap.SimpleEntry<>(messagesLabel, mainLabelText)));
+            gsCurrent.addGameEvent(new GameEvent("UPDATE_LABEL_TEXT_UI", new HashMap.SimpleEntry<>(messagesLabel, mainLabelText)));
         }
     }
 
@@ -41,16 +44,34 @@ public class KnightRaceRules extends SinglePlayerRules {
         if(gameState.eventsQueueContainsEvent("PLAYER_BORDER")) {
             // add dialog object in game event
             gameState.removeGameEventsWithType("PLAYER_BORDER");
-            gameState.getEventQueue().add(new GameEvent("UPDATE_LABEL_TEXT_UI", new HashMap.SimpleEntry<>(messagesLabel, "Whoops!")));
+            gameState.addGameEvent(new GameEvent("UPDATE_LABEL_TEXT_UI", new HashMap.SimpleEntry<>(messagesLabel, "Whoops!")));
             // label is reset to its original state after 3 seconds
-            gameState.getEventQueue().add(new GameEvent("UPDATE_LABEL_TEXT_UI", new HashMap.SimpleEntry<>(messagesLabel, mainLabelText), new Date().getTime() + 3000, false));
+            gameState.addGameEvent(new GameEvent("UPDATE_LABEL_TEXT_UI", new HashMap.SimpleEntry<>(messagesLabel, mainLabelText), new Date().getTime() + 3000, false));
         }
     }
 
-    protected void handleConversationRules(GameState gsCurrent) {
+    protected void handleConversationRules(GameState gsCurrent, UserAction userAction) {
         Player player = gsCurrent.getPlayer();
         if(player.getxPos() < gameInfo.getScreenWidth() / 2f) {
             System.err.println("passed " + new Date().getTime());
+            if(!gsCurrent.eventsQueueContainsEvent("CONVERSATION_STARTED")) {
+                //create new conversation
+                conversation = new Conversation("json_DB/conversation.json");
+                gsCurrent.addGameEvent(new GameEvent("CONVERSATION_STARTED"));
+            } else {
+                if(!conversation.isConversationFinished())
+                    addNextConversationEvent(gsCurrent, userAction);
+                else
+                    gsCurrent.removeGameEventsWithType("CONVERSATION_STARTED");
+            }
+        }
+    }
+
+    protected void addNextConversationEvent(GameState gsCurrent, UserAction userAction) {
+        ConversationState state = conversation.getNextState(userAction);
+        if(state != null) {
+            gsCurrent.addGameEvent(new GameEvent("CONVERSATION_STATE", state));
+            pauseGame(gsCurrent);
         }
     }
 

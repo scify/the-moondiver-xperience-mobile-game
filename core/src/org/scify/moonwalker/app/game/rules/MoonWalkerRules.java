@@ -7,12 +7,8 @@ import org.scify.engine.GameState;
 import org.scify.moonwalker.app.game.quiz.Answer;
 import org.scify.engine.UserAction;
 import org.scify.moonwalker.app.game.quiz.Question;
-import org.scify.moonwalker.app.game.quiz.QuestionService;
-import org.scify.moonwalker.app.game.quiz.QuestionServiceJSON;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 public abstract class MoonWalkerRules implements Rules {
 
@@ -35,9 +31,9 @@ public abstract class MoonWalkerRules implements Rules {
 
     protected void handleGameFinishedEvents(GameState gsCurrent) {
         if(!gsCurrent.eventsQueueContainsEvent("EPISODE_FINISHED")) {
-            gsCurrent.getEventQueue().add(new GameEvent("EPISODE_FINISHED"));
-            gsCurrent.getEventQueue().add(new GameEvent("DISPOSE_RESOURCES_UI"));
-            gsCurrent.getEventQueue().add(new GameEvent("EPISODE_SUCCESS_UI"));
+            gsCurrent.addGameEvent(new GameEvent("EPISODE_FINISHED"));
+            gsCurrent.addGameEvent(new GameEvent("DISPOSE_RESOURCES_UI"));
+            gsCurrent.addGameEvent(new GameEvent("EPISODE_SUCCESS_UI"));
         }
     }
 
@@ -60,15 +56,22 @@ public abstract class MoonWalkerRules implements Rules {
 
     private void addEventsForAnswer(MoonWalkerGameState gameState, boolean isAnswerCorrect) {
         if(isAnswerCorrect) {
-            gameState.getEventQueue().add(new GameEvent("CORRECT_ANSWER"));
-            gameState.removeGameEventsWithType("PAUSE_GAME");
-            gameState.getPlayer().setScore(gameState.getPlayer().getScore() + 1);
-            gameState.getEventQueue().add(new GameEvent("PLAYER_SCORE", gameState.getPlayer().getScore()));
+            gameState.addGameEvent(new GameEvent("CORRECT_ANSWER"));
+            gameState.getPlayer().incrementScore();
+            gameState.addGameEvent(new GameEvent("PLAYER_SCORE", gameState.getPlayer().getScore()));
         } else {
-            gameState.getEventQueue().add(new GameEvent("WRONG_ANSWER"));
-            gameState.removeGameEventsWithType("PAUSE_GAME");
+            gameState.addGameEvent(new GameEvent("WRONG_ANSWER"));
             gameState.getPlayer().setLives(gameState.getPlayer().getLives() - 1);
-            gameState.getEventQueue().add(new GameEvent("PLAYER_LIVES", gameState.getPlayer().getLives()));
+            gameState.addGameEvent(new GameEvent("PLAYER_LIVES", gameState.getPlayer().getLives()));
         }
+        unPauseGame(gameState);
+    }
+
+    protected void pauseGame(GameState gameState) {
+        gameState.addGameEvent(new GameEvent("PAUSE_GAME"));
+    }
+
+    protected void unPauseGame(GameState gameState) {
+        gameState.removeGameEventsWithType("PAUSE_GAME");
     }
 }

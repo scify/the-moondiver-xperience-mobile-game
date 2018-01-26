@@ -22,6 +22,10 @@ public abstract class GameState {
         return eventQueue;
     }
 
+    public void addGameEvent(GameEvent event) {
+        eventQueue.add(event);
+    }
+
     /**
      * Checks if a given event exists in the events list
      * @param eventType the type of the event
