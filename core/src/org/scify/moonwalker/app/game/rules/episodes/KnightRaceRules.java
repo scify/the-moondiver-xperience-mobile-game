@@ -1,6 +1,7 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
+import org.scify.moonwalker.app.actors.Player;
 import org.scify.moonwalker.app.game.rules.SinglePlayerRules;
 
 import java.util.Date;
@@ -17,7 +18,8 @@ public class KnightRaceRules extends SinglePlayerRules {
         if(isGamePaused(gsCurrent))
             return gsCurrent;
         handleGameStartingRules(gsCurrent);
-        handlePositionEvents(gsCurrent);
+        handlePositionRules(gsCurrent);
+        handleConversationRules(gsCurrent);
         if(rulesFinished(gsCurrent)) {
             super.handleGameFinishedEvents(gsCurrent);
             this.handleGameFinishedEvents(gsCurrent);
@@ -35,18 +37,20 @@ public class KnightRaceRules extends SinglePlayerRules {
         }
     }
 
-    protected void handlePositionEvents(GameState gameState) {
+    protected void handlePositionRules(GameState gameState) {
         if(gameState.eventsQueueContainsEvent("PLAYER_BORDER")) {
             // add dialog object in game event
             gameState.removeGameEventsWithType("PLAYER_BORDER");
             gameState.getEventQueue().add(new GameEvent("UPDATE_LABEL_TEXT_UI", new HashMap.SimpleEntry<>(messagesLabel, "Whoops!")));
-            gameState.getEventQueue().add(new GameEvent("RESET_LABEL_TEXT", null, new Date().getTime() + 3000, false));
+            // label is reset to its original state after 3 seconds
+            gameState.getEventQueue().add(new GameEvent("UPDATE_LABEL_TEXT_UI", new HashMap.SimpleEntry<>(messagesLabel, mainLabelText), new Date().getTime() + 3000, false));
         }
-        if(gameState.eventsQueueContainsEvent("RESET_LABEL_TEXT")) {
-            if (new Date().getTime() > gameState.getEventWithType("RESET_LABEL_TEXT").delay) {
-                gameState.getEventQueue().add(new GameEvent("UPDATE_LABEL_TEXT_UI", new HashMap.SimpleEntry<>(messagesLabel, mainLabelText)));
-                gameState.removeGameEventsWithType("RESET_LABEL_TEXT");
-            }
+    }
+
+    protected void handleConversationRules(GameState gsCurrent) {
+        Player player = gsCurrent.getPlayer();
+        if(player.getxPos() < gameInfo.getScreenWidth() / 2f) {
+            System.err.println("passed " + new Date().getTime());
         }
     }
 

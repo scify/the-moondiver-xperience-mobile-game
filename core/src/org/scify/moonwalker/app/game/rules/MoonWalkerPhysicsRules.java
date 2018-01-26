@@ -2,25 +2,21 @@ package org.scify.moonwalker.app.game.rules;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 
 import org.scify.engine.*;
 import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.moonwalker.app.actors.Player;
 import org.scify.moonwalker.app.helpers.GameInfo;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MoonWalkerPhysicsRules extends org.scify.moonwalker.app.game.rules.PhysicsRules {
+public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListener{
 
     World world;
-    Map<Renderable, Body> renderableBodyMap = new HashMap<Renderable, Body>();
+    protected Map<Renderable, Body> renderableBodyMap = new HashMap<>();
     private final float keyStrokeAcceleration = 70f;
     private GameInfo gameInfo;
 
@@ -50,7 +46,7 @@ public class MoonWalkerPhysicsRules extends org.scify.moonwalker.app.game.rules.
         } else {
             // else
             // createSpriteResourceForType
-            Body newResourceForRenderable = getResourceForRenderable(renderable);
+            Body newResourceForRenderable = createResourceForRenderable(renderable);
             if(newResourceForRenderable != null) {
                 // and map it to the object
                 renderableBodyMap.put(renderable, newResourceForRenderable);
@@ -60,7 +56,7 @@ public class MoonWalkerPhysicsRules extends org.scify.moonwalker.app.game.rules.
         return resource;
     }
 
-    protected Body getResourceForRenderable(Renderable renderable) {
+    protected Body createResourceForRenderable(Renderable renderable) {
         String sType = renderable.getType();
         Body bToReturn = null;
         // Get a sprite for this world object type
@@ -92,11 +88,11 @@ public class MoonWalkerPhysicsRules extends org.scify.moonwalker.app.game.rules.
 
     @Override
     public GameState getNextState(GameState gsCurrent, UserAction userAction) {
-        MoonWalkerGameState currentState = (MoonWalkerGameState) gsCurrent;
+
         if(userAction != null)
-            handleUserAction(userAction, currentState);
-        handlePositionRules(currentState);
-        for(Renderable renderable: currentState.getRenderableList()) {
+            handleUserAction(userAction, gsCurrent);
+        handleBorderRules(gsCurrent);
+        for(Renderable renderable: gsCurrent.getRenderableList()) {
             Body body = getResourceFor(renderable);
             if(body != null) {
                 renderable.setxPos(body.getPosition().x);
@@ -111,7 +107,7 @@ public class MoonWalkerPhysicsRules extends org.scify.moonwalker.app.game.rules.
         return super.getNextState(gsCurrent, userAction);
     }
 
-    private void handleUserAction(UserAction userAction, MoonWalkerGameState gameState) {
+    private void handleUserAction(UserAction userAction, GameState gameState) {
         Player pPlayer = gameState.getPlayer();
         Body body = getResourceFor(pPlayer);
         GameEvent event = null;
@@ -136,28 +132,28 @@ public class MoonWalkerPhysicsRules extends org.scify.moonwalker.app.game.rules.
         }
     }
 
-    private void handlePositionRules(MoonWalkerGameState gameState) {
+    private void handleBorderRules(GameState gameState) {
         Player pPlayer = gameState.getPlayer();
         Body body = getResourceFor(pPlayer);
         if(body.getPosition().y + pPlayer.getHeight() / 2f > gameInfo.getScreenHeight()) {
             body.setLinearVelocity(body.getLinearVelocity().x, -keyStrokeAcceleration);
-            playerBorderEvents(gameState, 0);
+            addPlayerBorderEvents(gameState, 0);
         }
         if(body.getPosition().y - pPlayer.getHeight() / 2f < 0 ) {
             body.setLinearVelocity(body.getLinearVelocity().x, +keyStrokeAcceleration);
-            playerBorderEvents(gameState, 1);
+            addPlayerBorderEvents(gameState, 1);
         }
         if(body.getPosition().x - pPlayer.getHeight() / 2f < 0 ) {
             body.setLinearVelocity(+keyStrokeAcceleration, body.getLinearVelocity().y);
-            playerBorderEvents(gameState, 2);
+            addPlayerBorderEvents(gameState, 2);
         }
         if(body.getPosition().x + pPlayer.getHeight() / 2f > gameInfo.getScreenWidth() ) {
             body.setLinearVelocity(-keyStrokeAcceleration, body.getLinearVelocity().y);
-            playerBorderEvents(gameState, 3);
+            addPlayerBorderEvents(gameState, 3);
         }
     }
 
-    protected void playerBorderEvents(GameState gameState, int direction) {
+    protected void addPlayerBorderEvents(GameState gameState, int direction) {
 
         gameState.getEventQueue().add(new GameEvent("BORDER_UI"));
         gameState.getEventQueue().add(new GameEvent("PLAYER_BORDER"));
@@ -188,5 +184,25 @@ public class MoonWalkerPhysicsRules extends org.scify.moonwalker.app.game.rules.
     @Override
     public EpisodeEndState determineEndState(GameState gsCurrent) {
         return null;
+    }
+
+    @Override
+    public void beginContact(Contact contact) {
+
+    }
+
+    @Override
+    public void endContact(Contact contact) {
+
+    }
+
+    @Override
+    public void preSolve(Contact contact, Manifold oldManifold) {
+
+    }
+
+    @Override
+    public void postSolve(Contact contact, ContactImpulse impulse) {
+
     }
 }

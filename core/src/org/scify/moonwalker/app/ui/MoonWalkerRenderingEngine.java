@@ -220,7 +220,8 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             ListIterator<GameEvent> listIterator = eventsList.listIterator();
             while (listIterator.hasNext()) {
                 currentGameEvent = listIterator.next();
-                handleCurrentGameEvent(currentGameEvent, listIterator);
+                if(new Date().getTime() > currentGameEvent.delay)
+                    handleCurrentGameEvent(currentGameEvent, listIterator);
             }
         }
     }

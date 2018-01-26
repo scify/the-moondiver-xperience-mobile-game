@@ -1,10 +1,13 @@
 package org.scify.engine;
 
+import org.scify.moonwalker.app.actors.Player;
+
 import java.util.*;
 
 public abstract class GameState {
     protected List<GameEvent> eventQueue;
     protected List<Renderable> renderableList;
+    protected Player player;
 
     public GameState(List<GameEvent> eventQueue) {
         this.eventQueue = eventQueue;
@@ -74,5 +77,9 @@ public abstract class GameState {
             }
         }
         return toReturn;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }

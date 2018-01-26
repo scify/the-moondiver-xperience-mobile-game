@@ -10,7 +10,6 @@ import java.util.List;
 public class MoonWalkerGameState extends GameState {
 
     public World world;
-    protected Player player;
 
     public MoonWalkerGameState(List<GameEvent> eventQueue, Player player, World world) {
         super(eventQueue);
@@ -18,10 +17,4 @@ public class MoonWalkerGameState extends GameState {
         this.world = world;
         this.renderableList.add(player);
     }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-
 }
