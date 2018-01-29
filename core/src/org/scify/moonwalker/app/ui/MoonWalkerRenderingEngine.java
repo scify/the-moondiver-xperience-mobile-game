@@ -20,7 +20,7 @@ import org.scify.engine.RenderingEngine;
 import org.scify.engine.UserInputHandler;
 import org.scify.engine.audio.AudioEngine;
 import org.scify.moonwalker.app.MoonWalkerGameState;
-import org.scify.moonwalker.app.game.conversation.ConversationState;
+import org.scify.moonwalker.app.game.conversation.ConversationLine;
 import org.scify.moonwalker.app.game.quiz.Answer;
 import org.scify.moonwalker.app.game.quiz.Question;
 import org.scify.moonwalker.app.helpers.GameInfo;
@@ -67,6 +67,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         this.userInputHandler = (UserInputHandlerImpl) userInputHandler;
         audioEngine = new GdxAudioEngine();
         gameInfo = GameInfo.getInstance();
+        gameInfo.printInfo();
         this.batch = batch;
         this.stage = stage;
         gameViewport = stage.getViewport();
@@ -97,11 +98,12 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         generator.dispose();
     }
 
-    private BitmapFont createFont(FreeTypeFontGenerator generator, float pixelSize) {
+    private BitmapFont createFont(FreeTypeFontGenerator generator, float fontSize) {
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        int fontSize = (int)(pixelSize * Gdx.graphics.getDensity());
-        parameter.size = fontSize;
-        Gdx.app.log(TAG, "Font size: "+fontSize+"px");
+        float screenDPI = 160.0f * Gdx.graphics.getDensity();
+        int pixelSize = (int)(fontSize * screenDPI / 96.0f); // Reference size based on 96 DPI screen
+        parameter.size = pixelSize;
+        Gdx.app.log(TAG, "Font size: "+pixelSize+"px");
         return generator.generateFont(parameter);
     }
 
@@ -158,6 +160,12 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 Sprite playerSprite = new Sprite(playerImg);
                 playerSprite.setSize(renderable.getWidth(), renderable.getHeight());
                 sToReturn = playerSprite;
+                break;
+            case "yoda":
+                Texture yodaImg = new Texture(resourceLocator.getFilePath("img/yoda.png"));
+                Sprite yodaSprite = new Sprite(yodaImg);
+                yodaSprite.setSize(renderable.getWidth(), renderable.getHeight());
+                sToReturn = yodaSprite;
                 break;
         }
         return sToReturn;
@@ -293,7 +301,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 listIterator.remove();
                 break;
             case "CONVERSATION_BUTTONS":
-                addConversationButtons((List<ConversationState>) currentGameEvent.parameters);
+                addConversationButtons((List<ConversationLine>) currentGameEvent.parameters);
                 listIterator.remove();
                 break;
             default:
@@ -307,11 +315,11 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         label.setText(parameters.getValue());
     }
 
-    private void addConversationButtons(List<ConversationState> conversationStates) {
+    private void addConversationButtons(List<ConversationLine> conversationStates) {
         Table buttonsTable = new Table(skin);
         buttonsTable.setFillParent(true);
         buttonsTable.bottom().left();
-        for(ConversationState state : conversationStates) {
+        for(ConversationLine state : conversationStates) {
             TextButton button = new TextButton(state.getText(), skin);
             button.pad(10, 5, 10,5);
             buttonsTable.add(button);
