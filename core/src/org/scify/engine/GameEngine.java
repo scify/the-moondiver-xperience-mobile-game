@@ -3,7 +3,7 @@ package org.scify.engine;
 public class GameEngine implements Game {
 
     protected RenderingEngine renderingEngine;
-    protected Rules rules;
+    protected Rules<GameState, UserAction, EpisodeEndState> rules;
     protected UserInputHandler inputHandler;
     protected GameState currentGameState;
 
@@ -22,7 +22,7 @@ public class GameEngine implements Game {
         currentGameState = rules.getNextState(currentGameState, uaToHandle);
     }
 
-    public void initialize(RenderingEngine renderingEngine, UserInputHandler userInputHandler, Rules rules) {
+    public void initialize(RenderingEngine renderingEngine, UserInputHandler userInputHandler, Rules<GameState, UserAction, EpisodeEndState> rules) {
         final GameState initialState;
         this.renderingEngine = renderingEngine;
         this.inputHandler = userInputHandler;

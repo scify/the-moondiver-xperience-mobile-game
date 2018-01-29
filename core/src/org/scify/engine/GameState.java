@@ -8,10 +8,12 @@ public abstract class GameState {
     protected List<GameEvent> eventQueue;
     protected List<Renderable> renderableList;
     protected Player player;
+    protected Map<String, Object> additionalDataMap;
 
     public GameState(List<GameEvent> eventQueue) {
         this.eventQueue = eventQueue;
         renderableList = Collections.synchronizedList(new LinkedList<Renderable>());
+        additionalDataMap = new HashMap<>();
     }
 
     /**
@@ -40,6 +42,14 @@ public abstract class GameState {
                 return true;
         }
         return false;
+    }
+
+    public void storeAdditionalDataEntry(String dataId, Object dataPayload) {
+        additionalDataMap.put(dataId, dataPayload);
+    }
+
+    public Object getAdditionalDataEntry(String dataId) {
+        return additionalDataMap.get(dataId);
     }
 
     @Override

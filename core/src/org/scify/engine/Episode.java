@@ -36,7 +36,6 @@ public abstract class Episode<T> implements Callable<T> {
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {
-                // TODO fix
                 disposeResources();
             }
         });
