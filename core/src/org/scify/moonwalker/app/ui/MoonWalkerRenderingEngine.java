@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -18,12 +20,14 @@ import org.scify.engine.RenderingEngine;
 import org.scify.engine.UserInputHandler;
 import org.scify.engine.audio.AudioEngine;
 import org.scify.moonwalker.app.MoonWalkerGameState;
+import org.scify.moonwalker.app.game.conversation.ConversationState;
 import org.scify.moonwalker.app.game.quiz.Answer;
 import org.scify.moonwalker.app.game.quiz.Question;
 import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.components.ActionDialog;
 import org.scify.moonwalker.app.ui.components.GameHUD;
+import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 import org.scify.moonwalker.app.ui.sound.GdxAudioEngine;
 
 import java.util.*;
@@ -48,7 +52,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private Map<Renderable, Actor> renderableActorMap = new HashMap<>();
     private Skin skin;
     private BitmapFont font;
-    private UserInputHandler userInputHandler;
+    private UserInputHandlerImpl userInputHandler;
     private GameHUD gameHUD;
     private Label fpsLabel;
     private SpriteBatch batch;
@@ -56,29 +60,49 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private Viewport gameViewport;
     private Camera mainCamera;
     private ResourceLocator resourceLocator;
+    private static final String TAG = MoonWalkerRenderingEngine.class.getName();
 
     public MoonWalkerRenderingEngine(UserInputHandler userInputHandler, SpriteBatch batch, Stage stage) {
         this.resourceLocator = new ResourceLocator();
-        this.userInputHandler = userInputHandler;
+        this.userInputHandler = (UserInputHandlerImpl) userInputHandler;
         audioEngine = new GdxAudioEngine();
         gameInfo = GameInfo.getInstance();
-        initCamera();
         this.batch = batch;
         this.stage = stage;
         gameViewport = stage.getViewport();
-        mainCamera = stage.getCamera();
-        worldImg = new Image(new Texture("theworld.png"));
-        worldImg.setWidth(gameInfo.getScreenWidth());
-        worldImg.setHeight(gameInfo.getScreenHeight());
-        skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-        font = new BitmapFont(Gdx.files.internal("data/custom.fnt"));
+        initCamera();
+        createBackgroundDefaultImg();
+        initFontAndSkin();
         gameHUD = new GameHUD(skin, font);
         fpsLabel = new Label("", new Label.LabelStyle(font, Color.RED));
-        fpsLabel.setFontScale(3, 3);
-        fpsLabel.setSize(50, 50);
-        fpsLabel.setPosition(20, 20);
+        fpsLabel.setPosition(20, 30);
         audioEngine.pauseCurrentlyPlayingAudios();
         audioEngine.playSoundLoop("audio/episode_1/music.wav");
+    }
+
+    protected void createBackgroundDefaultImg() {
+        worldImg = new Image(new Texture(resourceLocator.getFilePath("img/theworld.png")));
+        worldImg.setWidth(gameInfo.getScreenWidth());
+        worldImg.setHeight(gameInfo.getScreenHeight());
+    }
+
+    protected void initFontAndSkin() {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(resourceLocator.getFilePath("fonts/Starjedi.ttf")));
+        font = createFont(generator, 12);
+        //font.getData().setScale( .9f,.9f);
+        skin = new Skin();
+        skin.add("default-font", font, BitmapFont.class);
+        skin.addRegions(new TextureAtlas(Gdx.files.internal(resourceLocator.getFilePath("fonts/uiskin.atlas"))));
+        skin.load(Gdx.files.internal(resourceLocator.getFilePath("fonts/uiskin.json")));
+        generator.dispose();
+    }
+
+    private BitmapFont createFont(FreeTypeFontGenerator generator, float pixelSize) {
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        int fontSize = (int)(pixelSize * Gdx.graphics.getDensity());
+        parameter.size = fontSize;
+        Gdx.app.log(TAG, "Font size: "+fontSize+"px");
+        return generator.generateFont(parameter);
     }
 
     @Override
@@ -95,7 +119,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         box2DCamera.setToOrtho(false, width,
                 height);
         box2DCamera.position.set(width / 2f, height / 2f, 0);
-
+        mainCamera = stage.getCamera();
         debugRenderer = new Box2DDebugRenderer();
     }
 
@@ -154,7 +178,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     }
 
     protected Actor createActorResourceForType(Renderable renderable) {
-        Actor toReturn = null;
+        Actor toReturn;
         switch (renderable.getType()) {
             case "label":
                 Label label = new Label("", skin);
@@ -165,10 +189,10 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 labelColor.setColor(0, 0, 0, 0.1f);
                 labelColor.fill();
                 label.getStyle().background = new Image(new Texture(labelColor)).getDrawable();
-                label.getStyle().background.setLeftWidth(label.getStyle().background.getLeftWidth() + 10);
-                label.getStyle().background.setRightWidth(label.getStyle().background.getRightWidth() + 10);
-                toReturn = label;
+                label.getStyle().background.setLeftWidth(label.getStyle().background.getLeftWidth() + 20);
+                label.getStyle().background.setRightWidth(label.getStyle().background.getRightWidth() + 20);
                 labelColor.dispose();
+                toReturn = label;
                 break;
             default:
                 throw new UnsupportedRenderableTypeException("renderable with type " + renderable.getType() + " is unsupported.");
@@ -268,6 +292,10 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 updateLabelText((HashMap.SimpleEntry<Renderable, String>) currentGameEvent.parameters);
                 listIterator.remove();
                 break;
+            case "CONVERSATION_BUTTONS":
+                addConversationButtons((List<ConversationState>) currentGameEvent.parameters);
+                listIterator.remove();
+                break;
             default:
                 break;
         }
@@ -277,6 +305,18 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         Actor actor = getActorResourceFor(parameters.getKey());
         Label label = (Label) actor;
         label.setText(parameters.getValue());
+    }
+
+    private void addConversationButtons(List<ConversationState> conversationStates) {
+        Table buttonsTable = new Table(skin);
+        buttonsTable.setFillParent(true);
+        buttonsTable.bottom().left();
+        for(ConversationState state : conversationStates) {
+            TextButton button = new TextButton(state.getText(), skin);
+            button.pad(10, 5, 10,5);
+            buttonsTable.add(button);
+        }
+        stage.addActor(buttonsTable);
     }
 
     protected void reset() {
@@ -319,7 +359,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     public void render(Float delta) {
 
         long lNewTime = new Date().getTime();
-        if (lNewTime - lLastUpdate < 50L) {// If no less than 1/10 sec has passed
+        if (lNewTime - lLastUpdate < 50L) {// If no less than 1/5 sec has passed
             Thread.yield();
             return; // Do nothing
         } else {
