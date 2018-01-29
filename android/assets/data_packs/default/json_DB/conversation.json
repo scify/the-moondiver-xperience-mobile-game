@@ -2,7 +2,7 @@
   {"order":"1", "speakerId":"yoda", "text":"Hello, my son. What is your name?", "prerequisites":"", "triggerEvent":""},
   {"order":"2", "speakerId":"player", "text":"Shut up, old man!", "prerequisites":"", "triggerEvent":""},
   {"order":"2", "speakerId":"player", "text":"What's with the wrinkles?", "prerequisites":"", "triggerEvent":""},
-  {"order":"2", "speakerId":"player", "text":"Can't really hear you. Could you repeat what you said?", "prerequisites":"",
+  {"order":"2", "speakerId":"player", "text":"Could you repeat what you said?", "prerequisites":"",
     "triggerEvent":"", "nextOrder":"1"},
   {"order":"2", "speakerId":"player", "text":"(Saying nothing, because he is mute...)", "prerequisites":"player.coins<100", "triggerEvent":"muteEvent"},
   {"order":"3", "speakerId":"yoda", "text":"You are either too smart or too foolish not to answer.", "prerequisites":"muteEvent", "triggerEvent":"end"},
