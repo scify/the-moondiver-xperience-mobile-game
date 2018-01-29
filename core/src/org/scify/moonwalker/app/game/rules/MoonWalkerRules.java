@@ -31,9 +31,9 @@ public abstract class MoonWalkerRules implements Rules {
 
     protected void handleGameFinishedEvents(GameState gsCurrent) {
         if(!gsCurrent.eventsQueueContainsEvent("EPISODE_FINISHED")) {
-            gsCurrent.addGameEvent(new GameEvent("EPISODE_FINISHED"));
-            gsCurrent.addGameEvent(new GameEvent("DISPOSE_RESOURCES_UI"));
-            gsCurrent.addGameEvent(new GameEvent("EPISODE_SUCCESS_UI"));
+            gsCurrent.getEventQueue().add(new GameEvent("EPISODE_FINISHED"));
+            gsCurrent.getEventQueue().add(new GameEvent("DISPOSE_RESOURCES_UI"));
+            gsCurrent.getEventQueue().add(new GameEvent("EPISODE_SUCCESS_UI"));
         }
     }
 
@@ -56,19 +56,19 @@ public abstract class MoonWalkerRules implements Rules {
 
     private void addEventsForAnswer(MoonWalkerGameState gameState, boolean isAnswerCorrect) {
         if(isAnswerCorrect) {
-            gameState.addGameEvent(new GameEvent("CORRECT_ANSWER"));
+            gameState.getEventQueue().add(new GameEvent("CORRECT_ANSWER"));
             gameState.getPlayer().incrementScore();
-            gameState.addGameEvent(new GameEvent("PLAYER_SCORE", gameState.getPlayer().getScore()));
+            gameState.getEventQueue().add(new GameEvent("PLAYER_SCORE", gameState.getPlayer().getScore()));
         } else {
-            gameState.addGameEvent(new GameEvent("WRONG_ANSWER"));
+            gameState.getEventQueue().add(new GameEvent("WRONG_ANSWER"));
             gameState.getPlayer().setLives(gameState.getPlayer().getLives() - 1);
-            gameState.addGameEvent(new GameEvent("PLAYER_LIVES", gameState.getPlayer().getLives()));
+            gameState.getEventQueue().add(new GameEvent("PLAYER_LIVES", gameState.getPlayer().getLives()));
         }
         unPauseGame(gameState);
     }
 
     protected void pauseGame(GameState gameState) {
-        gameState.addGameEvent(new GameEvent("PAUSE_GAME"));
+        gameState.getEventQueue().add(new GameEvent("PAUSE_GAME"));
     }
 
     protected void unPauseGame(GameState gameState) {
