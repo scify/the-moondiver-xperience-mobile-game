@@ -1,6 +1,6 @@
 package org.scify.moonwalker.app.game.conversation;
 
-public class ConversationState {
+public class ConversationLine {
     protected int order;
     protected String speakerId;
     protected String text;
@@ -8,7 +8,7 @@ public class ConversationState {
     protected String triggerEvent;
     protected int nextOrder;
 
-    public ConversationState() {
+    public ConversationLine() {
     }
 
     public int getNextOrder() {

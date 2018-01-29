@@ -42,8 +42,8 @@ public class KnightQuestionsRules extends SinglePlayerRules {
 
     protected void handleGameFinishedEvents(GameState gsCurrent) {
         if(!gsCurrent.eventsQueueContainsEvent("EPISODE_FINISHED")) {
-            gsCurrent.addGameEvent(new GameEvent("EPISODE_FINISHED"));
-            gsCurrent.addGameEvent(new GameEvent("DISPOSE_RESOURCES_UI"));
+            gsCurrent.getEventQueue().add(new GameEvent("EPISODE_FINISHED"));
+            gsCurrent.getEventQueue().add(new GameEvent("DISPOSE_RESOURCES_UI"));
         }
     }
 
@@ -69,21 +69,21 @@ public class KnightQuestionsRules extends SinglePlayerRules {
 
     protected void handleGameStartingRules(GameState gsCurrent) {
         if(!gsCurrent.eventsQueueContainsEvent("BACKGROUND_IMG")) {
-            gsCurrent.addGameEvent(new GameEvent("BACKGROUND_IMG"));
-            gsCurrent.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/episode_2/forest.jpg"));
+            gsCurrent.getEventQueue().add(new GameEvent("BACKGROUND_IMG"));
+            gsCurrent.getEventQueue().add(new GameEvent("BACKGROUND_IMG_UI", "img/episode_2/forest.jpg"));
         }
     }
 
     protected void handlePositionEvents(GameState gameState) {
         if(gameState.eventsQueueContainsEvent("PLAYER_BOTTOM_BORDER")) {
             // add dialog object in game event
-            gameState.addGameEvent(new GameEvent("QUESTION_UI", nextQuestion((MoonWalkerGameState)gameState)));
+            gameState.getEventQueue().add(new GameEvent("QUESTION_UI", nextQuestion((MoonWalkerGameState)gameState)));
             pauseGame(gameState);
             gameState.removeGameEventsWithType("PLAYER_BOTTOM_BORDER");
         }
         if(gameState.eventsQueueContainsEvent("PLAYER_LEFT_BORDER")) {
             // add dialog object in game event
-            gameState.addGameEvent(new GameEvent("QUESTION_UI", nextQuestion((MoonWalkerGameState) gameState)));
+            gameState.getEventQueue().add(new GameEvent("QUESTION_UI", nextQuestion((MoonWalkerGameState) gameState)));
             pauseGame(gameState);
             gameState.removeGameEventsWithType("PLAYER_LEFT_BORDER");
         }

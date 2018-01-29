@@ -1,11 +1,8 @@
 package org.scify.moonwalker.app.game.rules;
 
-import org.scify.engine.Renderable;
-import org.scify.engine.Rules;
-import org.scify.engine.GameState;
-import org.scify.engine.UserAction;
+import org.scify.engine.*;
 
-public abstract class PhysicsRules implements Rules {
+public abstract class PhysicsRules implements Rules<GameState, UserAction, EpisodeEndState> {
 
     protected int wordX, worldY;
 

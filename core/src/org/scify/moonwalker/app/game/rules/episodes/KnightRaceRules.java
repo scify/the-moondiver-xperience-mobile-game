@@ -2,8 +2,6 @@ package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
 import org.scify.moonwalker.app.actors.Player;
-import org.scify.moonwalker.app.game.conversation.Conversation;
-import org.scify.moonwalker.app.game.conversation.ConversationState;
 import org.scify.moonwalker.app.game.rules.SinglePlayerRules;
 
 import java.util.Date;
@@ -13,7 +11,6 @@ public class KnightRaceRules extends SinglePlayerRules {
 
     protected Renderable messagesLabel;
     protected String mainLabelText = "Episode goal: Help the player reach the top edge of the screen.";
-    protected Conversation conversation;
 
     @Override
     public GameState getNextState(GameState gsCurrent, UserAction userAction) {
@@ -22,7 +19,7 @@ public class KnightRaceRules extends SinglePlayerRules {
             return gsCurrent;
         handleGameStartingRules(gsCurrent);
         handlePositionRules(gsCurrent);
-        handleConversationRules(gsCurrent, userAction);
+        gsCurrent = handleConversationRules(gsCurrent, userAction);
         if(rulesFinished(gsCurrent)) {
             super.handleGameFinishedEvents(gsCurrent);
             this.handleGameFinishedEvents(gsCurrent);
@@ -34,7 +31,9 @@ public class KnightRaceRules extends SinglePlayerRules {
         if(!gsCurrent.eventsQueueContainsEvent("EPISODE_STARTED")) {
             gsCurrent.addGameEvent(new GameEvent("EPISODE_STARTED"));
             gsCurrent.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/episode_1/mushroom.jpg"));
-            messagesLabel = new Renderable(gameInfo.getScreenWidth() - 200, gameInfo.getScreenHeight() / 2f, 200, 200, "label", "messagesLabel");
+            float labelWidth = gameInfo.getScreenWidth() * 0.2f;
+            float labelHeight = gameInfo.getScreenHeight()* 0.5f;
+            messagesLabel = new Renderable(gameInfo.getScreenWidth() - labelWidth - 20, gameInfo.getScreenHeight() / 2f - 100, labelWidth, labelHeight, "label", "messagesLabel");
             gsCurrent.addRenderable(messagesLabel);
             gsCurrent.addGameEvent(new GameEvent("UPDATE_LABEL_TEXT_UI", new HashMap.SimpleEntry<>(messagesLabel, mainLabelText)));
         }
@@ -50,29 +49,18 @@ public class KnightRaceRules extends SinglePlayerRules {
         }
     }
 
-    protected void handleConversationRules(GameState gsCurrent, UserAction userAction) {
+    protected GameState handleConversationRules(GameState gsCurrent, UserAction userAction) {
         Player player = gsCurrent.getPlayer();
         if(player.getxPos() < gameInfo.getScreenWidth() / 2f) {
-            System.err.println("passed " + new Date().getTime());
-            if(!gsCurrent.eventsQueueContainsEvent("CONVERSATION_STARTED")) {
-                //create new conversation
-                conversation = new Conversation("json_DB/conversation.json");
-                gsCurrent.addGameEvent(new GameEvent("CONVERSATION_STARTED"));
-            } else {
-                if(!conversation.isConversationFinished())
-                    addNextConversationEvent(gsCurrent, userAction);
-                else
-                    gsCurrent.removeGameEventsWithType("CONVERSATION_STARTED");
+            // begin conversationRules with Yoda
+            if(!gsCurrent.eventsQueueContainsEvent("CONVERSATION_STARTED") && !gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED")) {
+                createConversation(gsCurrent, "json_DB/conversation.json");
+            }
+            if (gsCurrent.eventsQueueContainsEvent("CONVERSATION_STARTED") && !gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED")) {
+                gsCurrent = conversationRules.getNextState(gsCurrent, userAction);
             }
         }
-    }
-
-    protected void addNextConversationEvent(GameState gsCurrent, UserAction userAction) {
-        ConversationState state = conversation.getNextState(userAction);
-        if(state != null) {
-            gsCurrent.addGameEvent(new GameEvent("CONVERSATION_STATE", state));
-            pauseGame(gsCurrent);
-        }
+        return gsCurrent;
     }
 
     protected boolean rulesFinished(GameState gsCurrent) {

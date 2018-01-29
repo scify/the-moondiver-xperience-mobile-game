@@ -5,7 +5,6 @@ import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.moonwalker.app.actors.Player;
 import org.scify.moonwalker.app.helpers.GameInfo;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,7 +12,6 @@ import java.util.List;
 public class SinglePlayerRules extends MoonWalkerRules {
 
     protected Player pPlayer;
-    protected List<Positionable> lClouds;
     protected MoonWalkerPhysicsRules physics;
     protected GameInfo gameInfo;
 
@@ -25,8 +23,7 @@ public class SinglePlayerRules extends MoonWalkerRules {
         pPlayer = new Player(worldX / 2f + 100, worldY / 2f - 100,  gameInfo.getScreenWidth() * 0.2f, gameInfo.getScreenWidth() * 0.2f, "player", "player");
         pPlayer.setLives(5);
         pPlayer.setScore(0);
-
-        lClouds = new ArrayList<>();
+        addRenderableEntry("player", pPlayer);
         physics = new MoonWalkerPhysicsRules(worldX, worldY);
     }
 
