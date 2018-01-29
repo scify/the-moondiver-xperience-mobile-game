@@ -4,29 +4,30 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import org.scify.engine.Renderable;
 import org.scify.engine.UserAction;
 import org.scify.engine.UserInputHandler;
 import org.scify.moonwalker.app.game.quiz.Answer;
-import org.scify.moonwalker.app.game.quiz.Question;
+import org.scify.moonwalker.app.helpers.GameInfo;
 
-import java.awt.*;
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class UserInputHandlerImpl implements UserInputHandler, ContactListener {
+public class UserInputHandlerImpl extends ChangeListener implements UserInputHandler {
 
     /**
      * List of actions captured by the user interaction. User in the Player-derived methods.
      */
     private List<UserAction> pendingUserActions = Collections.synchronizedList(new ArrayList<UserAction>());
+    protected GameInfo gameInfo;
 
     public UserInputHandlerImpl() {
+        gameInfo = GameInfo.getInstance();
     }
 
     private void listenForUserInput() {
@@ -37,6 +38,26 @@ public class UserInputHandlerImpl implements UserInputHandler, ContactListener {
         } else if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
             pendingUserActions.add(new UserAction(UserActionCode.UP));
         } else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            pendingUserActions.add(new UserAction(UserActionCode.DOWN));
+        }
+
+        // Touch screen listeners
+        if(Gdx.input.justTouched()) {
+            touchInputs();
+        }
+    }
+
+    protected void touchInputs() {
+        if(Gdx.input.getX() < gameInfo.getScreenWidth() / 2f){
+            pendingUserActions.add(new UserAction(UserActionCode.LEFT));
+        }
+        if(Gdx.input.getX() > gameInfo.getScreenWidth() / 2f){
+            pendingUserActions.add(new UserAction(UserActionCode.RIGHT));
+        }
+        if(Gdx.input.getY() > gameInfo.getScreenHeight() / 2f){
+            pendingUserActions.add(new UserAction(UserActionCode.UP));
+        }
+        if(Gdx.input.getY() < gameInfo.getScreenHeight() / 2f){
             pendingUserActions.add(new UserAction(UserActionCode.DOWN));
         }
     }
@@ -83,5 +104,10 @@ public class UserInputHandlerImpl implements UserInputHandler, ContactListener {
     @Override
     public void disposeResources() {
 
+    }
+
+    @Override
+    public void changed(ChangeEvent event, Actor actor) {
+        pendingUserActions.add(new UserAction(UserActionCode.BUTTON_PRESSED, actor));
     }
 }

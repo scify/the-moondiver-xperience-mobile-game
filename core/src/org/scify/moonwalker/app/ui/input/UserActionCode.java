@@ -7,5 +7,6 @@ public enum UserActionCode {
     UP,
     DOWN,
     ANSWER_SELECTION,
-    ANSWER_TEXT
+    ANSWER_TEXT,
+    BUTTON_PRESSED
 }
