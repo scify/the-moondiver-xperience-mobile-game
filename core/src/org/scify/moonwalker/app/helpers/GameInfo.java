@@ -6,7 +6,7 @@ public class GameInfo {
     private static GameInfo instance = new GameInfo();
     private static final String TAG = GameInfo.class.getName();
 
-    public GameInfo() {
+    public void printInfo() {
         Gdx.app.log(TAG, "Density: "+Gdx.graphics.getDensity());
         Gdx.app.log(TAG, "Screen width: "+getScreenWidth());
         Gdx.app.log(TAG, "Screen height: "+getScreenHeight());
