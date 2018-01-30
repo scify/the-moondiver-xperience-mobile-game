@@ -45,6 +45,8 @@ public class SinglePlayerRules extends MoonWalkerRules {
     @Override
     public boolean isGameFinished(GameState gsCurrent) {
         MoonWalkerGameState gameState = (MoonWalkerGameState) gsCurrent;
+        // each single player episode is finished
+        // when the player has no lives left
         return gameState.getPlayer().getLives() == 0;
     }
 

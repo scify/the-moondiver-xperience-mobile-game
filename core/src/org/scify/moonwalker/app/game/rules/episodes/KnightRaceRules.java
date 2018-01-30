@@ -20,7 +20,7 @@ public class KnightRaceRules extends SinglePlayerRules {
         handleGameStartingRules(gsCurrent);
         handlePositionRules(gsCurrent);
         gsCurrent = handleConversationRules(gsCurrent, userAction);
-        if(rulesFinished(gsCurrent)) {
+        if(episodeFinished(gsCurrent)) {
             super.handleGameFinishedEvents(gsCurrent);
             this.handleGameFinishedEvents(gsCurrent);
         }
@@ -52,24 +52,40 @@ public class KnightRaceRules extends SinglePlayerRules {
     protected GameState handleConversationRules(GameState gsCurrent, UserAction userAction) {
         Player player = gsCurrent.getPlayer();
         if(player.getxPos() < gameInfo.getScreenWidth() / 2f) {
-            // begin conversationRules with Yoda
+            // begin conversation with Yoda
+            // if the conversation has not started and has not finished too
+            // TODO add conversation id in case we have multiple conversations in an episode
             if(!gsCurrent.eventsQueueContainsEvent("CONVERSATION_STARTED") && !gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED")) {
+                // call base class create method, passing the resource file for this specific conversation
                 createConversation(gsCurrent, "json_DB/conversation.json");
             }
+            // if the conversation has already started, but has not finished yet
             if (gsCurrent.eventsQueueContainsEvent("CONVERSATION_STARTED") && !gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED")) {
+                // ask the conversation rules to alter the current game state accordingly
                 gsCurrent = conversationRules.getNextState(gsCurrent, userAction);
             }
         }
         return gsCurrent;
     }
 
-    protected boolean rulesFinished(GameState gsCurrent) {
+    /**
+     * This method is similar to isGameFinished
+     * However, it is used internally by the getNextState method
+     * in order to decide whether the ending Game Events should be added
+     * to the current game state
+     * @param gsCurrent the current {@link GameState}
+     * @return
+     */
+    protected boolean episodeFinished(GameState gsCurrent) {
+        // this episode is considered finished either
+        // when the player has reached the top border of the screen
+        // or the base rules class decides that should finish
         return gsCurrent.eventsQueueContainsEvent("PLAYER_TOP_BORDER") || super.isGameFinished(gsCurrent);
     }
 
     @Override
     public boolean isGameFinished(GameState gsCurrent) {
-        return rulesFinished(gsCurrent) && gsCurrent.eventsQueueContainsEvent("EPISODE_FINISHED");
+        return episodeFinished(gsCurrent) && gsCurrent.eventsQueueContainsEvent("EPISODE_FINISHED");
     }
 
     @Override

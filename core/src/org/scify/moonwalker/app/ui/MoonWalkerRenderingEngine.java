@@ -75,8 +75,11 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         createBackgroundDefaultImg();
         initFontAndSkin();
         gameHUD = new GameHUD(skin, font);
-        fpsLabel = new Label("", new Label.LabelStyle(font, Color.RED));
+        fpsLabel = new Label("", skin);
+        fpsLabel.setStyle(new Label.LabelStyle(font, Color.RED));
         fpsLabel.setPosition(20, 30);
+        // fps label has thrice the normal font size
+        fpsLabel.setFontScale(3);
         audioEngine.pauseCurrentlyPlayingAudios();
         audioEngine.playSoundLoop("audio/episode_1/music.wav");
     }
@@ -90,6 +93,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     protected void initFontAndSkin() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(resourceLocator.getFilePath("fonts/Starjedi.ttf")));
         font = createFont(generator, 12);
+        font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         //font.getData().setScale( .9f,.9f);
         skin = new Skin();
         skin.add("default-font", font, BitmapFont.class);
@@ -103,7 +107,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         float screenDPI = 160.0f * Gdx.graphics.getDensity();
         int pixelSize = (int)(fontSize * screenDPI / 96.0f); // Reference size based on 96 DPI screen
         parameter.size = pixelSize;
-        Gdx.app.log(TAG, "Font size: "+pixelSize+"px");
+        //Gdx.app.log(TAG, "Font size: "+pixelSize+"px");
         return generator.generateFont(parameter);
     }
 
@@ -116,7 +120,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         int width = gameInfo.getScreenWidth();
         int height = gameInfo.getScreenHeight();
 
-
         box2DCamera = new OrthographicCamera();
         box2DCamera.setToOrtho(false, width,
                 height);
@@ -128,9 +131,15 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     @Override
     public void setGameState(MoonWalkerGameState gameState) {
         this.currentGameState = gameState;
+        // TODO remove gamehud class and add table as an independent component
+        // so that the rules can add
+        // new GameEvent("TABLE") and a set of actors and
+        // the table component creates the table and passes
+        // it to the rendering engine
         this.gameHUD.setLives(gameState.getPlayer().getLives());
         this.gameHUD.setScore(gameState.getPlayer().getScore());
     }
+
 
     protected Sprite getSpriteResourceFor(Renderable toDraw) {
         Sprite resource = null;
@@ -151,6 +160,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         return resource;
     }
 
+    // TODO refactor Sprite methods into Sprite factory class
     protected Sprite createSpriteResourceForType(Renderable renderable) {
         Sprite sToReturn = null;
         // Get a sprite for this world object type
@@ -185,6 +195,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         return resource;
     }
 
+    // TODO refactor Sprite methods into Actor factory class
     protected Actor createActorResourceForType(Renderable renderable) {
         Actor toReturn;
         switch (renderable.getType()) {
@@ -258,6 +269,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         }
     }
 
+    // TODO refactor method into separate class?
     private void handleCurrentGameEvent(GameEvent gameEvent, ListIterator<GameEvent> listIterator) {
         String eventType = currentGameEvent.type;
         switch (eventType) {
@@ -391,6 +403,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         }
     }
 
+    // TODO refactor method into separate class?
     protected void handleQuestion(GameEvent gameEvent) {
         Question question = (Question) gameEvent.parameters;
         switch (question.type) {
@@ -405,6 +418,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         }
     }
 
+    // TODO refactor method into separate class?
     void showMultipleSelectDialog(Question question) {
         ActionDialog dialog = new ActionDialog(
                 gameInfo.getScreenWidth() / 2f,
@@ -422,6 +436,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         stage.addActor(dialog.getDialog());
     }
 
+    // TODO refactor method into separate class?
     void showTextInputDialog(Question question) {
         ActionDialog dialog = new ActionDialog(
                 gameInfo.getScreenWidth() / 2f,
