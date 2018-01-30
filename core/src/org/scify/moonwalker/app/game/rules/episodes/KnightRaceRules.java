@@ -65,10 +65,6 @@ public class KnightRaceRules extends SinglePlayerRules {
             if (gsCurrent.eventsQueueContainsEvent("CONVERSATION_STARTED") && !gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED")) {
                 // ask the conversation rules to alter the current game state accordingly
                 gsCurrent = conversationRules.getNextState(gsCurrent, userAction);
-                ConversationLine currentLine = conversationRules.getCurrentConversationLine(gsCurrent);
-                if(currentLine != null)
-                    gsCurrent.addGameEvent(new GameEvent("CONVERSATION_LINE",
-                            new ConversationLineComponent(currentLine, conversationRules.getCurrentSpeaker(currentLine), "img/avatars/yoda-1.jpg")));
             }
         }
         return gsCurrent;

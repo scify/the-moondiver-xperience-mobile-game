@@ -4,15 +4,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import org.scify.engine.Renderable;
+import org.scify.engine.UserInputHandler;
 import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
+import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 
 /**
  * This class describes the conversation component that is drawn
@@ -23,48 +22,50 @@ import org.scify.moonwalker.app.helpers.ResourceLocator;
  * and an image path that represents the {@link Renderable} who is saying
  * the line.
  */
-public class ConversationLineComponent extends Actor{
+public class ConversationLineComponent extends Table {
 
-    protected ConversationLine conversationLine;
-    protected Renderable renderable;
-    protected String relativeAvatarPath;
-    protected Table table;
-    protected Label lineLabel;
-    protected Image avatarImg;
-    protected Sprite avatarSprite;
-    protected ResourceLocator resourceLocator;
-    protected GameInfo gameInfo;
+    public ConversationLine conversationLine;
+    public Renderable renderable;
+    public String relativeAvatarPath;
+    public Label lineLabel;
+    public Image avatarImg;
+    public Sprite avatarSprite;
+    public ResourceLocator resourceLocator;
+    public GameInfo gameInfo;
+    public boolean hasNextButton;
+    public TextButton nextButton;
 
-    public ConversationLineComponent(ConversationLine conversationLine, Renderable renderable, String relativeAvatarPath) {
+    public ConversationLineComponent(ConversationLine conversationLine, Renderable renderable, String relativeAvatarPath, boolean hasNextButton) {
         gameInfo = GameInfo.getInstance();
         this.conversationLine = conversationLine;
         this.renderable = renderable;
         this.relativeAvatarPath = relativeAvatarPath;
         resourceLocator = new ResourceLocator();
+        this.hasNextButton = hasNextButton;
+
     }
 
-    public void initActor(Skin skin) {
-        table = new Table(skin);
-        table.setFillParent(true);
-        table.setWidth(gameInfo.getScreenWidth());
-        table.setHeight(200);
-        table.bottom().left();
+    public void initActor(Skin skin, UserInputHandlerImpl userInputHandler) {
+        setSkin(skin);
+
+        setFillParent(true);
+        setWidth(gameInfo.getScreenWidth());
+        setHeight(200);
+        bottom().left();
         lineLabel = new Label(conversationLine.getText(), skin);
         lineLabel.setWrap(true);
+        lineLabel.setWidth(gameInfo.getScreenWidth() * 0.5f);
         avatarSprite = new Sprite(new Texture(resourceLocator.getFilePath(relativeAvatarPath)));
         avatarSprite.setSize((float) (gameInfo.getScreenWidth() * 0.15), (float) (gameInfo.getScreenWidth() * 0.1));
         avatarImg = new Image(new SpriteDrawable(avatarSprite));
-        table.setFillParent(true);
-        table.bottom().left();
-        table.add(avatarImg).padLeft(5).padBottom(10);
-        table.add(lineLabel).padLeft(10).align(Align.right);
-        table.row();
-    }
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        table.setDebug(true);
-        table.draw(batch, parentAlpha);
-        super.draw(batch, parentAlpha);
+        add(avatarImg).width(gameInfo.getScreenWidth() * 0.2f).padLeft(5).padBottom(10);
+        add(lineLabel).width(lineLabel.getWidth()).padLeft(10).align(Align.right);
+        if(hasNextButton) {
+            nextButton = new TextButton("Next", skin);
+            add(nextButton).width(gameInfo.getScreenWidth() * 0.2f).padLeft(10).align(Align.left);
+            nextButton.addListener(userInputHandler);
+        }
+        debug();
     }
 }

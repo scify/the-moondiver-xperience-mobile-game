@@ -9,13 +9,12 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import org.scify.engine.GameEvent;
-import org.scify.engine.Renderable;
-import org.scify.engine.RenderingEngine;
-import org.scify.engine.UserInputHandler;
+import org.scify.engine.*;
 import org.scify.engine.audio.AudioEngine;
 import org.scify.engine.conversation.ConversationLineComponent;
 import org.scify.moonwalker.app.MoonWalkerGameState;
@@ -26,6 +25,7 @@ import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.components.ActionDialog;
 import org.scify.moonwalker.app.ui.components.GameHUD;
+import org.scify.moonwalker.app.ui.input.UserActionCode;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 import org.scify.moonwalker.app.ui.sound.GdxAudioEngine;
 
@@ -317,7 +317,10 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 listIterator.remove();
                 break;
             case "CONVERSATION_LINE":
-                renderConversationLine((ConversationLineComponent) currentGameEvent.parameters);
+                List parameters = (List) currentGameEvent.parameters;
+                ConversationLineComponent comp = (ConversationLineComponent) parameters.get(0);
+                UserAction action = (UserAction) parameters.get(1);
+                renderConversationLine(comp, action);
                 listIterator.remove();
                 break;
             default:
@@ -343,8 +346,13 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         stage.addActor(buttonsTable);
     }
 
-    private void renderConversationLine(ConversationLineComponent conversationLineComponent) {
-        conversationLineComponent.initActor(skin);
+    private void renderConversationLine(final ConversationLineComponent conversationLineComponent, final UserAction toThrow) {
+        conversationLineComponent.initActor(skin, new UserInputHandlerImpl() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                userInputHandler.addUserAction(toThrow);
+            }
+        });
         stage.addActor(conversationLineComponent);
     }
 

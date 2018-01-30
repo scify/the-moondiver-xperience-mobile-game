@@ -6,6 +6,7 @@ import org.scify.engine.*;
 import org.scify.moonwalker.app.game.rules.MoonWalkerRules;
 import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
+import org.scify.moonwalker.app.ui.input.UserActionCode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,19 +36,16 @@ public class ConversationRules extends MoonWalkerRules {
 
     @Override
     public GameState getNextState(GameState gameState, UserAction userAction) {
+        // If got an answer (TEXT, BUTTON, ...)
+        if (userAction != null && userAction.getActionCode().equals(UserActionCode.NEXT_CONVERSATION_LINE)) {
+            // Clear paused conversation flag
+            gameState.removeGameEventsWithType("CONVERSATION_PAUSED");
+        }
+
         // If conversation is paused
         if (gameState.eventsQueueContainsEvent("CONVERSATION_PAUSED"))
             // return the current game state
             return gameState;
-
-        // If got an answer (TEXT, BUTTON, ...)
-        if (userAction != null) {
-            // Get next alternatives
-            List<ConversationLine> nextLines = getPossibleNextLines(gameState, userAction);
-            // Update the current line
-            // return the current game state
-            return gameState;
-        }
 
         // Get next alternatives
         List<ConversationLine> nextLines = getPossibleNextLines(gameState, userAction);
@@ -55,14 +53,23 @@ public class ConversationRules extends MoonWalkerRules {
         // If one line returned
         if (nextLines.size() == 1) {
             // render it
-            gameState.addGameEvent(new GameEvent("SHOW_LINE", nextLines.get(0)));
+            ConversationLineComponent conversationLineComponent = new ConversationLineComponent( nextLines.get(0), getCurrentSpeaker( nextLines.get(0)), "img/avatars/yoda-1.jpg", true);
+            ArrayList<Object> payload = new ArrayList<>();
+            payload.add(conversationLineComponent);
+            // Declare which user action should be thrown when button is pressed
+            payload.add(new UserAction(UserActionCode.NEXT_CONVERSATION_LINE));
+            gameState.addGameEvent(new GameEvent("CONVERSATION_LINE",
+                    payload));
             // update current line and speaker
             setCurrentConversationLine(gameState, nextLines.get(0));
+            // await next event
+            gameState.addGameEvent(new GameEvent("CONVERSATION_PAUSED"));
         } else {
             // render dialog
+            // TODO add Multiple Selection Component
             gameState.addGameEvent(new GameEvent("SHOW_DIALOG", nextLines));
             gameState.addGameEvent(new GameEvent("CONVERSATION_PAUSED"));
-            pauseGame(gameState);
+            //pauseGame(gameState);
         }
 
         return gameState;

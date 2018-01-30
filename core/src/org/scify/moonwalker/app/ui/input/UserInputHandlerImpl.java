@@ -43,7 +43,7 @@ public class UserInputHandlerImpl extends ChangeListener implements UserInputHan
 
         // Touch screen listeners
         if(Gdx.input.justTouched()) {
-            touchInputs();
+            //touchInputs();
         }
     }
 
@@ -79,6 +79,10 @@ public class UserInputHandlerImpl extends ChangeListener implements UserInputHan
             pendingUserActions.add(new UserAction(UserActionCode.ANSWER_SELECTION, payload));
         else
             pendingUserActions.add(new UserAction(UserActionCode.ANSWER_TEXT, payload));
+    }
+
+    public void addUserAction(UserAction userAction) {
+        pendingUserActions.add(userAction);
     }
 
     @Override
