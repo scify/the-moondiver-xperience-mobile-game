@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import org.scify.engine.*;
 import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.engine.GameState;
-import org.scify.moonwalker.app.game.conversation.ConversationRules;
+import org.scify.engine.conversation.ConversationRules;
 import org.scify.moonwalker.app.game.quiz.Answer;
 import org.scify.engine.UserAction;
 import org.scify.moonwalker.app.game.quiz.Question;
@@ -29,6 +29,10 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
 
     protected void addRenderableEntry(String rId, Renderable renderable) {
         idToRenderable.put(rId, renderable);
+    }
+
+    public Renderable getRenderableById(String rId) {
+        return idToRenderable.get(rId);
     }
 
     @Override

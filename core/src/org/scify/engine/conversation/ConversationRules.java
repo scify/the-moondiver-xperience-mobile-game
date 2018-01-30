@@ -1,9 +1,10 @@
-package org.scify.moonwalker.app.game.conversation;
+package org.scify.engine.conversation;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Json;
 import org.scify.engine.*;
 import org.scify.moonwalker.app.game.rules.MoonWalkerRules;
+import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 
 import java.util.ArrayList;
@@ -16,8 +17,9 @@ public class ConversationRules extends MoonWalkerRules {
     protected ResourceLocator resourceLocator;
     protected String ID;
     private static final String TAG = ConversationRules.class.getName();
-
+    private GameInfo gameInfo;
     public ConversationRules(String conversationJSONFilePath) {
+        gameInfo = GameInfo.getInstance();
         conversationLines = new ArrayList<>();
         resourceLocator = new ResourceLocator();
         json = new Json();
@@ -83,9 +85,12 @@ public class ConversationRules extends MoonWalkerRules {
         return null;
     }
 
+    public ConversationLine getCurrentConversationLine(GameState gameState) {
+        return (ConversationLine) gameState.getAdditionalDataEntry(ID);
+    }
 
-    protected ConversationLine getCurrentConversationLine(GameState container) {
-        return (ConversationLine) container.getAdditionalDataEntry(ID);
+    public Renderable getCurrentSpeaker(ConversationLine conversationLine) {
+        return getRenderableById(conversationLine.getSpeakerId());
     }
 
     protected void setCurrentConversationLine(GameState gameState, ConversationLine currentLine) {
@@ -95,9 +100,9 @@ public class ConversationRules extends MoonWalkerRules {
 
     protected void addSpeakersAsNeeded(GameState state, ConversationLine currentLine) {
         // If the speaker does not exist
-        if (!renderableExist(currentLine.speakerId)) {
+        if (!renderableExist(currentLine.getSpeakerId())) {
             // add the renderable character
-            Renderable newSpeaker = new Renderable(100, 200, 200, 200, currentLine.speakerId, currentLine.speakerId);
+            Renderable newSpeaker = new Renderable(100, 200, gameInfo.getScreenWidth() * 0.3f, gameInfo.getScreenWidth() * 0.3f, currentLine.speakerId, currentLine.speakerId);
             // update my lookup map
             addRenderableEntry(currentLine.speakerId, newSpeaker);
             // update state

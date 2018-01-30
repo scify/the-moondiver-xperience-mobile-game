@@ -16,6 +16,7 @@ public class GameInfo {
     private int screenWidth = Gdx.graphics.getWidth();
     private int screenHeight = Gdx.graphics.getHeight();
 
+    // TODO Remove (not used)
     // box2D (the physics engine) initially uses a 1 / 1 as pixel / meter ratio
     // so if an image is 80x80 pixels, it translates to 80x80 meters in the physics engine
     // the solution for that is to create a custom pixel to meter ratio

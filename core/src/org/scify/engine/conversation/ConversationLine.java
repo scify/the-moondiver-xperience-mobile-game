@@ -1,4 +1,4 @@
-package org.scify.moonwalker.app.game.conversation;
+package org.scify.engine.conversation;
 
 public class ConversationLine {
     protected int order;

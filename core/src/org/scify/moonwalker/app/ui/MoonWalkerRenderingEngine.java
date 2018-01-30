@@ -2,16 +2,14 @@ package org.scify.moonwalker.app.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.scify.engine.GameEvent;
@@ -19,8 +17,9 @@ import org.scify.engine.Renderable;
 import org.scify.engine.RenderingEngine;
 import org.scify.engine.UserInputHandler;
 import org.scify.engine.audio.AudioEngine;
+import org.scify.engine.conversation.ConversationLineComponent;
 import org.scify.moonwalker.app.MoonWalkerGameState;
-import org.scify.moonwalker.app.game.conversation.ConversationLine;
+import org.scify.engine.conversation.ConversationLine;
 import org.scify.moonwalker.app.game.quiz.Answer;
 import org.scify.moonwalker.app.game.quiz.Question;
 import org.scify.moonwalker.app.helpers.GameInfo;
@@ -77,10 +76,11 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         gameHUD = new GameHUD(skin, font);
         fpsLabel = new Label("", skin);
         fpsLabel.setStyle(new Label.LabelStyle(font, Color.RED));
-        fpsLabel.setPosition(20, 30);
+        fpsLabel.setPosition(20, gameInfo.getScreenHeight() - 20);
         // fps label has thrice the normal font size
         fpsLabel.setFontScale(3);
         audioEngine.pauseCurrentlyPlayingAudios();
+        // TODO music should be added from episode rules
         audioEngine.playSoundLoop("audio/episode_1/music.wav");
     }
 
@@ -90,11 +90,11 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         worldImg.setHeight(gameInfo.getScreenHeight());
     }
 
+    // TODO Move font methods into separate class
     protected void initFontAndSkin() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(resourceLocator.getFilePath("fonts/Starjedi.ttf")));
         font = createFont(generator, 12);
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        //font.getData().setScale( .9f,.9f);
         skin = new Skin();
         skin.add("default-font", font, BitmapFont.class);
         skin.addRegions(new TextureAtlas(Gdx.files.internal(resourceLocator.getFilePath("fonts/uiskin.atlas"))));
@@ -204,13 +204,13 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 label.setWidth(renderable.getWidth());
                 label.setHeight(renderable.getHeight());
                 label.setWrap(true);
-                Pixmap labelColor = new Pixmap((int) label.getWidth(), (int) label.getHeight(), Pixmap.Format.RGB888);
-                labelColor.setColor(0, 0, 0, 0.1f);
-                labelColor.fill();
-                label.getStyle().background = new Image(new Texture(labelColor)).getDrawable();
-                label.getStyle().background.setLeftWidth(label.getStyle().background.getLeftWidth() + 20);
-                label.getStyle().background.setRightWidth(label.getStyle().background.getRightWidth() + 20);
-                labelColor.dispose();
+//                Pixmap labelColor = new Pixmap((int) label.getWidth(), (int) label.getHeight(), Pixmap.Format.RGB888);
+//                labelColor.setColor(0, 0, 0, 0.1f);
+//                labelColor.fill();
+//                label.getStyle().background = new Image(new Texture(labelColor)).getDrawable();
+//                label.getStyle().background.setLeftWidth(label.getStyle().background.getLeftWidth() + 20);
+//                label.getStyle().background.setRightWidth(label.getStyle().background.getRightWidth() + 20);
+//                labelColor.dispose();
                 toReturn = label;
                 break;
             default:
@@ -316,6 +316,10 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 addConversationButtons((List<ConversationLine>) currentGameEvent.parameters);
                 listIterator.remove();
                 break;
+            case "CONVERSATION_LINE":
+                renderConversationLine((ConversationLineComponent) currentGameEvent.parameters);
+                listIterator.remove();
+                break;
             default:
                 break;
         }
@@ -339,6 +343,11 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         stage.addActor(buttonsTable);
     }
 
+    private void renderConversationLine(ConversationLineComponent conversationLineComponent) {
+        conversationLineComponent.initActor(skin);
+        stage.addActor(conversationLineComponent);
+    }
+
     protected void reset() {
         renderableSpriteMap = new HashMap<>();
     }
@@ -360,7 +369,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         Gdx.input.setInputProcessor(stage);
         stage.addActor(worldImg);
         stage.addActor(gameHUD.getLivesTable());
-        stage.addActor(gameHUD.getScoreTable());
+        //stage.addActor(gameHUD.getScoreTable());
     }
 
     @Override
@@ -377,15 +386,15 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     }
 
     public void render(Float delta) {
-
+        this.world = currentGameState.world;
         long lNewTime = new Date().getTime();
         if (lNewTime - lLastUpdate < 50L) {// If no less than 1/5 sec has passed
             Thread.yield();
             return; // Do nothing
         } else {
-
             Gdx.gl.glClearColor(1, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            stage.setDebugAll(true);
             stage.act(delta);
             stage.draw();
             synchronized (batch) {
@@ -394,11 +403,11 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 fpsLabel.draw(batch, 1);
                 drawGameState(currentGameState);
                 batch.end();
-                debugRenderer.render(world, box2DCamera.combined);
-                batch.setProjectionMatrix(mainCamera.combined);
+
                 mainCamera.update();
             }
-
+            debugRenderer.render(world, box2DCamera.combined);
+            batch.setProjectionMatrix(mainCamera.combined);
             lLastUpdate = lNewTime;
         }
     }

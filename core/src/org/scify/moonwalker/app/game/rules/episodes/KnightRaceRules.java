@@ -1,7 +1,9 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
+import org.scify.engine.conversation.ConversationLineComponent;
 import org.scify.moonwalker.app.actors.Player;
+import org.scify.engine.conversation.ConversationLine;
 import org.scify.moonwalker.app.game.rules.SinglePlayerRules;
 
 import java.util.Date;
@@ -30,7 +32,7 @@ public class KnightRaceRules extends SinglePlayerRules {
     protected void handleGameStartingRules(GameState gsCurrent) {
         if(!gsCurrent.eventsQueueContainsEvent("EPISODE_STARTED")) {
             gsCurrent.addGameEvent(new GameEvent("EPISODE_STARTED"));
-            gsCurrent.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/episode_1/mushroom.jpg"));
+            gsCurrent.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/episode_1/bg.png"));
             float labelWidth = gameInfo.getScreenWidth() * 0.2f;
             float labelHeight = gameInfo.getScreenHeight()* 0.5f;
             messagesLabel = new Renderable(gameInfo.getScreenWidth() - labelWidth - 20, gameInfo.getScreenHeight() / 2f - 100, labelWidth, labelHeight, "label", "messagesLabel");
@@ -63,6 +65,10 @@ public class KnightRaceRules extends SinglePlayerRules {
             if (gsCurrent.eventsQueueContainsEvent("CONVERSATION_STARTED") && !gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED")) {
                 // ask the conversation rules to alter the current game state accordingly
                 gsCurrent = conversationRules.getNextState(gsCurrent, userAction);
+                ConversationLine currentLine = conversationRules.getCurrentConversationLine(gsCurrent);
+                if(currentLine != null)
+                    gsCurrent.addGameEvent(new GameEvent("CONVERSATION_LINE",
+                            new ConversationLineComponent(currentLine, conversationRules.getCurrentSpeaker(currentLine), "img/avatars/yoda-1.jpg")));
             }
         }
         return gsCurrent;
