@@ -25,15 +25,15 @@ import org.scify.moonwalker.app.helpers.ResourceLocator;
  */
 public class ConversationLineComponent extends Actor{
 
-    public ConversationLine conversationLine;
-    public Renderable renderable;
-    public String relativeAvatarPath;
-    public Table table;
-    public Label lineLabel;
-    public Image avatarImg;
-    public Sprite avatarSprite;
-    public ResourceLocator resourceLocator;
-    public GameInfo gameInfo;
+    protected ConversationLine conversationLine;
+    protected Renderable renderable;
+    protected String relativeAvatarPath;
+    protected Table table;
+    protected Label lineLabel;
+    protected Image avatarImg;
+    protected Sprite avatarSprite;
+    protected ResourceLocator resourceLocator;
+    protected GameInfo gameInfo;
 
     public ConversationLineComponent(ConversationLine conversationLine, Renderable renderable, String relativeAvatarPath) {
         gameInfo = GameInfo.getInstance();
@@ -65,7 +65,6 @@ public class ConversationLineComponent extends Actor{
     public void draw(Batch batch, float parentAlpha) {
         table.setDebug(true);
         table.draw(batch, parentAlpha);
-
         super.draw(batch, parentAlpha);
     }
 }
