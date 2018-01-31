@@ -9,22 +9,17 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.scify.engine.*;
 import org.scify.engine.audio.AudioEngine;
-import org.scify.engine.conversation.ConversationLineComponent;
+import org.scify.moonwalker.app.ui.components.*;
 import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.engine.conversation.ConversationLine;
 import org.scify.moonwalker.app.game.quiz.Answer;
 import org.scify.moonwalker.app.game.quiz.Question;
 import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
-import org.scify.moonwalker.app.ui.components.ActionDialog;
-import org.scify.moonwalker.app.ui.components.GameHUD;
 import org.scify.moonwalker.app.ui.input.UserActionCode;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 import org.scify.moonwalker.app.ui.sound.GdxAudioEngine;
@@ -81,7 +76,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         fpsLabel.setFontScale(3);
         audioEngine.pauseCurrentlyPlayingAudios();
         // TODO music should be added from episode rules
-        audioEngine.playSoundLoop("audio/episode_1/music.wav");
+        //audioEngine.playSoundLoop("audio/episode_1/music.wav");
     }
 
     protected void createBackgroundDefaultImg() {
@@ -318,14 +313,35 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 break;
             case "CONVERSATION_LINE":
                 List parameters = (List) currentGameEvent.parameters;
-                ConversationLineComponent comp = (ConversationLineComponent) parameters.get(0);
+                SingleConversationLineComponent comp = (SingleConversationLineComponent) parameters.get(0);
                 UserAction action = (UserAction) parameters.get(1);
                 renderConversationLine(comp, action);
+                listIterator.remove();
+                break;
+            case "CONVERSATION_LINES":
+                MultipleConversationLinesComponent multipleConversationLinesComponent = (MultipleConversationLinesComponent) currentGameEvent.parameters;
+                createMultipleSelectionForConversationLines(multipleConversationLinesComponent);
                 listIterator.remove();
                 break;
             default:
                 break;
         }
+    }
+
+    private void createMultipleSelectionForConversationLines(MultipleConversationLinesComponent multipleConversationLinesComponent) {
+        MultipleSelectionComponent component = new MultipleSelectionComponent(multipleConversationLinesComponent.getTitle(), multipleConversationLinesComponent.getAvatarImgPath());
+        component.initActor(skin);
+        for(final ConversationLine conversationLine : multipleConversationLinesComponent.getConversationLines()) {
+            component.addButton(conversationLine.getText(), new UserInputHandlerImpl() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    // TODO should rendering engine know the user action code?
+                    System.out.println(conversationLine.getNextOrder());
+                    userInputHandler.addUserAction(new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine.getNextOrder()));
+                }
+            });
+        }
+        stage.addActor(component);
     }
 
     private void updateLabelText(HashMap.SimpleEntry<Renderable, String> parameters) {
@@ -346,7 +362,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         stage.addActor(buttonsTable);
     }
 
-    private void renderConversationLine(final ConversationLineComponent conversationLineComponent, final UserAction toThrow) {
+    private void renderConversationLine(final SingleConversationLineComponent conversationLineComponent, final UserAction toThrow) {
         conversationLineComponent.initActor(skin, new UserInputHandlerImpl() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
