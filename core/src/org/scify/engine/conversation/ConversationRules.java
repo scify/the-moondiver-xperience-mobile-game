@@ -6,6 +6,8 @@ import org.scify.engine.*;
 import org.scify.moonwalker.app.game.rules.MoonWalkerRules;
 import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
+import org.scify.moonwalker.app.ui.components.MultipleConversationLinesComponent;
+import org.scify.moonwalker.app.ui.components.SingleConversationLineComponent;
 import org.scify.moonwalker.app.ui.input.UserActionCode;
 
 import java.util.ArrayList;
@@ -42,6 +44,8 @@ public class ConversationRules extends MoonWalkerRules {
             gameState.removeGameEventsWithType("CONVERSATION_PAUSED");
         }
 
+        //TODO Add check for user answer to multiple choice question
+
         // If conversation is paused
         if (gameState.eventsQueueContainsEvent("CONVERSATION_PAUSED"))
             // return the current game state
@@ -53,7 +57,7 @@ public class ConversationRules extends MoonWalkerRules {
         // If one line returned
         if (nextLines.size() == 1) {
             // render it
-            ConversationLineComponent conversationLineComponent = new ConversationLineComponent( nextLines.get(0), getCurrentSpeaker( nextLines.get(0)), "img/avatars/yoda-1.jpg", true);
+            SingleConversationLineComponent conversationLineComponent = new SingleConversationLineComponent( nextLines.get(0), getCurrentSpeaker( nextLines.get(0)), "img/avatars/yoda-1.jpg", true);
             ArrayList<Object> payload = new ArrayList<>();
             payload.add(conversationLineComponent);
             // Declare which user action should be thrown when button is pressed
@@ -67,8 +71,10 @@ public class ConversationRules extends MoonWalkerRules {
         } else {
             // render dialog
             // TODO add Multiple Selection Component
-            gameState.addGameEvent(new GameEvent("SHOW_DIALOG", nextLines));
+            //gameState.addGameEvent(new GameEvent("SHOW_DIALOG", nextLines));
             gameState.addGameEvent(new GameEvent("CONVERSATION_PAUSED"));
+            MultipleConversationLinesComponent conversationLinesComponent = new MultipleConversationLinesComponent(getCurrentConversationLine(gameState).text, nextLines);
+            gameState.addGameEvent(new GameEvent("CONVERSATION_LINES", conversationLinesComponent));
             //pauseGame(gameState);
         }
 
