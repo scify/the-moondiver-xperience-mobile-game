@@ -42,6 +42,7 @@ public class ConversationRules extends MoonWalkerRules {
         if (userAction != null && userAction.getActionCode().equals(UserActionCode.NEXT_CONVERSATION_LINE)) {
             // Clear paused conversation flag
             gameState.removeGameEventsWithType("CONVERSATION_PAUSED");
+            gameState.addGameEvent(new GameEvent("REMOVE_CONVERSATIONS"));
         }
 
         //TODO Add check for user answer to multiple choice question

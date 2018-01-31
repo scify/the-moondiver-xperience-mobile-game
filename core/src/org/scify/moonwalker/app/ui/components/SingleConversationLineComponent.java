@@ -60,9 +60,10 @@ public class SingleConversationLineComponent extends Table {
         add(lineLabel).width(lineLabel.getWidth()).padLeft(10).align(Align.right);
         if(hasNextButton) {
             nextButton = new TextButton("Next", skin);
+            nextButton.pad(5);
             add(nextButton).width(gameInfo.getScreenWidth() * 0.2f).padLeft(10).align(Align.left);
             nextButton.addListener(userInputHandler);
         }
-        debug();
+        //debug();
     }
 }

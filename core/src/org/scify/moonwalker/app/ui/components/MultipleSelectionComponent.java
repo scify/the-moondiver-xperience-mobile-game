@@ -27,9 +27,9 @@ public class MultipleSelectionComponent extends Table {
 
     public void initActor(Skin skin) {
         setHeight(300);
-        setWidth(gameInfo.getScreenWidth() / 2f);
-        debug();
-        center().bottom();
+        //setWidth(gameInfo.getScreenWidth() / 2f);
+        //debug();
+        center().bottom().padBottom(40);
         setSkin(skin);
         setFillParent(true);
         if(labetTxt != null)
@@ -40,9 +40,10 @@ public class MultipleSelectionComponent extends Table {
 
     public void addButton(String btnTitle, UserInputHandlerImpl inputHandler) {
         TextButton newBtn = new TextButton(btnTitle, getSkin());
+        newBtn.padBottom(5).padTop(5).padLeft(10).padRight(10);
         newBtn.addListener(inputHandler);
         newBtn.align(Align.center);
-        add(newBtn).width(getWidth()).padBottom(10);
+        add(newBtn).padBottom(10);
         row();
     }
 
@@ -50,8 +51,8 @@ public class MultipleSelectionComponent extends Table {
         Label titleLabel = new Label(labetTxt, getSkin());
         titleLabel.setWrap(true);
         // set the title label the same width as the entire table
-        titleLabel.setWidth(getWidth());
-        add(titleLabel).align(Align.left).padBottom(10);
+        //titleLabel.setWidth(getWidth());
+        add(titleLabel).align(Align.left).padBottom(15);
         row();
     }
 

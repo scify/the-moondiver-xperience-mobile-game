@@ -55,10 +55,12 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private Camera mainCamera;
     private ResourceLocator resourceLocator;
     private static final String TAG = MoonWalkerRenderingEngine.class.getName();
+    private List<Actor> conversationActors;
 
     public MoonWalkerRenderingEngine(UserInputHandler userInputHandler, SpriteBatch batch, Stage stage) {
         this.resourceLocator = new ResourceLocator();
         this.userInputHandler = (UserInputHandlerImpl) userInputHandler;
+        conversationActors = new ArrayList<>();
         audioEngine = new GdxAudioEngine();
         gameInfo = GameInfo.getInstance();
         gameInfo.printInfo();
@@ -248,7 +250,11 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
 
     protected void drawActorFromRenderable(Renderable renderable, Actor aToDraw) {
         aToDraw.setPosition(renderable.getxPos(), renderable.getyPos());
-        aToDraw.draw(batch, 1);
+        // if actor does not have a stage, it means that
+        // it is the first time that is added to the stage.
+        if(aToDraw.getStage() == null)
+            stage.addActor(aToDraw);
+        //aToDraw.draw(batch, 1);
     }
 
     private void handleGameEvents(List<GameEvent> eventsList) {
@@ -323,6 +329,10 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 createMultipleSelectionForConversationLines(multipleConversationLinesComponent);
                 listIterator.remove();
                 break;
+            case "REMOVE_CONVERSATIONS":
+                for(Actor actor : conversationActors)
+                    actor.remove();
+                listIterator.remove();
             default:
                 break;
         }
@@ -341,7 +351,11 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 }
             });
         }
+        conversationActors.add(component);
         stage.addActor(component);
+        for(Actor stageActor : stage.getActors()) {
+            System.out.println("Actor " + stageActor.getClass() + " " + stageActor.getZIndex());
+        }
     }
 
     private void updateLabelText(HashMap.SimpleEntry<Renderable, String> parameters) {
@@ -369,6 +383,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 userInputHandler.addUserAction(toThrow);
             }
         });
+        conversationActors.add(conversationLineComponent);
         stage.addActor(conversationLineComponent);
     }
 
@@ -418,7 +433,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         } else {
             Gdx.gl.glClearColor(1, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-            stage.setDebugAll(true);
+            //stage.setDebugAll(true);
             stage.act(delta);
             stage.draw();
             synchronized (batch) {
