@@ -1,15 +1,15 @@
-package org.scify.moonwalker.app.ui.components;
+package org.scify.engine.conversation;
 
 import org.scify.engine.conversation.ConversationLine;
 import java.util.List;
 
-public class MultipleConversationLinesComponent {
+public class MultipleConversationLines {
 
     String avatarImgPath;
     String title;
     List<ConversationLine> conversationLines;
 
-    public MultipleConversationLinesComponent(String title, List<ConversationLine> conversationLines) {
+    public MultipleConversationLines(String title, List<ConversationLine> conversationLines) {
         this.conversationLines = conversationLines;
         this.title = title;
     }

@@ -6,8 +6,7 @@ import org.scify.engine.*;
 import org.scify.moonwalker.app.game.rules.MoonWalkerRules;
 import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
-import org.scify.moonwalker.app.ui.components.MultipleConversationLinesComponent;
-import org.scify.moonwalker.app.ui.components.SingleConversationLineComponent;
+import org.scify.moonwalker.app.ui.components.AvatarWithMessageComponent;
 import org.scify.moonwalker.app.ui.input.UserActionCode;
 
 import java.util.ArrayList;
@@ -38,11 +37,17 @@ public class ConversationRules extends MoonWalkerRules {
 
     @Override
     public GameState getNextState(GameState gameState, UserAction userAction) {
+        // TODO Refactor and change logic
         // If got an answer (TEXT, BUTTON, ...)
-        if (userAction != null && userAction.getActionCode().equals(UserActionCode.NEXT_CONVERSATION_LINE)) {
+        if (userAction != null && (userAction.getActionCode().equals(UserActionCode.NEXT_CONVERSATION_LINE) || userAction.getActionCode().equals(UserActionCode.MULTIPLE_SELECTION_ANSWER))) {
             // Clear paused conversation flag
             gameState.removeGameEventsWithType("CONVERSATION_PAUSED");
             gameState.addGameEvent(new GameEvent("REMOVE_CONVERSATIONS"));
+            if(userAction.getActionCode().equals(UserActionCode.MULTIPLE_SELECTION_ANSWER)) {
+                ConversationLine answered = getLineByOrderId((Integer) userAction.getActionPayload());
+                if(answered != null)
+                    setCurrentConversationLine(gameState, answered);
+            }
         }
 
         //TODO Add check for user answer to multiple choice question
@@ -58,9 +63,10 @@ public class ConversationRules extends MoonWalkerRules {
         // If one line returned
         if (nextLines.size() == 1) {
             // render it
-            SingleConversationLineComponent conversationLineComponent = new SingleConversationLineComponent( nextLines.get(0), getCurrentSpeaker( nextLines.get(0)), "img/avatars/yoda-1.jpg", true);
+            SingleConversationLine singleConversationLine = new SingleConversationLine( nextLines.get(0),
+                    "img/avatars/yoda-1.jpg", getCurrentSpeaker( nextLines.get(0)));
             ArrayList<Object> payload = new ArrayList<>();
-            payload.add(conversationLineComponent);
+            payload.add(singleConversationLine);
             // Declare which user action should be thrown when button is pressed
             payload.add(new UserAction(UserActionCode.NEXT_CONVERSATION_LINE));
             gameState.addGameEvent(new GameEvent("CONVERSATION_LINE",
@@ -71,12 +77,9 @@ public class ConversationRules extends MoonWalkerRules {
             gameState.addGameEvent(new GameEvent("CONVERSATION_PAUSED"));
         } else {
             // render dialog
-            // TODO add Multiple Selection Component
-            //gameState.addGameEvent(new GameEvent("SHOW_DIALOG", nextLines));
             gameState.addGameEvent(new GameEvent("CONVERSATION_PAUSED"));
-            MultipleConversationLinesComponent conversationLinesComponent = new MultipleConversationLinesComponent(getCurrentConversationLine(gameState).text, nextLines);
-            gameState.addGameEvent(new GameEvent("CONVERSATION_LINES", conversationLinesComponent));
-            //pauseGame(gameState);
+            MultipleConversationLines conversationLines = new MultipleConversationLines(getCurrentConversationLine(gameState).text, nextLines);
+            gameState.addGameEvent(new GameEvent("CONVERSATION_LINES", conversationLines));
         }
 
         return gameState;
@@ -137,5 +140,12 @@ public class ConversationRules extends MoonWalkerRules {
                 lines.add(line);
         }
         return lines;
+    }
+
+    private ConversationLine getLineByOrderId(int orderId) {
+        for(ConversationLine line : conversationLines)
+            if(line.getOrder() == orderId)
+                return line;
+        return null;
     }
 }

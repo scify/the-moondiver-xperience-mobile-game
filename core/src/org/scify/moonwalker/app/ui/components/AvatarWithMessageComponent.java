@@ -20,9 +20,9 @@ import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
  * and an image path that represents the {@link Renderable} who is saying
  * the line.
  */
-public class SingleConversationLineComponent extends Table {
+public class AvatarWithMessageComponent extends Table {
 
-    protected ConversationLine conversationLine;
+    protected String message;
     protected Renderable renderable;
     protected String relativeAvatarPath;
     protected Label lineLabel;
@@ -33,14 +33,13 @@ public class SingleConversationLineComponent extends Table {
     protected boolean hasNextButton;
     protected TextButton nextButton;
 
-    public SingleConversationLineComponent(ConversationLine conversationLine, Renderable renderable, String relativeAvatarPath, boolean hasNextButton) {
+    public AvatarWithMessageComponent(String message, Renderable renderable, String relativeAvatarPath, boolean hasNextButton) {
         gameInfo = GameInfo.getInstance();
-        this.conversationLine = conversationLine;
+        this.message = message;
         this.renderable = renderable;
         this.relativeAvatarPath = relativeAvatarPath;
         resourceLocator = new ResourceLocator();
         this.hasNextButton = hasNextButton;
-
     }
 
     public void initActor(Skin skin, UserInputHandlerImpl userInputHandler) {
@@ -49,7 +48,7 @@ public class SingleConversationLineComponent extends Table {
         setWidth(gameInfo.getScreenWidth());
         setHeight(200);
         bottom().left();
-        lineLabel = new Label(conversationLine.getText(), skin);
+        lineLabel = new Label(message, skin);
         lineLabel.setWrap(true);
         lineLabel.setWidth(gameInfo.getScreenWidth() * 0.5f);
         avatarSprite = new Sprite(new Texture(resourceLocator.getFilePath(relativeAvatarPath)));

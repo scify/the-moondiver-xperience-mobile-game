@@ -15,24 +15,23 @@ public class MultipleSelectionComponent extends Table {
     protected String relativeAvatarPath;
     protected Image avatarImg;
     protected Sprite avatarSprite;
-    protected String labetTxt;
+    protected String questionText;
     protected ResourceLocator resourceLocator;
     protected GameInfo gameInfo;
 
     public MultipleSelectionComponent(String labelTxt, String relativeAvatarPath) {
         this.relativeAvatarPath = relativeAvatarPath;
-        this.labetTxt = labelTxt;
+        this.questionText = labelTxt;
         this.gameInfo = GameInfo.getInstance();
     }
 
     public void initActor(Skin skin) {
         setHeight(300);
-        //setWidth(gameInfo.getScreenWidth() / 2f);
         //debug();
         center().bottom().padBottom(40);
         setSkin(skin);
         setFillParent(true);
-        if(labetTxt != null)
+        if(questionText != null)
             addLabelToTable();
         if(relativeAvatarPath != null)
             addAvatarToTable();
@@ -48,10 +47,8 @@ public class MultipleSelectionComponent extends Table {
     }
 
     private void addLabelToTable() {
-        Label titleLabel = new Label(labetTxt, getSkin());
+        Label titleLabel = new Label(questionText, getSkin());
         titleLabel.setWrap(true);
-        // set the title label the same width as the entire table
-        //titleLabel.setWidth(getWidth());
         add(titleLabel).align(Align.left).padBottom(15);
         row();
     }

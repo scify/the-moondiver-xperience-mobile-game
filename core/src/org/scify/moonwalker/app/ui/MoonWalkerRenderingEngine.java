@@ -13,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.scify.engine.*;
 import org.scify.engine.audio.AudioEngine;
+import org.scify.engine.conversation.MultipleConversationLines;
+import org.scify.engine.conversation.SingleConversationLine;
 import org.scify.moonwalker.app.ui.components.*;
 import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.engine.conversation.ConversationLine;
@@ -319,14 +321,14 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 break;
             case "CONVERSATION_LINE":
                 List parameters = (List) currentGameEvent.parameters;
-                SingleConversationLineComponent comp = (SingleConversationLineComponent) parameters.get(0);
+                SingleConversationLine conversationLine = (SingleConversationLine) parameters.get(0);
                 UserAction action = (UserAction) parameters.get(1);
-                renderConversationLine(comp, action);
+                renderConversationLine(conversationLine, action);
                 listIterator.remove();
                 break;
             case "CONVERSATION_LINES":
-                MultipleConversationLinesComponent multipleConversationLinesComponent = (MultipleConversationLinesComponent) currentGameEvent.parameters;
-                createMultipleSelectionForConversationLines(multipleConversationLinesComponent);
+                MultipleConversationLines multipleConversationLines = (MultipleConversationLines) currentGameEvent.parameters;
+                createMultipleSelectionForConversationLines(multipleConversationLines);
                 listIterator.remove();
                 break;
             case "REMOVE_CONVERSATIONS":
@@ -338,7 +340,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         }
     }
 
-    private void createMultipleSelectionForConversationLines(MultipleConversationLinesComponent multipleConversationLinesComponent) {
+    private void createMultipleSelectionForConversationLines(MultipleConversationLines multipleConversationLinesComponent) {
         MultipleSelectionComponent component = new MultipleSelectionComponent(multipleConversationLinesComponent.getTitle(), multipleConversationLinesComponent.getAvatarImgPath());
         component.initActor(skin);
         for(final ConversationLine conversationLine : multipleConversationLinesComponent.getConversationLines()) {
@@ -376,15 +378,17 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         stage.addActor(buttonsTable);
     }
 
-    private void renderConversationLine(final SingleConversationLineComponent conversationLineComponent, final UserAction toThrow) {
-        conversationLineComponent.initActor(skin, new UserInputHandlerImpl() {
+    private void renderConversationLine(final SingleConversationLine conversationLine, final UserAction toThrow) {
+        AvatarWithMessageComponent component = new AvatarWithMessageComponent(conversationLine.getConversationLine().getText(),
+                conversationLine.getRenderableReferenced(), conversationLine.getRelativeAvatarPath(), true);
+        component.initActor(skin, new UserInputHandlerImpl() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 userInputHandler.addUserAction(toThrow);
             }
         });
-        conversationActors.add(conversationLineComponent);
-        stage.addActor(conversationLineComponent);
+        conversationActors.add(component);
+        stage.addActor(component);
     }
 
     protected void reset() {
