@@ -37,19 +37,24 @@ public class MultipleSelectionComponent extends Table {
             addAvatarToTable();
     }
 
-    public void addButton(String btnTitle, UserInputHandlerImpl inputHandler) {
+    public void addButton(String btnTitle, UserInputHandlerImpl inputHandler, int btnIndex) {
+        int alignment = Align.left;
+        if(btnIndex % 2 == 0)
+            alignment = Align.right;
         TextButton newBtn = new TextButton(btnTitle, getSkin());
         newBtn.padBottom(5).padTop(5).padLeft(10).padRight(10);
         newBtn.addListener(inputHandler);
-        newBtn.align(Align.center);
-        add(newBtn).padBottom(10);
-        row();
+        // set the width as 1/2 of the screen, minus 40 pixels margin
+        add(newBtn).width(gameInfo.getScreenWidth() * 0.5f - 40).align(alignment).pad(10);
+        if(btnIndex % 2 == 0) {
+            row();
+        }
     }
 
     private void addLabelToTable() {
         Label titleLabel = new Label(questionText, getSkin());
         titleLabel.setWrap(true);
-        add(titleLabel).align(Align.left).padBottom(15);
+        add(titleLabel).align(Align.center).padBottom(15);
         row();
     }
 
