@@ -26,7 +26,6 @@ public class ConversationRules extends MoonWalkerRules {
         json = new Json();
         conversationLines = json.fromJson(ArrayList.class, ConversationLine.class, Gdx.files.internal(resourceLocator.getFilePath(conversationJSONFilePath)));
         ID = UUID.randomUUID().toString();
-        System.out.println(conversationLines.size());
     }
 
     @Override
@@ -167,7 +166,6 @@ public class ConversationRules extends MoonWalkerRules {
     }
 
     protected List<ConversationLine> getLinesWithOrder(int lineOrder) {
-        System.out.println("getting lines with order: " + lineOrder);
         List<ConversationLine> lines = new ArrayList<>();
         for (ConversationLine line : conversationLines) {
             if(line.getOrder() == lineOrder)

@@ -307,7 +307,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             component.addButton(conversationLine.getText(), new UserInputHandlerImpl() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    System.out.println("answer was " + conversationLine.getText() + " with order id " + conversationLine.getId());
+                    //System.out.println("answer was " + conversationLine.getText() + " with order id " + conversationLine.getId());
                     userInputHandler.addUserAction(new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine.getId()));
                 }
             }, btnIndex);
