@@ -22,6 +22,7 @@ public class MultipleSelectionComponent extends Group {
     protected ResourceLocator resourceLocator;
     protected GameInfo gameInfo;
     protected Table table;
+    protected Image background;
 
     public MultipleSelectionComponent(String labelTxt, String relativeAvatarPath) {
         this.resourceLocator = new ResourceLocator();
@@ -42,9 +43,9 @@ public class MultipleSelectionComponent extends Group {
             addLabelToTable();
         if(relativeAvatarPath != null)
             addAvatarToTable();
-        Image img = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath("img/component_background.png")))));
-        img.setSize(gameInfo.getScreenWidth(), gameInfo.getScreenHeight() / 2f);
-        addActor(img);
+        background = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath("img/component_background.png")))));
+        background.setSize(gameInfo.getScreenWidth(), gameInfo.getScreenHeight() / 2f);
+        addActor(background);
         addActor(table);
     }
 
