@@ -13,15 +13,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.scify.engine.*;
 import org.scify.engine.audio.AudioEngine;
+import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.conversation.MultipleConversationLines;
 import org.scify.engine.conversation.SingleConversationLine;
-import org.scify.moonwalker.app.ui.components.*;
 import org.scify.moonwalker.app.MoonWalkerGameState;
-import org.scify.engine.conversation.ConversationLine;
-import org.scify.moonwalker.app.game.quiz.Answer;
 import org.scify.moonwalker.app.game.quiz.Question;
 import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
+import org.scify.moonwalker.app.ui.components.*;
 import org.scify.moonwalker.app.ui.input.UserActionCode;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 import org.scify.moonwalker.app.ui.sound.GdxAudioEngine;
@@ -58,6 +57,8 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private ResourceLocator resourceLocator;
     private static final String TAG = MoonWalkerRenderingEngine.class.getName();
     private List<Actor> conversationActors;
+    private ComponentFactory<Actor> actorFactory;
+    private ComponentFactory<Sprite> spriteFactory;
 
     public MoonWalkerRenderingEngine(UserInputHandler userInputHandler, SpriteBatch batch, Stage stage) {
         this.resourceLocator = new ResourceLocator();
@@ -72,6 +73,8 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         initCamera();
         createBackgroundDefaultImg();
         initFontAndSkin();
+        this.actorFactory = new ActorFactory(skin);
+        this.spriteFactory = new SpriteFactory(skin);
         gameHUD = new GameHUD(skin, font);
         fpsLabel = new Label("", skin);
         fpsLabel.setStyle(new Label.LabelStyle(font, Color.RED));
@@ -149,7 +152,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         } else {
             // else
             // createSpriteResourceForType
-            Sprite newResourceForRenderable = createSpriteResourceForType(toDraw);
+            Sprite newResourceForRenderable = spriteFactory.createResourceForType(toDraw);
             if (newResourceForRenderable != null) {
                 // and map it to the object
                 renderableSpriteMap.put(toDraw, newResourceForRenderable);
@@ -159,33 +162,12 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         return resource;
     }
 
-    // TODO refactor Sprite methods into Sprite factory class
-    protected Sprite createSpriteResourceForType(Renderable renderable) {
-        Sprite sToReturn = null;
-        // Get a sprite for this world object type
-        switch (renderable.getType()) {
-            case "player":
-                Texture playerImg = new Texture(resourceLocator.getFilePath("img/player.png"));
-                Sprite playerSprite = new Sprite(playerImg);
-                playerSprite.setSize(renderable.getWidth(), renderable.getHeight());
-                sToReturn = playerSprite;
-                break;
-            case "yoda":
-                Texture yodaImg = new Texture(resourceLocator.getFilePath("img/yoda.png"));
-                Sprite yodaSprite = new Sprite(yodaImg);
-                yodaSprite.setSize(renderable.getWidth(), renderable.getHeight());
-                sToReturn = yodaSprite;
-                break;
-        }
-        return sToReturn;
-    }
-
     protected Actor getActorResourceFor(Renderable toDraw) {
         Actor resource = null;
         if (renderableActorMap.containsKey(toDraw))
             resource = renderableActorMap.get(toDraw);
         else {
-            Actor newActorForRenderable = createActorResourceForType(toDraw);
+            Actor newActorForRenderable = actorFactory.createResourceForType(toDraw);
             if (newActorForRenderable != null) {
                 renderableActorMap.put(toDraw, newActorForRenderable);
                 resource = newActorForRenderable;
@@ -194,29 +176,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         return resource;
     }
 
-    // TODO refactor Sprite methods into Actor factory class
-    protected Actor createActorResourceForType(Renderable renderable) {
-        Actor toReturn;
-        switch (renderable.getType()) {
-            case "label":
-                Label label = new Label("", skin);
-                label.setWidth(renderable.getWidth());
-                label.setHeight(renderable.getHeight());
-                label.setWrap(true);
-//                Pixmap labelColor = new Pixmap((int) label.getWidth(), (int) label.getHeight(), Pixmap.Format.RGB888);
-//                labelColor.setColor(0, 0, 0, 0.1f);
-//                labelColor.fill();
-//                label.getStyle().background = new Image(new Texture(labelColor)).getDrawable();
-//                label.getStyle().background.setLeftWidth(label.getStyle().background.getLeftWidth() + 20);
-//                label.getStyle().background.setRightWidth(label.getStyle().background.getRightWidth() + 20);
-//                labelColor.dispose();
-                toReturn = label;
-                break;
-            default:
-                throw new UnsupportedRenderableTypeException("renderable with type " + renderable.getType() + " is unsupported.");
-        }
-        return toReturn;
-    }
 
     @Override
     public void drawGameState(MoonWalkerGameState currentState) {
@@ -254,9 +213,13 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         aToDraw.setPosition(renderable.getxPos(), renderable.getyPos());
         // if actor does not have a stage, it means that
         // it is the first time that is added to the stage.
-        if(aToDraw.getStage() == null)
-            stage.addActor(aToDraw);
-        //aToDraw.draw(batch, 1);
+        if(aToDraw.getStage() == null) {
+            if(renderable.getZIndex() != -1)
+                stage.getRoot().addActorAt(renderable.getZIndex(), aToDraw);
+            else
+                stage.addActor(aToDraw);
+            printActors();
+        }
     }
 
     private void handleGameEvents(List<GameEvent> eventsList) {
@@ -272,7 +235,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         }
     }
 
-    // TODO refactor method into separate class?
     private void handleCurrentGameEvent(GameEvent gameEvent, ListIterator<GameEvent> listIterator) {
         String eventType = currentGameEvent.type;
         switch (eventType) {
@@ -315,10 +277,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 updateLabelText((HashMap.SimpleEntry<Renderable, String>) currentGameEvent.parameters);
                 listIterator.remove();
                 break;
-            case "CONVERSATION_BUTTONS":
-                addConversationButtons((List<ConversationLine>) currentGameEvent.parameters);
-                listIterator.remove();
-                break;
             case "CONVERSATION_LINE":
                 List parameters = (List) currentGameEvent.parameters;
                 SingleConversationLine conversationLine = (SingleConversationLine) parameters.get(0);
@@ -341,41 +299,28 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     }
 
     private void createMultipleSelectionForConversationLines(MultipleConversationLines multipleConversationLinesComponent) {
-        MultipleSelectionComponent component = new MultipleSelectionComponent(multipleConversationLinesComponent.getTitle(), multipleConversationLinesComponent.getAvatarImgPath());
+        MultipleSelectionComponent component = new MultipleSelectionComponent(multipleConversationLinesComponent.getTitle(),
+                multipleConversationLinesComponent.getAvatarImgPath());
         component.initActor(skin);
+        int btnIndex = 1;
         for(final ConversationLine conversationLine : multipleConversationLinesComponent.getConversationLines()) {
             component.addButton(conversationLine.getText(), new UserInputHandlerImpl() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     // TODO should rendering engine know the user action code?
-                    System.out.println(conversationLine.getNextOrder());
                     userInputHandler.addUserAction(new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine.getNextOrder()));
                 }
-            });
+            }, btnIndex);
+            btnIndex++;
         }
         conversationActors.add(component);
         stage.addActor(component);
-        for(Actor stageActor : stage.getActors()) {
-            System.out.println("Actor " + stageActor.getClass() + " " + stageActor.getZIndex());
-        }
     }
 
     private void updateLabelText(HashMap.SimpleEntry<Renderable, String> parameters) {
         Actor actor = getActorResourceFor(parameters.getKey());
         Label label = (Label) actor;
         label.setText(parameters.getValue());
-    }
-
-    private void addConversationButtons(List<ConversationLine> conversationStates) {
-        Table buttonsTable = new Table(skin);
-        buttonsTable.setFillParent(true);
-        buttonsTable.bottom().left();
-        for(ConversationLine state : conversationStates) {
-            TextButton button = new TextButton(state.getText(), skin);
-            button.pad(10, 5, 10,5);
-            buttonsTable.add(button);
-        }
-        stage.addActor(buttonsTable);
     }
 
     private void renderConversationLine(final SingleConversationLine conversationLine, final UserAction toThrow) {
@@ -411,8 +356,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     public void initialize() {
         Gdx.input.setInputProcessor(stage);
         stage.addActor(worldImg);
-        stage.addActor(gameHUD.getLivesTable());
-        //stage.addActor(gameHUD.getScoreTable());
     }
 
     @Override
@@ -462,56 +405,26 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             case FREE_TEXT:
                 showTextInputDialog(question);
                 break;
-            case MULTIPLE_CHOICE:
-                showMultipleSelectDialog(question);
-                break;
             default:
                 throw new UnsupportedOperationException("Question type " + question.type + " not supported");
         }
     }
 
-    // TODO refactor method into separate class?
-    void showMultipleSelectDialog(Question question) {
-        ActionDialog dialog = new ActionDialog(
-                gameInfo.getScreenWidth() / 2f,
+    void showTextInputDialog(Question question) {
+        TextInputDialog textInputDialog = new TextInputDialog(gameInfo.getScreenWidth() / 2f,
                 gameInfo.getScreenHeight() / 2f,
                 gameInfo.getScreenWidth() * 0.8f,
                 gameInfo.getScreenHeight() * 0.6f,
                 question.getTitle(),
                 question.getBody(),
-                skin
-        );
-        dialog.setUserInputHandler(userInputHandler);
-        for (Answer a : question.getAnswers()) {
-            dialog.addButton(a.getText(), a);
-        }
-        stage.addActor(dialog.getDialog());
+                skin);
+        textInputDialog.createForQuestion(question, stage);
     }
 
-    // TODO refactor method into separate class?
-    void showTextInputDialog(Question question) {
-        ActionDialog dialog = new ActionDialog(
-                gameInfo.getScreenWidth() / 2f,
-                gameInfo.getScreenHeight() / 2f,
-                gameInfo.getScreenWidth() * 0.8f,
-                gameInfo.getScreenHeight() * 0.6f,
-                question.getTitle(),
-                question.getBody(),
-                skin
-        );
-        dialog.setUserInputHandler(userInputHandler);
-        TextField textField = new TextField("", skin);
-        Table table = new Table();
-        table.setSkin(skin);
-        table.setFillParent(true);
-        stage.addActor(table);
-        table.add(question.getBody()).padBottom(10f);
-        table.row();
-        table.add(textField).padBottom(10f);
-        table.row();
-        dialog.getDialog().addActor(table);
-        dialog.addButton("OK", new HashMap.SimpleEntry<>(question, textField));
-        stage.addActor(dialog.getDialog());
+    private void printActors() {
+        for(Actor stageActor : stage.getActors()) {
+            System.out.println("Actor " + stageActor.getClass() + " " + stageActor.getZIndex());
+        }
     }
 
 }
