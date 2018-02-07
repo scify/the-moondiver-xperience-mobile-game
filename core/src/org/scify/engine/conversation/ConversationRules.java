@@ -6,9 +6,7 @@ import org.scify.engine.*;
 import org.scify.moonwalker.app.game.rules.MoonWalkerRules;
 import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
-import org.scify.moonwalker.app.ui.components.AvatarWithMessageComponent;
 import org.scify.moonwalker.app.ui.input.UserActionCode;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +18,7 @@ public class ConversationRules extends MoonWalkerRules {
     protected String ID;
     private static final String TAG = ConversationRules.class.getName();
     private GameInfo gameInfo;
+
     public ConversationRules(String conversationJSONFilePath) {
         gameInfo = GameInfo.getInstance();
         conversationLines = new ArrayList<>();
@@ -37,32 +36,48 @@ public class ConversationRules extends MoonWalkerRules {
 
     @Override
     public GameState getNextState(GameState gameState, UserAction userAction) {
-        // TODO Refactor and change logic
         // If got an answer (TEXT, BUTTON, ...)
-        if (userAction != null && (userAction.getActionCode().equals(UserActionCode.NEXT_CONVERSATION_LINE) || userAction.getActionCode().equals(UserActionCode.MULTIPLE_SELECTION_ANSWER))) {
+        if (gotAnswer(gameState, userAction)) {
             // Clear paused conversation flag
-            gameState.removeGameEventsWithType("CONVERSATION_PAUSED");
-            gameState.addGameEvent(new GameEvent("REMOVE_CONVERSATIONS"));
-            if(userAction.getActionCode().equals(UserActionCode.MULTIPLE_SELECTION_ANSWER)) {
-                ConversationLine answered = getLineByOrderId((Integer) userAction.getActionPayload());
-                if(answered != null)
-                    setCurrentConversationLine(gameState, answered);
-            }
+            resumeConversation(gameState);
+            removeActiveConversationComponents(gameState);
+            handleAnswerToMultipleQuestion(gameState, userAction);
         }
-
-        //TODO Add check for user answer to multiple choice question
-
         // If conversation is paused
         if (gameState.eventsQueueContainsEvent("CONVERSATION_PAUSED"))
             // return the current game state
             return gameState;
-
         // Get next alternatives
         List<ConversationLine> nextLines = getPossibleNextLines(gameState, userAction);
+        handleNextConversationLine(nextLines, gameState, userAction);
+        return gameState;
+    }
 
+    protected boolean gotAnswer(GameState gameState, UserAction userAction) {
+        return (userAction != null && (userAction.getActionCode().equals(UserActionCode.NEXT_CONVERSATION_LINE) || userAction.getActionCode().equals(UserActionCode.MULTIPLE_SELECTION_ANSWER)));
+    }
+
+    protected void resumeConversation(GameState gameState) {
+        gameState.removeGameEventsWithType("CONVERSATION_PAUSED");
+    }
+
+    protected void removeActiveConversationComponents(GameState gameState) {
+        gameState.addGameEvent(new GameEvent("REMOVE_CONVERSATIONS"));
+    }
+
+    protected void handleAnswerToMultipleQuestion(GameState gameState, UserAction userAction) {
+        if(userAction.getActionCode().equals(UserActionCode.MULTIPLE_SELECTION_ANSWER)) {
+            ConversationLine answered = getLineById((Integer) userAction.getActionPayload());
+            if(answered != null)
+                setCurrentConversationLine(gameState, answered);
+        }
+    }
+
+    protected void handleNextConversationLine(List<ConversationLine> nextLines, GameState gameState, UserAction userAction) {
         // If one line returned
         if (nextLines.size() == 1) {
             // render it
+            // TODO change
             SingleConversationLine singleConversationLine = new SingleConversationLine( nextLines.get(0),
                     "img/avatars/yoda-1.jpg", getCurrentSpeaker( nextLines.get(0)));
             ArrayList<Object> payload = new ArrayList<>();
@@ -75,15 +90,12 @@ public class ConversationRules extends MoonWalkerRules {
             setCurrentConversationLine(gameState, nextLines.get(0));
             // await next event
             gameState.addGameEvent(new GameEvent("CONVERSATION_PAUSED"));
-        } else {
+        } else if(nextLines.size() > 1){
             // render dialog
             gameState.addGameEvent(new GameEvent("CONVERSATION_PAUSED"));
             MultipleConversationLines conversationLines = new MultipleConversationLines(getCurrentConversationLine(gameState).text, nextLines);
             gameState.addGameEvent(new GameEvent("CONVERSATION_LINES", conversationLines));
         }
-
-        return gameState;
-
     }
 
     @Override
@@ -112,19 +124,19 @@ public class ConversationRules extends MoonWalkerRules {
 
     protected void setCurrentConversationLine(GameState gameState, ConversationLine currentLine) {
         gameState.storeAdditionalDataEntry(ID, currentLine);
-        addSpeakersAsNeeded(gameState, currentLine);
+        // TODO
+        //addSpeakersAsNeeded(gameState, currentLine);
     }
 
     protected void addSpeakersAsNeeded(GameState state, ConversationLine currentLine) {
         // If the speaker does not exist
         if (!renderableExist(currentLine.getSpeakerId())) {
             // add the renderable character
-            Renderable newSpeaker = new Renderable(100, 200, gameInfo.getScreenWidth() * 0.3f, gameInfo.getScreenWidth() * 0.3f, currentLine.speakerId, currentLine.speakerId);
+            Renderable newSpeaker = new Renderable(50, 70, gameInfo.getScreenWidth() * 0.3f, gameInfo.getScreenWidth() * 0.4f, currentLine.speakerId, currentLine.speakerId);
             // update my lookup map
             addRenderableEntry(currentLine.speakerId, newSpeaker);
             // update state
             state.addRenderable(newSpeaker);
-            Gdx.app.log(TAG, "speaker: " + currentLine.speakerId + " was added");
         }
     }
 
@@ -135,16 +147,26 @@ public class ConversationRules extends MoonWalkerRules {
             lines.add(conversationLines.get(0));
             return lines;
         }
+        if(currentLine.getNextOrder() != 0)
+            lines = getLinesWithOrder(currentLine.getNextOrder());
+        else
+            lines = getLinesWithOrder(currentLine.getOrder() + 1);
+        return lines;
+    }
+
+    protected List<ConversationLine> getLinesWithOrder(int lineOrder) {
+        System.out.println("getting lines with order: " + lineOrder);
+        List<ConversationLine> lines = new ArrayList<>();
         for (ConversationLine line : conversationLines) {
-            if(line.getOrder() == currentLine.getOrder() + 1)
+            if(line.getOrder() == lineOrder)
                 lines.add(line);
         }
         return lines;
     }
 
-    private ConversationLine getLineByOrderId(int orderId) {
+    private ConversationLine getLineById(int id) {
         for(ConversationLine line : conversationLines)
-            if(line.getOrder() == orderId)
+            if(line.getId() == id)
                 return line;
         return null;
     }
