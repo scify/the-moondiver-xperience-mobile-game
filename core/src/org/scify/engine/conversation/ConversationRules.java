@@ -36,7 +36,7 @@ public class ConversationRules extends MoonWalkerRules {
     @Override
     public GameState getNextState(GameState gameState, UserAction userAction) {
         // If got an answer (TEXT, BUTTON, ...)
-        if (gotAnswer(gameState, userAction)) {
+        if (gotAnswer(userAction)) {
             // Clear paused conversation flag
             resumeConversation(gameState);
             removeActiveConversationComponents(gameState);
@@ -64,7 +64,7 @@ public class ConversationRules extends MoonWalkerRules {
         }
     }
 
-    protected boolean gotAnswer(GameState gameState, UserAction userAction) {
+    protected boolean gotAnswer(UserAction userAction) {
         return (userAction != null && (userAction.getActionCode().equals(UserActionCode.NEXT_CONVERSATION_LINE) || userAction.getActionCode().equals(UserActionCode.MULTIPLE_SELECTION_ANSWER)));
     }
 
