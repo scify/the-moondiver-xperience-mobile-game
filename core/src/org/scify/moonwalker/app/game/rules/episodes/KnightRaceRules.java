@@ -1,6 +1,7 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
+import org.scify.engine.conversation.ConversationLine;
 import org.scify.moonwalker.app.actors.Player;
 import org.scify.moonwalker.app.game.rules.SinglePlayerRules;
 
@@ -64,8 +65,16 @@ public class KnightRaceRules extends SinglePlayerRules {
                 // ask the conversation rules to alter the current game state accordingly
                 gsCurrent = conversationRules.getNextState(gsCurrent, userAction);
             }
+            handleTriggerEventForCurrentConversationLine(gsCurrent);
         }
         return gsCurrent;
+    }
+
+    protected void handleTriggerEventForCurrentConversationLine(GameState gameState) {
+        ConversationLine currLine = conversationRules.getCurrentConversationLine(gameState);
+        switch (currLine.getTriggerEvent()) {
+            
+        }
     }
 
     /**

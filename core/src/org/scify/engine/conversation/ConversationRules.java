@@ -42,6 +42,8 @@ public class ConversationRules extends MoonWalkerRules {
             resumeConversation(gameState);
             removeActiveConversationComponents(gameState);
             handleAnswerToMultipleQuestion(gameState, userAction);
+            if(gameState.eventsQueueContainsEvent("CONVERSATION_READY_TO_FINISH"))
+                gameState.addGameEvent(new GameEvent("CONVERSATION_FINISHED"));
         }
         // If conversation is paused
         if (gameState.eventsQueueContainsEvent("CONVERSATION_PAUSED"))
@@ -50,7 +52,17 @@ public class ConversationRules extends MoonWalkerRules {
         // Get next alternatives
         List<ConversationLine> nextLines = getPossibleNextLines(gameState, userAction);
         handleNextConversationLine(nextLines, gameState, userAction);
+        handleTriggerEventForCurrentConversationLine(gameState);
         return gameState;
+    }
+
+    protected void handleTriggerEventForCurrentConversationLine(GameState gameState) {
+        ConversationLine currLine = getCurrentConversationLine(gameState);
+        switch (currLine.getTriggerEvent()) {
+            case "end":
+                gameState.addGameEvent(new GameEvent("CONVERSATION_READY_TO_FINISH"));
+                break;
+        }
     }
 
     protected boolean gotAnswer(GameState gameState, UserAction userAction) {
