@@ -1,6 +1,7 @@
 package org.scify.engine.conversation;
 
 public class ConversationLine {
+    protected int id;
     protected int order;
     protected String speakerId;
     protected String text;
@@ -33,5 +34,9 @@ public class ConversationLine {
 
     public String getTriggerEvent() {
         return triggerEvent;
+    }
+
+    public int getId() {
+        return id;
     }
 }
