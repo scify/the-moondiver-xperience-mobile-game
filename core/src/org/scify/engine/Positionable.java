@@ -5,6 +5,7 @@ public abstract class Positionable {
     protected float yPos;
     protected float width;
     protected float height;
+    protected int zIndex = -1;
 
     public Positionable(float xPos, float yPos, float width, float height) {
         this.xPos = xPos;
@@ -43,5 +44,13 @@ public abstract class Positionable {
 
     public void setHeight(float height) {
         this.height = height;
+    }
+
+    public int getZIndex() {
+        return zIndex;
+    }
+
+    public void setZIndex(int zIndex) {
+        this.zIndex = zIndex;
     }
 }
