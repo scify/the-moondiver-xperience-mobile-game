@@ -3,7 +3,6 @@ package org.scify.moonwalker.app.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -45,10 +44,8 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private World world;
     private Map<Renderable, Sprite> renderableSpriteMap = new HashMap<>();
     private Map<Renderable, Actor> renderableActorMap = new HashMap<>();
-    private Skin skin;
-    private BitmapFont font;
+    private ThemeController themeController;
     private UserInputHandlerImpl userInputHandler;
-    private GameHUD gameHUD;
     private Label fpsLabel;
     private SpriteBatch batch;
     private Stage stage;
@@ -70,47 +67,29 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         this.batch = batch;
         this.stage = stage;
         gameViewport = stage.getViewport();
+        themeController = new ThemeController();
+        this.actorFactory = new ActorFactory(themeController.getSkin());
+        this.spriteFactory = new SpriteFactory(themeController.getSkin());
         initCamera();
         createBackgroundDefaultImg();
-        initFontAndSkin();
-        this.actorFactory = new ActorFactory(skin);
-        this.spriteFactory = new SpriteFactory(skin);
-        gameHUD = new GameHUD(skin, font);
-        fpsLabel = new Label("", skin);
-        fpsLabel.setStyle(new Label.LabelStyle(font, Color.RED));
-        fpsLabel.setPosition(20, gameInfo.getScreenHeight() - 20);
-        // fps label has thrice the normal font size
-        fpsLabel.setFontScale(3);
+        initFPSLabel();
         audioEngine.pauseCurrentlyPlayingAudios();
         // TODO music should be added from episode rules
         //audioEngine.playSoundLoop("audio/episode_1/music.wav");
+    }
+
+    private void initFPSLabel() {
+        fpsLabel = new Label("", themeController.getSkin());
+        fpsLabel.setStyle(new Label.LabelStyle(themeController.getFont(), Color.RED));
+        fpsLabel.setPosition(20, gameInfo.getScreenHeight() - 20);
+        // fps label has thrice the normal font size
+        fpsLabel.setFontScale(3);
     }
 
     protected void createBackgroundDefaultImg() {
         worldImg = new Image(new Texture(resourceLocator.getFilePath("img/theworld.png")));
         worldImg.setWidth(gameInfo.getScreenWidth());
         worldImg.setHeight(gameInfo.getScreenHeight());
-    }
-
-    // TODO Move font methods into separate class
-    protected void initFontAndSkin() {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(resourceLocator.getFilePath("fonts/Starjedi.ttf")));
-        font = createFont(generator, 12);
-        font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        skin = new Skin();
-        skin.add("default-font", font, BitmapFont.class);
-        skin.addRegions(new TextureAtlas(Gdx.files.internal(resourceLocator.getFilePath("fonts/uiskin.atlas"))));
-        skin.load(Gdx.files.internal(resourceLocator.getFilePath("fonts/uiskin.json")));
-        generator.dispose();
-    }
-
-    private BitmapFont createFont(FreeTypeFontGenerator generator, float fontSize) {
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        float screenDPI = 160.0f * Gdx.graphics.getDensity();
-        int pixelSize = (int)(fontSize * screenDPI / 96.0f); // Reference size based on 96 DPI screen
-        parameter.size = pixelSize;
-        //Gdx.app.log(TAG, "Font size: "+pixelSize+"px");
-        return generator.generateFont(parameter);
     }
 
     @Override
@@ -133,13 +112,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     @Override
     public void setGameState(MoonWalkerGameState gameState) {
         this.currentGameState = gameState;
-        // TODO remove gamehud class and add table as an independent component
-        // so that the rules can add
-        // new GameEvent("TABLE") and a set of actors and
-        // the table component creates the table and passes
-        // it to the rendering engine
-        this.gameHUD.setLives(gameState.getPlayer().getLives());
-        this.gameHUD.setScore(gameState.getPlayer().getScore());
     }
 
 
@@ -239,17 +211,11 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         String eventType = currentGameEvent.type;
         switch (eventType) {
             case "QUESTION_UI":
-                handleQuestion(gameEvent);
-                listIterator.remove();
-                break;
-            case "PLAYER_SCORE":
-                int newScore = (int) gameEvent.parameters;
-                gameHUD.setScore(newScore);
-                listIterator.remove();
-                break;
-            case "PLAYER_LIVES":
-                int newLives = (int) gameEvent.parameters;
-                gameHUD.setLives(newLives);
+                try {
+                    handleQuestion(gameEvent);
+                } catch (UnsupportedOperationException e) {
+                    e.printStackTrace();
+                }
                 listIterator.remove();
                 break;
             case "BACKGROUND_IMG_UI":
@@ -301,7 +267,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private void createMultipleSelectionForConversationLines(MultipleConversationLines multipleConversationLinesComponent) {
         MultipleSelectionComponent component = new MultipleSelectionComponent(multipleConversationLinesComponent.getTitle(),
                 multipleConversationLinesComponent.getAvatarImgPath());
-        component.initActor(skin);
+        component.initActor(themeController.getSkin());
         int btnIndex = 1;
         for(final ConversationLine conversationLine : multipleConversationLinesComponent.getConversationLines()) {
             component.addButton(conversationLine.getText(), new UserInputHandlerImpl() {
@@ -326,7 +292,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private void renderConversationLine(final SingleConversationLine conversationLine, final UserAction toThrow) {
         AvatarWithMessageComponent component = new AvatarWithMessageComponent(conversationLine.getConversationLine().getText(),
                 conversationLine.getRenderableReferenced(), conversationLine.getRelativeAvatarPath(), true);
-        component.initActor(skin, new UserInputHandlerImpl() {
+        component.initActor(themeController.getSkin(), new UserInputHandlerImpl() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 userInputHandler.addUserAction(toThrow);
@@ -366,7 +332,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     @Override
     public void disposeResources() {
         System.out.println("disposing rendering engine resources...");
-        font.dispose();
+        themeController.dispose();
         debugRenderer.dispose();
         audioEngine.disposeResources();
     }
@@ -417,7 +383,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 gameInfo.getScreenHeight() * 0.6f,
                 question.getTitle(),
                 question.getBody(),
-                skin);
+                themeController.getSkin());
         textInputDialog.createForQuestion(question, stage);
     }
 
