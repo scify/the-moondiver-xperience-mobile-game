@@ -15,6 +15,7 @@ public class MoonWalkerGameState extends GameState {
         super(eventQueue);
         this.player = player;
         this.world = world;
-        this.renderableList.add(player);
+        if(player != null)
+            this.renderableList.add(player);
     }
 }
