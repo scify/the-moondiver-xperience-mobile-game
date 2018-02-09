@@ -95,8 +95,10 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
         for(Renderable renderable: gsCurrent.getRenderableList()) {
             Body body = getResourceFor(renderable);
             if(body != null) {
-                renderable.setxPos(body.getPosition().x);
-                renderable.setyPos(body.getPosition().y);
+                // body position is relevant to its body, so we need to
+                // subtract the half of width and height, respectively.
+                renderable.setxPos(body.getPosition().x - renderable.getWidth() / 2f);
+                renderable.setyPos(body.getPosition().y - renderable.getHeight() / 2f);
             }
         }
         // how many times to calculate physics in a second

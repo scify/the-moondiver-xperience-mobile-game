@@ -1,6 +1,7 @@
 package org.scify.moonwalker.app.ui;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -29,6 +30,12 @@ public class ActorFactory extends ComponentFactory{
                 Image yodaImg = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath("img/yoda.png")))));
                 yodaImg.setSize(renderable.getWidth(), renderable.getHeight());
                 toReturn = yodaImg;
+                break;
+            case "player":
+                Image playerImg = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath("img/player.png")))));
+
+                playerImg.setSize(renderable.getWidth(), renderable.getHeight());
+                toReturn = playerImg;
                 break;
             default:
                 throw new UnsupportedRenderableTypeException("renderable with type " + renderable.getType() + " is unsupported.");

@@ -20,7 +20,7 @@ public class SinglePlayerRules extends MoonWalkerRules {
         gameInfo = GameInfo.getInstance();
         worldX = gameInfo.getScreenWidth();
         worldY = gameInfo.getScreenHeight();
-        pPlayer = new Player(worldX / 2f + 100, worldY / 2f - 100,  gameInfo.getScreenWidth() * 0.2f, gameInfo.getScreenWidth() * 0.2f, "player", "player");
+        pPlayer = new Player(0, 0,  gameInfo.getScreenWidth() * 0.2f, gameInfo.getScreenWidth() * 0.2f, "player", "player");
         pPlayer.setLives(5);
         pPlayer.setScore(0);
         addRenderableEntry("player", pPlayer);

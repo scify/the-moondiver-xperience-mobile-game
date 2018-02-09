@@ -334,7 +334,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             lLastUpdate = lNewTime;
         }
     }
-    
+
     protected void drawComponents(Float delta, long lNewTime) {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
