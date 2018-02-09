@@ -18,6 +18,7 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
     protected int worldY;
     protected Map<String, Renderable> idToRenderable;
     protected ConversationRules conversationRules;
+    protected GameState gameState;
 
     public MoonWalkerRules() {
         idToRenderable = new HashMap<>();
@@ -33,6 +34,10 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
 
     public Renderable getRenderableById(String rId) {
         return idToRenderable.get(rId);
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 
     @Override
