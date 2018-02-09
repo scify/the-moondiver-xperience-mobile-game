@@ -1,11 +1,8 @@
 package org.scify.engine;
 
-import org.scify.engine.*;
-
 public abstract class PhysicsRules implements Rules<GameState, UserAction, EpisodeEndState> {
 
     protected int wordX, worldY;
-
 
     public PhysicsRules(int worldX, int worldY) {
         this.wordX = worldX;
