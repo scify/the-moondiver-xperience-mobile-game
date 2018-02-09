@@ -1,4 +1,4 @@
-package org.scify.moonwalker.app.game.rules;
+package org.scify.engine;
 
 import org.scify.engine.*;
 

@@ -5,11 +5,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 import org.scify.engine.*;
-import org.scify.moonwalker.app.MoonWalkerGameState;
+import org.scify.engine.PhysicsRules;
 import org.scify.moonwalker.app.actors.Player;
 import org.scify.moonwalker.app.helpers.GameInfo;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,11 +18,13 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
     protected Map<Renderable, Body> renderableBodyMap = new HashMap<>();
     private final float keyStrokeAcceleration = 70f;
     private GameInfo gameInfo;
+    protected BodyFactory bodyFactory;
 
     public MoonWalkerPhysicsRules(int worldX, int worldY) {
         super(worldX, worldY);
         createWorld();
         gameInfo = GameInfo.getInstance();
+        bodyFactory = new BodyFactory(world);
     }
 
     private void createWorld() {
@@ -46,7 +47,7 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
         } else {
             // else
             // createSpriteResourceForType
-            Body newResourceForRenderable = createResourceForRenderable(renderable);
+            Body newResourceForRenderable = bodyFactory.createResourceForRenderable(renderable);
             if(newResourceForRenderable != null) {
                 // and map it to the object
                 renderableBodyMap.put(renderable, newResourceForRenderable);
@@ -55,37 +56,7 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
         }
         return resource;
     }
-
-    protected Body createResourceForRenderable(Renderable renderable) {
-        String sType = renderable.getType();
-        Body bToReturn = null;
-        // Get a sprite for this world object type
-        switch (sType) {
-            case "player":
-                bToReturn = createBody(BodyDef.BodyType.DynamicBody, renderable.getWidth(), renderable.getHeight(), renderable.getxPos(), renderable.getyPos());
-                break;
-        }
-        return bToReturn;
-    }
-
-    private Body createBody(BodyDef.BodyType bodyType, float width, float height, float xPos, float yPos) {
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = bodyType;
-        bodyDef.position.set(xPos , yPos);
-
-        Body body = world.createBody(bodyDef);
-        PolygonShape shape = new PolygonShape();
-        // IMPORTANT shape takes half-width and half-height parameters, according to documentation
-        shape.setAsBox(width / 2 , height / 2);
-        FixtureDef fixtureDef = new FixtureDef();
-
-        fixtureDef.shape = shape;
-        fixtureDef.density = 1f;
-        Fixture fixture = body.createFixture(fixtureDef);
-        shape.dispose();
-        return body;
-    }
-
+    
     @Override
     public GameState getNextState(GameState gsCurrent, UserAction userAction) {
 
