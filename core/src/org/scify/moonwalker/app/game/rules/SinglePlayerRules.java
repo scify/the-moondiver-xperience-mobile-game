@@ -23,12 +23,23 @@ public class SinglePlayerRules extends MoonWalkerRules {
         physics = new MoonWalkerPhysicsRules(worldX, worldY);
     }
 
-    // TODO add setPhysicsRules (protected)
+    /**
+     * This setter serves the need for an episode
+     * to define their own set of physics rules.
+     * for example, an episode might have physics rules
+     * without gravity
+     * @param physics the new {@link MoonWalkerPhysicsRules} instance
+     */
+    public void setPhysics(MoonWalkerPhysicsRules physics) {
+        this.physics = physics;
+    }
 
     @Override
     public GameState getInitialState() {
         List<GameEvent> eventQueue = Collections.synchronizedList(new LinkedList<GameEvent>());
-        return new MoonWalkerGameState(eventQueue, pPlayer, physics.world);
+        if(gameState == null)
+            gameState = new MoonWalkerGameState(eventQueue, pPlayer, physics.world);
+        return gameState;
     }
 
     @Override
@@ -42,10 +53,7 @@ public class SinglePlayerRules extends MoonWalkerRules {
 
     @Override
     public boolean isGameFinished(GameState gsCurrent) {
-        MoonWalkerGameState gameState = (MoonWalkerGameState) gsCurrent;
-        // each single player episode is finished
-        // when the player has no lives left
-        return gameState.getPlayer().getLives() == 0;
+        return false;
     }
 
     @Override
