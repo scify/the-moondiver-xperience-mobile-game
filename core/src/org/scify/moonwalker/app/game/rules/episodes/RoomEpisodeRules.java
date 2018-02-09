@@ -5,13 +5,20 @@ import org.scify.engine.conversation.ConversationLine;
 import org.scify.moonwalker.app.actors.Player;
 import org.scify.moonwalker.app.game.rules.SinglePlayerRules;
 
-import java.util.Date;
 import java.util.HashMap;
 
-public class KnightRaceRules extends SinglePlayerRules {
-
+public class RoomEpisodeRules extends SinglePlayerRules {
     protected Renderable messagesLabel;
-    protected String mainLabelText = "Episode goal: Help the player reach the top edge of the screen.";
+    protected String mainLabelText = "Επεισόδιο 0: Το δωμάτιο.";
+
+    public RoomEpisodeRules() {
+        pPlayer = new Player(gameInfo.getScreenWidth() / 2f,
+                gameInfo.getScreenHeight() / 2f - 80,  gameInfo.getScreenWidth() * 0.3f, gameInfo.getScreenWidth() * 0.3f,
+                "boy", "player");
+        pPlayer.setLives(5);
+        pPlayer.setScore(0);
+        addRenderableEntry("player", pPlayer);
+    }
 
     @Override
     public GameState getNextState(GameState gsCurrent, UserAction userAction) {
@@ -19,7 +26,6 @@ public class KnightRaceRules extends SinglePlayerRules {
         if(isGamePaused(gsCurrent))
             return gsCurrent;
         handleGameStartingRules(gsCurrent);
-        handlePositionRules(gsCurrent);
         gsCurrent = handleConversationRules(gsCurrent, userAction);
         if(episodeFinished(gsCurrent)) {
             super.handleGameFinishedEvents(gsCurrent);
@@ -31,7 +37,7 @@ public class KnightRaceRules extends SinglePlayerRules {
     protected void handleGameStartingRules(GameState gsCurrent) {
         if(!gsCurrent.eventsQueueContainsEvent("EPISODE_STARTED")) {
             gsCurrent.addGameEvent(new GameEvent("EPISODE_STARTED"));
-            gsCurrent.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/episode_1/bg.png"));
+            gsCurrent.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/episode_0/bg.jpg"));
             float labelWidth = gameInfo.getScreenWidth() * 0.2f;
             float labelHeight = gameInfo.getScreenHeight()* 0.5f;
             messagesLabel = new Renderable(gameInfo.getScreenWidth() - labelWidth - 20, gameInfo.getScreenHeight() / 2f - 100, labelWidth, labelHeight, "label", "messagesLabel");
@@ -40,33 +46,21 @@ public class KnightRaceRules extends SinglePlayerRules {
         }
     }
 
-    protected void handlePositionRules(GameState gameState) {
-        if(gameState.eventsQueueContainsEvent("PLAYER_BORDER")) {
-            // add dialog object in game event
-            gameState.removeGameEventsWithType("PLAYER_BORDER");
-            gameState.addGameEvent(new GameEvent("UPDATE_LABEL_TEXT_UI", new HashMap.SimpleEntry<>(messagesLabel, "Whoops!")));
-            // label is reset to its original state after 3 seconds
-            gameState.addGameEvent(new GameEvent("UPDATE_LABEL_TEXT_UI", new HashMap.SimpleEntry<>(messagesLabel, mainLabelText), new Date().getTime() + 3000, false));
-        }
-    }
 
     protected GameState handleConversationRules(GameState gsCurrent, UserAction userAction) {
-        Player player = gsCurrent.getPlayer();
-        if(player.getxPos() < gameInfo.getScreenWidth() / 2f) {
-            // begin conversation with Yoda
-            // if the conversation has not started and has not finished too
-            // TODO add conversation id in case we have multiple conversations in an episode
-            if(!gsCurrent.eventsQueueContainsEvent("CONVERSATION_STARTED") && !gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED")) {
-                // call base class create method, passing the resource file for this specific conversation
-                createConversation(gsCurrent, "json_DB/conversation.json");
-            }
-            // if the conversation has already started, but has not finished yet
-            if (gsCurrent.eventsQueueContainsEvent("CONVERSATION_STARTED") && !gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED")) {
-                // ask the conversation rules to alter the current game state accordingly
-                gsCurrent = conversationRules.getNextState(gsCurrent, userAction);
-            }
-            handleTriggerEventForCurrentConversationLine(gsCurrent);
+        // begin conversation with Yoda
+        // if the conversation has not started and has not finished too
+        // TODO add conversation id in case we have multiple conversations in an episode
+        if(!gsCurrent.eventsQueueContainsEvent("CONVERSATION_STARTED") && !gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED")) {
+            // call base class create method, passing the resource file for this specific conversation
+            createConversation(gsCurrent, "conversations/episode_0.json");
         }
+        // if the conversation has already started, but has not finished yet
+        if (gsCurrent.eventsQueueContainsEvent("CONVERSATION_STARTED") && !gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED")) {
+            // ask the conversation rules to alter the current game state accordingly
+            gsCurrent = conversationRules.getNextState(gsCurrent, userAction);
+        }
+        handleTriggerEventForCurrentConversationLine(gsCurrent);
         return gsCurrent;
     }
 

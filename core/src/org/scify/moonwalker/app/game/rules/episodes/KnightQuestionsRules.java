@@ -1,9 +1,6 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
-import org.scify.engine.EpisodeEndState;
-import org.scify.engine.GameEvent;
-import org.scify.engine.GameState;
-import org.scify.engine.UserAction;
+import org.scify.engine.*;
 import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.moonwalker.app.actors.Player;
 import org.scify.moonwalker.app.game.quiz.Question;
@@ -63,8 +60,8 @@ public class KnightQuestionsRules extends SinglePlayerRules {
     @Override
     public EpisodeEndState determineEndState(GameState gsFinal) {
         if(gsFinal.eventsQueueContainsEvent("CORRECT_ANSWER"))
-            return EpisodeEndState.EPISODE_FINISHED_SUCCESS;
-        return EpisodeEndState.EPISODE_FINISHED_FAILURE;
+            return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS, gsFinal);
+        return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE, gsFinal);
     }
 
     protected void handleGameStartingRules(GameState gsCurrent) {

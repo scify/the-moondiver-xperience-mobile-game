@@ -84,6 +84,14 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
         Player pPlayer = gameState.getPlayer();
         Body body = getResourceFor(pPlayer);
         GameEvent event = null;
+        if(pPlayer != null && body != null)
+            movePlayerBody(userAction, body);
+        if(event != null) {
+            gameState.addGameEvent(event);
+        }
+    }
+
+    private void movePlayerBody(UserAction userAction, Body body) {
         switch (userAction.getActionCode()) {
             case UP:
                 body.setLinearVelocity(body.getLinearVelocity().x, +keyStrokeAcceleration);
@@ -100,29 +108,28 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
             default:
                 break;
         }
-        if(event != null) {
-            gameState.addGameEvent(event);
-        }
     }
 
     private void handleBorderRules(GameState gameState) {
         Player pPlayer = gameState.getPlayer();
         Body body = getResourceFor(pPlayer);
-        if(body.getPosition().y + pPlayer.getHeight() / 2f > gameInfo.getScreenHeight()) {
-            body.setLinearVelocity(body.getLinearVelocity().x, -keyStrokeAcceleration);
-            addPlayerBorderEvents(gameState, 0);
-        }
-        if(body.getPosition().y - pPlayer.getHeight() / 2f < 0 ) {
-            body.setLinearVelocity(body.getLinearVelocity().x, +keyStrokeAcceleration);
-            addPlayerBorderEvents(gameState, 1);
-        }
-        if(body.getPosition().x - pPlayer.getHeight() / 2f < 0 ) {
-            body.setLinearVelocity(+keyStrokeAcceleration, body.getLinearVelocity().y);
-            addPlayerBorderEvents(gameState, 2);
-        }
-        if(body.getPosition().x + pPlayer.getHeight() / 2f > gameInfo.getScreenWidth() ) {
-            body.setLinearVelocity(-keyStrokeAcceleration, body.getLinearVelocity().y);
-            addPlayerBorderEvents(gameState, 3);
+        if(pPlayer != null && body != null) {
+            if (body.getPosition().y + pPlayer.getHeight() / 2f > gameInfo.getScreenHeight()) {
+                body.setLinearVelocity(body.getLinearVelocity().x, -keyStrokeAcceleration);
+                addPlayerBorderEvents(gameState, 0);
+            }
+            if (body.getPosition().y - pPlayer.getHeight() / 2f < 0) {
+                body.setLinearVelocity(body.getLinearVelocity().x, +keyStrokeAcceleration);
+                addPlayerBorderEvents(gameState, 1);
+            }
+            if (body.getPosition().x - pPlayer.getHeight() / 2f < 0) {
+                body.setLinearVelocity(+keyStrokeAcceleration, body.getLinearVelocity().y);
+                addPlayerBorderEvents(gameState, 2);
+            }
+            if (body.getPosition().x + pPlayer.getHeight() / 2f > gameInfo.getScreenWidth()) {
+                body.setLinearVelocity(-keyStrokeAcceleration, body.getLinearVelocity().y);
+                addPlayerBorderEvents(gameState, 3);
+            }
         }
     }
 

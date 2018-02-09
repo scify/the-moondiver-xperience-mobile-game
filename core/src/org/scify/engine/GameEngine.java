@@ -40,7 +40,7 @@ public class GameEngine implements Game {
                 Thread.sleep(20L); // Allow repainting
             } catch (InterruptedException e) {
                 e.printStackTrace();
-                return EpisodeEndState.EPISODE_INTERRUPTED;
+                return new EpisodeEndState(EpisodeEndStateCode.EPISODE_INTERRUPTED,currentGameState);
             }
         }
         // here the game has ended

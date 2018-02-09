@@ -27,19 +27,23 @@ public class ActorFactory extends ComponentFactory{
                 toReturn = label;
                 break;
             case "yoda":
-                Image yodaImg = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath("img/yoda.png")))));
-                yodaImg.setSize(renderable.getWidth(), renderable.getHeight());
-                toReturn = yodaImg;
+                toReturn = createImage("img/yoda.png", renderable);
                 break;
             case "player":
-                Image playerImg = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath("img/player.png")))));
-
-                playerImg.setSize(renderable.getWidth(), renderable.getHeight());
-                toReturn = playerImg;
+                toReturn = createImage("img/player.png", renderable);
+                break;
+            case "boy":
+                toReturn = createImage("img/boy.png", renderable);
                 break;
             default:
                 throw new UnsupportedRenderableTypeException("renderable with type " + renderable.getType() + " is unsupported.");
         }
         return toReturn;
+    }
+
+    public Image createImage(String imgFileRelevantPath, Renderable renderable) {
+        Image img = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath(imgFileRelevantPath)))));
+        img.setSize(renderable.getWidth(), renderable.getHeight());
+        return img;
     }
 }

@@ -27,8 +27,12 @@ public abstract class Scenario {
         System.out.println("Ready to start episode: " + currentEpisode.getName());
         final EpisodeEndState endState = (EpisodeEndState) currentEpisode.play();
         System.err.println(endState);
-        currentEpisode = getNextEpisode(currentEpisode, endState);
+        currentEpisode = getNextEpisode(endState);
         playCurrentEpisode();
+    }
+
+    protected void appendEpisode(Episode episode) {
+        addEpisodeAfter(currentEpisode, episode);
     }
 
     protected void addEpisodeAfter(Episode episodeBefore, Episode newEpisode) {
@@ -42,10 +46,10 @@ public abstract class Scenario {
         currentEpisode = firstEpisode;
     }
 
-    protected Episode getNextEpisode(Episode episode, EpisodeEndState state) {
+    protected Episode getNextEpisode(EpisodeEndState state) {
         // get possible next episodes for
         // current episode, given the last episode end state state
-        List<Episode> possibleNextEpisodes = episodeListMap.get(episode);
+        List<Episode> possibleNextEpisodes = episodeListMap.get(currentEpisode);
         if(possibleNextEpisodes == null)
             return null;
         for(Episode candidateEpisode : possibleNextEpisodes) {
