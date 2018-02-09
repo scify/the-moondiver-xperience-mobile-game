@@ -1,16 +1,21 @@
 package org.scify.engine;
 
+/**
+ * Each {@link Episode} instance finished by producing an instance of this class.
+ * This class describes "how" the episode finished ({@link EpisodeEndStateCode})
+ * as well as carrying the last instance of the {@link GameState} game state
+ */
 public class EpisodeEndState {
-    protected EpisodeEndStateCode endState;
+    protected EpisodeEndStateCode endStateCode;
     protected GameState gameState;
 
-    public EpisodeEndState(EpisodeEndStateCode endState, GameState gameState) {
-        this.endState = endState;
+    public EpisodeEndState(EpisodeEndStateCode endStateCode, GameState gameState) {
+        this.endStateCode = endStateCode;
         this.gameState = gameState;
     }
 
-    public EpisodeEndStateCode getEndState() {
-        return endState;
+    public EpisodeEndStateCode getEndStateCode() {
+        return endStateCode;
     }
 
     public GameState getGameState() {
