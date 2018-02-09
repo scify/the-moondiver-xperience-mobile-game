@@ -48,7 +48,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private SpriteBatch batch;
     private Stage stage;
     private Viewport gameViewport;
-
     private ResourceLocator resourceLocator;
     private static final String TAG = MoonWalkerRenderingEngine.class.getName();
     private List<Actor> conversationActors;
@@ -96,13 +95,10 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         this.world = initialState.world;
     }
 
-
-
     @Override
     public void setGameState(MoonWalkerGameState gameState) {
         this.currentGameState = gameState;
     }
-
 
     protected Sprite getSpriteResourceFor(Renderable toDraw) {
         Sprite resource = null;
@@ -136,7 +132,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         }
         return resource;
     }
-
 
     @Override
     public void drawGameState(MoonWalkerGameState currentState) {
@@ -333,23 +328,26 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             Thread.yield();
             return; // Do nothing
         } else {
-            Gdx.gl.glClearColor(1, 0, 0, 1);
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-            //stage.setDebugAll(true);
-            stage.act(delta);
-            stage.draw();
-            synchronized (batch) {
-                batch.begin();
-                fpsLabel.setText(String.valueOf(1000 / (lNewTime - lLastUpdate)));
-                fpsLabel.draw(batch, 1);
-                drawGameState(currentGameState);
-                batch.end();
-
-                cameraController.update();
-            }
+            drawComponents(delta, lNewTime);
             cameraController.render(world);
             cameraController.setProjectionMatrix(batch);
             lLastUpdate = lNewTime;
+        }
+    }
+    
+    protected void drawComponents(Float delta, long lNewTime) {
+        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        //stage.setDebugAll(true);
+        stage.act(delta);
+        stage.draw();
+        synchronized (batch) {
+            batch.begin();
+            fpsLabel.setText(String.valueOf(1000 / (lNewTime - lLastUpdate)));
+            fpsLabel.draw(batch, 1);
+            drawGameState(currentGameState);
+            batch.end();
+            cameraController.update();
         }
     }
 
