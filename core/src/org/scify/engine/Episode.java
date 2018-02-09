@@ -1,6 +1,7 @@
 package org.scify.engine;
 
 import com.badlogic.gdx.Gdx;
+import org.scify.moonwalker.app.game.rules.episodes.KnightRaceRules;
 
 import java.util.concurrent.*;
 
@@ -16,6 +17,7 @@ public abstract class Episode<T> implements Callable<T> {
         this.renderingEngine = renderingEngine;
         this.userInputHandler = userInputHandler;
         this.name = name;
+        gameEngine = new GameEngine();
     }
 
     public boolean isAccessible(EpisodeEndState state){
