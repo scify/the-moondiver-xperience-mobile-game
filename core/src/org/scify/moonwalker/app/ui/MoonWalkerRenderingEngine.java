@@ -3,7 +3,6 @@ package org.scify.moonwalker.app.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -38,8 +37,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private Image worldImg;
     private MoonWalkerGameState currentGameState;
     private AudioEngine audioEngine;
-    private OrthographicCamera box2DCamera;
-    private Box2DDebugRenderer debugRenderer;
+    private CameraController cameraController;
     private GameInfo gameInfo;
     private World world;
     private Map<Renderable, Sprite> renderableSpriteMap = new HashMap<>();
@@ -50,7 +48,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private SpriteBatch batch;
     private Stage stage;
     private Viewport gameViewport;
-    private Camera mainCamera;
+
     private ResourceLocator resourceLocator;
     private static final String TAG = MoonWalkerRenderingEngine.class.getName();
     private List<Actor> conversationActors;
@@ -59,6 +57,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
 
     public MoonWalkerRenderingEngine(UserInputHandler userInputHandler, SpriteBatch batch, Stage stage) {
         this.resourceLocator = new ResourceLocator();
+        cameraController = new CameraController();
         this.userInputHandler = (UserInputHandlerImpl) userInputHandler;
         conversationActors = new ArrayList<>();
         audioEngine = new GdxAudioEngine();
@@ -70,7 +69,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         themeController = new ThemeController();
         this.actorFactory = new ActorFactory(themeController.getSkin());
         this.spriteFactory = new SpriteFactory(themeController.getSkin());
-        initCamera();
+        cameraController.initCamera(stage);
         createBackgroundDefaultImg();
         initFPSLabel();
         audioEngine.pauseCurrentlyPlayingAudios();
@@ -97,17 +96,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         this.world = initialState.world;
     }
 
-    private void initCamera() {
-        int width = gameInfo.getScreenWidth();
-        int height = gameInfo.getScreenHeight();
 
-        box2DCamera = new OrthographicCamera();
-        box2DCamera.setToOrtho(false, width,
-                height);
-        box2DCamera.position.set(width / 2f, height / 2f, 0);
-        mainCamera = stage.getCamera();
-        debugRenderer = new Box2DDebugRenderer();
-    }
 
     @Override
     public void setGameState(MoonWalkerGameState gameState) {
@@ -333,7 +322,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     public void disposeResources() {
         System.out.println("disposing rendering engine resources...");
         themeController.dispose();
-        debugRenderer.dispose();
+        cameraController.disposeResources();
         audioEngine.disposeResources();
     }
 
@@ -356,10 +345,10 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 drawGameState(currentGameState);
                 batch.end();
 
-                mainCamera.update();
+                cameraController.update();
             }
-            debugRenderer.render(world, box2DCamera.combined);
-            batch.setProjectionMatrix(mainCamera.combined);
+            cameraController.render(world);
+            cameraController.setProjectionMatrix(batch);
             lLastUpdate = lNewTime;
         }
     }
