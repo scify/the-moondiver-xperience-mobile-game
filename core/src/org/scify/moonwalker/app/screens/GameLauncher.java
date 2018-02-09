@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import org.scify.engine.*;
 import org.scify.moonwalker.app.MoonWalker;
 import org.scify.moonwalker.app.game.scenarios.KnightAdventuresScenario;
+import org.scify.moonwalker.app.game.scenarios.MoonWalkerScenario;
 import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.ui.MoonWalkerRenderingEngine;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
@@ -49,7 +50,7 @@ public class GameLauncher implements Screen {
         UserInputHandler userInputHandler = new UserInputHandlerImpl();
         final RenderingEngine renderingEngine = new MoonWalkerRenderingEngine(userInputHandler, batch, stage);
 
-        final Scenario mainGameScenario = new KnightAdventuresScenario(renderingEngine, userInputHandler);
+        final Scenario mainGameScenario = new MoonWalkerScenario(renderingEngine, userInputHandler);
 
         app.setScreen(new GamePlayScreen(renderingEngine));
         Thread thread = new Thread(new Runnable() {
