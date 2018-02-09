@@ -2,8 +2,11 @@ package org.scify.moonwalker.app.ui.components;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import org.scify.engine.Renderable;
 import org.scify.engine.conversation.ConversationLine;
@@ -20,7 +23,7 @@ import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
  * and an image path that represents the {@link Renderable} who is saying
  * the line.
  */
-public class AvatarWithMessageComponent extends Table {
+public class AvatarWithMessageComponent extends Group {
 
     protected String message;
     protected Renderable renderable;
@@ -32,6 +35,8 @@ public class AvatarWithMessageComponent extends Table {
     protected GameInfo gameInfo;
     protected boolean hasNextButton;
     protected TextButton nextButton;
+    protected Table table;
+    protected Image background;
 
     public AvatarWithMessageComponent(String message, Renderable renderable, String relativeAvatarPath, boolean hasNextButton) {
         gameInfo = GameInfo.getInstance();
@@ -40,29 +45,33 @@ public class AvatarWithMessageComponent extends Table {
         this.relativeAvatarPath = relativeAvatarPath;
         resourceLocator = new ResourceLocator();
         this.hasNextButton = hasNextButton;
+        table = new Table();
     }
 
     public void initActor(Skin skin, UserInputHandlerImpl userInputHandler) {
-        setSkin(skin);
-        setFillParent(true);
+        table.setSkin(skin);
+        table.setFillParent(true);
         setWidth(gameInfo.getScreenWidth());
         setHeight(200);
-        bottom().left();
+        table.bottom().left();
         lineLabel = new Label(message, skin);
         lineLabel.setWrap(true);
         lineLabel.setWidth(gameInfo.getScreenWidth() * 0.5f);
         avatarSprite = new Sprite(new Texture(resourceLocator.getFilePath(relativeAvatarPath)));
         avatarSprite.setSize((float) (gameInfo.getScreenWidth() * 0.15), (float) (gameInfo.getScreenWidth() * 0.1));
         avatarImg = new Image(new SpriteDrawable(avatarSprite));
-
-        add(avatarImg).width(gameInfo.getScreenWidth() * 0.2f).padLeft(5).padBottom(10);
-        add(lineLabel).width(lineLabel.getWidth()).padLeft(10).align(Align.right);
+        background = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath("img/component_background.png")))));
+        background.setSize(gameInfo.getScreenWidth(), gameInfo.getScreenHeight() / 4f);
+        table.add(avatarImg).width(gameInfo.getScreenWidth() * 0.2f).padLeft(5).padBottom(10);
+        table.add(lineLabel).width(lineLabel.getWidth()).padLeft(10).align(Align.right);
         if(hasNextButton) {
             nextButton = new TextButton("Next", skin);
             nextButton.pad(5);
-            add(nextButton).width(gameInfo.getScreenWidth() * 0.2f).padLeft(10).align(Align.left);
+            table.add(nextButton).width(gameInfo.getScreenWidth() * 0.2f).padLeft(10).align(Align.left);
             nextButton.addListener(userInputHandler);
         }
         //debug();
+        addActor(background);
+        addActor(table);
     }
 }
