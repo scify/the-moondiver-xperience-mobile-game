@@ -12,8 +12,7 @@ public class KnightAdventuresScenario extends Scenario {
     public KnightAdventuresScenario(RenderingEngine renderingEngine, UserInputHandler userInputHandler) {
         super();
         Episode firstEpisode = new KnightRaceEpisode(renderingEngine, userInputHandler);
-        Episode secondEpisode = new KnightQuestionsEpisode(renderingEngine, userInputHandler);
-        setFirstEpisode(firstEpisode);
-        addEpisodeAfter(firstEpisode, secondEpisode);
+        setFirstEpisode(new KnightRaceEpisode(renderingEngine, userInputHandler));
+        addEpisodeAfter(firstEpisode, new KnightQuestionsEpisode(renderingEngine, userInputHandler));
     }
 }
