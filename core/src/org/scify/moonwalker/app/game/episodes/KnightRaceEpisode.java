@@ -8,7 +8,6 @@ public class KnightRaceEpisode extends Episode<EpisodeEndState>{
 
     public KnightRaceEpisode(RenderingEngine renderingEngine, UserInputHandler userInputHandler) {
         super(renderingEngine, userInputHandler, "KnightRaceEpisode");
-        gameEngine = new GameEngine();
         gameEngine.initialize(this.renderingEngine, this.userInputHandler, new KnightRaceRules());
     }
 

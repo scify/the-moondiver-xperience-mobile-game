@@ -7,9 +7,7 @@ public class KnightQuestionsEpisode extends Episode<EpisodeEndState> {
 
     public KnightQuestionsEpisode(RenderingEngine renderingEngine, UserInputHandler userInputHandler) {
         super(renderingEngine, userInputHandler, "KnightQuestionsEpisode");
-        gameEngine = new GameEngine();
         gameEngine.initialize(this.renderingEngine, this.userInputHandler, new KnightQuestionsRules());
-
     }
 
     @Override
