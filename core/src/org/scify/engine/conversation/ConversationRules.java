@@ -90,7 +90,7 @@ public class ConversationRules extends MoonWalkerRules {
             // render it
             // TODO change
             SingleConversationLine singleConversationLine = new SingleConversationLine( nextLines.get(0),
-                    "img/avatars/yoda-1.jpg", getCurrentSpeaker( nextLines.get(0)));
+                    "img/avatars/" + nextLines.get(0).getSpeakerId() + ".jpg", getCurrentSpeaker( nextLines.get(0)));
             ArrayList<Object> payload = new ArrayList<>();
             payload.add(singleConversationLine);
             // Declare which user action should be thrown when button is pressed
