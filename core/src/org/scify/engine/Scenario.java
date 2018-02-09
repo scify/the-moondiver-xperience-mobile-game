@@ -10,7 +10,6 @@ public abstract class Scenario {
     protected Episode currentEpisode;
     protected Map<Episode, List<Episode>> episodeListMap;
 
-
     public Scenario() {
         episodeListMap = new HashMap<>();
     }
