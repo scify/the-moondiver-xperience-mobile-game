@@ -21,10 +21,6 @@ public class KnightRaceRules extends SinglePlayerRules {
         handleGameStartingRules(gsCurrent);
         handlePositionRules(gsCurrent);
         gsCurrent = handleConversationRules(gsCurrent, userAction);
-        if(episodeFinished(gsCurrent)) {
-            super.handleGameFinishedEvents(gsCurrent);
-            this.handleGameFinishedEvents(gsCurrent);
-        }
         return gsCurrent;
     }
 
