@@ -11,8 +11,12 @@ public class BodyFactory {
         this.world = world;
     }
 
-    protected Body createResourceForRenderable(Renderable renderable) {
+    protected Body createResourceForRenderable(Renderable renderable) throws Exception {
+        if(renderable == null) {
+            throw new Exception("Renderable cannot be null");
+        }
         String sType = renderable.getType();
+
         Body bToReturn = null;
         // Get a sprite for this world object type
         switch (sType) {
