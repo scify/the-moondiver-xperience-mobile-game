@@ -22,4 +22,9 @@ public class Renderable extends Positionable {
     public void setUserInputHandler(UserInputHandler userInputHandler) {
         this.userInputHandler = userInputHandler;
     }
+
+    @Override
+    public String toString() {
+        return "Type: " + type + " id: " + id + " x: " + xPos + " y: " + yPos;
+    }
 }
