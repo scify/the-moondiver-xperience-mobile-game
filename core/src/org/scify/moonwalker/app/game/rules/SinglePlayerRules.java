@@ -61,4 +61,9 @@ public class SinglePlayerRules extends MoonWalkerRules {
     public EpisodeEndState determineEndState(GameState gsCurrent) {
         return null;
     }
+
+    @Override
+    public void cleanUpState(GameState currentState) {
+
+    }
 }
