@@ -40,8 +40,8 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private CameraController cameraController;
     private GameInfo gameInfo;
     private World world;
-    private Map<Renderable, Sprite> renderableSpriteMap = new HashMap<>();
-    private Map<Renderable, Actor> renderableActorMap = new HashMap<>();
+    private Map<Renderable, Sprite> renderableSpriteMap;
+    private Map<Renderable, Actor> renderableActorMap;
     private ThemeController themeController;
     private UserInputHandlerImpl userInputHandler;
     private Label fpsLabel;
@@ -58,10 +58,10 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         this.resourceLocator = new ResourceLocator();
         cameraController = new CameraController();
         this.userInputHandler = (UserInputHandlerImpl) userInputHandler;
+        resetEngine();
         conversationActors = new ArrayList<>();
         audioEngine = new GdxAudioEngine();
         gameInfo = GameInfo.getInstance();
-        gameInfo.printInfo();
         this.batch = batch;
         this.stage = stage;
         gameViewport = stage.getViewport();
@@ -108,29 +108,50 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             resource = renderableSpriteMap.get(toDraw);
         } else {
             // else
-            // createSpriteResourceForType
-            Sprite newResourceForRenderable = spriteFactory.createResourceForType(toDraw);
-            if (newResourceForRenderable != null) {
-                // and map it to the object
-                renderableSpriteMap.put(toDraw, newResourceForRenderable);
-                resource = newResourceForRenderable;
+            try {
+                // createSpriteResourceForType
+                Sprite newResourceForRenderable = spriteFactory.createResourceForType(toDraw);
+                if(newResourceForRenderable != null) {
+                    // and map it to the object
+                    renderableSpriteMap.put(toDraw, newResourceForRenderable);
+                    resource = newResourceForRenderable;
+                }
+            } catch (UnsupportedRenderableTypeException e) {
+                e.printStackTrace();
             }
         }
         return resource;
     }
 
-    protected Actor getActorResourceFor(Renderable toDraw) {
+    protected Actor getActorResourceFor(final Renderable toDraw) {
         Actor resource = null;
         if (renderableActorMap.containsKey(toDraw))
             resource = renderableActorMap.get(toDraw);
         else {
-            Actor newActorForRenderable = actorFactory.createResourceForType(toDraw);
-            if (newActorForRenderable != null) {
-                renderableActorMap.put(toDraw, newActorForRenderable);
-                resource = newActorForRenderable;
+            try {
+                Actor newActorForRenderable = actorFactory.createResourceForType(toDraw);
+                if(newActorForRenderable != null) {
+                    resource = addActor(toDraw, newActorForRenderable);
+                }
+            } catch (UnsupportedRenderableTypeException e) {
+                e.printStackTrace();
             }
         }
         return resource;
+    }
+
+    private Actor addActor(final Renderable toDraw, Actor newActorForRenderable) {
+        if(toDraw.getType() == "text_button") {
+            newActorForRenderable.addListener(new UserInputHandlerImpl() {
+                ActionButton actionButton = (ActionButton) toDraw;
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    userInputHandler.addUserAction(actionButton.getUserAction());
+                }
+            });
+        }
+        renderableActorMap.put(toDraw, newActorForRenderable);
+        return  newActorForRenderable;
     }
 
     @Override
@@ -219,10 +240,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 disposeDrawables();
                 listIterator.remove();
                 break;
-            case "RESET_RENDERING_ENGINE":
-                reset();
-                listIterator.remove();
-                break;
             case "UPDATE_LABEL_TEXT_UI":
                 updateLabelText((HashMap.SimpleEntry<Renderable, String>) currentGameEvent.parameters);
                 listIterator.remove();
@@ -286,8 +303,9 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         stage.addActor(component);
     }
 
-    protected void reset() {
+    protected void resetEngine() {
         renderableSpriteMap = new HashMap<>();
+        renderableActorMap = new HashMap<>();
     }
 
     @Override
@@ -300,6 +318,10 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         for (Map.Entry<Renderable, Sprite> entry : renderableSpriteMap.entrySet()) {
             entry.getValue().getTexture().dispose();
         }
+        for (Map.Entry<Renderable, Actor> entry : renderableActorMap.entrySet()) {
+            entry.getValue().remove();
+        }
+        resetEngine();
     }
 
     @Override
