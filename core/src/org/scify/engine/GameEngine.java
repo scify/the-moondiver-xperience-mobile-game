@@ -17,7 +17,6 @@ public class GameEngine implements Game {
         // and keep on doing the loop in this thread
         //get next user action
         UserAction uaToHandle = inputHandler.getNextUserAction();
-
         //apply it and determine the next state
         currentGameState = rules.getNextState(currentGameState, uaToHandle);
     }
@@ -44,7 +43,11 @@ public class GameEngine implements Game {
             }
         }
         // here the game has ended
-        // TODO Ask ggianna
+        // ask the rules instance to clean up the game state if needed
+        rules.cleanUpState(currentGameState);
+        // ask the rendering engine instance to dispose the drawables
+        renderingEngine.disposeDrawables();
+        // return the end state from rules
         return rules.determineEndState(currentGameState);
     }
 
