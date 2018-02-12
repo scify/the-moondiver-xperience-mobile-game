@@ -13,13 +13,9 @@ public class SinglePlayerRules extends MoonWalkerRules {
 
     protected Player pPlayer;
     protected MoonWalkerPhysicsRules physics;
-    protected GameInfo gameInfo;
 
     public SinglePlayerRules() {
         super();
-        gameInfo = GameInfo.getInstance();
-        worldX = gameInfo.getScreenWidth();
-        worldY = gameInfo.getScreenHeight();
         physics = new MoonWalkerPhysicsRules(worldX, worldY);
     }
 
