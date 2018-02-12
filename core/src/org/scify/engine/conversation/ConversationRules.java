@@ -125,6 +125,11 @@ public class ConversationRules extends MoonWalkerRules {
         return null;
     }
 
+    @Override
+    public void cleanUpState(GameState currentState) {
+
+    }
+
     public ConversationLine getCurrentConversationLine(GameState gameState) {
         return (ConversationLine) gameState.getAdditionalDataEntry(ID);
     }
