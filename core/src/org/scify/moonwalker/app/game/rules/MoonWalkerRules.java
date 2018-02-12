@@ -8,6 +8,7 @@ import org.scify.engine.conversation.ConversationRules;
 import org.scify.moonwalker.app.game.quiz.Answer;
 import org.scify.engine.UserAction;
 import org.scify.moonwalker.app.game.quiz.Question;
+import org.scify.moonwalker.app.helpers.GameInfo;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,9 +20,13 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
     protected Map<String, Renderable> idToRenderable;
     protected ConversationRules conversationRules;
     protected GameState gameState;
+    protected GameInfo gameInfo;
 
     public MoonWalkerRules() {
         idToRenderable = new HashMap<>();
+        gameInfo = GameInfo.getInstance();
+        worldX = gameInfo.getScreenWidth();
+        worldY = gameInfo.getScreenHeight();
     }
 
     protected boolean renderableExist(String rId) {
