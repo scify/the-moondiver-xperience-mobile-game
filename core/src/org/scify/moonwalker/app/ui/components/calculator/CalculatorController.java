@@ -12,9 +12,9 @@ public class CalculatorController {
 
     public void addOperator(String operator) {
         if(!operator.equals("dot")) {
-            if(operation.equals("") && !operator1.endsWith("."))
+            if(operation.equals("") || operator1.endsWith("."))
                 operator1 += operator;
-            else if(!operator2.endsWith("."))
+            else
                 operator2 += operator;
         } else {
             if(!operator2.equals(""))
