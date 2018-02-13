@@ -22,7 +22,7 @@ public class CalculatorComponent extends Group {
 
     protected final int BUTTONS_PER_ROW = 3;
     protected final int BUTTON_PADDING = 5;
-    protected final int MAIN_LABEL_HEIGHT = 200;
+    protected final int MAIN_LABEL_HEIGHT = 400;
     protected final int TABLE_PADDING = 20;
     protected final String MAIN_LABEL_INITIAL_TEXT = "0";
     protected Label mainLabel;
@@ -72,7 +72,7 @@ public class CalculatorComponent extends Group {
     protected void createAndAddMainLabel() {
         mainLabel = new Label(MAIN_LABEL_INITIAL_TEXT, skin);
         mainLabel.setHeight(MAIN_LABEL_HEIGHT);
-        mainLabel.setFontScale(4);
+        mainLabel.setFontScale(2);
         mainLabel.setAlignment(Align.center);
         Pixmap labelColor = new Pixmap((int)mainLabel.getWidth(), (int)mainLabel.getHeight(), Pixmap.Format.RGB888);
         labelColor.setColor(Color.BLACK);
@@ -83,7 +83,11 @@ public class CalculatorComponent extends Group {
 
     protected Table createTable(String[] idArray) {
         Table table = new Table(skin);
-        table.setHeight(containerTable.getHeight() - MAIN_LABEL_HEIGHT - (TABLE_PADDING * 2));
+        System.out.println("1: " + gameInfo.getScreenHeight());
+        System.out.println("2: " + gameInfo.getScreenWidth());
+        System.out.println("3: " + containerTable.getHeight());
+        System.out.println("4: " + mainLabel.getHeight());
+        table.setHeight(containerTable.getHeight() - mainLabel.getHeight() - (TABLE_PADDING * 2));
         addButtonsFromArrayToTable(idArray, table);
         return table;
     }
