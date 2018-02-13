@@ -41,6 +41,7 @@ public class RoomEpisodeRules extends SinglePlayerRules {
             messagesLabel = new Renderable(gameInfo.getScreenWidth() - labelWidth - 20, gameInfo.getScreenHeight() / 2f - 100, labelWidth, labelHeight, "label", "messagesLabel");
             gsCurrent.addRenderable(messagesLabel);
             gsCurrent.addGameEvent(new GameEvent("UPDATE_LABEL_TEXT_UI", new HashMap.SimpleEntry<>(messagesLabel, mainLabelText)));
+            gsCurrent.addGameEvent(new GameEvent("CALCULATOR_COMPONENT"));
         }
     }
 
