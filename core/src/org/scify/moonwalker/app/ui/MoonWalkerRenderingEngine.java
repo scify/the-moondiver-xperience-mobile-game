@@ -260,6 +260,10 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 for(Actor actor : conversationActors)
                     actor.remove();
                 listIterator.remove();
+                break;
+            case "CALCULATOR_COMPONENT":
+                createAndShowCalculatorComponent();
+                listIterator.remove();
             default:
                 break;
         }
@@ -306,6 +310,11 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     protected void resetEngine() {
         renderableSpriteMap = new HashMap<>();
         renderableActorMap = new HashMap<>();
+    }
+
+    protected void createAndShowCalculatorComponent() {
+        CalculatorComponent calculator = new CalculatorComponent(themeController.getSkin());
+        stage.addActor(calculator);
     }
 
     @Override
