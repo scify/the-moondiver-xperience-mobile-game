@@ -21,14 +21,26 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
     protected ConversationRules conversationRules;
     protected GameState gameState;
     protected GameInfo gameInfo;
+    protected MoonWalkerPhysicsRules physics;
 
     public MoonWalkerRules() {
         idToRenderable = new HashMap<>();
         gameInfo = GameInfo.getInstance();
         worldX = gameInfo.getScreenWidth();
         worldY = gameInfo.getScreenHeight();
+        physics = new MoonWalkerPhysicsRules(worldX, worldY);
     }
 
+    /**
+     * This setter serves the need for an episode
+     * to define their own set of physics rules.
+     * for example, an episode might have physics rules
+     * without gravity
+     * @param physics the new {@link MoonWalkerPhysicsRules} instance
+     */
+    public void setPhysics(MoonWalkerPhysicsRules physics) {
+        this.physics = physics;
+    }
     protected boolean renderableExist(String rId) {
         return idToRenderable.get(rId) != null;
     }
@@ -39,32 +51,6 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
 
     public Renderable getRenderableById(String rId) {
         return idToRenderable.get(rId);
-    }
-
-    public void setGameState(GameState gameState) {
-        this.gameState = gameState;
-    }
-
-    @Override
-    public GameState getNextState(GameState gsCurrent, UserAction userAction) {
-        MoonWalkerGameState gameState = (MoonWalkerGameState) gsCurrent;
-        if(userAction != null)
-            handleUserAction(userAction, gameState);
-
-        return gameState;
-    }
-
-    @Override
-    public boolean isGamePaused(GameState gsCurrent) {
-        return gsCurrent.eventsQueueContainsEvent("PAUSE_GAME");
-    }
-
-    protected void handleGameFinishedEvents(GameState gsCurrent) {
-        if(!gsCurrent.eventsQueueContainsEvent("EPISODE_FINISHED")) {
-            gsCurrent.getEventQueue().add(new GameEvent("EPISODE_FINISHED"));
-            gsCurrent.getEventQueue().add(new GameEvent("DISPOSE_RESOURCES_UI"));
-            gsCurrent.getEventQueue().add(new GameEvent("EPISODE_SUCCESS_UI"));
-        }
     }
 
     private void handleUserAction(UserAction userAction, MoonWalkerGameState gameState) {
@@ -108,5 +94,23 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
     protected void createConversation(GameState gsCurrent, String conversationResFile) {
         conversationRules = new ConversationRules(conversationResFile);
         gsCurrent.addGameEvent(new GameEvent("CONVERSATION_STARTED"));
+    }
+
+    @Override
+    public void disposeResources() {
+        physics.disposeResources();
+    }
+
+    @Override
+    public GameState getNextState(GameState gsCurrent, UserAction userAction) {
+        MoonWalkerGameState gameState = (MoonWalkerGameState) gsCurrent;
+        if(userAction != null)
+            handleUserAction(userAction, gameState);
+        return gameState;
+    }
+
+    @Override
+    public boolean isGamePaused(GameState gsCurrent) {
+        return gsCurrent.eventsQueueContainsEvent("PAUSE_GAME");
     }
 }

@@ -18,13 +18,14 @@ public class KnightRaceRules extends SinglePlayerRules {
         gsCurrent = super.getNextState(gsCurrent, userAction);
         if(isGamePaused(gsCurrent))
             return gsCurrent;
-        handleGameStartingRules(gsCurrent);
+        gameStartedEvents(gsCurrent);
         handlePositionRules(gsCurrent);
         gsCurrent = handleConversationRules(gsCurrent, userAction);
         return gsCurrent;
     }
 
-    protected void handleGameStartingRules(GameState gsCurrent) {
+    @Override
+    public void gameStartedEvents(GameState gsCurrent) {
         if(!gsCurrent.eventsQueueContainsEvent("EPISODE_STARTED")) {
             gsCurrent.addGameEvent(new GameEvent("EPISODE_STARTED"));
             gsCurrent.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/episode_1/bg.png"));
@@ -98,5 +99,20 @@ public class KnightRaceRules extends SinglePlayerRules {
         if(gsCurrent.eventsQueueContainsEvent("PLAYER_TOP_BORDER"))
             return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS, gsCurrent);
         return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE, gsCurrent);
+    }
+
+    @Override
+    public void cleanUpState(GameState currentState) {
+
+    }
+
+    @Override
+    public void gameEndedEvents(GameState currentState) {
+
+    }
+
+    @Override
+    public void gameResumedEvents(GameState currentState) {
+
     }
 }

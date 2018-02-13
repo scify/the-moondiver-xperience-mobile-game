@@ -28,13 +28,17 @@ public class MoonWalkerScenario extends Scenario {
         EpisodeEndStateCode endStateCode = state.getEndStateCode();
         switch (endStateCode) {
             case CALCULATOR_STARTED:
-                // or add calculator episode as temp episode
-                // without changing the current episode
-                Episode calculatorEpisode = new CalculatorEpisode(renderingEngine, userInputHandler, state.getGameState());
-                return calculatorEpisode;
-            case CALCULATOR_FINISHED:
-                //when calculator episode ends, re-run current episode
+                // add as first candidate for execution the calculator episode
+                Episode calcEpisode = new CalculatorEpisode(renderingEngine, userInputHandler, state.getGameState());
+                episodeListMap.get(currentEpisode).add(0, calcEpisode);
+                addEpisodeAfter(calcEpisode, currentEpisode);
                 break;
+            case CALCULATOR_FINISHED:
+                // remove calc episode from episode set
+                episodeListMap.remove(episodeListMap.get(lastEpisode).get(0));
+                // remove calculator episode from first candidate position of the previous episode
+                episodeListMap.get(lastEpisode).remove(0);
+                return lastEpisode;
             default:
                 break;
         }

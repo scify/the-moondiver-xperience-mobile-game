@@ -47,19 +47,28 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
         } else {
             // else
             // createSpriteResourceForType
-            Body newResourceForRenderable = bodyFactory.createResourceForRenderable(renderable);
+            resource = createBodyFromRenderableAndAddToMap(renderable);
+        }
+        return resource;
+    }
+
+    protected Body createBodyFromRenderableAndAddToMap(Renderable renderable) {
+        Body newResourceForRenderable = null;
+        try {
+            newResourceForRenderable = bodyFactory.createResourceForRenderable(renderable);
             if(newResourceForRenderable != null) {
                 // and map it to the object
                 renderableBodyMap.put(renderable, newResourceForRenderable);
-                resource = newResourceForRenderable;
+                return newResourceForRenderable;
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return resource;
+        return null;
     }
     
     @Override
     public GameState getNextState(GameState gsCurrent, UserAction userAction) {
-
         if(userAction != null)
             handleUserAction(userAction, gsCurrent);
         handleBorderRules(gsCurrent);
@@ -82,12 +91,14 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
 
     private void handleUserAction(UserAction userAction, GameState gameState) {
         Player pPlayer = gameState.getPlayer();
-        Body body = getResourceFor(pPlayer);
-        GameEvent event = null;
-        if(pPlayer != null && body != null)
-            movePlayerBody(userAction, body);
-        if(event != null) {
-            gameState.addGameEvent(event);
+        if(pPlayer != null) {
+            Body body = getResourceFor(pPlayer);
+            GameEvent event = null;
+            if (pPlayer != null && body != null)
+                movePlayerBody(userAction, body);
+            if (event != null) {
+                gameState.addGameEvent(event);
+            }
         }
     }
 
@@ -166,6 +177,26 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
     @Override
     public EpisodeEndState determineEndState(GameState gsCurrent) {
         return null;
+    }
+
+    @Override
+    public void cleanUpState(GameState currentState) {
+
+    }
+
+    @Override
+    public void gameStartedEvents(GameState currentState) {
+
+    }
+
+    @Override
+    public void gameEndedEvents(GameState currentState) {
+
+    }
+
+    @Override
+    public void gameResumedEvents(GameState currentState) {
+
     }
 
     @Override

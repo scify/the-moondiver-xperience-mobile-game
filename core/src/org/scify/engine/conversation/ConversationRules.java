@@ -130,6 +130,21 @@ public class ConversationRules extends MoonWalkerRules {
 
     }
 
+    @Override
+    public void gameStartedEvents(GameState currentState) {
+
+    }
+
+    @Override
+    public void gameEndedEvents(GameState currentState) {
+
+    }
+
+    @Override
+    public void gameResumedEvents(GameState currentState) {
+
+    }
+
     public ConversationLine getCurrentConversationLine(GameState gameState) {
         return (ConversationLine) gameState.getAdditionalDataEntry(ID);
     }

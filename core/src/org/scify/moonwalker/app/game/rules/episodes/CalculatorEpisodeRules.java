@@ -2,6 +2,7 @@ package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
 import org.scify.moonwalker.app.game.rules.SinglePlayerRules;
+import org.scify.moonwalker.app.ui.input.UserActionCode;
 
 /**
  * This is a self-contained episode (meaning that it usually gets invoked
@@ -12,10 +13,10 @@ import org.scify.moonwalker.app.game.rules.SinglePlayerRules;
  */
 public class CalculatorEpisodeRules extends SinglePlayerRules{
 
-    protected GameState gsCurrent;
+    protected GameState gsPrevious;
 
     public CalculatorEpisodeRules(GameState gsCurrent) {
-        this.gsCurrent = gsCurrent;
+        this.gsPrevious = gsCurrent;
     }
 
     @Override
@@ -23,18 +24,33 @@ public class CalculatorEpisodeRules extends SinglePlayerRules{
         gsCurrent = super.getNextState(gsCurrent, userAction);
         if(isGamePaused(gsCurrent))
             return gsCurrent;
-        handleGameStartingRules(gsCurrent);
-        if(episodeFinished(gsCurrent)) {
-            super.handleGameFinishedEvents(gsCurrent);
-            this.handleGameFinishedEvents(gsCurrent);
-        }
+        gameStartedEvents(gsCurrent);
+        if(userAction != null)
+            handleUserAction(gsCurrent, userAction);
         return gsCurrent;
     }
 
-    protected void handleGameStartingRules(GameState gsCurrent) {
+    private void handleUserAction(GameState gsCurrent, UserAction userAction) {
+        switch (userAction.getActionCode()) {
+            case FINISH_EPISODE:
+                gameEndedEvents(gsCurrent);
+                break;
+        }
+    }
+
+    @Override
+    public void gameStartedEvents(GameState gsCurrent) {
         if (!gsCurrent.eventsQueueContainsEvent("EPISODE_STARTED")) {
             gsCurrent.addGameEvent(new GameEvent("EPISODE_STARTED"));
             gsCurrent.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/calculator_episode/bg.jpg"));
+            // TODO Create Calculator class that will extend Group and handle the calculator functionality
+            // TODO refactor "magic numbers"
+            ActionButton btnDone = new ActionButton(worldX / 2f - 100, worldY / 2f - 50, 100, 50, "text_button", "calculator_button");
+            btnDone.setTitle("Finish");
+            btnDone.setPadding(10);
+            btnDone.setUserAction(new UserAction(UserActionCode.FINISH_EPISODE));
+            gsCurrent.addRenderable(btnDone);
+            addRenderableEntry("calculator_finished_button", btnDone);
         }
     }
 
@@ -55,13 +71,34 @@ public class CalculatorEpisodeRules extends SinglePlayerRules{
 
     @Override
     public boolean isGameFinished(GameState gsCurrent) {
-        return episodeFinished(gsCurrent) && gsCurrent.eventsQueueContainsEvent("EPISODE_FINISHED");
+        return episodeFinished(gsCurrent);
     }
 
     @Override
     public EpisodeEndState determineEndState(GameState gsCurrent) {
         if(gsCurrent.eventsQueueContainsEvent("CALCULATOR_FINISHED"))
-            return new EpisodeEndState(EpisodeEndStateCode.CALCULATOR_FINISHED, this.gsCurrent);
-        return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE, this.gsCurrent);
+            return new EpisodeEndState(EpisodeEndStateCode.CALCULATOR_FINISHED, this.gsPrevious);
+        return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE, this.gsPrevious);
+    }
+
+    @Override
+    public void gameEndedEvents(GameState gsCurrent) {
+        //todo add temp
+        gsCurrent.addGameEvent(new GameEvent("CALCULATOR_FINISHED"));
+        gsCurrent.addGameEvent(new GameEvent("EPISODE_FINISHED"));
+    }
+
+    @Override
+    public void cleanUpState(GameState gsCurrent) {
+        // from the previous game state (that the previous episode had)
+        // remove the game event that caused this episode to be started
+        gsPrevious.removeGameEventsWithType("CALCULATOR_STARTED");
+        gsPrevious.removeGameEventsWithType("EPISODE_FINISHED");
+        gsPrevious.removeGameEventsWithType("CONVERSATION_FINISHED");
+    }
+
+    @Override
+    public void gameResumedEvents(GameState currentState) {
+
     }
 }

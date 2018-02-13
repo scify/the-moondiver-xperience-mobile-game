@@ -25,16 +25,14 @@ public class RoomEpisodeRules extends SinglePlayerRules {
         gsCurrent = super.getNextState(gsCurrent, userAction);
         if(isGamePaused(gsCurrent))
             return gsCurrent;
-        handleGameStartingRules(gsCurrent);
+        gameStartedEvents(gsCurrent);
+        gameResumedEvents(gsCurrent);
         gsCurrent = handleConversationRules(gsCurrent, userAction);
-        if(episodeFinished(gsCurrent)) {
-            super.handleGameFinishedEvents(gsCurrent);
-            this.handleGameFinishedEvents(gsCurrent);
-        }
         return gsCurrent;
     }
 
-    protected void handleGameStartingRules(GameState gsCurrent) {
+    @Override
+    public void gameStartedEvents(GameState gsCurrent) {
         if(!gsCurrent.eventsQueueContainsEvent("EPISODE_STARTED")) {
             gsCurrent.addGameEvent(new GameEvent("EPISODE_STARTED"));
             gsCurrent.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/episode_0/bg.jpg"));
@@ -43,6 +41,14 @@ public class RoomEpisodeRules extends SinglePlayerRules {
             messagesLabel = new Renderable(gameInfo.getScreenWidth() - labelWidth - 20, gameInfo.getScreenHeight() / 2f - 100, labelWidth, labelHeight, "label", "messagesLabel");
             gsCurrent.addRenderable(messagesLabel);
             gsCurrent.addGameEvent(new GameEvent("UPDATE_LABEL_TEXT_UI", new HashMap.SimpleEntry<>(messagesLabel, mainLabelText)));
+        }
+    }
+
+    @Override
+    public void gameResumedEvents(GameState gsCurrent) {
+        if(!gsCurrent.eventsQueueContainsEvent("EPISODE_RESUMED")) {
+            gsCurrent.addGameEvent(new GameEvent("EPISODE_RESUMED"));
+            gsCurrent.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/episode_0/bg.jpg"));
         }
     }
 
@@ -63,6 +69,7 @@ public class RoomEpisodeRules extends SinglePlayerRules {
 
         if(gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED"))
             gsCurrent.addGameEvent(new GameEvent("CALCULATOR_STARTED"));
+
         handleTriggerEventForCurrentConversationLine(gsCurrent);
         return gsCurrent;
     }
@@ -78,9 +85,9 @@ public class RoomEpisodeRules extends SinglePlayerRules {
      * This method is similar to isGameFinished
      * However, it is used internally by the getNextState method
      * in order to decide whether the ending Game Events should be added
-     * to the current game state
+     * to the current game state, before the episode finishes.
      * @param gsCurrent the current {@link GameState}
-     * @return
+     * @return true if the episode is finished
      */
     protected boolean episodeFinished(GameState gsCurrent) {
         // this episode is considered finished either
@@ -91,7 +98,7 @@ public class RoomEpisodeRules extends SinglePlayerRules {
 
     @Override
     public boolean isGameFinished(GameState gsCurrent) {
-        return episodeFinished(gsCurrent) && gsCurrent.eventsQueueContainsEvent("EPISODE_FINISHED");
+        return episodeFinished(gsCurrent);
     }
 
     @Override
@@ -99,5 +106,15 @@ public class RoomEpisodeRules extends SinglePlayerRules {
         if(gsCurrent.eventsQueueContainsEvent("CALCULATOR_STARTED"))
             return new EpisodeEndState(EpisodeEndStateCode.CALCULATOR_STARTED, gsCurrent);
         return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE, gsCurrent);
+    }
+
+    @Override
+    public void cleanUpState(GameState currentState) {
+        currentState.removeGameEventsWithType("EPISODE_RESUMED");
+    }
+
+    @Override
+    public void gameEndedEvents(GameState currentState) {
+
     }
 }
