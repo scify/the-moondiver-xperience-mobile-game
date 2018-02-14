@@ -22,4 +22,10 @@ public abstract class SinglePlayerRules extends MoonWalkerRules {
             gameState = new MoonWalkerGameState(eventQueue, pPlayer, physics.world);
         return gameState;
     }
+
+    @Override
+    public boolean isGameFinished(GameState gsCurrent) {
+        return false;
+    }
+
 }
