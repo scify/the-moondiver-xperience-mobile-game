@@ -33,7 +33,7 @@ public class GameLauncher implements Screen {
         gameInfo = GameInfo.getInstance();
         int width = gameInfo.getScreenWidth();
         int height = gameInfo.getScreenHeight();
-        mainCamera = new OrthographicCamera(width * gameInfo.getAspectRatio(), height);
+        mainCamera = new OrthographicCamera(width, height);
         mainCamera.position.set(width / 2f, height / 2, 0);
 
         gameViewport = new StretchViewport(width, height,
