@@ -1,8 +1,4 @@
 package org.scify.engine;
-
-import com.badlogic.gdx.Gdx;
-import org.scify.moonwalker.app.game.rules.episodes.KnightRaceRules;
-
 import java.util.concurrent.*;
 
 public abstract class Episode<T> implements Callable<T> {
@@ -34,13 +30,7 @@ public abstract class Episode<T> implements Callable<T> {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-                disposeResources();
-            }
-        });
+        disposeResources();
         return result;
     }
 
