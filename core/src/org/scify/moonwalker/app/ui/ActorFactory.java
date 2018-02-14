@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.scify.moonwalker.app.ui.components.ActionButton;
 import org.scify.engine.Renderable;
+import org.scify.moonwalker.app.ui.components.calculator.CalculatorComponent;
 
 public class ActorFactory extends ComponentFactory{
 
@@ -41,6 +42,9 @@ public class ActorFactory extends ComponentFactory{
                 break;
             case "image_button":
                 toReturn = createImageButton((ActionButton) renderable);
+                break;
+            case "calculator":
+                toReturn = new CalculatorComponent(skin);
                 break;
             default:
                 throw new UnsupportedRenderableTypeException("renderable with type " + renderable.getType() + " is unsupported.");

@@ -2,6 +2,7 @@ package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
 import org.scify.moonwalker.app.game.rules.SinglePlayerRules;
+import org.scify.moonwalker.app.ui.components.ActionButton;
 import org.scify.moonwalker.app.ui.input.UserActionCode;
 
 /**
@@ -17,6 +18,9 @@ public class CalculatorEpisodeRules extends SinglePlayerRules{
 
     public CalculatorEpisodeRules(GameState gsCurrent) {
         this.gsPrevious = gsCurrent;
+    }
+
+    public CalculatorEpisodeRules() {
     }
 
     @Override
@@ -43,12 +47,12 @@ public class CalculatorEpisodeRules extends SinglePlayerRules{
         if (!gsCurrent.eventsQueueContainsEvent("EPISODE_STARTED")) {
             gsCurrent.addGameEvent(new GameEvent("EPISODE_STARTED"));
             gsCurrent.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/calculator_episode/bg.jpg"));
-            // TODO Create Calculator class that will extend Group and handle the calculator functionality
-            // TODO refactor "magic numbers"
-            ActionButton btnDone = new ActionButton(worldX / 2f - 100, worldY / 2f - 50, 100, 50, "text_button", "calculator_button");
-            btnDone.setTitle("Finish");
+            Renderable calculator = new Renderable("calculator");
+            gsCurrent.addRenderable(calculator);
+            ActionButton btnDone = new ActionButton(0, gameInfo.getScreenHeight() - ESCAPE_BUTTON_HEIGHT, ESCAPE_BUTTON_WIDTH, ESCAPE_BUTTON_HEIGHT, "image_button", "escape_button");
             btnDone.setPadding(10);
             btnDone.setUserAction(new UserAction(UserActionCode.FINISH_EPISODE));
+            btnDone.setImgPath("img/close.png");
             gsCurrent.addRenderable(btnDone);
             addRenderableEntry("calculator_finished_button", btnDone);
         }
@@ -76,9 +80,13 @@ public class CalculatorEpisodeRules extends SinglePlayerRules{
 
     @Override
     public EpisodeEndState determineEndState(GameState gsCurrent) {
+        GameState toReturn = gsCurrent;
+        if(gsPrevious != null) {
+            toReturn = this.gsPrevious;
+        }
         if(gsCurrent.eventsQueueContainsEvent("CALCULATOR_FINISHED"))
-            return new EpisodeEndState(EpisodeEndStateCode.CALCULATOR_FINISHED, this.gsPrevious);
-        return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE, this.gsPrevious);
+            return new EpisodeEndState(EpisodeEndStateCode.CALCULATOR_FINISHED, toReturn);
+        return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE, toReturn);
     }
 
     @Override
@@ -92,9 +100,12 @@ public class CalculatorEpisodeRules extends SinglePlayerRules{
     public void cleanUpState(GameState gsCurrent) {
         // from the previous game state (that the previous episode had)
         // remove the game event that caused this episode to be started
-        gsPrevious.removeGameEventsWithType("CALCULATOR_STARTED");
-        gsPrevious.removeGameEventsWithType("EPISODE_FINISHED");
-        gsPrevious.removeGameEventsWithType("CONVERSATION_FINISHED");
+        if(gsPrevious != null) {
+            gsPrevious.removeGameEventsWithType("CALCULATOR_STARTED");
+            gsPrevious.removeGameEventsWithType("EPISODE_FINISHED");
+            gsPrevious.removeGameEventsWithType("CONVERSATION_FINISHED");
+            gsPrevious.removeGameEventsWithType("CONVERSATION_STARTED");
+        }
     }
 
     @Override

@@ -93,13 +93,10 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     }
 
     @Override
-    public void initializeGameState(MoonWalkerGameState initialState) {
-        this.world = initialState.world;
-    }
-
-    @Override
     public void setGameState(MoonWalkerGameState gameState) {
         this.currentGameState = gameState;
+        if(this.world == null)
+            this.world = gameState.world;
     }
 
     protected Sprite getSpriteResourceFor(Renderable toDraw) {
@@ -267,11 +264,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                     actor.remove();
                 listIterator.remove();
                 break;
-            case "CALCULATOR_COMPONENT":
-                createAndShowCalculatorComponent();
-                listIterator.remove();
-            default:
-                break;
         }
     }
 
@@ -316,10 +308,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     protected void resetEngine() {
         renderableSpriteMap = new HashMap<>();
         renderableActorMap = new HashMap<>();
-    }
-
-    protected void createAndShowCalculatorComponent() {
-        stage.addActor(new CalculatorComponent(themeController.getSkin()));
+        conversationActors = new ArrayList<>();
     }
 
     @Override
@@ -335,6 +324,8 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         for (Map.Entry<Renderable, Actor> entry : renderableActorMap.entrySet()) {
             entry.getValue().remove();
         }
+        for(Actor actor : conversationActors)
+            actor.remove();
         resetEngine();
     }
 
