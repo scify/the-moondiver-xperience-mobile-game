@@ -1,6 +1,8 @@
 package org.scify.engine;
 
 public class EpisodeWithEndState extends Episode<EpisodeEndState> {
+    protected Rules rules;
+
     public EpisodeWithEndState(RenderingEngine renderingEngine, UserInputHandler userInputHandler, String name) {
         super(renderingEngine, userInputHandler, name);
     }
@@ -8,11 +10,17 @@ public class EpisodeWithEndState extends Episode<EpisodeEndState> {
     @Override
     public EpisodeEndState call() {
         EpisodeEndState endState = gameEngine.execute();
+        disposeResources();
         return endState;
     }
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
+        // Only keeps basic params
+        return new EpisodeWithEndState(renderingEngine, userInputHandler, name);
+    }
+
+    public void disposeResources() {
+        rules.disposeResources();
     }
 }

@@ -7,6 +7,7 @@ public class RoomEpisode extends EpisodeWithEndState {
 
     public RoomEpisode(RenderingEngine renderingEngine, UserInputHandler userInputHandler) {
         super(renderingEngine, userInputHandler, "RoomEpisode");
-        gameEngine.initialize(this.renderingEngine, this.userInputHandler, new RoomEpisodeRules());
+        this.rules = new RoomEpisodeRules();
+        gameEngine.initialize(this.renderingEngine, this.userInputHandler, rules);
     }
 }

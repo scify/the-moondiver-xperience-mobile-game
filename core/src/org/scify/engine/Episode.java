@@ -1,7 +1,7 @@
 package org.scify.engine;
 import java.util.concurrent.*;
 
-public abstract class Episode<T> implements Callable<T> {
+public abstract class Episode<T> implements Callable<T>, Cloneable {
 
     // each episode uses a game engine when executing
     protected GameEngine gameEngine;
@@ -30,16 +30,15 @@ public abstract class Episode<T> implements Callable<T> {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        disposeResources();
         return result;
-    }
-
-    public void disposeResources() {
-        System.out.println("disposing episode resources...");
-        gameEngine.getRules().disposeResources();
     }
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

@@ -14,6 +14,7 @@ public class CalculatorEpisode extends EpisodeWithEndState{
 
     public CalculatorEpisode(RenderingEngine renderingEngine, UserInputHandler userInputHandler, GameState gsCurrent) {
         super(renderingEngine, userInputHandler, "CalculatorEpisode");
-        gameEngine.initialize(this.renderingEngine, this.userInputHandler, new CalculatorEpisodeRules(gsCurrent));
+        this.rules = new CalculatorEpisodeRules(gsCurrent);
+        gameEngine.initialize(this.renderingEngine, this.userInputHandler, rules);
     }
 }
