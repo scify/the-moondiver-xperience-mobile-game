@@ -93,7 +93,7 @@ public class RoomEpisodeRules extends SinglePlayerRules {
         // this episode is considered finished either
         // when the player has reached the top border of the screen
         // or the base rules class decides that should finish
-        return gsCurrent.eventsQueueContainsEvent("CALCULATOR_STARTED") || super.isGameFinished(gsCurrent);
+        return gsCurrent.eventsQueueContainsEvent("CALCULATOR_STARTED");
     }
 
     @Override
@@ -103,14 +103,20 @@ public class RoomEpisodeRules extends SinglePlayerRules {
 
     @Override
     public EpisodeEndState determineEndState(GameState gsCurrent) {
+        EpisodeEndStateCode code = EpisodeEndStateCode.EPISODE_FINISHED_FAILURE;
         if(gsCurrent.eventsQueueContainsEvent("CALCULATOR_STARTED"))
-            return new EpisodeEndState(EpisodeEndStateCode.CALCULATOR_STARTED, gsCurrent);
-        return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE, gsCurrent);
+            code = EpisodeEndStateCode.CALCULATOR_STARTED;
+        return new EpisodeEndState(code, cleanUpState(gsCurrent));
     }
 
-    @Override
-    public void cleanUpState(GameState currentState) {
+    protected GameState cleanUpState(GameState currentState) {
         currentState.removeGameEventsWithType("EPISODE_RESUMED");
+        currentState.removeGameEventsWithType("CALCULATOR_STARTED");
+        currentState.removeGameEventsWithType("EPISODE_FINISHED");
+        currentState.removeGameEventsWithType("CONVERSATION_READY_TO_FINISH");
+        currentState.removeGameEventsWithType("CONVERSATION_FINISHED");
+        currentState.removeGameEventsWithType("CONVERSATION_STARTED");
+        return currentState;
     }
 
     @Override

@@ -47,7 +47,7 @@ public interface Rules<StateType, Action, EndStateType> {
      * that runs the game, when the game has ended.
      * @param currentState the current state instance
      */
-    void cleanUpState(StateType currentState);
+    //void cleanUpState(StateType currentState);
 
     /**
      * When the game starts, the rules might add or remove

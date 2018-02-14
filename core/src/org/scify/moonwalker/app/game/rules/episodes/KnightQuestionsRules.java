@@ -96,11 +96,6 @@ public class KnightQuestionsRules extends SinglePlayerRules {
     }
 
     @Override
-    public void cleanUpState(GameState currentState) {
-
-    }
-
-    @Override
     public void gameResumedEvents(GameState currentState) {
 
     }

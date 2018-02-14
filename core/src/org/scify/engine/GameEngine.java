@@ -11,14 +11,18 @@ public class GameEngine implements Game {
     }
 
     private void doGameLoop() {
+        //System.out.println("game loop: " + new Date().getTime());
         final GameState toHandle = currentGameState;
         // Ask to draw the state
         renderingEngine.setGameState(toHandle);
+        //System.out.println("set game state");
         // and keep on doing the loop in this thread
         //get next user action
         UserAction uaToHandle = inputHandler.getNextUserAction();
+        //System.out.println("got user action");
         //apply it and determine the next state
         currentGameState = rules.getNextState(currentGameState, uaToHandle);
+        //System.out.println("got next state");
     }
 
     public void initialize(RenderingEngine renderingEngine, UserInputHandler userInputHandler, Rules<GameState, UserAction, EpisodeEndState> rules) {
@@ -28,7 +32,6 @@ public class GameEngine implements Game {
         this.rules = rules;
         initialState = rules.getInitialState();
         renderingEngine.setGameState(initialState);
-        renderingEngine.initializeGameState(initialState);
         currentGameState = initialState;
     }
 
@@ -36,7 +39,7 @@ public class GameEngine implements Game {
         while (!rules.isGameFinished(currentGameState)) {
             doGameLoop();
             try {
-                Thread.sleep(20L); // Allow repainting
+                Thread.sleep(100L); // Allow repainting
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 return new EpisodeEndState(EpisodeEndStateCode.EPISODE_INTERRUPTED,currentGameState);
@@ -44,11 +47,11 @@ public class GameEngine implements Game {
         }
         // here the game has ended
         // ask the rules instance to clean up the game state if needed
-        rules.cleanUpState(currentGameState);
+        EpisodeEndState endState = rules.determineEndState(currentGameState);
         // ask the rendering engine instance to dispose the drawables
-        renderingEngine.disposeDrawables();
+        renderingEngine.disposeRenderables();
         // return the end state from rules
-        return rules.determineEndState(currentGameState);
+        return endState;
     }
 
     public Rules getRules() {

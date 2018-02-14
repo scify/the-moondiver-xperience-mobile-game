@@ -102,11 +102,6 @@ public class KnightRaceRules extends SinglePlayerRules {
     }
 
     @Override
-    public void cleanUpState(GameState currentState) {
-
-    }
-
-    @Override
     public void gameEndedEvents(GameState currentState) {
 
     }

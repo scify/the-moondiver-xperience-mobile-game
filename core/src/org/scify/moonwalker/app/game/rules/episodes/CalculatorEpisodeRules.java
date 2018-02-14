@@ -97,18 +97,6 @@ public class CalculatorEpisodeRules extends SinglePlayerRules{
     }
 
     @Override
-    public void cleanUpState(GameState gsCurrent) {
-        // from the previous game state (that the previous episode had)
-        // remove the game event that caused this episode to be started
-        if(gsPrevious != null) {
-            gsPrevious.removeGameEventsWithType("CALCULATOR_STARTED");
-            gsPrevious.removeGameEventsWithType("EPISODE_FINISHED");
-            gsPrevious.removeGameEventsWithType("CONVERSATION_FINISHED");
-            gsPrevious.removeGameEventsWithType("CONVERSATION_STARTED");
-        }
-    }
-
-    @Override
     public void gameResumedEvents(GameState currentState) {
 
     }
