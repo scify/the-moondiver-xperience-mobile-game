@@ -32,13 +32,35 @@ public abstract class Scenario {
         addEpisodeAfter(currentEpisode, episode);
     }
 
-    protected void addEpisodeAfter(Episode episodeBefore, Episode newEpisode) {
+    /**
+     * Ascertains that we have a candidate next episode list for a given episode.
+     * @param episode
+     */
+    protected void initListForEpisode(Episode episode) {
         // If the before-episode does not exist
-        if (!episodeListMap.containsKey(episodeBefore))
+        if (!episodeListMap.containsKey(episode))
             // add it to the episode set
-            episodeListMap.put(episodeBefore, new LinkedList<Episode>());
-        else
-            episodeListMap.get(episodeBefore).add(newEpisode);
+            episodeListMap.put(episode, new LinkedList<Episode>());
+
+    }
+    protected void addEpisodeAfter(Episode episodeBefore, Episode newEpisode) {
+        initListForEpisode(episodeBefore);
+
+        // In any case, update the list with the new episode
+        episodeListMap.get(episodeBefore).add(newEpisode);
+    }
+
+    protected void addAfterXEpisodeLikeY(Episode episodeBefore, Episode episodeToClone) throws CloneNotSupportedException {
+        initListForEpisode(episodeBefore);
+
+        // Clone the episode
+        Episode newEpisode = (Episode) episodeToClone.clone();
+        // Make sure that the cloned episode has the same "next episode" list as the original
+        initListForEpisode(newEpisode);
+        episodeListMap.get(newEpisode).addAll(episodeListMap.get(episodeToClone));
+
+        // Actually add the episode after the requested one
+        addEpisodeAfter(episodeBefore, newEpisode);
     }
 
     protected void setFirstEpisode(Episode firstEpisode) {
