@@ -176,7 +176,8 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
         for(Map.Entry<Renderable, Body> entry : renderableBodyMap.entrySet()) {
             world.destroyBody(entry.getValue());
         }
-        world.dispose();
+        // TODO causes Java error
+        //world.dispose();
         bDisposalOngoing = false;
     }
 
@@ -185,10 +186,6 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
         return null;
     }
 
-    @Override
-    public void cleanUpState(GameState currentState) {
-
-    }
 
     @Override
     public void gameStartedEvents(GameState currentState) {
