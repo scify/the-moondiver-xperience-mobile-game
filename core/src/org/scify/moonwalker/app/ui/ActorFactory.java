@@ -48,19 +48,19 @@ public class ActorFactory extends ComponentFactory{
         return toReturn;
     }
 
-    public Image createImage(String imgFileRelevantPath, Renderable renderable) {
+    protected Image createImage(String imgFileRelevantPath, Renderable renderable) {
         Image img = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath(imgFileRelevantPath)))));
         img.setSize(renderable.getWidth(), renderable.getHeight());
         return img;
     }
 
-    public TextButton createTextButton(ActionButton actionButton) {
+    protected TextButton createTextButton(ActionButton actionButton) {
         TextButton btn = new TextButton(actionButton.getTitle(), skin);
         setButtonDimensions(actionButton, btn);
         return btn;
     }
 
-    public ImageButton createImageButton(ActionButton actionButton) {
+    protected ImageButton createImageButton(ActionButton actionButton) {
         Drawable btnImage = new SpriteDrawable(new Sprite(new Texture(resourceLocator.getFilePath(actionButton.getImgPath()))));
         ImageButton btn = new ImageButton(btnImage);
         setButtonDimensions(actionButton, btn);
