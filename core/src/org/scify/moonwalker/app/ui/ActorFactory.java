@@ -1,11 +1,14 @@
 package org.scify.moonwalker.app.ui;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import org.scify.engine.ActionButton;
+import org.scify.moonwalker.app.ui.components.ActionButton;
 import org.scify.engine.Renderable;
 
 public class ActorFactory extends ComponentFactory{
@@ -36,6 +39,9 @@ public class ActorFactory extends ComponentFactory{
             case "text_button":
                 toReturn = createTextButton((ActionButton) renderable);
                 break;
+            case "image_button":
+                toReturn = createImageButton((ActionButton) renderable);
+                break;
             default:
                 throw new UnsupportedRenderableTypeException("renderable with type " + renderable.getType() + " is unsupported.");
         }
@@ -50,10 +56,21 @@ public class ActorFactory extends ComponentFactory{
 
     public TextButton createTextButton(ActionButton actionButton) {
         TextButton btn = new TextButton(actionButton.getTitle(), skin);
+        setButtonDimensions(actionButton, btn);
+        return btn;
+    }
+
+    public ImageButton createImageButton(ActionButton actionButton) {
+        Drawable btnImage = new SpriteDrawable(new Sprite(new Texture(resourceLocator.getFilePath(actionButton.getImgPath()))));
+        ImageButton btn = new ImageButton(btnImage);
+        setButtonDimensions(actionButton, btn);
+        return btn;
+    }
+
+    protected void setButtonDimensions(ActionButton actionButton, Button btn) {
         btn.setPosition(actionButton.getxPos(), actionButton.getyPos());
         btn.setWidth(actionButton.getWidth());
         btn.setHeight(actionButton.getHeight());
         btn.pad(actionButton.getPadding());
-        return btn;
     }
 }
