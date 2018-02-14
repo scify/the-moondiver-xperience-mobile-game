@@ -55,6 +55,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private List<Actor> conversationActors;
     private ComponentFactory<Actor> actorFactory;
     private ComponentFactory<Sprite> spriteFactory;
+    private boolean bDisposalOngoing;
 
     public MoonWalkerRenderingEngine(UserInputHandler userInputHandler, SpriteBatch batch, Stage stage) {
         this.resourceLocator = new ResourceLocator();
@@ -159,27 +160,33 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
 
     @Override
     public void drawGameState(MoonWalkerGameState currentState) {
-        List<GameEvent> eventsList = currentState.getEventQueue();
-        handleGameEvents(eventsList);
-        drawRenderables(currentState);
+        if (!bDisposalOngoing) {
+            List<GameEvent> eventsList = currentState.getEventQueue();
+            handleGameEvents(eventsList);
+            drawRenderables(currentState);
+        }
     }
 
     protected void drawRenderables(MoonWalkerGameState currentState) {
-        synchronized (currentState.getRenderableList()) {
-            for (Renderable renderable : currentState.getRenderableList()) {
-                drawRenderable(renderable);
+        if (!bDisposalOngoing) {
+            synchronized (currentState.getRenderableList()) {
+                for (Renderable renderable : currentState.getRenderableList()) {
+                    drawRenderable(renderable);
+                }
             }
         }
     }
 
     protected void drawRenderable(Renderable renderable) {
-        Sprite sToDraw = getSpriteResourceFor(renderable);
-        if (sToDraw != null) {
-            drawSpriteFromRenderable(renderable, sToDraw);
-        } else {
-            Actor aToDraw = getActorResourceFor(renderable);
-            if (aToDraw != null) {
-                drawActorFromRenderable(renderable, aToDraw);
+        if (!bDisposalOngoing) {
+            Sprite sToDraw = getSpriteResourceFor(renderable);
+            if (sToDraw != null) {
+                drawSpriteFromRenderable(renderable, sToDraw);
+            } else {
+                Actor aToDraw = getActorResourceFor(renderable);
+                if (aToDraw != null) {
+                    drawActorFromRenderable(renderable, aToDraw);
+                }
             }
         }
     }
@@ -203,14 +210,16 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     }
 
     private void handleGameEvents(List<GameEvent> eventsList) {
-        // synchronized ensures that iterator.remove will be thread safe
-        // on the passed list instance.
-        synchronized (eventsList) {
-            ListIterator<GameEvent> listIterator = eventsList.listIterator();
-            while (listIterator.hasNext()) {
-                currentGameEvent = listIterator.next();
-                if(new Date().getTime() > currentGameEvent.delay)
-                    handleCurrentGameEvent(currentGameEvent, listIterator);
+        if (!bDisposalOngoing) {
+            // synchronized ensures that iterator.remove will be thread safe
+            // on the passed list instance.
+            synchronized (eventsList) {
+                ListIterator<GameEvent> listIterator = eventsList.listIterator();
+                while (listIterator.hasNext()) {
+                    currentGameEvent = listIterator.next();
+                    if (new Date().getTime() > currentGameEvent.delay)
+                        handleCurrentGameEvent(currentGameEvent, listIterator);
+                }
             }
         }
     }
@@ -237,10 +246,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 break;
             case "EPISODE_SUCCESS_UI":
                 audioEngine.playSound("audio/success.wav");
-                listIterator.remove();
-                break;
-            case "DISPOSE_RESOURCES_UI":
-                disposeDrawables();
                 listIterator.remove();
                 break;
             case "UPDATE_LABEL_TEXT_UI":
@@ -305,10 +310,12 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         stage.addActor(component);
     }
 
-    protected void resetEngine() {
+    protected synchronized void resetEngine() {
+        bDisposalOngoing = true;
         renderableSpriteMap = new HashMap<>();
         renderableActorMap = new HashMap<>();
         conversationActors = new ArrayList<>();
+        bDisposalOngoing = false;
     }
 
     @Override
@@ -317,16 +324,22 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     }
 
     @Override
-    public void disposeDrawables() {
+    public synchronized void disposeRenderables() {
+        bDisposalOngoing = true;
         for (Map.Entry<Renderable, Sprite> entry : renderableSpriteMap.entrySet()) {
+            System.out.println("disposing sprite: " + entry.getValue());
             entry.getValue().getTexture().dispose();
         }
         for (Map.Entry<Renderable, Actor> entry : renderableActorMap.entrySet()) {
+            System.out.println("disposing actor: " + entry.getValue());
             entry.getValue().remove();
         }
-        for(Actor actor : conversationActors)
+        for(Actor actor : conversationActors) {
+            System.out.println("disposing conversation actor: " + actor);
             actor.remove();
+        }
         resetEngine();
+        bDisposalOngoing = false;
     }
 
     @Override
@@ -338,43 +351,53 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     @Override
     public void resize(int width, int height) {
         gameViewport.update(width, height);
+        gameInfo.setScreenWidth(width);
+        gameInfo.setScreenHeight(height);
     }
 
     @Override
-    public void disposeResources() {
+    public synchronized void disposeResources() {
+        bDisposalOngoing = true;
+
         System.out.println("disposing rendering engine resources...");
         themeController.dispose();
         cameraController.disposeResources();
         audioEngine.disposeResources();
+
+        bDisposalOngoing = false;
     }
 
     public void render(Float delta) {
-        this.world = currentGameState.world;
-        long lNewTime = new Date().getTime();
-        if (lNewTime - lLastUpdate < 50L) {// If no less than 1/5 sec has passed
-            Thread.yield();
-            return; // Do nothing
-        } else {
-            drawComponents(delta, lNewTime);
-            cameraController.render(world);
-            cameraController.setProjectionMatrix(batch);
-            lLastUpdate = lNewTime;
+        if (!bDisposalOngoing) {
+            this.world = currentGameState.world;
+            long lNewTime = new Date().getTime();
+            if (lNewTime - lLastUpdate < 50L) {// If no less than 1/5 sec has passed
+                Thread.yield();
+                return; // Do nothing
+            } else {
+                drawComponents(delta, lNewTime);
+                cameraController.render(world);
+                cameraController.setProjectionMatrix(batch);
+                lLastUpdate = lNewTime;
+            }
         }
     }
 
     protected void drawComponents(Float delta, long lNewTime) {
-        Gdx.gl.glClearColor(1, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //stage.setDebugAll(true);
-        stage.act(delta);
-        stage.draw();
-        synchronized (batch) {
-            batch.begin();
-            fpsLabel.setText(String.valueOf(1000 / (lNewTime - lLastUpdate)));
-            fpsLabel.draw(batch, 1);
-            drawGameState(currentGameState);
-            batch.end();
-            cameraController.update();
+        if (!bDisposalOngoing) {
+            Gdx.gl.glClearColor(1, 0, 0, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            //stage.setDebugAll(true);
+            stage.act(delta);
+            stage.draw();
+            synchronized (batch) {
+                batch.begin();
+                fpsLabel.setText(String.valueOf(1000 / (lNewTime - lLastUpdate)));
+                fpsLabel.draw(batch, 1);
+                drawGameState(currentGameState);
+                batch.end();
+                cameraController.update();
+            }
         }
     }
 
@@ -402,6 +425,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     }
 
     private void printActors() {
+        System.out.println("printActors");
         for(Actor stageActor : stage.getActors()) {
             System.out.println("Actor " + stageActor.getClass() + " " + stageActor.getZIndex());
         }

@@ -40,7 +40,7 @@ public class CameraController {
     }
 
     public void render(World world) {
-        debugRenderer.render(world, box2DCamera.combined);
+        //debugRenderer.render(world, box2DCamera.combined);
     }
 
     public void setProjectionMatrix(Batch batch) {

@@ -126,11 +126,6 @@ public class ConversationRules extends MoonWalkerRules {
     }
 
     @Override
-    public void cleanUpState(GameState currentState) {
-
-    }
-
-    @Override
     public void gameStartedEvents(GameState currentState) {
 
     }
