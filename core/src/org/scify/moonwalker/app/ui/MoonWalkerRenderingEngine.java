@@ -19,6 +19,7 @@ import org.scify.moonwalker.app.game.quiz.Question;
 import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.components.*;
+import org.scify.moonwalker.app.ui.components.ActionButton;
 import org.scify.moonwalker.app.ui.components.calculator.CalculatorComponent;
 import org.scify.moonwalker.app.ui.input.UserActionCode;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
@@ -142,7 +143,13 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     }
 
     private Actor addActor(final Renderable toDraw, Actor newActorForRenderable) {
-        if(toDraw.getType() == "text_button") {
+        addClickListenerIfButton(toDraw, newActorForRenderable);
+        renderableActorMap.put(toDraw, newActorForRenderable);
+        return  newActorForRenderable;
+    }
+
+    protected void addClickListenerIfButton(final Renderable toDraw, Actor newActorForRenderable) {
+        if(toDraw.getType() == "text_button" || toDraw.getType() == "image_button") {
             newActorForRenderable.addListener(new UserInputHandlerImpl() {
                 ActionButton actionButton = (ActionButton) toDraw;
                 @Override
@@ -151,8 +158,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 }
             });
         }
-        renderableActorMap.put(toDraw, newActorForRenderable);
-        return  newActorForRenderable;
     }
 
     @Override
