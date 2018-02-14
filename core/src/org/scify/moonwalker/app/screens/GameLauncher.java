@@ -1,18 +1,15 @@
 package org.scify.moonwalker.app.screens;
 
 import com.badlogic.gdx.Screen;
-
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import org.scify.engine.*;
+import org.scify.engine.RenderingEngine;
+import org.scify.engine.Scenario;
+import org.scify.engine.UserInputHandler;
 import org.scify.moonwalker.app.MoonWalker;
-import org.scify.moonwalker.app.game.scenarios.KnightAdventuresScenario;
 import org.scify.moonwalker.app.game.scenarios.MoonWalkerScenario;
 import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.ui.MoonWalkerRenderingEngine;
