@@ -19,6 +19,7 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
     private final float keyStrokeAcceleration = 70f;
     private GameInfo gameInfo;
     protected BodyFactory bodyFactory;
+    private boolean bDisposalOngoing;
 
     public MoonWalkerPhysicsRules(int worldX, int worldY) {
         super(worldX, worldY);
@@ -68,7 +69,10 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
     }
     
     @Override
-    public GameState getNextState(GameState gsCurrent, UserAction userAction) {
+    public synchronized GameState getNextState(GameState gsCurrent, UserAction userAction) {
+        if (bDisposalOngoing)
+            return gsCurrent;
+
         if(userAction != null)
             handleUserAction(userAction, gsCurrent);
         handleBorderRules(gsCurrent);
@@ -167,11 +171,13 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
     }
 
     @Override
-    public void disposeResources() {
+    public synchronized void disposeResources() {
+        bDisposalOngoing = true;
         for(Map.Entry<Renderable, Body> entry : renderableBodyMap.entrySet()) {
             world.destroyBody(entry.getValue());
         }
         world.dispose();
+        bDisposalOngoing = false;
     }
 
     @Override
