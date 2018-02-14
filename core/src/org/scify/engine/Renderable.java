@@ -11,6 +11,11 @@ public class Renderable extends Positionable {
         this.id = id;
     }
 
+    public Renderable(String type) {
+        super(0, 0, 0, 0);
+        this.type = type;
+    }
+
     public String getType() {
         return type;
     }
