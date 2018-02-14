@@ -22,6 +22,8 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
     protected GameState gameState;
     protected GameInfo gameInfo;
     protected MoonWalkerPhysicsRules physics;
+    protected final int ESCAPE_BUTTON_WIDTH = 80;
+    protected final int ESCAPE_BUTTON_HEIGHT = 80;
 
     public MoonWalkerRules() {
         idToRenderable = new HashMap<>();
