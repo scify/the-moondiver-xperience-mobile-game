@@ -52,7 +52,7 @@ public class CalculatorComponent extends Group {
         // TODO Add escape button
         addActor(background);
         addActor(containerTable);
-        containerTable.debug();
+        //containerTable.debug();
     }
 
     protected void initContainerTable() {
