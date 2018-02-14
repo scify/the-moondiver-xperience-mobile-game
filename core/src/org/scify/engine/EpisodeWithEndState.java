@@ -1,5 +1,7 @@
 package org.scify.engine;
 
+import com.badlogic.gdx.Gdx;
+
 public class EpisodeWithEndState extends Episode<EpisodeEndState> {
     protected Rules rules;
 
@@ -10,7 +12,13 @@ public class EpisodeWithEndState extends Episode<EpisodeEndState> {
     @Override
     public EpisodeEndState call() {
         EpisodeEndState endState = gameEngine.execute();
-        disposeResources();
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                disposeResources();
+            }
+        });
+
         return endState;
     }
 
