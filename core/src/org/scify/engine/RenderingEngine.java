@@ -15,8 +15,6 @@ public interface RenderingEngine<T extends GameState> {
 
     void setGameState(T toHandle);
 
-    void initializeGameState(T initialState);
-
     void disposeResources();
 
     void initialize();
