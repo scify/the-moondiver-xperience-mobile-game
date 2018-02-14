@@ -11,7 +11,7 @@ public interface RenderingEngine<T extends GameState> {
 
     void cancelCurrentRendering();
 
-    void disposeDrawables();
+    void disposeRenderables();
 
     void setGameState(T toHandle);
 
