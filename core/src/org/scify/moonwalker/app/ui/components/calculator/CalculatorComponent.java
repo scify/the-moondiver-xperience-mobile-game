@@ -22,7 +22,7 @@ public class CalculatorComponent extends Group {
 
     protected final int BUTTONS_PER_ROW = 3;
     protected final int BUTTON_PADDING = 5;
-    protected final int MAIN_LABEL_HEIGHT = 400;
+    protected float MAIN_LABEL_HEIGHT;
     protected final int TABLE_PADDING = 20;
     protected final String MAIN_LABEL_INITIAL_TEXT = "0";
     protected Label mainLabel;
@@ -39,6 +39,7 @@ public class CalculatorComponent extends Group {
         this.skin = skin;
         this.resourceLocator = new ResourceLocator();
         this.gameInfo = GameInfo.getInstance();
+        MAIN_LABEL_HEIGHT = gameInfo.getScreenHeight() * 0.2f;
         calculator = new CalculatorController();
         calculator.resetCalculator();
         setHeight(gameInfo.getScreenHeight());
