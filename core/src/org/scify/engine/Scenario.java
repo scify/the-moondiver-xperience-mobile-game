@@ -20,7 +20,7 @@ public abstract class Scenario {
      * a list of candidate episodes, meant to be played after this episode
      * ends.
      */
-    protected Map<Episode, List<Episode>> episodeListMap;
+    private Map<Episode, List<Episode>> episodeListMap;
     /**
      * Reference for the currently playing episode
      */
