@@ -77,6 +77,16 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         audioEngine.pauseCurrentlyPlayingAudios();
         // TODO music should be added from episode rules
         //audioEngine.playSoundLoop("audio/episode_1/music.wav");
+        printDebugInfo();
+    }
+
+    private void printDebugInfo() {
+        System.out.println("\n\n");
+        System.out.println("Screen height: " + gameInfo.getScreenHeight());
+        System.out.println("Screen width: " + gameInfo.getScreenWidth());
+        System.out.println("Density: " + Gdx.graphics.getDensity());
+        System.out.println("GL version: " + Gdx.graphics.getGLVersion().getDebugVersionString());
+        System.out.println("\n\n");
     }
 
     private void initFPSLabel() {
@@ -371,7 +381,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         if (!bDisposalOngoing) {
             this.world = currentGameState.world;
             long lNewTime = new Date().getTime();
-            if (lNewTime - lLastUpdate < 50L) {// If no less than 1/5 sec has passed
+            if (lNewTime - lLastUpdate < 10L) {// If no less than 1/5 sec has passed
                 Thread.yield();
                 return; // Do nothing
             } else {
