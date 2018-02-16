@@ -336,17 +336,21 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     @Override
     public synchronized void disposeRenderables() {
         bDisposalOngoing = true;
-        for (Map.Entry<Renderable, Sprite> entry : renderableSpriteMap.entrySet()) {
-            System.out.println("disposing sprite: " + entry.getValue());
+        for(Iterator<Map.Entry<Renderable, Sprite>> it = renderableSpriteMap.entrySet().iterator(); it.hasNext(); ) {
+            Map.Entry<Renderable, Sprite> entry = it.next();
             entry.getValue().getTexture().dispose();
+            it.remove();
+
         }
-        for (Map.Entry<Renderable, Actor> entry : renderableActorMap.entrySet()) {
-            System.out.println("disposing actor: " + entry.getValue());
+        for(Iterator<Map.Entry<Renderable, Actor>> it = renderableActorMap.entrySet().iterator(); it.hasNext(); ) {
+            Map.Entry<Renderable, Actor> entry = it.next();
             entry.getValue().remove();
+            it.remove();
         }
-        for(Actor actor : conversationActors) {
-            System.out.println("disposing conversation actor: " + actor);
-            actor.remove();
+        for(Iterator<Actor> it = conversationActors.iterator(); it.hasNext(); ) {
+            Actor entry = it.next();
+            entry.remove();
+            it.remove();
         }
         resetEngine();
         bDisposalOngoing = false;
