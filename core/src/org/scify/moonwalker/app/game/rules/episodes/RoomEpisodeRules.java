@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class RoomEpisodeRules extends SinglePlayerRules {
     protected Renderable messagesLabel;
-    protected String mainLabelText = "Episode 0: The room.";
+    protected String mainLabelText = "Επεισόδιο 0: Το δωμάτιο.";
 
     public RoomEpisodeRules() {
         pPlayer = new Player(gameInfo.getScreenWidth() / 2f,
@@ -110,6 +110,7 @@ public class RoomEpisodeRules extends SinglePlayerRules {
     }
 
     protected GameState cleanUpState(GameState currentState) {
+        // TODO: Remove all events where I am the owner
         currentState.removeGameEventsWithType("EPISODE_RESUMED");
         currentState.removeGameEventsWithType("CALCULATOR_STARTED");
         currentState.removeGameEventsWithType("EPISODE_FINISHED");
