@@ -8,6 +8,7 @@ import org.scify.engine.*;
 import org.scify.engine.EpisodeEndState;
 import org.scify.engine.rules.PhysicsRules;
 import org.scify.engine.Player;
+import org.scify.moonwalker.app.game.BodyFactory;
 import org.scify.moonwalker.app.helpers.GameInfo;
 
 import java.util.HashMap;
@@ -41,21 +42,15 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
     }
 
     protected Body getResourceFor(Renderable renderable) {
-        Body resource = null;
-        // If I have an existing sprite
-        if(renderableBodyMap.containsKey(renderable)) {
-            // reuse it
-            resource = renderableBodyMap.get(renderable);
-        } else {
-            // else
-            // createSpriteResourceForType
-            resource = createBodyFromRenderableAndAddToMap(renderable);
-        }
-        return resource;
+        // If I have an existing sprite, reuse it
+        if(renderableBodyMap.containsKey(renderable))
+            return renderableBodyMap.get(renderable);
+        else
+            return createBodyFromRenderableAndAddToMap(renderable);
     }
 
     protected Body createBodyFromRenderableAndAddToMap(Renderable renderable) {
-        Body newResourceForRenderable = null;
+        Body newResourceForRenderable;
         try {
             newResourceForRenderable = bodyFactory.createResourceForRenderable(renderable);
             if(newResourceForRenderable != null) {
@@ -97,17 +92,13 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
     private void handleUserAction(UserAction userAction, GameState gameState) {
         Player pPlayer = gameState.getPlayer();
         if(pPlayer != null) {
-            Body body = getResourceFor(pPlayer);
-            GameEvent event = null;
-            if (pPlayer != null && body != null)
-                movePlayerBody(userAction, body);
-            if (event != null) {
-                gameState.addGameEvent(event);
-            }
+            Body playerBody = getResourceFor(pPlayer);
+            if (playerBody != null)
+                moveBody(userAction, playerBody);
         }
     }
 
-    private void movePlayerBody(UserAction userAction, Body body) {
+    private void moveBody(UserAction userAction, Body body) {
         switch (userAction.getActionCode()) {
             case UP:
                 body.setLinearVelocity(body.getLinearVelocity().x, +keyStrokeAcceleration);
@@ -173,6 +164,7 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
 
     @Override
     public synchronized void disposeResources() {
+        // block loop
         bDisposalOngoing = true;
         for(Map.Entry<Renderable, Body> entry : renderableBodyMap.entrySet()) {
             world.destroyBody(entry.getValue());
@@ -180,6 +172,7 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
         // Do NOT dispose of world, because it appears that it is called again (?) by
         // the garbage collector
 
+        //unblock loop
         bDisposalOngoing = false;
     }
 
