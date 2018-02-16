@@ -1,4 +1,8 @@
-package org.scify.engine;
+package org.scify.engine.rules;
+
+import org.scify.engine.GameEngine;
+import org.scify.engine.GameEvent;
+import org.scify.engine.RenderingEngine;
 
 public interface Rules<StateType, Action, EndStateType> {
 

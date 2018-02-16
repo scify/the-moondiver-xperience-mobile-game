@@ -2,7 +2,8 @@ package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
 import org.scify.engine.conversation.ConversationLine;
-import org.scify.moonwalker.app.actors.Player;
+import org.scify.engine.EpisodeEndStateCode;
+import org.scify.moonwalker.app.game.Player;
 import org.scify.moonwalker.app.game.rules.SinglePlayerRules;
 
 import java.util.Date;

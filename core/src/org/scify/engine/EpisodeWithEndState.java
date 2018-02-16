@@ -1,6 +1,7 @@
 package org.scify.engine;
 
 import com.badlogic.gdx.Gdx;
+import org.scify.engine.rules.Rules;
 
 public class EpisodeWithEndState extends Episode<EpisodeEndState> {
     protected Rules rules;

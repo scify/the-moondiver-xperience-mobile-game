@@ -1,4 +1,8 @@
-package org.scify.engine;
+package org.scify.engine.rules;
+
+import org.scify.engine.GameState;
+import org.scify.engine.UserAction;
+import org.scify.engine.EpisodeEndState;
 
 public abstract class PhysicsRules implements Rules<GameState, UserAction, EpisodeEndState> {
 

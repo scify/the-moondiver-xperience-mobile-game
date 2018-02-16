@@ -1,4 +1,5 @@
 package org.scify.engine;
+
 import java.util.concurrent.*;
 
 public abstract class Episode<T> implements Callable<T>, Cloneable {

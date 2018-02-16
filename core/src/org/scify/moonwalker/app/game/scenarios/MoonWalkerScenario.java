@@ -1,6 +1,7 @@
 package org.scify.moonwalker.app.game.scenarios;
 
 import org.scify.engine.*;
+import org.scify.engine.EpisodeEndStateCode;
 import org.scify.moonwalker.app.game.episodes.CalculatorEpisode;
 import org.scify.moonwalker.app.game.episodes.KnightRaceEpisode;
 import org.scify.moonwalker.app.game.episodes.RoomEpisode;

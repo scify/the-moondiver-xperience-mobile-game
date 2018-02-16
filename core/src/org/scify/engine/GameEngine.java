@@ -1,9 +1,11 @@
 package org.scify.engine;
 
-public class GameEngine implements Game {
+import org.scify.engine.rules.Rules;
+
+public class GameEngine {
 
     protected RenderingEngine renderingEngine;
-    protected Rules<GameState, UserAction, EpisodeEndState> rules;
+    protected org.scify.engine.rules.Rules<GameState, UserAction, EpisodeEndState> rules;
     protected UserInputHandler inputHandler;
     protected GameState currentGameState;
 
@@ -25,7 +27,7 @@ public class GameEngine implements Game {
         //System.out.println("got next state");
     }
 
-    public void initialize(RenderingEngine renderingEngine, UserInputHandler userInputHandler, Rules<GameState, UserAction, EpisodeEndState> rules) {
+    public void initialize(RenderingEngine renderingEngine, UserInputHandler userInputHandler, org.scify.engine.rules.Rules<GameState, UserAction, EpisodeEndState> rules) {
         final GameState initialState;
         this.renderingEngine = renderingEngine;
         this.inputHandler = userInputHandler;

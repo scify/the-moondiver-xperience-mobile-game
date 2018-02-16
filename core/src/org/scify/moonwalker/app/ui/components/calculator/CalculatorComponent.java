@@ -58,7 +58,7 @@ public class CalculatorComponent extends Table {
         this.add(createTable(operationIds)).colspan(1).top().fill();
 
         this.setFillParent(true);
-        this.debug();
+        //this.debug();
     }
 
 

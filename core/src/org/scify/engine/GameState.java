@@ -1,6 +1,6 @@
 package org.scify.engine;
 
-import org.scify.moonwalker.app.actors.Player;
+import org.scify.moonwalker.app.game.Player;
 
 import java.util.*;
 

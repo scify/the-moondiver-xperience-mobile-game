@@ -8,6 +8,8 @@ package org.scify.engine;
  * Created by pisaris on 6/9/2016.
  */
 public class GameEvent {
+    //TODO add owner field
+
     /**
      * A string representation of the event type.
      */

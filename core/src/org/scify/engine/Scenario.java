@@ -1,6 +1,5 @@
 package org.scify.engine;
 
-
 import java.util.*;
 
 /**

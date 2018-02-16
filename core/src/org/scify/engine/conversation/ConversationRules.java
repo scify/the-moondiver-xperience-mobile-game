@@ -3,6 +3,7 @@ package org.scify.engine.conversation;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Json;
 import org.scify.engine.*;
+import org.scify.engine.EpisodeEndState;
 import org.scify.moonwalker.app.game.rules.MoonWalkerRules;
 import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
