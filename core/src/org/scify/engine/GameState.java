@@ -1,7 +1,14 @@
 package org.scify.engine;
 
+import org.scify.engine.rules.Rules;
+
 import java.util.*;
 
+/**
+ * Represents the global state of the game at any given time.
+ * The instances of this class are handled by the {@link Rules} classes and the {@link RenderingEngine}
+ * and hold {@link GameEvent} instances that are used for communication between the game components.
+ */
 public abstract class GameState {
     protected List<GameEvent> eventQueue;
     protected List<Renderable> renderableList;
@@ -70,25 +77,34 @@ public abstract class GameState {
         }
     }
 
+    public void removeGameEventsWithTypeOwnedBy(String gameEventType, Object owner) {
+        synchronized (eventQueue) {
+            ListIterator<GameEvent> listIterator = eventQueue.listIterator();
+            while (listIterator.hasNext()) {
+                GameEvent currentGameEvent = listIterator.next();
+                if(currentGameEvent.type.equals(gameEventType) && currentGameEvent.owner.equals(owner))
+                    listIterator.remove();
+            }
+        }
+    }
+
+    public void removeAllGameEventsOwnedBy(Object owner) {
+        synchronized (eventQueue) {
+            ListIterator<GameEvent> listIterator = eventQueue.listIterator();
+            while (listIterator.hasNext()) {
+                GameEvent currentGameEvent = listIterator.next();
+                if(currentGameEvent.owner.equals(owner))
+                    listIterator.remove();
+            }
+        }
+    }
+
     public List<Renderable> getRenderableList() {
         return renderableList;
     }
 
     public void addRenderable(Renderable r) {
         renderableList.add(r);
-    }
-
-    public GameEvent getEventWithType(String gameEventType) {
-        GameEvent toReturn = null;
-        synchronized (eventQueue) {
-            ListIterator<GameEvent> listIterator = eventQueue.listIterator();
-            while (listIterator.hasNext()) {
-                GameEvent currentGameEvent = listIterator.next();
-                if(currentGameEvent.type.equals(gameEventType))
-                    toReturn = currentGameEvent;
-            }
-        }
-        return toReturn;
     }
 
     public Player getPlayer() {
