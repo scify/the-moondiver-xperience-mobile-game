@@ -1,4 +1,4 @@
-package org.scify.moonwalker.app.game.rules;
+package org.scify.moonwalker.app.game;
 
 import com.badlogic.gdx.physics.box2d.*;
 import org.scify.engine.Renderable;
@@ -11,7 +11,7 @@ public class BodyFactory {
         this.world = world;
     }
 
-    protected Body createResourceForRenderable(Renderable renderable) throws Exception {
+    public Body createResourceForRenderable(Renderable renderable) throws Exception {
         if(renderable == null) {
             throw new Exception("Renderable cannot be null");
         }
