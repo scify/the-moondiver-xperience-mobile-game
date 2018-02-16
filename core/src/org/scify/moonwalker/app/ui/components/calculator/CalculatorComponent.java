@@ -1,11 +1,11 @@
 package org.scify.moonwalker.app.ui.components.calculator;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -18,17 +18,17 @@ import org.scify.moonwalker.app.helpers.ResourceLocator;
 
 import java.util.Arrays;
 
-public class CalculatorComponent extends Group {
+public class CalculatorComponent extends Table {
 
     protected final int BUTTONS_PER_ROW = 3;
-    protected final int BUTTON_PADDING = 5;
+    protected final float BUTTON_PADDING_PIXELS = 10;
+    protected final float BUTTON_SIZE_PIXELS = 50;
+    protected final float MAIN_LABEL_PADDING_PIXELS = 5;
     protected float MAIN_LABEL_HEIGHT;
-    protected final int TABLE_PADDING = 20;
     protected final String MAIN_LABEL_INITIAL_TEXT = "0";
     protected Label mainLabel;
     protected String[] operatorIds = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "dot"};
     protected String[] operationIds = {"add", "subtract", "multiply", "divide", "result"};
-    protected Table containerTable;
     protected Skin skin;
     protected ResourceLocator resourceLocator;
     protected GameInfo gameInfo;
@@ -36,41 +36,38 @@ public class CalculatorComponent extends Group {
     protected CalculatorController calculator;
 
     public CalculatorComponent(Skin skin) {
+        super(skin);
         this.skin = skin;
         this.resourceLocator = new ResourceLocator();
         this.gameInfo = GameInfo.getInstance();
-        MAIN_LABEL_HEIGHT = gameInfo.getScreenHeight() * 0.2f;
+        createBackground();
+
+        // Init controller
         calculator = new CalculatorController();
         calculator.resetCalculator();
-        setHeight(gameInfo.getScreenHeight());
-        setWidth(gameInfo.getScreenWidth());
-        initContainerTable();
-        createBackground();
-        createAndAddMainLabel();
-        containerTable.row();
-        containerTable.add(createTable(operatorIds)).bottom().center().expand();
-        containerTable.add(createTable(operationIds)).bottom().center().expand();
-        // TODO Add escape button
+
+        // add the opaque background
         addActor(background);
-        addActor(containerTable);
-        //containerTable.debug();
+        // Create top label, that will have a 20% height
+        MAIN_LABEL_HEIGHT = gameInfo.getScreenHeight() * 0.2f;
+        this.add(createMainLabel()).colspan(2).expandX().pad(pixelsWithDensity(MAIN_LABEL_PADDING_PIXELS));
+        this.row();
+
+        // Create buttons row
+        this.add(createTable(operatorIds)).colspan(1).top().fill().expandY();
+        this.add(createTable(operationIds)).colspan(1).top().fill();
+
+        this.setFillParent(true);
+        this.debug();
     }
 
-    protected void initContainerTable() {
-        containerTable = new Table(skin);
-        containerTable.setHeight(gameInfo.getScreenHeight());
-        containerTable.setWidth(gameInfo.getScreenWidth());
-        containerTable.defaults().pad(TABLE_PADDING);
-        containerTable.setFillParent(true);
-        containerTable.center().bottom();
-    }
 
     protected void createBackground() {
         background = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath("img/component_background.png")))));
         background.setSize(gameInfo.getScreenWidth(), gameInfo.getScreenHeight());
     }
 
-    protected void createAndAddMainLabel() {
+    protected Label createMainLabel() {
         mainLabel = new Label(MAIN_LABEL_INITIAL_TEXT, skin);
         mainLabel.setHeight(MAIN_LABEL_HEIGHT);
         mainLabel.setFontScale(2);
@@ -79,22 +76,17 @@ public class CalculatorComponent extends Group {
         labelColor.setColor(Color.BLACK);
         labelColor.fill();
         mainLabel.getStyle().background = new Image(new Texture(labelColor)).getDrawable();
-        containerTable.add(mainLabel).colspan(2).fillX();
+
+        return mainLabel;
     }
 
     protected Table createTable(String[] idArray) {
         Table table = new Table(skin);
-        System.out.println("1: " + gameInfo.getScreenHeight());
-        System.out.println("2: " + gameInfo.getScreenWidth());
-        System.out.println("3: " + containerTable.getHeight());
-        System.out.println("4: " + mainLabel.getHeight());
-        table.setHeight(containerTable.getHeight() - mainLabel.getHeight() - (TABLE_PADDING * 2));
         addButtonsFromArrayToTable(idArray, table);
         return table;
     }
 
     protected void addButtonsFromArrayToTable(String[] idArray, Table table) {
-        float btnSize = singleButtonHeight(table.getHeight(), idArray);
         int btnIndex = 1;
         for(String operatorId: idArray) {
             // TODO change to id when images are ready
@@ -108,15 +100,11 @@ public class CalculatorComponent extends Group {
                     parseButtonClick(button.getName());
                 }
             });
-            table.add(button).size(btnSize, btnSize).pad(BUTTON_PADDING);
+            table.add(button).size(pixelsWithDensity(BUTTON_SIZE_PIXELS)).left().fill().pad(pixelsWithDensity(BUTTON_PADDING_PIXELS));
             if(btnIndex % BUTTONS_PER_ROW == 0)
                 table.row();
             btnIndex++;
         }
-    }
-
-    protected float singleButtonHeight(float containerHeight, String[] btnContainerArray) {
-        return containerHeight / ( (float) btnContainerArray.length / BUTTONS_PER_ROW);
     }
 
     protected void parseButtonClick(String buttonValue) {
@@ -141,6 +129,10 @@ public class CalculatorComponent extends Group {
         if(value.equals(""))
             value = MAIN_LABEL_INITIAL_TEXT;
         mainLabel.setText(value);
+    }
+
+    protected float pixelsWithDensity(float pixels) {
+        return pixels * Gdx.graphics.getDensity();
     }
 
 }
