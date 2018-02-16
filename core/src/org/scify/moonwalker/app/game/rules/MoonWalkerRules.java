@@ -22,17 +22,14 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
     protected GameState gameState;
     protected GameInfo gameInfo;
     protected MoonWalkerPhysicsRules physics;
-    protected float ESCAPE_BUTTON_WIDTH;
-    protected float ESCAPE_BUTTON_HEIGHT;
-
+    protected float ESCAPE_BUTTON_SIZE_PIXELS = 70;
+    protected float ESCAPE_BUTTON_PADDING_PIXELS = 10;
     public MoonWalkerRules() {
         idToRenderable = new HashMap<>();
         gameInfo = GameInfo.getInstance();
         worldX = gameInfo.getScreenWidth();
         worldY = gameInfo.getScreenHeight();
         physics = new MoonWalkerPhysicsRules(worldX, worldY);
-        ESCAPE_BUTTON_WIDTH = gameInfo.getScreenHeight() * 0.2f;
-        ESCAPE_BUTTON_HEIGHT = ESCAPE_BUTTON_WIDTH;
     }
 
     /**

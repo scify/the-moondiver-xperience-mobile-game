@@ -49,12 +49,14 @@ public class CalculatorEpisodeRules extends SinglePlayerRules{
             gsCurrent.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/calculator_episode/bg.jpg"));
             Renderable calculator = new Renderable("calculator");
             gsCurrent.addRenderable(calculator);
-            ActionButton btnDone = new ActionButton(0, gameInfo.getScreenHeight() - ESCAPE_BUTTON_HEIGHT, ESCAPE_BUTTON_WIDTH, ESCAPE_BUTTON_HEIGHT, "image_button", "escape_button");
-            btnDone.setPadding(10);
-            btnDone.setUserAction(new UserAction(UserActionCode.FINISH_EPISODE));
-            btnDone.setImgPath("img/close.png");
-            gsCurrent.addRenderable(btnDone);
-            addRenderableEntry("calculator_finished_button", btnDone);
+            float btnRealSize = gameInfo.pixelsWithDensity(ESCAPE_BUTTON_SIZE_PIXELS);
+            System.out.println(btnRealSize);
+            ActionButton escape = new ActionButton(0, gameInfo.getScreenHeight() - btnRealSize, btnRealSize, btnRealSize, "image_button", "escape_button");
+            escape.setPadding(gameInfo.pixelsWithDensity(ESCAPE_BUTTON_PADDING_PIXELS));
+            escape.setUserAction(new UserAction(UserActionCode.FINISH_EPISODE));
+            escape.setImgPath("img/close.png");
+            gsCurrent.addRenderable(escape);
+            addRenderableEntry("calculator_finished_button", escape);
         }
     }
 
