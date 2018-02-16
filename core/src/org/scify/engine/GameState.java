@@ -1,7 +1,5 @@
 package org.scify.engine;
 
-import org.scify.moonwalker.app.game.Player;
-
 import java.util.*;
 
 public abstract class GameState {

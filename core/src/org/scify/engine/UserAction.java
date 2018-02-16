@@ -1,7 +1,5 @@
 package org.scify.engine;
 
-import org.scify.moonwalker.app.ui.input.UserActionCode;
-
 public class UserAction {
     UserActionCode actionCode;
     Object payload;

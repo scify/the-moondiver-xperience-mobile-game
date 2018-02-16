@@ -2,7 +2,7 @@ package org.scify.moonwalker.app.game.rules;
 
 import org.scify.engine.*;
 import org.scify.moonwalker.app.MoonWalkerGameState;
-import org.scify.moonwalker.app.game.Player;
+import org.scify.engine.Player;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;

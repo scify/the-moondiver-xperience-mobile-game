@@ -7,7 +7,7 @@ import org.scify.engine.EpisodeEndState;
 import org.scify.moonwalker.app.game.rules.MoonWalkerRules;
 import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
-import org.scify.moonwalker.app.ui.input.UserActionCode;
+import org.scify.engine.UserActionCode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;

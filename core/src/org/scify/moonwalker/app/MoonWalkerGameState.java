@@ -3,7 +3,7 @@ package org.scify.moonwalker.app;
 import com.badlogic.gdx.physics.box2d.World;
 import org.scify.engine.GameEvent;
 import org.scify.engine.GameState;
-import org.scify.moonwalker.app.game.Player;
+import org.scify.engine.Player;
 
 import java.util.List;
 

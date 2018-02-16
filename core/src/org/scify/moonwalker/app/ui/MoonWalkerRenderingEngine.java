@@ -20,8 +20,7 @@ import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.components.*;
 import org.scify.moonwalker.app.ui.components.ActionButton;
-import org.scify.moonwalker.app.ui.components.calculator.CalculatorComponent;
-import org.scify.moonwalker.app.ui.input.UserActionCode;
+import org.scify.engine.UserActionCode;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 import org.scify.moonwalker.app.ui.sound.GdxAudioEngine;
 

@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import org.scify.engine.*;
 import org.scify.engine.EpisodeEndState;
 import org.scify.engine.rules.PhysicsRules;
-import org.scify.moonwalker.app.game.Player;
+import org.scify.engine.Player;
 import org.scify.moonwalker.app.helpers.GameInfo;
 
 import java.util.HashMap;

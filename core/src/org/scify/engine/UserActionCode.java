@@ -1,4 +1,4 @@
-package org.scify.moonwalker.app.ui.input;
+package org.scify.engine;
 
 
 public enum UserActionCode {

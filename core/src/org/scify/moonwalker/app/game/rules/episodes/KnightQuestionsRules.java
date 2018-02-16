@@ -3,7 +3,7 @@ package org.scify.moonwalker.app.game.rules.episodes;
 import org.scify.engine.*;
 import org.scify.engine.EpisodeEndStateCode;
 import org.scify.moonwalker.app.MoonWalkerGameState;
-import org.scify.moonwalker.app.game.Player;
+import org.scify.engine.Player;
 import org.scify.moonwalker.app.game.quiz.Question;
 import org.scify.moonwalker.app.game.quiz.QuestionService;
 import org.scify.moonwalker.app.game.quiz.QuestionServiceJSON;
