@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 
 public class ThemeController {
@@ -13,15 +14,21 @@ public class ThemeController {
     private BitmapFont font;
     private Skin skin;
     private ResourceLocator resourceLocator;
+    private GameInfo gameInfo;
 
     public ThemeController() {
         this.resourceLocator = new ResourceLocator();
+        this.gameInfo = GameInfo.getInstance();
         initFontAndSkin();
     }
 
     public void initFontAndSkin() {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(resourceLocator.getFilePath("fonts/Starjedi.ttf")));
-        font = createFont(generator, 13);
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.characters=FreeTypeFontGenerator.DEFAULT_CHARS + "α  β  γ  δ  ε  ζ  η  θ  ι  κ  λ  μ  ν  ξ  ο  π  ρ  σ  τ  υ  ϕ  χ  ψ  ω Α  Β  Γ  Δ  Ε  Ζ  Η  Θ  Ι  Κ  Λ  Μ  Ν  Ξ  Ο  Π  Ρ  Σ  Τ  Υ  Φ  Χ  Ψ  Ω ά έ ή ί ό ύ ώ Ά Έ Ή Ί Ό Ύ Ώ";
+        parameter.size = getPixelSizeForFontSize(22);
+
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(resourceLocator.getFilePath("fonts/Anonymous_Pro.ttf")));
+        font = generator.generateFont(parameter);
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         skin = new Skin();
         skin.add("default-font", font, BitmapFont.class);
@@ -33,10 +40,14 @@ public class ThemeController {
     private BitmapFont createFont(FreeTypeFontGenerator generator, float fontSize) {
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         float screenDPI = 160.0f * Gdx.graphics.getDensity();
-        int pixelSize = (int)(fontSize * screenDPI / 96.0f); // Reference size based on 96 DPI screen
+        int pixelSize = (int)(fontSize * screenDPI / 160.0f); // Reference size based on 96 DPI screen
         parameter.size = pixelSize;
         //Gdx.app.log(TAG, "Font size: "+pixelSize+"px");
         return generator.generateFont(parameter);
+    }
+
+    protected int getPixelSizeForFontSize(float fontSize) {
+        return (int) gameInfo.pixelsWithDensity(fontSize);
     }
 
     public BitmapFont getFont() {

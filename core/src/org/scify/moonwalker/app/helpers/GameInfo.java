@@ -5,6 +5,7 @@ public class GameInfo {
     private static GameInfo instance = new GameInfo();
     private int screenWidth;
     private int screenHeight;
+    private float screenDensity = 1;
 
     public static GameInfo getInstance() {
         return instance;
@@ -30,4 +31,11 @@ public class GameInfo {
         return (float)getScreenHeight()/(float) getScreenWidth();
     }
 
+    public void setScreenDensity(float screenDensity) {
+        this.screenDensity = screenDensity;
+    }
+
+    public float pixelsWithDensity(float pixels) {
+        return pixels * screenDensity;
+    }
 }

@@ -1,5 +1,5 @@
 [
-  {"id": "1", "order":"1", "speakerId":"yoda", "text":"Hello, my son. What is your name?", "prerequisites":"", "triggerEvent":""},
+  {"id": "1", "order":"1", "speakerId":"yoda", "text":"Ποιό είναι το όνομά σου;", "prerequisites":"", "triggerEvent":""},
   {"id": "2", "order":"2", "speakerId":"player", "text":"Shut up, old man!", "prerequisites":"", "triggerEvent":"", "nextOrder":"6"},
   {"id": "3", "order":"2", "speakerId":"player", "text":"What's with the wrinkles?", "prerequisites":"", "triggerEvent":"", "nextOrder":"6"},
   {"id": "4", "order":"2", "speakerId":"player", "text":"Could you repeat?", "prerequisites":"", "triggerEvent":"", "nextOrder":"1"},

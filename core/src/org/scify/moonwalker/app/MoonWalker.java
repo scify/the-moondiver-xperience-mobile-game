@@ -13,6 +13,7 @@ public class MoonWalker extends Game {
         GameInfo gameInfo = GameInfo.getInstance();
         gameInfo.setScreenWidth(Gdx.graphics.getWidth());
         gameInfo.setScreenHeight(Gdx.graphics.getHeight());
+        gameInfo.setScreenDensity(Gdx.graphics.getDensity());
         this.setScreen(new GameLauncher(this));
     }
 

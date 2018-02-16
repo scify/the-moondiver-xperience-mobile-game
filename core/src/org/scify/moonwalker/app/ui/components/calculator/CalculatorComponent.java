@@ -132,7 +132,7 @@ public class CalculatorComponent extends Table {
     }
 
     protected float pixelsWithDensity(float pixels) {
-        return pixels * Gdx.graphics.getDensity();
+        return gameInfo.pixelsWithDensity(pixels);
     }
 
 }
