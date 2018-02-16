@@ -52,13 +52,11 @@ public abstract class Scenario {
 
     protected void addAfterXEpisodeLikeY(Episode episodeBefore, Episode episodeToClone) throws CloneNotSupportedException {
         initListForEpisode(episodeBefore);
-
         // Clone the episode
         Episode newEpisode = (Episode) episodeToClone.clone();
         // Make sure that the cloned episode has the same "next episode" list as the original
         initListForEpisode(newEpisode);
         episodeListMap.get(newEpisode).addAll(episodeListMap.get(episodeToClone));
-
         // Actually add the episode after the requested one
         addEpisodeAfter(episodeBefore, newEpisode);
     }
@@ -87,5 +85,18 @@ public abstract class Scenario {
     public void setCurrentEpisode(Episode newCurrentEpisode) {
         lastEpisode = this.currentEpisode;
         this.currentEpisode = newCurrentEpisode;
+    }
+
+    protected void removeLastEpisodeAndCandidateEpisodes() {
+        // get last episode's first possible next episode
+        Episode firstPossibleEpisodeAfterLastEpisode = episodeListMap.get(lastEpisode).get(0);
+        // remove this episode from episode set
+        episodeListMap.remove(firstPossibleEpisodeAfterLastEpisode);
+        // remove all possible episodes from first candidate position of the previous episode
+        episodeListMap.get(lastEpisode).remove(0);
+    }
+
+    protected void addEpisodeAsFirstCandidateEpisodeAfterCurrentEpisode(Episode episode) {
+        episodeListMap.get(currentEpisode).add(0, episode);
     }
 }
