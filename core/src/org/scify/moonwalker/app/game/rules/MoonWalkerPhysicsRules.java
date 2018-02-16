@@ -176,8 +176,9 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
         for(Map.Entry<Renderable, Body> entry : renderableBodyMap.entrySet()) {
             world.destroyBody(entry.getValue());
         }
-        // TODO causes Java error
-        //world.dispose();
+        // Do NOT dispose of world, because it appears that it is called again (?) by
+        // the garbage collector
+
         bDisposalOngoing = false;
     }
 
