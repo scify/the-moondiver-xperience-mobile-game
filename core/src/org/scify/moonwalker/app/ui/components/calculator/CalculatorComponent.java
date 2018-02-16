@@ -1,6 +1,5 @@
 package org.scify.moonwalker.app.ui.components.calculator;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
+import org.scify.moonwalker.app.ui.ThemeController;
 
 import java.util.Arrays;
 
@@ -68,15 +68,19 @@ public class CalculatorComponent extends Table {
     }
 
     protected Label createMainLabel() {
+        ThemeController themeController = new ThemeController();
         mainLabel = new Label(MAIN_LABEL_INITIAL_TEXT, skin);
         mainLabel.setHeight(MAIN_LABEL_HEIGHT);
         mainLabel.setFontScale(2);
         mainLabel.setAlignment(Align.center);
-        Pixmap labelColor = new Pixmap((int)mainLabel.getWidth(), (int)mainLabel.getHeight(), Pixmap.Format.RGB888);
+        Pixmap labelColor = new Pixmap((int)mainLabel.getWidth(), (int) mainLabel.getHeight(), Pixmap.Format.RGB888);
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+
         labelColor.setColor(Color.BLACK);
         labelColor.fill();
-        mainLabel.getStyle().background = new Image(new Texture(labelColor)).getDrawable();
-
+        labelStyle.background = new Image(new Texture(labelColor)).getDrawable();
+        labelStyle.font = themeController.getFont();
+        mainLabel.setStyle(labelStyle);
         return mainLabel;
     }
 
@@ -100,6 +104,7 @@ public class CalculatorComponent extends Table {
                     parseButtonClick(button.getName());
                 }
             });
+            System.out.println(pixelsWithDensity(BUTTON_SIZE_PIXELS));
             table.add(button).size(pixelsWithDensity(BUTTON_SIZE_PIXELS)).left().fill().pad(pixelsWithDensity(BUTTON_PADDING_PIXELS));
             if(btnIndex % BUTTONS_PER_ROW == 0)
                 table.row();
