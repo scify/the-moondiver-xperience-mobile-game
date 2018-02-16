@@ -65,7 +65,7 @@ public class AvatarWithMessageComponent extends Group {
         table.add(avatarImg).width(gameInfo.getScreenWidth() * 0.2f).padLeft(5).padBottom(10);
         table.add(lineLabel).width(lineLabel.getWidth()).padLeft(10).align(Align.right);
         if(hasNextButton) {
-            nextButton = new TextButton("Next", skin);
+            nextButton = new TextButton("Επόμενο", skin);
             nextButton.pad(5);
             table.add(nextButton).width(gameInfo.getScreenWidth() * 0.2f).padLeft(10).align(Align.left);
             nextButton.addListener(userInputHandler);
