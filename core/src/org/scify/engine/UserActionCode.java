@@ -17,5 +17,6 @@ public enum UserActionCode {
     QUIT,
     ABOUT,
     BOY_SELECTED,
-    GIRL_SELECTED
+    GIRL_SELECTED,
+    BACK
 }

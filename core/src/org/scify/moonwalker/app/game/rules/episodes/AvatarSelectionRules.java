@@ -8,7 +8,6 @@ import org.scify.moonwalker.app.ui.components.ActionButton;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class AvatarSelectionRules extends SinglePlayerRules {
 
@@ -27,26 +26,51 @@ public class AvatarSelectionRules extends SinglePlayerRules {
 
     private void handleUserAction(GameState gsCurrent, UserAction userAction) {
         switch (userAction.getActionCode()) {
-
+            case BOY_SELECTED:
+               removePreviousAvatarSelectionAndAddNew(gsCurrent, "boy");
+                break;
+            case GIRL_SELECTED:
+                removePreviousAvatarSelectionAndAddNew(gsCurrent, "girl");
+                break;
+            case FINISH_EPISODE:
+                gameEndedEvents(gameState);
+                break;
+            case BACK:
+                gsCurrent.addGameEvent(new GameEvent("BACK", null, this));
+                gameEndedEvents(gameState);
+                break;
         }
+    }
+
+    protected void removePreviousAvatarSelectionAndAddNew(GameState gsCurrent, String newSelection) {
+        gsCurrent.removeGameEventsWithType("AVATAR_SELECTED");
+        gsCurrent.addGameEvent(new GameEvent("AVATAR_SELECTED", newSelection));
     }
 
     @Override
     public EpisodeEndState determineEndState(GameState currentState) {
         EpisodeEndState endState = null;
-        if(currentState.eventsQueueContainsEvent("BACK"))
-            endState = new EpisodeEndState(EpisodeEndStateCode.BACK, currentState);
+        if(currentState.eventsQueueContainsEventOwnedBy("BACK", this))
+            endState = new EpisodeEndState(EpisodeEndStateCode.PREVIOUS_EPISODE, currentState);
         else if(currentState.eventsQueueContainsEvent("AVATAR_SELECTED"))
             endState = new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS, currentState);
+        cleanUpGameState(currentState);
         return endState;
     }
 
     @Override
     public void gameStartedEvents(GameState currentState) {
-        if (!currentState.eventsQueueContainsEvent("EPISODE_STARTED")) {
-            currentState.addGameEvent(new GameEvent("EPISODE_STARTED"));
+        if (!currentState.eventsQueueContainsEventOwnedBy("EPISODE_STARTED", this)) {
+            currentState.addGameEvent(new GameEvent("EPISODE_STARTED", null, this));
             currentState.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/Andromeda-galaxy.jpg"));
             createAvatarsButtonsList(currentState);
+
+            ActionButton escape = createEscapeButton(currentState);
+            escape.setUserAction(new UserAction(UserActionCode.BACK));
+            currentState.addRenderable(escape);
+            addRenderableEntry("calculator_finished_button", escape);
+            // set the boy selected by default
+            removePreviousAvatarSelectionAndAddNew(gameState, "boy");
         }
     }
 
@@ -60,7 +84,9 @@ public class AvatarSelectionRules extends SinglePlayerRules {
         ActionButton selectBtn = new ActionButton("text_button", "select");
         selectBtn.setHeight(SELECT_BUTTON_HEIGHT_PIXELS);
         selectBtn.setTitle("Start Game");
+        selectBtn.setUserAction(new UserAction(UserActionCode.FINISH_EPISODE));
         List<HashMap.SimpleEntry<ActionButton, Color>> buttons = new ArrayList();
+        //white color means transparent (no color)
         buttons.add(new HashMap.SimpleEntry<>(boyBtn, Color.WHITE));
         buttons.add(new HashMap.SimpleEntry<>(selectBtn, Color.WHITE));
         buttons.add(new HashMap.SimpleEntry<>(girlBtn, Color.DARK_GRAY));
@@ -69,7 +95,7 @@ public class AvatarSelectionRules extends SinglePlayerRules {
 
     @Override
     public void gameEndedEvents(GameState currentState) {
-        gameState.addGameEvent(new GameEvent("EPISODE_FINISHED"));
+        gameState.addGameEvent(new GameEvent("EPISODE_FINISHED", null, this));
     }
 
     @Override

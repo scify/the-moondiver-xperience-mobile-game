@@ -4,7 +4,6 @@ import org.scify.engine.*;
 import org.scify.engine.EpisodeEndStateCode;
 import org.scify.moonwalker.app.game.rules.SinglePlayerRules;
 import org.scify.moonwalker.app.ui.components.ActionButton;
-import org.scify.engine.UserActionCode;
 
 /**
  * This is a self-contained episode (meaning that it usually gets invoked
@@ -37,7 +36,7 @@ public class CalculatorEpisodeRules extends SinglePlayerRules{
 
     private void handleUserAction(GameState gsCurrent, UserAction userAction) {
         switch (userAction.getActionCode()) {
-            case FINISH_EPISODE:
+            case BACK:
                 gameEndedEvents(gsCurrent);
                 break;
         }
@@ -50,12 +49,8 @@ public class CalculatorEpisodeRules extends SinglePlayerRules{
             gsCurrent.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/calculator_episode/bg.jpg"));
             Renderable calculator = new Renderable("calculator", "calculator_button");
             gsCurrent.addRenderable(calculator);
-            float btnRealSize = gameInfo.pixelsWithDensity(ESCAPE_BUTTON_SIZE_PIXELS);
-            System.out.println(btnRealSize);
-            ActionButton escape = new ActionButton(0, gameInfo.getScreenHeight() - btnRealSize, btnRealSize, btnRealSize, "image_button", "escape_button");
-            escape.setPadding(gameInfo.pixelsWithDensity(ESCAPE_BUTTON_PADDING_PIXELS));
-            escape.setUserAction(new UserAction(UserActionCode.FINISH_EPISODE));
-            escape.setImgPath("img/close.png");
+            ActionButton escape = createEscapeButton(gsCurrent);
+            escape.setUserAction(new UserAction(UserActionCode.BACK));
             gsCurrent.addRenderable(escape);
             addRenderableEntry("calculator_finished_button", escape);
         }
@@ -73,7 +68,7 @@ public class CalculatorEpisodeRules extends SinglePlayerRules{
         // this episode is considered finished either
         // when the player has reached the top border of the screen
         // or the base rules class decides that should finish
-        return gsCurrent.eventsQueueContainsEvent("CALCULATOR_FINISHED") || super.isGameFinished(gsCurrent);
+        return gsCurrent.eventsQueueContainsEvent("PREVIOUS_EPISODE") || super.isGameFinished(gsCurrent);
     }
 
     @Override
@@ -87,15 +82,14 @@ public class CalculatorEpisodeRules extends SinglePlayerRules{
         if(gsPrevious != null) {
             toReturn = this.gsPrevious;
         }
-        if(gsCurrent.eventsQueueContainsEvent("CALCULATOR_FINISHED"))
-            return new EpisodeEndState(EpisodeEndStateCode.CALCULATOR_FINISHED, toReturn);
+        if(gsCurrent.eventsQueueContainsEvent("PREVIOUS_EPISODE"))
+            return new EpisodeEndState(EpisodeEndStateCode.TEMP_EPISODE_FINISHED, toReturn);
         return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE, toReturn);
     }
 
     @Override
     public void gameEndedEvents(GameState gsCurrent) {
-        //todo add temp
-        gsCurrent.addGameEvent(new GameEvent("CALCULATOR_FINISHED"));
+        gsCurrent.addGameEvent(new GameEvent("PREVIOUS_EPISODE"));
         gsCurrent.addGameEvent(new GameEvent("EPISODE_FINISHED"));
     }
 

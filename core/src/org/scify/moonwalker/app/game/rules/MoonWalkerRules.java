@@ -11,6 +11,7 @@ import org.scify.moonwalker.app.game.quiz.Answer;
 import org.scify.engine.UserAction;
 import org.scify.moonwalker.app.game.quiz.Question;
 import org.scify.moonwalker.app.helpers.GameInfo;
+import org.scify.moonwalker.app.ui.components.ActionButton;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -117,5 +118,18 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
     @Override
     public boolean isGamePaused(GameState gsCurrent) {
         return gsCurrent.eventsQueueContainsEvent("PAUSE_GAME");
+    }
+
+    protected ActionButton createEscapeButton(GameState gsCurrent) {
+        float btnRealSize = gameInfo.pixelsWithDensity(ESCAPE_BUTTON_SIZE_PIXELS);
+        System.out.println(btnRealSize);
+        ActionButton escape = new ActionButton(0, gameInfo.getScreenHeight() - btnRealSize, btnRealSize, btnRealSize, "image_button", "escape_button");
+        escape.setPadding(gameInfo.pixelsWithDensity(ESCAPE_BUTTON_PADDING_PIXELS));
+        escape.setImgPath("img/close.png");
+        return  escape;
+    }
+
+    protected void cleanUpGameState(GameState currentState) {
+        currentState.removeAllGameEventsOwnedBy(this);
     }
 }

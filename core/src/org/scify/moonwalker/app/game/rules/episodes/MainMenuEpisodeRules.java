@@ -40,8 +40,8 @@ public class MainMenuEpisodeRules extends SinglePlayerRules {
 
     @Override
     public void gameStartedEvents(GameState gsCurrent) {
-        if (!gsCurrent.eventsQueueContainsEvent("EPISODE_STARTED")) {
-            gsCurrent.addGameEvent(new GameEvent("EPISODE_STARTED"));
+        if (!gsCurrent.eventsQueueContainsEventOwnedBy("EPISODE_STARTED", this)) {
+            gsCurrent.addGameEvent(new GameEvent("EPISODE_STARTED", null, this));
             gsCurrent.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/Andromeda-galaxy.jpg"));
             createAndAddMainMenuButtons(gsCurrent);
         }
@@ -62,11 +62,11 @@ public class MainMenuEpisodeRules extends SinglePlayerRules {
         switch (userAction.getActionCode()) {
             case NEW_GAME:
                 gameEndedEvents(gsCurrent);
-                gsCurrent.addGameEvent(new GameEvent("NEW_GAME"));
+                gsCurrent.addGameEvent(new GameEvent("NEW_GAME", null, this));
                 break;
             case QUIT:
                 gameEndedEvents(gsCurrent);
-                gsCurrent.addGameEvent(new GameEvent("APP_QUIT"));
+                gsCurrent.addGameEvent(new GameEvent("APP_QUIT", null, this));
                 break;
         }
     }
@@ -78,12 +78,13 @@ public class MainMenuEpisodeRules extends SinglePlayerRules {
             endState = new EpisodeEndState(EpisodeEndStateCode.APP_QUIT, currentState);
         else if(currentState.eventsQueueContainsEvent("NEW_GAME"))
             endState = new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS, currentState);
+        cleanUpGameState(currentState);
         return endState;
     }
 
     @Override
     public void gameEndedEvents(GameState currentState) {
-        gameState.addGameEvent(new GameEvent("EPISODE_FINISHED"));
+        gameState.addGameEvent(new GameEvent("EPISODE_FINISHED", null, this));
     }
 
     @Override

@@ -15,9 +15,9 @@ public class MoonWalkerScenario extends Scenario {
         this.userInputHandler = userInputHandler;
         Episode firstEpisode = new MainMenuEpisode(renderingEngine, userInputHandler);
         setFirstEpisode(firstEpisode);
-        appendEpisode(new AvatarSelectionEpisode(renderingEngine, userInputHandler));
-        appendEpisode(new RoomEpisode(renderingEngine, userInputHandler));
-        appendEpisode(new KnightRaceEpisode(renderingEngine, userInputHandler));
+        Episode secondEpisode = new AvatarSelectionEpisode(renderingEngine, userInputHandler);
+        appendEpisode(secondEpisode);
+        addEpisodeAfter(secondEpisode, new RoomEpisode(renderingEngine, userInputHandler));
     }
 
     @Override
@@ -36,8 +36,10 @@ public class MoonWalkerScenario extends Scenario {
                     return null;
                 }
                 break;
-            case CALCULATOR_FINISHED:
+            case TEMP_EPISODE_FINISHED:
                 removeLastEpisodeAndCandidateEpisodes();
+                return lastEpisode;
+            case PREVIOUS_EPISODE:
                 return lastEpisode;
             case APP_QUIT:
                 return  null;
