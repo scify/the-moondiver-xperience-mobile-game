@@ -49,6 +49,17 @@ public abstract class GameState {
         return false;
     }
 
+    public boolean eventsQueueContainsEventOwnedBy(String eventType, Object owner) {
+        Iterator<GameEvent> iter = eventQueue.iterator();
+        GameEvent currentGameEvent;
+        while (iter.hasNext()) {
+            currentGameEvent = iter.next();
+            if(currentGameEvent.type.equals(eventType) && currentGameEvent.owner == owner)
+                return true;
+        }
+        return false;
+    }
+
     public void storeAdditionalDataEntry(String dataId, Object dataPayload) {
         additionalDataMap.put(dataId, dataPayload);
     }
@@ -93,7 +104,7 @@ public abstract class GameState {
             ListIterator<GameEvent> listIterator = eventQueue.listIterator();
             while (listIterator.hasNext()) {
                 GameEvent currentGameEvent = listIterator.next();
-                if(currentGameEvent.owner.equals(owner))
+                if(currentGameEvent.owner != null && currentGameEvent.owner.equals(owner))
                     listIterator.remove();
             }
         }
