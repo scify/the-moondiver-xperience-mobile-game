@@ -140,6 +140,7 @@ public abstract class Scenario {
             return null;
         for(Episode candidateEpisode : possibleNextEpisodes) {
             if(candidateEpisode.isAccessible(state)) {
+                candidateEpisode.gameEngine.getRules().setPreviousState(state.getGameState());
                 return candidateEpisode;
             }
         }

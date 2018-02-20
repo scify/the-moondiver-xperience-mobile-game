@@ -37,6 +37,9 @@ public class ActorFactory extends ComponentFactory{
             case "boy":
                 toReturn = createImage("img/boy.png", renderable);
                 break;
+            case "girl":
+                toReturn = createImage("img/girl.png", renderable);
+                break;
             case "text_button":
                 toReturn = createTextButton((ActionButton) renderable);
                 break;

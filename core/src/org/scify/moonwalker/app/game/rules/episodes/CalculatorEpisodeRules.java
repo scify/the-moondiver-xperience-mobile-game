@@ -14,13 +14,8 @@ import org.scify.moonwalker.app.ui.components.ActionButton;
  */
 public class CalculatorEpisodeRules extends SinglePlayerRules{
 
-    protected GameState gsPrevious;
-
     public CalculatorEpisodeRules(GameState gsCurrent) {
         this.gsPrevious = gsCurrent;
-    }
-
-    public CalculatorEpisodeRules() {
     }
 
     @Override

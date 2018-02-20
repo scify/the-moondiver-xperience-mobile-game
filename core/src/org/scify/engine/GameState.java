@@ -77,6 +77,18 @@ public abstract class GameState {
         return sb.toString();
     }
 
+    public GameEvent getGameEventsWithType(String type) {
+        synchronized (eventQueue) {
+            ListIterator<GameEvent> listIterator = eventQueue.listIterator();
+            while (listIterator.hasNext()) {
+                GameEvent currentGameEvent = listIterator.next();
+                if(currentGameEvent.type.equals(type))
+                    return currentGameEvent;
+            }
+        }
+        return null;
+    }
+
     public void removeGameEventsWithType(String gameEventType) {
         synchronized (eventQueue) {
             ListIterator<GameEvent> listIterator = eventQueue.listIterator();

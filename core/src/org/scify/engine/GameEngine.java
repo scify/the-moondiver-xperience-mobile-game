@@ -5,7 +5,7 @@ import org.scify.engine.rules.Rules;
 public class GameEngine {
 
     protected RenderingEngine renderingEngine;
-    protected org.scify.engine.rules.Rules<GameState, UserAction, EpisodeEndState> rules;
+    protected Rules<GameState, UserAction, EpisodeEndState> rules;
     protected UserInputHandler inputHandler;
     protected GameState currentGameState;
 

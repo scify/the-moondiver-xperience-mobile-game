@@ -4,6 +4,7 @@ public class Renderable extends Positionable {
     protected String type;
     protected String id;
     protected UserInputHandler userInputHandler;
+    protected String imgPath;
 
     public Renderable(float xPos, float yPos, float width, float height, String type, String id) {
         super(xPos, yPos, width, height);
@@ -27,6 +28,14 @@ public class Renderable extends Positionable {
 
     public void setUserInputHandler(UserInputHandler userInputHandler) {
         this.userInputHandler = userInputHandler;
+    }
+
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
     }
 
     @Override

@@ -74,4 +74,6 @@ public interface Rules<StateType, Action, EndStateType> {
      * @param currentState the current state instance
      */
     void gameResumedEvents(StateType currentState);
+
+    void setPreviousState(StateType type);
 }
