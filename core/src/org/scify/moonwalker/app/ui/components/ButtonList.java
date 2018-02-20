@@ -14,10 +14,12 @@ public class ButtonList extends Table{
     protected GameInfo gameInfo;
     protected final float MAIN_LABEL_PADDING_PIXELS = 12;
     protected final float BUTTON_PADDING_PIXELS = 10;
+    protected boolean isVertical;
 
-    public ButtonList(Skin skin) {
+    public ButtonList(Skin skin, boolean isVertical) {
         super(skin);
         this.gameInfo = GameInfo.getInstance();
+        this.isVertical = isVertical;
         setFillParent(true);
         center().center();
     }
@@ -26,12 +28,17 @@ public class ButtonList extends Table{
         label = new Label(labelTxt, getSkin());
         label.setFontScale(2);
         label.setAlignment(Align.center);
-        add(label).pad(gameInfo.pixelsWithDensity(MAIN_LABEL_PADDING_PIXELS)).row();
+        add(label).colspan(3).pad(gameInfo.pixelsWithDensity(MAIN_LABEL_PADDING_PIXELS)).row();
     }
 
     public void addButton(Actor button, UserInputHandlerImpl userInputHandler) {
         button.addListener(userInputHandler);
-        add(button).pad(gameInfo.pixelsWithDensity(BUTTON_PADDING_PIXELS)).width(button.getWidth()).height(button.getHeight());
-        row();
+        if(isVertical) {
+            add(button).pad(gameInfo.pixelsWithDensity(BUTTON_PADDING_PIXELS)).width(button.getWidth()).height(button.getHeight());
+            row();
+        } else {
+            add(button).width(gameInfo.getScreenWidth() / 3f).center().height(button.getHeight()).expand().pad(gameInfo.pixelsWithDensity(BUTTON_PADDING_PIXELS));
+        }
+
     }
 }
