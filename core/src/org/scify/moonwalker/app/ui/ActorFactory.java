@@ -73,8 +73,10 @@ public class ActorFactory extends ComponentFactory{
 
     protected void setButtonDimensions(ActionButton actionButton, Button btn) {
         btn.setPosition(actionButton.getxPos(), actionButton.getyPos());
-        btn.setWidth(actionButton.getWidth());
-        btn.setHeight(actionButton.getHeight());
+        if(actionButton.getWidth() != 0)
+            btn.setWidth(actionButton.getWidth());
+        if(actionButton.getHeight() != 0)
+            btn.setHeight(actionButton.getHeight());
         btn.pad(actionButton.getPadding());
     }
 }
