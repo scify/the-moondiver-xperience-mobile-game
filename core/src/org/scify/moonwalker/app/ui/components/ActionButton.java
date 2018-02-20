@@ -14,6 +14,10 @@ public class ActionButton extends Renderable {
         super(xPos, yPos, width, height, type, id);
     }
 
+    public ActionButton(String type, String id) {
+        super(type, id);
+    }
+
     public String getTitle() {
         return title;
     }

@@ -6,5 +6,6 @@ public enum EpisodeEndStateCode {
     EPISODE_INTERRUPTED,
     CALCULATOR_STARTED,
     CALCULATOR_FINISHED,
-    APP_QUIT
+    APP_QUIT,
+    BACK
 }
