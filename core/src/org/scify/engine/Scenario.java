@@ -11,6 +11,16 @@ import java.util.*;
  * until it gets the next episode.
  * If no episode can be played after the last played episode, or if the last played episode does not have
  * possible next episodes, the scenario is considered as finished.
+ * Important: When a new episode is added after another (parent) episode, the episode list map is affected in both ways:
+ * 1. The episode is added to the list of candidate episodes, after the parent episode
+ * 2. The episode is added as a top level node to the list, along with a new, empty list of candidate episodes to be followed.
+ * Example:
+ * Episode 1 is added to the list
+ * List: [1=>[]]
+ * Episode 2 is added as a candidate after episode 1, which is now a parent episode:
+ * List: [1=>[2], 2=>[]]
+ * Episode 3 is added as a candidate after episode 2
+ * List: [1=>[2], 2=>[3], 3=> []]
  */
 public abstract class Scenario {
 
