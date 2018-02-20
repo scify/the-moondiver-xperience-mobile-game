@@ -278,15 +278,33 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                     actor.remove();
                 listIterator.remove();
                 break;
-            case "BUTTONS_LIST":
-                addButtonsList((List<ActionButton>) currentGameEvent.parameters);
+            case "BUTTONS_LIST_VERTICAL":
+                addButtonsListVertical((List<ActionButton>) currentGameEvent.parameters);
+                listIterator.remove();
+                break;
+            case "BUTTONS_LIST_HORIZONTAL":
+                addButtonsListHorizontal((List<ActionButton>) currentGameEvent.parameters);
                 listIterator.remove();
                 break;
         }
     }
 
-    private void addButtonsList(List<ActionButton> buttons) {
-        ButtonList list = new ButtonList(themeController.getSkin());
+    private void addButtonsListVertical(List<ActionButton> buttons) {
+        ButtonList list = new ButtonList(themeController.getSkin(), true);
+        list.addMainLabel("Select an Action");
+        for(final ActionButton button : buttons)
+            list.addButton(actorFactory.createResourceForType(button), new UserInputHandlerImpl() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    userInputHandler.addUserAction(button.getUserAction());
+                }
+            });
+        stage.addActor(list);
+        additionalActors.add(list);
+    }
+
+    private void addButtonsListHorizontal(List<ActionButton> buttons) {
+        ButtonList list = new ButtonList(themeController.getSkin(), false);
         list.addMainLabel("Select an Action");
         for(final ActionButton button : buttons)
             list.addButton(actorFactory.createResourceForType(button), new UserInputHandlerImpl() {
