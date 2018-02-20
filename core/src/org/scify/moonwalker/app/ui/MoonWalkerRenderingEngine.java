@@ -51,7 +51,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private Viewport gameViewport;
     private ResourceLocator resourceLocator;
     private static final String TAG = MoonWalkerRenderingEngine.class.getName();
-    private List<Actor> conversationActors;
+    private List<Actor> additionalActors;
     private ComponentFactory<Actor> actorFactory;
     private ComponentFactory<Sprite> spriteFactory;
     private boolean bDisposalOngoing;
@@ -61,7 +61,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         cameraController = new CameraController();
         this.userInputHandler = (UserInputHandlerImpl) userInputHandler;
         resetEngine();
-        conversationActors = new ArrayList<>();
+        additionalActors = new ArrayList<>();
         audioEngine = new GdxAudioEngine();
         gameInfo = GameInfo.getInstance();
         this.batch = batch;
@@ -274,11 +274,29 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 listIterator.remove();
                 break;
             case "REMOVE_CONVERSATIONS":
-                for(Actor actor : conversationActors)
+                for(Actor actor : additionalActors)
                     actor.remove();
                 listIterator.remove();
                 break;
+            case "BUTTONS_LIST":
+                addButtonsList((List<ActionButton>) currentGameEvent.parameters);
+                listIterator.remove();
+                break;
         }
+    }
+
+    private void addButtonsList(List<ActionButton> buttons) {
+        ButtonList list = new ButtonList(themeController.getSkin());
+        list.addMainLabel("Select an Action");
+        for(final ActionButton button : buttons)
+            list.addButton(actorFactory.createResourceForType(button), new UserInputHandlerImpl() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    userInputHandler.addUserAction(button.getUserAction());
+                }
+            });
+        stage.addActor(list);
+        additionalActors.add(list);
     }
 
     private void createMultipleSelectionForConversationLines(MultipleConversationLines multipleConversationLinesComponent) {
@@ -296,7 +314,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             }, btnIndex);
             btnIndex++;
         }
-        conversationActors.add(component);
+        additionalActors.add(component);
         stage.addActor(component);
     }
 
@@ -315,7 +333,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 userInputHandler.addUserAction(toThrow);
             }
         });
-        conversationActors.add(component);
+        additionalActors.add(component);
         stage.addActor(component);
     }
 
@@ -323,7 +341,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         bDisposalOngoing = true;
         renderableSpriteMap = new HashMap<>();
         renderableActorMap = new HashMap<>();
-        conversationActors = new ArrayList<>();
+        additionalActors = new ArrayList<>();
         bDisposalOngoing = false;
     }
 
@@ -346,7 +364,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             entry.getValue().remove();
             it.remove();
         }
-        for(Iterator<Actor> it = conversationActors.iterator(); it.hasNext(); ) {
+        for(Iterator<Actor> it = additionalActors.iterator(); it.hasNext(); ) {
             Actor entry = it.next();
             entry.remove();
             it.remove();

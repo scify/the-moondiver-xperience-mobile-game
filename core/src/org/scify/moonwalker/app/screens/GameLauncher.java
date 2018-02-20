@@ -1,5 +1,6 @@
 package org.scify.moonwalker.app.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -54,6 +55,7 @@ public class GameLauncher implements Screen {
             @Override
             public void run() {
                 mainGameScenario.start();
+                Gdx.app.exit();
             }
         });
         thread.start();

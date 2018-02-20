@@ -41,6 +41,8 @@ public class MoonWalkerScenario extends Scenario {
             case CALCULATOR_FINISHED:
                 removeLastEpisodeAndCandidateEpisodes();
                 return lastEpisode;
+            case APP_QUIT:
+                return  null;
             default:
                 break;
         }

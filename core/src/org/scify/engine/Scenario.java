@@ -177,6 +177,7 @@ public abstract class Scenario {
      * @param episode the episode that will be inserted.
      */
     protected void addEpisodeAsFirstCandidateEpisodeAfterCurrentEpisode(Episode episode) {
+        initListForEpisode(episode);
         episodeListMap.get(currentEpisode).add(0, episode);
     }
 }

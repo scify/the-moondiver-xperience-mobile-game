@@ -104,7 +104,6 @@ public class CalculatorComponent extends Table {
                     parseButtonClick(button.getName());
                 }
             });
-            System.out.println(pixelsWithDensity(BUTTON_SIZE_PIXELS));
             table.add(button).size(pixelsWithDensity(BUTTON_SIZE_PIXELS)).left().fill().pad(pixelsWithDensity(BUTTON_PADDING_PIXELS));
             if(btnIndex % BUTTONS_PER_ROW == 0)
                 table.row();
