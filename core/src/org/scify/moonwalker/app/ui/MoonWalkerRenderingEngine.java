@@ -283,7 +283,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 listIterator.remove();
                 break;
             case "BUTTONS_LIST_HORIZONTAL":
-                addButtonsListHorizontal((List<ActionButton>) currentGameEvent.parameters);
+                addButtonsListHorizontal((List<HashMap.SimpleEntry<ActionButton, Color>>) currentGameEvent.parameters);
                 listIterator.remove();
                 break;
         }
@@ -303,18 +303,28 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         additionalActors.add(list);
     }
 
-    private void addButtonsListHorizontal(List<ActionButton> buttons) {
-        ButtonList list = new ButtonList(themeController.getSkin(), false);
+    private void addButtonsListHorizontal(List<HashMap.SimpleEntry<ActionButton, Color>> buttons) {
+        final ButtonList list = new ButtonList(themeController.getSkin(), false);
+        list.setColumnsNum(3);
         list.addMainLabel("Select an Action");
-        for(final ActionButton button : buttons)
-            list.addButton(actorFactory.createResourceForType(button), new UserInputHandlerImpl() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    userInputHandler.addUserAction(button.getUserAction());
-                }
-            });
+        for(HashMap.SimpleEntry<ActionButton, Color> button : buttons)
+            addButtonToHorizontalListComponent(list, button.getKey(), button.getValue());
         stage.addActor(list);
         additionalActors.add(list);
+    }
+
+    protected void addButtonToHorizontalListComponent(final ButtonList list, final ActionButton actionButton, Color buttonInitialColor) {
+        Actor button = actorFactory.createResourceForType(actionButton);
+        list.addButton(button, new UserInputHandlerImpl() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                // set all other image buttons of the table to have a grey color
+                list.setImageButtonsGreyedOutExcept(actor);
+                userInputHandler.addUserAction(actionButton.getUserAction());
+            }
+        });
+        if(buttonInitialColor != null && button.getClass() == ImageButton.class)
+            list.setColorToImageButton((ImageButton) button, buttonInitialColor);
     }
 
     private void createMultipleSelectionForConversationLines(MultipleConversationLines multipleConversationLinesComponent) {

@@ -6,8 +6,10 @@ import org.scify.engine.rules.Rules;
 public class EpisodeWithEndState extends Episode<EpisodeEndState> {
     protected Rules rules;
 
-    public EpisodeWithEndState(RenderingEngine renderingEngine, UserInputHandler userInputHandler, String name) {
+    public EpisodeWithEndState(RenderingEngine renderingEngine, UserInputHandler userInputHandler, String name, Rules rules) {
         super(renderingEngine, userInputHandler, name);
+        this.rules = rules;
+        gameEngine.initialize(renderingEngine, userInputHandler, rules);
     }
 
     @Override
@@ -26,7 +28,7 @@ public class EpisodeWithEndState extends Episode<EpisodeEndState> {
     @Override
     protected Object clone() throws CloneNotSupportedException {
         // Only keeps basic params
-        return new EpisodeWithEndState(renderingEngine, userInputHandler, name);
+        return new EpisodeWithEndState(renderingEngine, userInputHandler, name, rules);
     }
 
     public void disposeResources() {

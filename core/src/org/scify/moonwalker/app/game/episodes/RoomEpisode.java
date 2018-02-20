@@ -7,8 +7,6 @@ import org.scify.moonwalker.app.game.rules.episodes.RoomEpisodeRules;
 public class RoomEpisode extends EpisodeWithEndState {
 
     public RoomEpisode(RenderingEngine renderingEngine, UserInputHandler userInputHandler) {
-        super(renderingEngine, userInputHandler, "RoomEpisode");
-        this.rules = new RoomEpisodeRules();
-        gameEngine.initialize(this.renderingEngine, this.userInputHandler, rules);
+        super(renderingEngine, userInputHandler, "RoomEpisode", new RoomEpisodeRules());
     }
 }

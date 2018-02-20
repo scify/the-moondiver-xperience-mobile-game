@@ -7,9 +7,7 @@ import org.scify.moonwalker.app.game.rules.episodes.KnightRaceRules;
 public class KnightRaceEpisode extends EpisodeWithEndState {
 
     public KnightRaceEpisode(RenderingEngine renderingEngine, UserInputHandler userInputHandler) {
-        super(renderingEngine, userInputHandler, "KnightRaceEpisode");
-        rules = new KnightRaceRules();
-        gameEngine.initialize(this.renderingEngine, this.userInputHandler, rules);
+        super(renderingEngine, userInputHandler, "KnightRaceEpisode", new KnightRaceRules());
     }
 
 }

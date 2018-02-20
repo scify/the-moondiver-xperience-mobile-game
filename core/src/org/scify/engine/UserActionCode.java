@@ -15,5 +15,7 @@ public enum UserActionCode {
     NEW_GAME,
     PREFERENCES,
     QUIT,
-    ABOUT
+    ABOUT,
+    BOY_SELECTED,
+    GIRL_SELECTED
 }

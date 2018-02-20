@@ -61,6 +61,7 @@ public class ActorFactory extends ComponentFactory{
     protected TextButton createTextButton(ActionButton actionButton) {
         TextButton btn = new TextButton(actionButton.getTitle(), skin);
         setButtonDimensions(actionButton, btn);
+        btn.setName(actionButton.getId());
         return btn;
     }
 
@@ -68,6 +69,7 @@ public class ActorFactory extends ComponentFactory{
         Drawable btnImage = new SpriteDrawable(new Sprite(new Texture(resourceLocator.getFilePath(actionButton.getImgPath()))));
         ImageButton btn = new ImageButton(btnImage);
         setButtonDimensions(actionButton, btn);
+        btn.setName(actionButton.getId());
         return btn;
     }
 

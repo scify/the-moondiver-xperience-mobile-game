@@ -2,10 +2,7 @@ package org.scify.moonwalker.app.game.scenarios;
 
 import org.scify.engine.*;
 import org.scify.engine.EpisodeEndStateCode;
-import org.scify.moonwalker.app.game.episodes.CalculatorEpisode;
-import org.scify.moonwalker.app.game.episodes.KnightRaceEpisode;
-import org.scify.moonwalker.app.game.episodes.MainMenuEpisode;
-import org.scify.moonwalker.app.game.episodes.RoomEpisode;
+import org.scify.moonwalker.app.game.episodes.*;
 
 public class MoonWalkerScenario extends Scenario {
 
@@ -18,6 +15,7 @@ public class MoonWalkerScenario extends Scenario {
         this.userInputHandler = userInputHandler;
         Episode firstEpisode = new MainMenuEpisode(renderingEngine, userInputHandler);
         setFirstEpisode(firstEpisode);
+        appendEpisode(new AvatarSelectionEpisode(renderingEngine, userInputHandler));
         appendEpisode(new RoomEpisode(renderingEngine, userInputHandler));
         appendEpisode(new KnightRaceEpisode(renderingEngine, userInputHandler));
     }

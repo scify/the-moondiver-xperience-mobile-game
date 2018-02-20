@@ -55,7 +55,7 @@ public class MainMenuEpisodeRules extends SinglePlayerRules {
             newGameBtn.setUserAction(new UserAction(buttonTitleAndActionCode.getValue()));
             mainMenuButtons.add(newGameBtn);
         }
-        gsCurrent.addGameEvent(new GameEvent("BUTTONS_LIST", mainMenuButtons));
+        gsCurrent.addGameEvent(new GameEvent("BUTTONS_LIST_VERTICAL", mainMenuButtons));
     }
 
     private void handleUserAction(GameState gsCurrent, UserAction userAction) {
