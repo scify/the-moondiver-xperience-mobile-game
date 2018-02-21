@@ -9,6 +9,13 @@ public class GameEngine {
     public UserInputHandler inputHandler;
     protected GameState currentGameState;
 
+    public void initialize(Rules<GameState, UserAction, EpisodeEndState> rules) {
+        final GameState initialState;
+        this.rules = rules;
+        initialState = rules.getInitialState();
+        currentGameState = initialState;
+    }
+
     public void setRenderingEngine(RenderingEngine renderingEngine) {
         this.renderingEngine = renderingEngine;
     }
@@ -17,22 +24,8 @@ public class GameEngine {
         this.inputHandler = inputHandler;
     }
 
-    private void doGameLoop() {
-        final GameState toHandle = currentGameState;
-        // Ask to draw the state
-        renderingEngine.setGameState(toHandle);
-        // and keep on doing the loop in this thread
-        // get next user action
-        UserAction uaToHandle = inputHandler.getNextUserAction();
-        // apply it and determine the next state
-        currentGameState = rules.getNextState(currentGameState, uaToHandle);
-    }
-
-    public void initialize(Rules<GameState, UserAction, EpisodeEndState> rules) {
-        final GameState initialState;
-        this.rules = rules;
-        initialState = rules.getInitialState();
-        currentGameState = initialState;
+    public void setInitialGameState(GameState initialGameState) {
+        this.rules.setInitialState(initialGameState);
     }
 
     public EpisodeEndState execute() {
@@ -53,11 +46,14 @@ public class GameEngine {
         return endState;
     }
 
-    public Rules getRules() {
-        return rules;
-    }
-
-    public void setInitialGameState(GameState initialGameState) {
-        this.rules.setInitialState(initialGameState);
+    private void doGameLoop() {
+        final GameState toHandle = currentGameState;
+        // Ask to draw the state
+        renderingEngine.setGameState(toHandle);
+        // and keep on doing the loop in this thread
+        // get next user action
+        UserAction uaToHandle = inputHandler.getNextUserAction();
+        // apply it and determine the next state
+        currentGameState = rules.getNextState(currentGameState, uaToHandle);
     }
 }
