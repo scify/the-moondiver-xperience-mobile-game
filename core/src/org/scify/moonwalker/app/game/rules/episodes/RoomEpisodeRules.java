@@ -25,8 +25,8 @@ public class RoomEpisodeRules extends SinglePlayerRules {
 
     @Override
     public void gameStartedEvents(GameState gsCurrent) {
-        if(!gsCurrent.eventsQueueContainsEvent("EPISODE_STARTED")) {
-            gsCurrent.addGameEvent(new GameEvent("EPISODE_STARTED"));
+        if (!gsCurrent.eventsQueueContainsEventOwnedBy("EPISODE_STARTED", this)) {
+            gsCurrent.addGameEvent(new GameEvent("EPISODE_STARTED", null, this));
             gsCurrent.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/episode_0/bg.jpg"));
             float labelWidth = gameInfo.getScreenWidth() * 0.2f;
             float labelHeight = gameInfo.getScreenHeight()* 0.5f;
@@ -60,8 +60,8 @@ public class RoomEpisodeRules extends SinglePlayerRules {
 
     @Override
     public void gameResumedEvents(GameState gsCurrent) {
-        if(!gsCurrent.eventsQueueContainsEvent("EPISODE_RESUMED")) {
-            gsCurrent.addGameEvent(new GameEvent("EPISODE_RESUMED"));
+        if (!gsCurrent.eventsQueueContainsEventOwnedBy("EPISODE_RESUMED", this)) {
+            gsCurrent.addGameEvent(new GameEvent("EPISODE_RESUMED", null, this));
             gsCurrent.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/episode_0/bg.jpg"));
         }
     }
