@@ -2,7 +2,6 @@ package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
 import org.scify.engine.EpisodeEndStateCode;
-import org.scify.moonwalker.app.game.rules.SinglePlayerRules;
 import org.scify.moonwalker.app.ui.components.ActionButton;
 
 /**
