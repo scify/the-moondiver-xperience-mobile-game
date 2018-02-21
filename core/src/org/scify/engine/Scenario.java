@@ -90,7 +90,6 @@ public abstract class Scenario {
         if (!episodeListMap.containsKey(episode))
             // add it to the episode set
             episodeListMap.put(episode, new LinkedList<Episode>());
-
     }
 
     /**
@@ -178,7 +177,7 @@ public abstract class Scenario {
      * @param episode the episode that will be inserted.
      */
     protected void addEpisodeAsFirstCandidateEpisodeAfterCurrentEpisode(Episode episode) {
-        initListForEpisode(episode);
+        initListForEpisode(currentEpisode);
         episodeListMap.get(currentEpisode).add(0, episode);
     }
 }
