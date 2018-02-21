@@ -6,14 +6,9 @@ public abstract class Episode<T> implements Callable<T>, Cloneable {
 
     // each episode uses a game engine when executing
     protected GameEngine gameEngine;
-    protected RenderingEngine renderingEngine;
-    protected UserInputHandler userInputHandler;
     protected String name;
 
-    public Episode(RenderingEngine renderingEngine, UserInputHandler userInputHandler, String name) {
-        this.renderingEngine = renderingEngine;
-        this.userInputHandler = userInputHandler;
-        this.name = name;
+    public Episode() {
         gameEngine = new GameEngine();
     }
 
@@ -21,7 +16,9 @@ public abstract class Episode<T> implements Callable<T>, Cloneable {
         return true;
     }
 
-    public T play() {
+    public T play(RenderingEngine renderingEngine, UserInputHandler userInputHandler) {
+        gameEngine.setRenderingEngine(renderingEngine);
+        gameEngine.setInputHandler(userInputHandler);
         T result = null;
         ExecutorService es = Executors.newFixedThreadPool(1);
         Future<T> future = es.submit(this);

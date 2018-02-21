@@ -7,7 +7,7 @@ import org.scify.moonwalker.app.game.rules.episodes.MainMenuEpisodeRules;
 
 public class MainMenuEpisode extends EpisodeWithEndState {
 
-    public MainMenuEpisode(RenderingEngine renderingEngine, UserInputHandler userInputHandler) {
-        super(renderingEngine, userInputHandler, "MainMenuEpisode", new MainMenuEpisodeRules());
+    public MainMenuEpisode() {
+        super(new MainMenuEpisodeRules());
     }
 }

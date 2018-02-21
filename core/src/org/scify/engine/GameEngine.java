@@ -4,12 +4,17 @@ import org.scify.engine.rules.Rules;
 
 public class GameEngine {
 
-    protected RenderingEngine renderingEngine;
+    public RenderingEngine renderingEngine;
     protected Rules<GameState, UserAction, EpisodeEndState> rules;
-    protected UserInputHandler inputHandler;
+    public UserInputHandler inputHandler;
     protected GameState currentGameState;
 
-    public GameEngine() {
+    public void setRenderingEngine(RenderingEngine renderingEngine) {
+        this.renderingEngine = renderingEngine;
+    }
+
+    public void setInputHandler(UserInputHandler inputHandler) {
+        this.inputHandler = inputHandler;
     }
 
     private void doGameLoop() {
@@ -23,13 +28,10 @@ public class GameEngine {
         currentGameState = rules.getNextState(currentGameState, uaToHandle);
     }
 
-    public void initialize(RenderingEngine renderingEngine, UserInputHandler userInputHandler, org.scify.engine.rules.Rules<GameState, UserAction, EpisodeEndState> rules) {
+    public void initialize(Rules<GameState, UserAction, EpisodeEndState> rules) {
         final GameState initialState;
-        this.renderingEngine = renderingEngine;
-        this.inputHandler = userInputHandler;
         this.rules = rules;
         initialState = rules.getInitialState();
-        renderingEngine.setGameState(initialState);
         currentGameState = initialState;
     }
 

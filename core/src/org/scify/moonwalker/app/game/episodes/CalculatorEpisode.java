@@ -13,7 +13,7 @@ import org.scify.moonwalker.app.game.rules.episodes.CalculatorEpisodeRules;
  */
 public class CalculatorEpisode extends EpisodeWithEndState {
 
-    public CalculatorEpisode(RenderingEngine renderingEngine, UserInputHandler userInputHandler, GameState gsCurrent) {
-        super(renderingEngine, userInputHandler, "CalculatorEpisode", new CalculatorEpisodeRules(gsCurrent));
+    public CalculatorEpisode(GameState gsCurrent) {
+        super(new CalculatorEpisodeRules(gsCurrent));
     }
 }

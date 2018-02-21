@@ -24,6 +24,9 @@ import java.util.*;
  */
 public abstract class Scenario {
 
+    protected RenderingEngine renderingEngine;
+    protected UserInputHandler userInputHandler;
+
     /**
      * The list of episode each Scenario has. Each episode is linked with
      * a list of candidate episodes, meant to be played after this episode
@@ -55,7 +58,9 @@ public abstract class Scenario {
         episodeListMap = new HashMap<>();
     }
 
-    public void start() {
+    public void start(RenderingEngine renderingEngine, UserInputHandler userInputHandler) {
+        this.renderingEngine = renderingEngine;
+        this.userInputHandler = userInputHandler;
         playCurrentEpisode();
     }
 
@@ -70,7 +75,7 @@ public abstract class Scenario {
         System.out.println("Ready to start episode: " + currentEpisode.getName());
         // The endState is a variable containing a code describing the way
         // the episode was terminated, as well as the current game state
-        final EpisodeEndState endState = (EpisodeEndState) currentEpisode.play();
+        final EpisodeEndState endState = (EpisodeEndState) currentEpisode.play(renderingEngine, userInputHandler);
         // get the next episode from the list of candidate episodes and set it
         // as the current episode
         setCurrentEpisode(getNextEpisode(endState));

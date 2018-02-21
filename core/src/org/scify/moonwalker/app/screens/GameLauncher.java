@@ -45,16 +45,16 @@ public class GameLauncher implements Screen {
     }
 
     private void startNewGame() {
-        UserInputHandler userInputHandler = new UserInputHandlerImpl();
+        final UserInputHandler userInputHandler = new UserInputHandlerImpl();
         final RenderingEngine renderingEngine = new MoonWalkerRenderingEngine(userInputHandler, batch, stage);
 
-        final Scenario mainGameScenario = new MoonWalkerScenario(renderingEngine, userInputHandler);
+        final Scenario mainGameScenario = new MoonWalkerScenario();
 
         app.setScreen(new GamePlayScreen(renderingEngine));
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                mainGameScenario.start();
+                mainGameScenario.start(renderingEngine, userInputHandler);
                 Gdx.app.exit();
             }
         });

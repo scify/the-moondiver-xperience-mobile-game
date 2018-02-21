@@ -428,7 +428,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     }
 
     public void render(Float delta) {
-        if (!bDisposalOngoing) {
+        if (!bDisposalOngoing && currentGameState != null) {
             this.world = currentGameState.world;
             long lNewTime = new Date().getTime();
             if (lNewTime - lLastUpdate < 10L) {// If no less than 1/5 sec has passed

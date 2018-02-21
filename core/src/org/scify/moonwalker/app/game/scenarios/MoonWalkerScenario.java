@@ -6,19 +6,13 @@ import org.scify.moonwalker.app.game.episodes.*;
 
 public class MoonWalkerScenario extends Scenario {
 
-    protected RenderingEngine renderingEngine;
-    protected UserInputHandler userInputHandler;
-
-    public MoonWalkerScenario(RenderingEngine renderingEngine, UserInputHandler userInputHandler) {
-        super();
-        this.renderingEngine = renderingEngine;
-        this.userInputHandler = userInputHandler;
-        Episode firstEpisode = new MainMenuEpisode(renderingEngine, userInputHandler);
+    public MoonWalkerScenario() {
+        Episode firstEpisode = new MainMenuEpisode();
         //setFirstEpisode(new CockpitEpisode(renderingEngine, userInputHandler));
         setFirstEpisode(firstEpisode);
-        Episode secondEpisode = new AvatarSelectionEpisode(renderingEngine, userInputHandler);
+        Episode secondEpisode = new AvatarSelectionEpisode();
         appendEpisode(secondEpisode);
-        addEpisodeAfter(secondEpisode, new RoomEpisode(renderingEngine, userInputHandler));
+        addEpisodeAfter(secondEpisode, new RoomEpisode());
     }
 
     @Override
@@ -27,7 +21,7 @@ public class MoonWalkerScenario extends Scenario {
         switch (endStateCode) {
             case CALCULATOR_STARTED:
                 // add as first candidate for execution the calculator episode
-                Episode calcEpisode = new CalculatorEpisode(renderingEngine, userInputHandler, state.getGameState());
+                Episode calcEpisode = new CalculatorEpisode(state.getGameState());
                 addEpisodeAsFirstCandidateEpisodeAfterCurrentEpisode(calcEpisode);
                 try {
                     // Use new episode LIKE the current one (i.e. NOT the same)

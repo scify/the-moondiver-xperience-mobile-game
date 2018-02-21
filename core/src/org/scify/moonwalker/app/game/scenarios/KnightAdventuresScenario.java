@@ -9,10 +9,10 @@ import org.scify.moonwalker.app.game.episodes.KnightRaceEpisode;
 
 public class KnightAdventuresScenario extends Scenario {
 
-    public KnightAdventuresScenario(RenderingEngine renderingEngine, UserInputHandler userInputHandler) {
+    public KnightAdventuresScenario() {
         super();
-        Episode firstEpisode = new KnightRaceEpisode(renderingEngine, userInputHandler);
-        setFirstEpisode(new KnightRaceEpisode(renderingEngine, userInputHandler));
-        addEpisodeAfter(firstEpisode, new KnightQuestionsEpisode(renderingEngine, userInputHandler));
+        Episode firstEpisode = new KnightRaceEpisode();
+        setFirstEpisode(new KnightRaceEpisode());
+        addEpisodeAfter(firstEpisode, new KnightQuestionsEpisode());
     }
 }

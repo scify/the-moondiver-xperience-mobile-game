@@ -6,8 +6,8 @@ import org.scify.moonwalker.app.game.rules.episodes.KnightQuestionsRules;
 
 public class KnightQuestionsEpisode extends EpisodeWithEndState {
 
-    public KnightQuestionsEpisode(RenderingEngine renderingEngine, UserInputHandler userInputHandler) {
-        super(renderingEngine, userInputHandler, "KnightQuestionsEpisode", new KnightQuestionsRules());
+    public KnightQuestionsEpisode() {
+        super(new KnightQuestionsRules());
     }
 
 }
