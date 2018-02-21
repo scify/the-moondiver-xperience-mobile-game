@@ -40,6 +40,9 @@ public class ActorFactory extends ComponentFactory{
             case "girl":
                 toReturn = createImage("img/girl.png", renderable);
                 break;
+            case "image":
+                toReturn = createImage(renderable.getImgPath(), renderable);
+                break;
             case "text_button":
                 toReturn = createTextButton((ActionButton) renderable);
                 break;
