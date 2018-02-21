@@ -207,13 +207,14 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
 
     protected void drawActorFromRenderable(Renderable renderable, Actor aToDraw) {
         aToDraw.setPosition(renderable.getxPos(), renderable.getyPos());
+        // update the z index of the actor, according to the renderable's z index
+        if(renderable.getZIndex() != -1)
+            aToDraw.setZIndex(renderable.getZIndex());
         // if actor does not have a stage, it means that
         // it is the first time that is added to the stage.
         if(aToDraw.getStage() == null) {
-            if(renderable.getZIndex() != -1)
-                stage.getRoot().addActorAt(renderable.getZIndex(), aToDraw);
-            else
-                stage.addActor(aToDraw);
+            aToDraw.setName(renderable.getId());
+            stage.addActor(aToDraw);
             printActors();
         }
     }
@@ -486,7 +487,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private void printActors() {
         System.out.println("printActors");
         for(Actor stageActor : stage.getActors()) {
-            System.out.println("Actor " + stageActor.getClass() + " " + stageActor.getZIndex());
+            System.out.println("Actor " + stageActor.getClass() + " " + stageActor.getName() + " " + stageActor.getZIndex());
         }
     }
 
