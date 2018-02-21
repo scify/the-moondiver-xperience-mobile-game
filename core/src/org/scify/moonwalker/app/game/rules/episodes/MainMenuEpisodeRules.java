@@ -6,36 +6,31 @@ import org.scify.moonwalker.app.ui.components.ActionButton;
 
 import java.util.*;
 
-public class MainMenuEpisodeRules extends SinglePlayerRules {
+public class MainMenuEpisodeRules extends BaseEpisodeRules {
 
     protected float BUTTON_WIDTH;
     protected Map<String, UserActionCode> buttonTitlesAndActionCodes;
 
-    @Override
-    public GameState getNextState(GameState gsCurrent, UserAction userAction) {
-        BUTTON_WIDTH = gameInfo.getScreenWidth() / 2f;
-        initializeButtons();
-        gsCurrent = super.getNextState(gsCurrent, userAction);
-        if(isGamePaused(gsCurrent))
-            return gsCurrent;
-        gameStartedEvents(gsCurrent);
-        if(userAction != null)
-            handleUserAction(gsCurrent, userAction);
-        return gsCurrent;
-    }
-
-    protected void initializeButtons() {
-        // using a LinkedHashMap to preserve the insertion order
-        buttonTitlesAndActionCodes = new LinkedHashMap<>();
-        buttonTitlesAndActionCodes.put("New Game", UserActionCode.NEW_GAME);
-        buttonTitlesAndActionCodes.put("Preferences", UserActionCode.PREFERENCES);
-        buttonTitlesAndActionCodes.put("About", UserActionCode.ABOUT);
-        buttonTitlesAndActionCodes.put("Quit", UserActionCode.QUIT);
+    public MainMenuEpisodeRules() {
+        this.BUTTON_WIDTH = gameInfo.getScreenWidth() / 2f;
     }
 
     @Override
-    public boolean isGameFinished(GameState currentState) {
-        return gameState.eventsQueueContainsEvent("EPISODE_FINISHED");
+    protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
+        switch (userAction.getActionCode()) {
+            case NEW_GAME:
+                endGameAndAddEventWithType(gsCurrent,"NEW_GAME");
+                break;
+            case QUIT:
+                endGameAndAddEventWithType(gsCurrent,"APP_QUIT");
+                break;
+        }
+        super.handleUserAction(gsCurrent, userAction);
+    }
+
+    protected void endGameAndAddEventWithType(GameState gsCurrent, String gameEventType) {
+        gameEndedEvents(gsCurrent);
+        gsCurrent.addGameEvent(new GameEvent(gameEventType, null, this));
     }
 
     @Override
@@ -48,6 +43,7 @@ public class MainMenuEpisodeRules extends SinglePlayerRules {
     }
 
     protected void createAndAddMainMenuButtons(GameState gsCurrent) {
+        initializeButtons();
         List<ActionButton> mainMenuButtons = new ArrayList<>();
         for(Map.Entry<String, UserActionCode> buttonTitleAndActionCode : buttonTitlesAndActionCodes.entrySet()) {
             ActionButton newGameBtn = new ActionButton(0,0, BUTTON_WIDTH, gameInfo.pixelsWithDensity(50), "text_button", buttonTitleAndActionCode.getKey());
@@ -58,17 +54,13 @@ public class MainMenuEpisodeRules extends SinglePlayerRules {
         gsCurrent.addGameEvent(new GameEvent("BUTTONS_LIST_VERTICAL", mainMenuButtons));
     }
 
-    private void handleUserAction(GameState gsCurrent, UserAction userAction) {
-        switch (userAction.getActionCode()) {
-            case NEW_GAME:
-                gameEndedEvents(gsCurrent);
-                gsCurrent.addGameEvent(new GameEvent("NEW_GAME", null, this));
-                break;
-            case QUIT:
-                gameEndedEvents(gsCurrent);
-                gsCurrent.addGameEvent(new GameEvent("APP_QUIT", null, this));
-                break;
-        }
+    protected void initializeButtons() {
+        // using a LinkedHashMap to preserve the insertion order
+        buttonTitlesAndActionCodes = new LinkedHashMap<>();
+        buttonTitlesAndActionCodes.put("New Game", UserActionCode.NEW_GAME);
+        buttonTitlesAndActionCodes.put("Preferences", UserActionCode.PREFERENCES);
+        buttonTitlesAndActionCodes.put("About", UserActionCode.ABOUT);
+        buttonTitlesAndActionCodes.put("Quit", UserActionCode.QUIT);
     }
 
     @Override
@@ -85,10 +77,5 @@ public class MainMenuEpisodeRules extends SinglePlayerRules {
     @Override
     public void gameEndedEvents(GameState currentState) {
         gameState.addGameEvent(new GameEvent("EPISODE_FINISHED", null, this));
-    }
-
-    @Override
-    public void gameResumedEvents(GameState currentState) {
-
     }
 }

@@ -9,22 +9,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AvatarSelectionRules extends SinglePlayerRules {
+public class AvatarSelectionRules extends BaseEpisodeRules {
 
     protected final float SELECT_BUTTON_HEIGHT_PIXELS = 50;
 
     @Override
-    public GameState getNextState(GameState gsCurrent, UserAction userAction) {
-        gsCurrent = super.getNextState(gsCurrent, userAction);
-        if(isGamePaused(gsCurrent))
-            return gsCurrent;
-        gameStartedEvents(gsCurrent);
-        if(userAction != null)
-            handleUserAction(gsCurrent, userAction);
-        return gsCurrent;
-    }
-
-    private void handleUserAction(GameState gsCurrent, UserAction userAction) {
+    protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
         switch (userAction.getActionCode()) {
             case BOY_SELECTED:
                removePreviousAvatarSelectionAndAddNew(gsCurrent, "boy");
@@ -32,14 +22,8 @@ public class AvatarSelectionRules extends SinglePlayerRules {
             case GIRL_SELECTED:
                 removePreviousAvatarSelectionAndAddNew(gsCurrent, "girl");
                 break;
-            case FINISH_EPISODE:
-                gameEndedEvents(gameState);
-                break;
-            case BACK:
-                gsCurrent.addGameEvent(new GameEvent("BACK", null, this));
-                gameEndedEvents(gameState);
-                break;
         }
+        super.handleUserAction(gsCurrent, userAction);
     }
 
     protected void removePreviousAvatarSelectionAndAddNew(GameState gsCurrent, String newSelection) {
@@ -65,7 +49,7 @@ public class AvatarSelectionRules extends SinglePlayerRules {
             currentState.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/Andromeda-galaxy.jpg"));
             createAvatarsButtonsList(currentState);
 
-            ActionButton escape = createEscapeButton(currentState);
+            ActionButton escape = createEscapeButton();
             escape.setUserAction(new UserAction(UserActionCode.BACK));
             currentState.addRenderable(escape);
             addRenderableEntry("calculator_finished_button", escape);
@@ -91,20 +75,5 @@ public class AvatarSelectionRules extends SinglePlayerRules {
         buttons.add(new HashMap.SimpleEntry<>(selectBtn, Color.WHITE));
         buttons.add(new HashMap.SimpleEntry<>(girlBtn, Color.DARK_GRAY));
         currentState.addGameEvent(new GameEvent("BUTTONS_LIST_HORIZONTAL", buttons, buttons.get(2)));
-    }
-
-    @Override
-    public void gameEndedEvents(GameState currentState) {
-        gameState.addGameEvent(new GameEvent("EPISODE_FINISHED", null, this));
-    }
-
-    @Override
-    public void gameResumedEvents(GameState currentState) {
-
-    }
-
-    @Override
-    public boolean isGameFinished(GameState currentState) {
-        return gameState.eventsQueueContainsEvent("EPISODE_FINISHED");
     }
 }

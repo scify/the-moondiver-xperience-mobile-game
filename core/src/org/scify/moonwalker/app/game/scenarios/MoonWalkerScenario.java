@@ -14,6 +14,7 @@ public class MoonWalkerScenario extends Scenario {
         this.renderingEngine = renderingEngine;
         this.userInputHandler = userInputHandler;
         Episode firstEpisode = new MainMenuEpisode(renderingEngine, userInputHandler);
+        //setFirstEpisode(new CockpitEpisode(renderingEngine, userInputHandler));
         setFirstEpisode(firstEpisode);
         Episode secondEpisode = new AvatarSelectionEpisode(renderingEngine, userInputHandler);
         appendEpisode(secondEpisode);

@@ -27,7 +27,7 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
     protected MoonWalkerPhysicsRules physics;
     protected float ESCAPE_BUTTON_SIZE_PIXELS = 70;
     protected float ESCAPE_BUTTON_PADDING_PIXELS = 10;
-    protected GameState gsPrevious;
+    protected GameState initialGameState;
 
     public MoonWalkerRules() {
         idToRenderable = new HashMap<>();
@@ -37,8 +37,8 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
         physics = new MoonWalkerPhysicsRules(worldX, worldY);
     }
 
-    public void setPreviousState(GameState previousGameState) {
-        gsPrevious = previousGameState;
+    public void setInitialState(GameState initialGameState) {
+        this.initialGameState = initialGameState;
     }
 
     /**
@@ -125,13 +125,13 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
         return gsCurrent.eventsQueueContainsEvent("PAUSE_GAME");
     }
 
-    protected ActionButton createEscapeButton(GameState gsCurrent) {
+    protected ActionButton createEscapeButton() {
         float btnRealSize = gameInfo.pixelsWithDensity(ESCAPE_BUTTON_SIZE_PIXELS);
         System.out.println(btnRealSize);
         ActionButton escape = new ActionButton(0, gameInfo.getScreenHeight() - btnRealSize, btnRealSize, btnRealSize, "image_button", "escape_button");
         escape.setPadding(gameInfo.pixelsWithDensity(ESCAPE_BUTTON_PADDING_PIXELS));
         escape.setImgPath("img/close.png");
-        return  escape;
+        return escape;
     }
 
     protected void cleanUpGameState(GameState currentState) {

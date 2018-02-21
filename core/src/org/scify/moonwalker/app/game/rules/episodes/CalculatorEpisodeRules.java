@@ -12,24 +12,21 @@ import org.scify.moonwalker.app.ui.components.ActionButton;
  * in order to set the already defined (in another episode) game state
  * to the rules.
  */
-public class CalculatorEpisodeRules extends SinglePlayerRules{
+public class CalculatorEpisodeRules extends BaseEpisodeRules {
 
     public CalculatorEpisodeRules(GameState gsCurrent) {
-        this.gsPrevious = gsCurrent;
+        this.initialGameState = gsCurrent;
     }
 
     @Override
     public GameState getNextState(GameState gsCurrent, UserAction userAction) {
         gsCurrent = super.getNextState(gsCurrent, userAction);
-        if(isGamePaused(gsCurrent))
-            return gsCurrent;
-        gameStartedEvents(gsCurrent);
         if(userAction != null)
             handleUserAction(gsCurrent, userAction);
         return gsCurrent;
     }
 
-    private void handleUserAction(GameState gsCurrent, UserAction userAction) {
+    protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
         switch (userAction.getActionCode()) {
             case BACK:
                 gameEndedEvents(gsCurrent);
@@ -44,7 +41,7 @@ public class CalculatorEpisodeRules extends SinglePlayerRules{
             gsCurrent.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/calculator_episode/bg.jpg"));
             Renderable calculator = new Renderable("calculator", "calculator_button");
             gsCurrent.addRenderable(calculator);
-            ActionButton escape = createEscapeButton(gsCurrent);
+            ActionButton escape = createEscapeButton();
             escape.setUserAction(new UserAction(UserActionCode.BACK));
             gsCurrent.addRenderable(escape);
             addRenderableEntry("calculator_finished_button", escape);
@@ -74,8 +71,8 @@ public class CalculatorEpisodeRules extends SinglePlayerRules{
     @Override
     public EpisodeEndState determineEndState(GameState gsCurrent) {
         GameState toReturn = gsCurrent;
-        if(gsPrevious != null) {
-            toReturn = this.gsPrevious;
+        if(initialGameState != null) {
+            toReturn = this.initialGameState;
         }
         if(gsCurrent.eventsQueueContainsEvent("PREVIOUS_EPISODE"))
             return new EpisodeEndState(EpisodeEndStateCode.TEMP_EPISODE_FINISHED, toReturn);

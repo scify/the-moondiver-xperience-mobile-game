@@ -54,4 +54,8 @@ public class GameEngine {
     public Rules getRules() {
         return rules;
     }
+
+    public void setInitialGameState(GameState initialGameState) {
+        this.rules.setInitialState(initialGameState);
+    }
 }

@@ -198,7 +198,7 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
     }
 
     @Override
-    public void setPreviousState(GameState gameState) {
+    public void setInitialState(GameState gameState) {
 
     }
 

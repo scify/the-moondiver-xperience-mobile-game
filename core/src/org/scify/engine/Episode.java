@@ -42,4 +42,8 @@ public abstract class Episode<T> implements Callable<T>, Cloneable {
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
+
+    public void setInitialGameState(GameState initialGameState) {
+        gameEngine.setInitialGameState(initialGameState);
+    }
 }
