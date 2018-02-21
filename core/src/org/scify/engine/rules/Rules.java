@@ -75,5 +75,5 @@ public interface Rules<StateType, Action, EndStateType> {
      */
     void gameResumedEvents(StateType currentState);
 
-    void setPreviousState(StateType type);
+    void setInitialState(StateType type);
 }
