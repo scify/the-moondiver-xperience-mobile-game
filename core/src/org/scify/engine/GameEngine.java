@@ -13,18 +13,14 @@ public class GameEngine {
     }
 
     private void doGameLoop() {
-        //System.out.println("game loop: " + new Date().getTime());
         final GameState toHandle = currentGameState;
         // Ask to draw the state
         renderingEngine.setGameState(toHandle);
-        //System.out.println("set game state");
         // and keep on doing the loop in this thread
-        //get next user action
+        // get next user action
         UserAction uaToHandle = inputHandler.getNextUserAction();
-        //System.out.println("got user action");
-        //apply it and determine the next state
+        // apply it and determine the next state
         currentGameState = rules.getNextState(currentGameState, uaToHandle);
-        //System.out.println("got next state");
     }
 
     public void initialize(RenderingEngine renderingEngine, UserInputHandler userInputHandler, org.scify.engine.rules.Rules<GameState, UserAction, EpisodeEndState> rules) {
@@ -48,7 +44,6 @@ public class GameEngine {
             }
         }
         // here the game has ended
-        // ask the rules instance to clean up the game state if needed
         EpisodeEndState endState = rules.determineEndState(currentGameState);
         // ask the rendering engine instance to dispose the drawables
         renderingEngine.disposeRenderables();
