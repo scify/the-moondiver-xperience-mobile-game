@@ -208,7 +208,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     protected void drawActorFromRenderable(Renderable renderable, Actor aToDraw) {
         aToDraw.setPosition(renderable.getxPos(), renderable.getyPos());
         // update the z index of the actor, according to the renderable's z index
-        if(renderable.getZIndex() != -1)
+        if(renderable.getZIndex() > 0)
             aToDraw.setZIndex(renderable.getZIndex());
         // if actor does not have a stage, it means that
         // it is the first time that is added to the stage.
