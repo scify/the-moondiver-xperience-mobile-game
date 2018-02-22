@@ -2,11 +2,24 @@ package org.scify.engine;
 
 import org.scify.engine.rules.Rules;
 
+/**
+ * The Game Engine class describes the logic of running the game, until it's ending point.
+ * It contains the tasks of getting any user actions, passing them to the game rules
+ * so that the current state of the game can be computed.
+ * This loop happens until the rules decide that the game has ended.
+ */
 public class GameEngine {
 
-    public RenderingEngine renderingEngine;
+    /**
+     * The rules take into consideration any user action and compute the next game state
+     * until the game ends. In such event, an episode end state is produced and returned.
+     */
     protected Rules<GameState, UserAction, EpisodeEndState> rules;
-    public UserInputHandler inputHandler;
+    protected RenderingEngine renderingEngine;
+    /**
+     * The class responsible of handling the user actions
+     */
+    protected UserInputHandler inputHandler;
     protected GameState currentGameState;
 
     public void initialize(Rules<GameState, UserAction, EpisodeEndState> rules) {
@@ -28,6 +41,11 @@ public class GameEngine {
         this.rules.setInitialState(initialGameState);
     }
 
+    /**
+     * Executes the game, until the rules decide that the game is over.
+     * @return an end state that describes how the game ended and contains
+     * the last game state
+     */
     public EpisodeEndState execute() {
         while (!rules.isGameFinished(currentGameState)) {
             doGameLoop();

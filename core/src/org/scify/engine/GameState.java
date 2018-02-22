@@ -1,18 +1,26 @@
 package org.scify.engine;
 
-import org.scify.engine.rules.Rules;
-
 import java.util.*;
 
 /**
  * Represents the global state of the game at any given time.
- * The instances of this class are handled by the {@link Rules} classes and the {@link RenderingEngine}
- * and hold {@link GameEvent} instances that are used for communication between the game components.
+ * Handles objects that are used for communication between the game components.
  */
 public abstract class GameState {
+
+    /**
+     * Queue of events to be handled by game components
+     */
     protected List<GameEvent> eventQueue;
+    /**
+     * List of in-game objects, like players, monsters, sprites, etc
+     */
     protected List<Renderable> renderableList;
     protected Player player;
+    /**
+     * Bucket that serves the need for game components to arbitrarily store
+     * key-value paired objects
+     */
     protected Map<String, Object> additionalDataMap;
 
     public GameState(List<GameEvent> eventQueue) {
@@ -49,6 +57,12 @@ public abstract class GameState {
         return false;
     }
 
+    /**
+     * Checks if a given event owned by a given class exists in the events list
+     * @param eventType the type of the event
+     * @param owner the owner (creator) class of the event
+     * @return true if the event exists in the events list
+     */
     public boolean eventsQueueContainsEventOwnedBy(String eventType, Object owner) {
         Iterator<GameEvent> iter = eventQueue.iterator();
         GameEvent currentGameEvent;
@@ -68,15 +82,11 @@ public abstract class GameState {
         return additionalDataMap.get(dataId);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for(GameEvent gameEvent: eventQueue) {
-            sb.append("\n" + gameEvent.type + "\t" + gameEvent.parameters);
-        }
-        return sb.toString();
-    }
-
+    /**
+     * Get the first game event with a given type
+     * @param type
+     * @return the first event found with that type
+     */
     public GameEvent getGameEventsWithType(String type) {
         synchronized (eventQueue) {
             ListIterator<GameEvent> listIterator = eventQueue.listIterator();
@@ -89,6 +99,10 @@ public abstract class GameState {
         return null;
     }
 
+    /**
+     * Removes all game events that have a given type
+     * @param gameEventType
+     */
     public void removeGameEventsWithType(String gameEventType) {
         synchronized (eventQueue) {
             ListIterator<GameEvent> listIterator = eventQueue.listIterator();
@@ -111,6 +125,10 @@ public abstract class GameState {
         }
     }
 
+    /**
+     * Remove all game events added by a given owner class
+     * @param owner the owner of the game events
+     */
     public void removeAllGameEventsOwnedBy(Object owner) {
         synchronized (eventQueue) {
             ListIterator<GameEvent> listIterator = eventQueue.listIterator();
@@ -132,5 +150,14 @@ public abstract class GameState {
 
     public Player getPlayer() {
         return player;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for(GameEvent gameEvent: eventQueue) {
+            sb.append("\n" + gameEvent.type + "\t" + gameEvent.parameters);
+        }
+        return sb.toString();
     }
 }
