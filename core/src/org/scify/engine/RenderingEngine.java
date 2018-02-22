@@ -12,7 +12,8 @@ public interface RenderingEngine<T extends GameState> {
     void cancelCurrentRendering();
 
     /**
-     * Used to dispose all game objects
+     * Used to dispose all game objects. May be used between 2 Episodes so that the renreding engine
+     * is cleaned up from any game object from the last playing episode.
      */
     void disposeRenderables();
 
@@ -20,6 +21,7 @@ public interface RenderingEngine<T extends GameState> {
 
     /**
      * Used to dispose and free all game resources (Sprites and other resource-intensive objects)
+     * Used when the game has ended.
      */
     void disposeResources();
 
