@@ -22,30 +22,37 @@ import java.util.*;
  * Episode 3 is added as a candidate after episode 2
  * List: [1=>[2], 2=>[3], 3=> []]
  */
+
+/***
+ * The Scenario objects provide an episode-based view of an interactive story. It manages the order of appearance
+ * of episodes, that make a story.
+ */
 public abstract class Scenario {
 
+    /***
+     * The rendering engine which plays/renders the episodes.
+     */
     protected RenderingEngine renderingEngine;
+    /***
+     * The handler which transforms the user input into actions.
+     */
     protected UserInputHandler userInputHandler;
 
     /**
-     * The list of episode each Scenario has. Each episode is linked with
-     * a list of candidate episodes, meant to be played after this episode
-     * ends.
+     * The mapping of episodes with other episodes, which may follow them.
      */
     private Map<Episode, List<Episode>> episodeListMap;
     /**
-     * Reference for the currently playing episode
+     * The currently playing episode.
      */
     protected Episode currentEpisode;
     /**
-     * Reference for the episode that played before the currently playing one.
+     * The episode that played before the currently playing one (can be null).
      */
     protected Episode lastEpisode;
 
     /**
-     * Given an {@link Episode} instance, add the Episode at the beginning of the
-     * episodes list. Then, it initializes a new empty list of episodes,
-     * as the episodes meant to be played after the given episode.
+     * Sets the first episode that begins the story.
      * @param firstEpisode the given episode
      */
     protected void setFirstEpisode(Episode firstEpisode) {
@@ -54,10 +61,20 @@ public abstract class Scenario {
         currentEpisode = firstEpisode;
     }
 
+    /**
+     * Initializes and clears the episode order structure.
+     */
     protected void initEpisodesList() {
         episodeListMap = new HashMap<>();
     }
 
+    /**
+     * This methods starts playing the scenario, using a given rendering engine and
+     * a UserInputHandler which supports interaction. This method is expected to be called once,
+     * at the beginning of the scenario.
+     * @param renderingEngine The engine that renders the current episode.
+     * @param userInputHandler The handler that listens for and handles user events.
+     */
     public void start(RenderingEngine renderingEngine, UserInputHandler userInputHandler) {
         this.renderingEngine = renderingEngine;
         this.userInputHandler = userInputHandler;
@@ -65,7 +82,7 @@ public abstract class Scenario {
     }
 
     /**
-     * Executes the loop of playing episodes, until there is no candidate episode left.
+     * Executes the actual loop of playing episodes, until there is no candidate episode left.
      */
     protected void playCurrentEpisode() {
         if(currentEpisode == null) {
@@ -82,13 +99,17 @@ public abstract class Scenario {
         playCurrentEpisode();
     }
 
-    protected void appendEpisode(Episode episode) {
+    /**
+     * Adds an episode as a candidate episode, after the current one.
+     * @param episode The episode to be added.
+     */
+    protected void addEpisodeAfterCurrent(Episode episode) {
         addEpisodeAfter(currentEpisode, episode);
     }
 
     /**
      * Ascertains that we have a candidate next episode list for a given episode.
-     * @param episode the given episode
+     * @param episode the given episode.
      */
     protected void initListForEpisode(Episode episode) {
         // If the before-episode does not exist
@@ -98,10 +119,9 @@ public abstract class Scenario {
     }
 
     /**
-     * Adds the episode to the list of episodes, with no candidate episodes.
-     * In addition, it adds the episode as a candidate one, after the episodeBefore.
-     * @param episodeBefore the episode that is played before
-     * @param newEpisode the new candidate episode
+     * Adds the episode as a candidate one, after the episodeBefore episode.
+     * @param episodeBefore the episode that should precede the new one.
+     * @param newEpisode the new candidate episode.
      */
     protected void addEpisodeAfter(Episode episodeBefore, Episode newEpisode) {
         initListForEpisode(episodeBefore);
@@ -110,9 +130,10 @@ public abstract class Scenario {
     }
 
     /**
-     * Creates a clone of a given {@link Episode} and inserts it after a given episode (episodeBefore)
-     * @param episodeBefore
-     * @param episodeToClone
+     * Creates a clone of a given {@link Episode} and adds it as a candidate after another episode.
+     * This is useful when one wants to add an intermediate episode between two identical ones.
+     * @param episodeBefore The episode the precedes the clone.
+     * @param episodeToClone The episode we want to clone.
      * @throws CloneNotSupportedException
      */
     protected void addAfterXEpisodeLikeY(Episode episodeBefore, Episode episodeToClone) throws CloneNotSupportedException {
@@ -131,10 +152,12 @@ public abstract class Scenario {
     }
 
     /**
+     * Should contain the logic for the sequence of episodes.
      * The default method implementation queries sequentially all the candidate episodes
      * after the currentEpisode, until it finds an episode that is accessible (can be played)
      * @param state the state that the currently playing episode finished with
-     * @return a {@link Episode} instance if there is an accessible episode.
+     * @return a {@link Episode} instance, if there is an accessible episode. Otherwise, null (which implies
+     * scenario end or dead-end).
      */
     protected Episode getNextEpisode(EpisodeEndState state) {
         // get possible next episodes for
@@ -144,7 +167,7 @@ public abstract class Scenario {
             return null;
         for(Episode candidateEpisode : possibleNextEpisodes) {
             if(candidateEpisode.isAccessible(state)) {
-                candidateEpisode.setInitialGameState(state.getGameState());
+                candidateEpisode.setInitialEpisodeState(state);
                 return candidateEpisode;
             }
         }
@@ -153,9 +176,9 @@ public abstract class Scenario {
     }
 
     /**
-     * Sets the given episode as the current one, and sets the current one
-     * as the last playing one.
-     * @param newCurrentEpisode
+     * Sets a new episode as the current one. Also sets the current one
+     * as the last played one.
+     * @param newCurrentEpisode The new episode.
      */
     protected void setCurrentEpisode(Episode newCurrentEpisode) {
         lastEpisode = this.currentEpisode;
@@ -163,8 +186,7 @@ public abstract class Scenario {
     }
 
     /**
-     * Removes the last playing episode from the list of episodes,
-     * as well as any candidate episode that the last playing episode has.
+     * Removes the last playing episode from the list of episodes (with appropriate cleanup).
      */
     protected void removeLastEpisodeAndCandidateEpisodes() {
         // get last episode's first possible next episode
@@ -177,8 +199,7 @@ public abstract class Scenario {
 
     /**
      * Inserts a given {@link Episode} as the first candidate episode, after the currently playing episode.
-     * This method can be used to intervene in the episode list and forcefully set an episode to be played after
-     * the current one.
+     * This method can help impose an episode as the next one.
      * @param episode the episode that will be inserted.
      */
     protected void addEpisodeAsFirstCandidateEpisodeAfterCurrentEpisode(Episode episode) {

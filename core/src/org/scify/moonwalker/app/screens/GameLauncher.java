@@ -16,6 +16,9 @@ import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.ui.MoonWalkerRenderingEngine;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 
+/**
+ * This class implements a screen (a.k.a. activity) which launches the MoonWalker game.
+ */
 public class GameLauncher implements Screen {
 
     private final MoonWalker app;
@@ -25,6 +28,10 @@ public class GameLauncher implements Screen {
     private OrthographicCamera mainCamera;
     private GameInfo gameInfo;
 
+    /**
+     * We initialize the game, taking into account the underlying MoonWalker (LibGDX) application.
+     * @param app The application that hosts the activity.
+     */
     public GameLauncher(MoonWalker app) {
         this.app = app;
         batch = new SpriteBatch();
@@ -44,6 +51,9 @@ public class GameLauncher implements Screen {
         startNewGame();
     }
 
+    /**
+     * Starts the game.
+     */
     private void startNewGame() {
         final UserInputHandler userInputHandler = new UserInputHandlerImpl();
         final RenderingEngine renderingEngine = new MoonWalkerRenderingEngine(userInputHandler, batch, stage);

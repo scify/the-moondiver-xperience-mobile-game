@@ -25,7 +25,6 @@ public class KnightRaceRules extends SinglePlayerRules {
         return gsCurrent;
     }
 
-    @Override
     public void gameStartedEvents(GameState gsCurrent) {
         if(!gsCurrent.eventsQueueContainsEvent("EPISODE_STARTED")) {
             gsCurrent.addGameEvent(new GameEvent("EPISODE_STARTED"));
@@ -102,13 +101,4 @@ public class KnightRaceRules extends SinglePlayerRules {
         return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE, gsCurrent);
     }
 
-    @Override
-    public void gameEndedEvents(GameState currentState) {
-
-    }
-
-    @Override
-    public void gameResumedEvents(GameState currentState) {
-
-    }
 }

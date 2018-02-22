@@ -45,21 +45,17 @@ public class BaseEpisodeRules extends SinglePlayerRules {
         return null;
     }
 
-    @Override
     public void gameStartedEvents(GameState currentState) {
 
     }
 
-    @Override
     public void gameEndedEvents(GameState currentState) {
         currentState.addGameEvent(new GameEvent("EPISODE_FINISHED", null, this));
     }
 
-    @Override
     public void gameResumedEvents(GameState currentState) {
 
     }
-
 
     protected GameState cleanUpState(GameState currentState) {
         currentState.removeAllGameEventsOwnedBy(this);

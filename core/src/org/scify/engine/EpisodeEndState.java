@@ -5,21 +5,15 @@ package org.scify.engine;
  * This class describes "how" the episode finished ({@link EpisodeEndStateCode})
  * as well as carrying the last instance of the {@link GameState} game state
  */
-public class EpisodeEndState {
+public class EpisodeEndState extends EpisodeState {
     protected EpisodeEndStateCode endStateCode;
-    protected GameState gameState;
-
     public EpisodeEndState(EpisodeEndStateCode endStateCode, GameState gameState) {
+        super(gameState);
         this.endStateCode = endStateCode;
-        this.gameState = gameState;
     }
 
     public EpisodeEndStateCode getEndStateCode() {
         return endStateCode;
-    }
-
-    public GameState getGameState() {
-        return gameState;
     }
 
     @Override

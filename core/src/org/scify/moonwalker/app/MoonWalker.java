@@ -6,6 +6,9 @@ import com.badlogic.gdx.Gdx;
 import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.screens.GameLauncher;
 
+/**
+ * The MoonWalker class describes instances of the MoonWalker game.
+ */
 public class MoonWalker extends Game {
 
     @Override

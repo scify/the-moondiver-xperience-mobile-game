@@ -37,7 +37,6 @@ public class KnightQuestionsRules extends SinglePlayerRules {
         return gsCurrent;
     }
 
-    @Override
     public void gameEndedEvents(GameState gsCurrent) {
         if(!gsCurrent.eventsQueueContainsEvent("EPISODE_FINISHED")) {
             gsCurrent.getEventQueue().add(new GameEvent("EPISODE_FINISHED"));
@@ -65,7 +64,6 @@ public class KnightQuestionsRules extends SinglePlayerRules {
         return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE, gsFinal);
     }
 
-    @Override
     public void gameStartedEvents(GameState gsCurrent) {
         if(!gsCurrent.eventsQueueContainsEvent("BACKGROUND_IMG")) {
             gsCurrent.getEventQueue().add(new GameEvent("BACKGROUND_IMG"));
@@ -96,8 +94,4 @@ public class KnightQuestionsRules extends SinglePlayerRules {
         return question;
     }
 
-    @Override
-    public void gameResumedEvents(GameState currentState) {
-
-    }
 }
