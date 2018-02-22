@@ -7,8 +7,14 @@ import org.scify.engine.Player;
 
 import java.util.List;
 
+/**
+ * Game state for the moon walker game.
+ */
 public class MoonWalkerGameState extends GameState {
 
+    /**
+     * Gdx-specific class that holds all items that obey to physics laws
+     */
     public World world;
 
     public MoonWalkerGameState(List<GameEvent> eventQueue, Player player, World world) {
@@ -16,6 +22,6 @@ public class MoonWalkerGameState extends GameState {
         this.player = player;
         this.world = world;
         if(player != null)
-            this.renderableList.add(player);
+            addRenderable(player);
     }
 }
