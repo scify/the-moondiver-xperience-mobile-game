@@ -3,6 +3,10 @@ package org.scify.engine;
 import java.util.*;
 
 /**
+ * The Scenario objects provide an episode-based view of an interactive story. It manages the order of appearance
+ * of episodes, that make a story.
+ *
+ *
  * This class describes a full game with episodes ({@link Episode} instances), that are created and initialized by children classes
  * (that is why it is abstract). Each episode that is added, may also contain a list of episodes that
  * are possible to be played after this episode ends.
@@ -21,11 +25,6 @@ import java.util.*;
  * List: [1=>[2], 2=>[]]
  * Episode 3 is added as a candidate after episode 2
  * List: [1=>[2], 2=>[3], 3=> []]
- */
-
-/***
- * The Scenario objects provide an episode-based view of an interactive story. It manages the order of appearance
- * of episodes, that make a story.
  */
 public abstract class Scenario {
 
