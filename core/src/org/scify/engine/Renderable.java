@@ -1,6 +1,10 @@
 package org.scify.engine;
 
+/**
+ * Describes an object that is used in game and has substance in terms of game logic.
+ */
 public class Renderable extends Positionable {
+
     protected String type;
     protected String id;
     protected UserInputHandler userInputHandler;
@@ -26,6 +30,10 @@ public class Renderable extends Positionable {
         return id;
     }
 
+    /**
+     * Set the class that will handle all user actions regarding this renderable.
+     * @param userInputHandler
+     */
     public void setUserInputHandler(UserInputHandler userInputHandler) {
         this.userInputHandler = userInputHandler;
     }

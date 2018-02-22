@@ -1,11 +1,14 @@
 package org.scify.engine;
 
+/**
+ * Describes an object that can have substance in space (has a position and dimensions)
+ */
 public abstract class Positionable {
     protected float xPos;
     protected float yPos;
     protected float width;
     protected float height;
-    protected int zIndex = -1;
+    protected int zIndex;
 
     public Positionable(float xPos, float yPos, float width, float height) {
         this.xPos = xPos;

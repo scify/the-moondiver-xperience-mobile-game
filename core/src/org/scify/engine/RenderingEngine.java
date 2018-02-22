@@ -11,10 +11,16 @@ public interface RenderingEngine<T extends GameState> {
 
     void cancelCurrentRendering();
 
+    /**
+     * Used to dispose all game objects
+     */
     void disposeRenderables();
 
     void setGameState(T toHandle);
 
+    /**
+     * Used to dispose and free all game resources (Sprites and other resource-intensive objects)
+     */
     void disposeResources();
 
     void initialize();
