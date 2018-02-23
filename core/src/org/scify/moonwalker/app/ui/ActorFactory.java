@@ -100,7 +100,8 @@ public class ActorFactory extends ComponentFactory{
         actor.addInfoTable(renderable.ENGINE_PERFORMANCE_LABEL, renderable.getEnginePerformanceValue(),
                 renderable.REMAINING_ENERGY_LABEL, renderable.getRemainingEnergyValue(), renderable.DESTINATION_DISTANCE_LABEL, renderable.getDestinationDistanceValue());
         actor.addMiddleTable(createImageButton(renderable.getNavigationButton()), renderable.POSITION_LABEL, renderable.getPositionValue());
-        actor.addActionsTable(createImageButton(renderable.getVesselButton()), createImageButton(renderable.getMapButton()), createImageButton(renderable.getContactButton()));
+        actor.addDaysAndActionsTable(renderable.DAYS_LEFT_LABEL, renderable.getDaysLeftValue(), createImageButton(renderable.getVesselButton()), createImageButton(renderable.getMapButton()), createImageButton(renderable.getContactButton()));
+
         return actor;
     }
 }

@@ -22,6 +22,7 @@ public class CockpitActor extends Table {
     protected Cell remainingEnergyValueCell;
     protected Cell remainingDestinationValueCell;
     protected Cell positionValueCell;
+    protected Cell daysLeftCell;
 
     public CockpitActor(Skin skin, float width, float height) {
         super(skin);
@@ -29,7 +30,7 @@ public class CockpitActor extends Table {
         resourceLocator = new ResourceLocator();
         setWidth(width);
         setHeight(height);
-        debug();
+        //debug();
     }
 
     public void addBackground(String imgPath) {
@@ -51,7 +52,7 @@ public class CockpitActor extends Table {
         addLabelCell(infoTable, destinationLabel);
         remainingDestinationValueCell = addValueCell(infoTable, remainingDestinationValue);
 
-        add(infoTable).bottom().colspan(1).expand();
+        add(infoTable).bottom().expand();
     }
 
     public void addMiddleTable(Button navigationBtn, String positionLabel, String positionValue) {
@@ -62,35 +63,41 @@ public class CockpitActor extends Table {
         middleTable.row();
         addLabelCell(middleTable, positionLabel);
         positionValueCell = addValueCell(middleTable, positionValue);
-        add(middleTable).colspan(1).expand().bottom();
+        add(middleTable).expand().bottom();
     }
 
-    public void addActionsTable(Button vesselButton, Button mapBtn, Button contactBtn) {
+    public void addDaysAndActionsTable(String daysLeftLabel, String daysLeftValue, Button vesselButton, Button mapBtn, Button contactBtn) {
+
         Table actionsTable = new Table(getSkin());
         initSubTable(actionsTable);
-        actionsTable.add(vesselButton).width(vesselButton.getWidth()).height(vesselButton.getHeight());
-        actionsTable.row();
-        actionsTable.add(mapBtn).width(mapBtn.getWidth()).height(mapBtn.getHeight());
-        actionsTable.row();
-        actionsTable.add(contactBtn).width(contactBtn.getWidth()).height(contactBtn.getHeight());
+
+        addLabelCell(actionsTable, daysLeftLabel).top().expand().left();
+        daysLeftCell = actionsTable.add(new Label(daysLeftValue, getSkin())).top().expand().left();
+
         actionsTable.row();
 
-        add(actionsTable).bottom().colspan(1).expand();
+        actionsTable.add(vesselButton).bottom().width(vesselButton.getWidth()).height(vesselButton.getHeight());
+        actionsTable.row();
+        actionsTable.add(mapBtn).bottom().width(mapBtn.getWidth()).height(mapBtn.getHeight());
+        actionsTable.row();
+        actionsTable.add(contactBtn).bottom().width(contactBtn.getWidth()).height(contactBtn.getHeight());
+        actionsTable.row();
+        //actionsTable.debug();
+        add(actionsTable).expand().fillY();
     }
 
     protected void initSubTable(Table subTable) {
-        subTable.columnDefaults(2);
         subTable.defaults().pad(gameInfo.pixelsWithDensity(TABLES_PADDING_PIXELS));
     }
 
     public Cell addLabelCell(Table table, String labelTxt) {
         Label label = new Label(labelTxt, getSkin());
-        return table.add(label).colspan(1).left();
+        return table.add(label).left();
     }
 
     public Cell addValueCell(Table table, String value) {
         Label label = new Label(value, getSkin());
-        return table.add(label).colspan(1).right();
+        return table.add(label).right();
     }
     
     public void setEnergyEfficiency(String newValue) {
@@ -107,6 +114,10 @@ public class CockpitActor extends Table {
 
     public void setPosition(String newValue) {
         updateLabelCell(positionValueCell, newValue);
+    }
+
+    public void setDaysLeft(String newValue) {
+        updateLabelCell(daysLeftCell, newValue);
     }
 
     protected void updateLabelCell(Cell cell, String newValue) {
