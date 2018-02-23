@@ -67,15 +67,13 @@ public class CockpitActor extends Table {
     }
 
     public void addDaysAndActionsTable(String daysLeftLabel, String daysLeftValue, Button vesselButton, Button mapBtn, Button contactBtn) {
-
         Table actionsTable = new Table(getSkin());
         initSubTable(actionsTable);
 
         addLabelCell(actionsTable, daysLeftLabel).top().expand().left();
-        daysLeftCell = actionsTable.add(new Label(daysLeftValue, getSkin())).top().expand().left();
+        daysLeftCell = addValueCell(actionsTable, daysLeftValue).top().expand().left();
 
         actionsTable.row();
-
         actionsTable.add(vesselButton).bottom().width(vesselButton.getWidth()).height(vesselButton.getHeight());
         actionsTable.row();
         actionsTable.add(mapBtn).bottom().width(mapBtn.getWidth()).height(mapBtn.getHeight());
