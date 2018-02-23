@@ -94,14 +94,11 @@ public class ActorFactory extends ComponentFactory{
     }
 
     private Actor createCockpitActor(CockpitRenderable renderable) {
-        CockpitActor actor = new CockpitActor(skin, renderable.getWidth(), renderable.getHeight());
+        CockpitActor actor = new CockpitActor(skin, renderable);
         actor.setPosition(renderable.getxPos(), renderable.getyPos());
-        actor.addBackground(renderable.getImgPath());
-        actor.addInfoTable(renderable.ENGINE_PERFORMANCE_LABEL, renderable.getEnginePerformanceValue(),
-                renderable.REMAINING_ENERGY_LABEL, renderable.getRemainingEnergyValue(), renderable.DESTINATION_DISTANCE_LABEL, renderable.getDestinationDistanceValue());
-        actor.addMiddleTable(createImageButton(renderable.getNavigationButton()), renderable.POSITION_LABEL, renderable.getPositionValue());
-        actor.addDaysAndActionsTable(renderable.DAYS_LEFT_LABEL, renderable.getDaysLeftValue(), createImageButton(renderable.getVesselButton()), createImageButton(renderable.getMapButton()), createImageButton(renderable.getContactButton()));
-
+        actor.addNavigationSubTable(createImageButton(renderable.getNavigationButton()));
+        actor.addDaysAndActionsTable(createImageButton(renderable.getVesselButton()),
+                createImageButton(renderable.getMapButton()), createImageButton(renderable.getContactButton()));
         return actor;
     }
 }

@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class CockpitRenderable extends Renderable {
 
-    public final String ENGINE_PERFORMANCE_LABEL = "Αποδοση κινητηρα";
+    public final String ENGINE_EFFICIENCY_LABEL = "Αποδοση κινητηρα";
     public final String REMAINING_ENERGY_LABEL = "Διαθεσιμη ενεργεια";
     public final String DESTINATION_DISTANCE_LABEL = "Αποσταση προορισμου";
     public final String POSITION_LABEL = "Τοποθεσια";
@@ -30,7 +30,7 @@ public class CockpitRenderable extends Renderable {
         super(xPos, yPos, width, height, type, id);
     }
 
-    public String getEnginePerformanceValue() {
+    public String getEngineEfficiencyValue() {
         return enginePerformanceValue;
     }
 

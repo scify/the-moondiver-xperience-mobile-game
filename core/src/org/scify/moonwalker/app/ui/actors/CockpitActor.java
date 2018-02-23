@@ -7,12 +7,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
+import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 
 public class CockpitActor extends Table {
     protected ResourceLocator resourceLocator;
     protected GameInfo gameInfo;
     protected Image background;
     protected final float TABLES_PADDING_PIXELS = 10;
+    protected CockpitRenderable renderable;
 
     /**
      * When adding values to the table, store the created cells
@@ -24,13 +26,15 @@ public class CockpitActor extends Table {
     protected Cell positionValueCell;
     protected Cell daysLeftCell;
 
-    public CockpitActor(Skin skin, float width, float height) {
+    public CockpitActor(Skin skin, CockpitRenderable renderable) {
         super(skin);
         gameInfo = GameInfo.getInstance();
         resourceLocator = new ResourceLocator();
-        setWidth(width);
-        setHeight(height);
-        //debug();
+        this.renderable = renderable;
+        setWidth(renderable.getWidth());
+        setHeight(renderable.getHeight());
+        addBackground(renderable.getImgPath());
+        addInfoSubTable();
     }
 
     public void addBackground(String imgPath) {
@@ -39,39 +43,39 @@ public class CockpitActor extends Table {
         addActor(background);
     }
 
-    public void addInfoTable(String energyEfficiencyLabel, String energyEfficiencyValue, String energyLabel, String remainingEnergyValue, String destinationLabel, String remainingDestinationValue) {
+    public void addInfoSubTable() {
         Table infoTable = new Table(getSkin());
 
         initSubTable(infoTable);
-        addLabelCell(infoTable, energyEfficiencyLabel);
-        energyEfficiencyValueCell = addValueCell(infoTable, energyEfficiencyValue);
+        addLabelCell(infoTable, renderable.ENGINE_EFFICIENCY_LABEL);
+        energyEfficiencyValueCell = addValueCell(infoTable, renderable.getEngineEfficiencyValue());
         infoTable.row();
-        addLabelCell(infoTable, energyLabel);
-        remainingEnergyValueCell = addValueCell(infoTable, remainingEnergyValue);
+        addLabelCell(infoTable, renderable.REMAINING_ENERGY_LABEL);
+        remainingEnergyValueCell = addValueCell(infoTable, renderable.getRemainingEnergyValue());
         infoTable.row();
-        addLabelCell(infoTable, destinationLabel);
-        remainingDestinationValueCell = addValueCell(infoTable, remainingDestinationValue);
+        addLabelCell(infoTable, renderable.DESTINATION_DISTANCE_LABEL);
+        remainingDestinationValueCell = addValueCell(infoTable, renderable.getDestinationDistanceValue());
 
         add(infoTable).bottom().expand();
     }
 
-    public void addMiddleTable(Button navigationBtn, String positionLabel, String positionValue) {
+    public void addNavigationSubTable(Button navigationBtn) {
         Table middleTable = new Table(getSkin());
         initSubTable(middleTable);
         
         middleTable.add(navigationBtn).width(navigationBtn.getWidth()).height(navigationBtn.getHeight()).colspan(2).center();
         middleTable.row();
-        addLabelCell(middleTable, positionLabel);
-        positionValueCell = addValueCell(middleTable, positionValue);
+        addLabelCell(middleTable, renderable.POSITION_LABEL);
+        positionValueCell = addValueCell(middleTable, renderable.getPositionValue());
         add(middleTable).expand().bottom();
     }
 
-    public void addDaysAndActionsTable(String daysLeftLabel, String daysLeftValue, Button vesselButton, Button mapBtn, Button contactBtn) {
+    public void addDaysAndActionsTable(Button vesselButton, Button mapBtn, Button contactBtn) {
         Table actionsTable = new Table(getSkin());
         initSubTable(actionsTable);
 
-        addLabelCell(actionsTable, daysLeftLabel).top().expand().left();
-        daysLeftCell = addValueCell(actionsTable, daysLeftValue).top().expand().left();
+        addLabelCell(actionsTable, renderable.DAYS_LEFT_LABEL).top().expand().left();
+        daysLeftCell = addValueCell(actionsTable, renderable.getDaysLeftValue()).top().expand().left();
 
         actionsTable.row();
         actionsTable.add(vesselButton).bottom().width(vesselButton.getWidth()).height(vesselButton.getHeight());
