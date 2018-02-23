@@ -1,4 +1,4 @@
-package org.scify.moonwalker.app.ui.components;
+package org.scify.moonwalker.app.ui.actors;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;

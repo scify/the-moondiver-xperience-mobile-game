@@ -11,7 +11,7 @@ import org.scify.moonwalker.app.game.quiz.Answer;
 import org.scify.engine.UserAction;
 import org.scify.moonwalker.app.game.quiz.Question;
 import org.scify.moonwalker.app.helpers.GameInfo;
-import org.scify.moonwalker.app.ui.components.ActionButton;
+import org.scify.moonwalker.app.ui.actors.ActionButton;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -136,5 +136,14 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
 
     protected void cleanUpGameState(GameState currentState) {
         currentState.removeAllGameEventsOwnedBy(this);
+    }
+
+    protected ActionButton createImageButton(String id, String imgPath, UserAction userAction, float widthPixels, float heightPixels) {
+        ActionButton button = new ActionButton("image_button", id);
+        button.setImgPath(imgPath);
+        button.setUserAction(userAction);
+        button.setWidth(gameInfo.pixelsWithDensity(widthPixels));
+        button.setHeight(gameInfo.pixelsWithDensity(heightPixels));
+        return button;
     }
 }

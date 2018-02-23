@@ -1,4 +1,4 @@
-package org.scify.moonwalker.app.ui.components.calculator;
+package org.scify.moonwalker.app.ui.actors.calculator;
 
 public class CalculatorController {
 

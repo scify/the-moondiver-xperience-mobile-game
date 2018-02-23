@@ -4,12 +4,12 @@ import java.util.*;
 
 /**
  * Represents the global state of the game at any given time.
- * Handles objects that are used for communication between the game components.
+ * Handles objects that are used for communication between the game actors.
  */
 public abstract class GameState {
 
     /**
-     * Queue of events to be handled by game components
+     * Queue of events to be handled by game actors
      */
     protected List<GameEvent> eventQueue;
     /**

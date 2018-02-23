@@ -1,7 +1,7 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
-import org.scify.moonwalker.app.ui.components.ActionButton;
+import org.scify.moonwalker.app.ui.actors.ActionButton;
 
 import java.util.*;
 

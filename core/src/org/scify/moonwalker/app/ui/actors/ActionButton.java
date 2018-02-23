@@ -1,4 +1,4 @@
-package org.scify.moonwalker.app.ui.components;
+package org.scify.moonwalker.app.ui.actors;
 
 import org.scify.engine.Renderable;
 import org.scify.engine.UserAction;

@@ -8,9 +8,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import org.scify.moonwalker.app.ui.components.ActionButton;
+import org.scify.moonwalker.app.ui.actors.ActionButton;
 import org.scify.engine.Renderable;
-import org.scify.moonwalker.app.ui.components.calculator.CalculatorComponent;
+import org.scify.moonwalker.app.ui.actors.CockpitActor;
+import org.scify.moonwalker.app.ui.actors.calculator.CalculatorComponent;
+import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 
 public class ActorFactory extends ComponentFactory{
 
@@ -42,6 +44,9 @@ public class ActorFactory extends ComponentFactory{
                 break;
             case "image":
                 toReturn = createImage(renderable.getImgPath(), renderable);
+                break;
+            case "cockpit":
+                toReturn = createCockpitActor((CockpitRenderable) renderable);
                 break;
             case "text_button":
                 toReturn = createTextButton((ActionButton) renderable);
@@ -86,5 +91,16 @@ public class ActorFactory extends ComponentFactory{
         if(actionButton.getHeight() != 0)
             btn.setHeight(actionButton.getHeight());
         btn.pad(actionButton.getPadding());
+    }
+
+    private Actor createCockpitActor(CockpitRenderable renderable) {
+        CockpitActor actor = new CockpitActor(skin, renderable.getWidth(), renderable.getHeight());
+        actor.setPosition(renderable.getxPos(), renderable.getyPos());
+        actor.addBackground(renderable.getImgPath());
+        actor.addInfoTable(renderable.ENGINE_PERFORMANCE_LABEL, renderable.getEnginePerformanceValue(),
+                renderable.REMAINING_ENERGY_LABEL, renderable.getRemainingEnergyValue(), renderable.DESTINATION_DISTANCE_LABEL, renderable.getDestinationDistanceValue());
+        actor.addMiddleTable(createImageButton(renderable.getNavigationButton()), renderable.POSITION_LABEL, renderable.getPositionValue());
+        actor.addActionsTable(createImageButton(renderable.getVesselButton()), createImageButton(renderable.getMapButton()), createImageButton(renderable.getContactButton()));
+        return actor;
     }
 }

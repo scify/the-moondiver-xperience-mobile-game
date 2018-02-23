@@ -1,4 +1,4 @@
-package org.scify.moonwalker.app.ui.components.calculator;
+package org.scify.moonwalker.app.ui.actors.calculator;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
