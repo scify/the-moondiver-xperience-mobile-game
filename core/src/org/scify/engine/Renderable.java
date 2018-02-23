@@ -6,6 +6,10 @@ package org.scify.engine;
 public class Renderable extends Positionable {
 
     protected String type;
+    /**
+     * Identifier for the renderable. Used to differentiate similar renderables,
+     * and for debugging reasons.
+     */
     protected String id;
     protected UserInputHandler userInputHandler;
     protected String imgPath;
