@@ -15,6 +15,7 @@ public class CockpitActor extends Table {
     protected Image background;
     protected final float TABLES_PADDING_PIXELS = 10;
     protected CockpitRenderable renderable;
+    private long timestamp = 0;
 
     /**
      * When adding values to the table, store the created cells
@@ -31,10 +32,12 @@ public class CockpitActor extends Table {
         gameInfo = GameInfo.getInstance();
         resourceLocator = new ResourceLocator();
         this.renderable = renderable;
+        timestamp = this.renderable.getRenderableLastUpdated();
         setWidth(renderable.getWidth());
         setHeight(renderable.getHeight());
         addBackground(renderable.getImgPath());
         addInfoSubTable();
+        debug();
     }
 
     public void addBackground(String imgPath) {
@@ -55,19 +58,19 @@ public class CockpitActor extends Table {
         infoTable.row();
         addLabelCell(infoTable, renderable.DESTINATION_DISTANCE_LABEL);
         remainingDestinationValueCell = addValueCell(infoTable, renderable.getDestinationDistanceValue());
-
-        add(infoTable).bottom().expand();
+        infoTable.debug();
+        add(infoTable).bottom().uniform();
     }
 
     public void addNavigationSubTable(Button navigationBtn) {
         Table middleTable = new Table(getSkin());
         initSubTable(middleTable);
-        
+
         middleTable.add(navigationBtn).width(navigationBtn.getWidth()).height(navigationBtn.getHeight()).colspan(2).center();
         middleTable.row();
         addLabelCell(middleTable, renderable.POSITION_LABEL);
         positionValueCell = addValueCell(middleTable, renderable.getPositionValue());
-        add(middleTable).expand().bottom();
+        add(middleTable).uniform().bottom();
     }
 
     public void addDaysAndActionsTable(Button vesselButton, Button mapBtn, Button contactBtn) {
@@ -94,14 +97,29 @@ public class CockpitActor extends Table {
 
     public Cell addLabelCell(Table table, String labelTxt) {
         Label label = new Label(labelTxt, getSkin());
-        return table.add(label).left();
+        return table.add(label).left().uniform();
     }
 
     public Cell addValueCell(Table table, String value) {
         Label label = new Label(value, getSkin());
-        return table.add(label).right();
+        return table.add(label).left().uniform();
     }
-    
+
+    public void setRenderable(CockpitRenderable renderable) {
+        if(this.renderable.getRenderableLastUpdated() != timestamp){
+        System.out.println("setting renderable: " + renderable.getRenderableLastUpdated() + " over: " + this.renderable.getRenderableLastUpdated());
+        //if(renderable.getRenderableLastUpdated() > this.renderable.getRenderableLastUpdated()) {
+            this.renderable = renderable;
+            this.timestamp = renderable.getRenderableLastUpdated();
+            setEnergyEfficiency(renderable.getEngineEfficiencyValue());
+            setRemainingEnergy(renderable.getRemainingEnergyValue());
+            setRemainingDestination(renderable.getDestinationDistanceValue());
+            setPosition(renderable.getPositionValue());
+            setDaysLeft(renderable.getDaysLeftValue());
+        }
+    }
+
+
     public void setEnergyEfficiency(String newValue) {
         updateLabelCell(energyEfficiencyValueCell, newValue);
     }
@@ -126,5 +144,4 @@ public class CockpitActor extends Table {
         Label label = (Label) cell.getActor();
         label.setText(newValue);
     }
-
 }
