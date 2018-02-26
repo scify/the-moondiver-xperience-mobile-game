@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.scify.engine.*;
@@ -22,6 +23,7 @@ import org.scify.moonwalker.app.ui.actors.*;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 import org.scify.engine.UserActionCode;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
+import org.scify.moonwalker.app.ui.renderables.AvatarSelectionRenderable;
 import org.scify.moonwalker.app.ui.sound.GdxAudioEngine;
 
 import java.util.*;
@@ -190,8 +192,18 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 Actor aToDraw = getActorResourceFor(renderable);
                 if (aToDraw != null) {
                     drawActorFromRenderable(renderable, aToDraw);
+                    update(renderable, aToDraw);
                 }
             }
+        }
+    }
+
+    protected void update(Renderable renderable, Actor actor) {
+        switch (renderable.getType()) {
+            case "avatar_selection":
+                AvatarSelectionRenderable avatarSelectionRenderable = (AvatarSelectionRenderable) renderable;
+                AvatarSelectionActor avatarSelectionActor = (AvatarSelectionActor) actor;
+                avatarSelectionActor.setRenderable(avatarSelectionRenderable);
         }
     }
 
@@ -274,54 +286,9 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                     actor.remove();
                 listIterator.remove();
                 break;
-            case "BUTTONS_LIST_VERTICAL":
-                addButtonsListVertical((List<ActionButton>) currentGameEvent.parameters);
-                listIterator.remove();
-                break;
-            case "BUTTONS_LIST_HORIZONTAL":
-                addButtonsListHorizontal((List<HashMap.SimpleEntry<ActionButton, Color>>) currentGameEvent.parameters);
-                listIterator.remove();
-                break;
         }
     }
 
-    private void addButtonsListVertical(List<ActionButton> buttons) {
-        ButtonList list = new ButtonList(themeController.getSkin(), true);
-        list.addMainLabel("Select an Action");
-        for(final ActionButton button : buttons)
-            list.addButton(actorFactory.createResourceForType(button), new UserInputHandlerImpl() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    userInputHandler.addUserAction(button.getUserAction());
-                }
-            });
-        stage.addActor(list);
-        additionalActors.add(list);
-    }
-
-    private void addButtonsListHorizontal(List<HashMap.SimpleEntry<ActionButton, Color>> buttons) {
-        final ButtonList list = new ButtonList(themeController.getSkin(), false);
-        list.setColumnsNum(3);
-        list.addMainLabel("Select an Action");
-        for(HashMap.SimpleEntry<ActionButton, Color> button : buttons)
-            addButtonToHorizontalListComponent(list, button.getKey(), button.getValue());
-        stage.addActor(list);
-        additionalActors.add(list);
-    }
-
-    protected void addButtonToHorizontalListComponent(final ButtonList list, final ActionButton actionButton, Color buttonInitialColor) {
-        Actor button = actorFactory.createResourceForType(actionButton);
-        list.addButton(button, new UserInputHandlerImpl() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                // set all other image buttons of the table to have a grey color
-                list.setImageButtonsGreyedOutExcept(actor);
-                userInputHandler.addUserAction(actionButton.getUserAction());
-            }
-        });
-        if(buttonInitialColor != null && button.getClass() == ImageButton.class)
-            list.setColorToImageButton((ImageButton) button, buttonInitialColor);
-    }
 
     private void createMultipleSelectionForConversationLines(MultipleConversationLines multipleConversationLinesComponent) {
         MultipleSelectionComponent component = new MultipleSelectionComponent(multipleConversationLinesComponent.getTitle(),
