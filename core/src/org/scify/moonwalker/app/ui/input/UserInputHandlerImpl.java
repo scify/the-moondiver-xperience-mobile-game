@@ -14,6 +14,7 @@ import org.scify.engine.UserActionCode;
 import org.scify.engine.UserInputHandler;
 import org.scify.moonwalker.app.game.quiz.Answer;
 import org.scify.moonwalker.app.helpers.GameInfo;
+import org.scify.moonwalker.app.ui.actors.ActionButton;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,6 +83,7 @@ public class UserInputHandlerImpl extends ChangeListener implements UserInputHan
             pendingUserActions.add(new UserAction(UserActionCode.ANSWER_TEXT, payload));
     }
 
+    @Override
     public void addUserAction(UserAction userAction) {
         pendingUserActions.add(userAction);
     }
@@ -114,5 +116,14 @@ public class UserInputHandlerImpl extends ChangeListener implements UserInputHan
     @Override
     public void changed(ChangeEvent event, Actor actor) {
         pendingUserActions.add(new UserAction(UserActionCode.BUTTON_PRESSED, actor));
+    }
+
+    public void addClickListenerForActor(final ActionButton button, Actor actor) {
+        actor.addListener(new UserInputHandlerImpl() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                addUserAction(button.getUserAction());
+            }
+        });
     }
 }

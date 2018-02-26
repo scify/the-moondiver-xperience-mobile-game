@@ -5,9 +5,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import org.scify.engine.UserInputHandler;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 import org.scify.engine.Renderable;
 import org.scify.moonwalker.app.ui.actors.CockpitActor;
@@ -63,6 +65,7 @@ public class ActorFactory extends ComponentFactory{
         return toReturn;
     }
 
+
     protected Image createImage(String imgFileRelevantPath, Renderable renderable) {
         Image img = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath(imgFileRelevantPath)))));
         img.setSize(renderable.getWidth(), renderable.getHeight());
@@ -93,10 +96,17 @@ public class ActorFactory extends ComponentFactory{
         btn.pad(actionButton.getPadding());
     }
 
-    private Actor createCockpitActor(CockpitRenderable renderable) {
+    private Actor createCockpitActor(final CockpitRenderable renderable) {
         CockpitActor actor = new CockpitActor(skin, renderable);
+        Button navigationBtn = createImageButton(renderable.getNavigationButton());
+        navigationBtn.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                userInputHandler.addUserAction(renderable.getNavigationButton().getUserAction());
+            }
+        });
         actor.setPosition(renderable.getxPos(), renderable.getyPos());
-        actor.addNavigationSubTable(createImageButton(renderable.getNavigationButton()));
+        actor.addNavigationSubTable(navigationBtn);
         actor.addDaysAndActionsTable(createImageButton(renderable.getVesselButton()),
                 createImageButton(renderable.getMapButton()), createImageButton(renderable.getContactButton()));
         return actor;
