@@ -6,13 +6,22 @@ import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 
 public class CockpitRules extends BaseEpisodeRules {
 
-    protected final float CALCULATOR_WIDTH_PIXELS = 80;
+    CockpitRenderable cockpit;
+
+    @Override
+    protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
+        switch (userAction.getActionCode()) {
+            // TODO update
+            case FINISH_EPISODE:
+                cockpit.setRemainingEnergyValue("1124564");
+                break;
+        }
+    }
 
     @Override
     public void gameStartedEvents(GameState currentState) {
         if (!currentState.eventsQueueContainsEvent("EPISODE_STARTED")) {
             currentState.addGameEvent(new GameEvent("EPISODE_STARTED"));
-
             Renderable spaceImage = new Renderable(0,0, gameInfo.getScreenWidth(), gameInfo.getScreenHeight(), "image", "space");
             spaceImage.setImgPath("img/space1.png");
             currentState.addRenderable(spaceImage);
@@ -28,14 +37,9 @@ public class CockpitRules extends BaseEpisodeRules {
             return endStateFromParent;
         return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE, cleanUpState(currentState));
     }
-
-    @Override
-    public void gameResumedEvents(GameState currentState) {
-
-    }
     
     protected void initializeAndAddCockpit(GameState currentState) {
-        CockpitRenderable cockpit = new CockpitRenderable(0,0, gameInfo.getScreenWidth(),
+        cockpit = new CockpitRenderable(0,0, gameInfo.getScreenWidth(),
                 gameInfo.getScreenHeight(), "cockpit", "cockpit");
         cockpit.setImgPath("img/cockpit.png");
         ActionButton navigationBtn = createCockpitButton("navigation_button", "img/navigation.png", UserActionCode.FINISH_EPISODE);
