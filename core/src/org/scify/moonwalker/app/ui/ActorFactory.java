@@ -9,11 +9,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import org.scify.engine.UserInputHandler;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 import org.scify.engine.Renderable;
+import org.scify.moonwalker.app.ui.actors.AvatarSelectionActor;
+import org.scify.moonwalker.app.ui.actors.ButtonList;
 import org.scify.moonwalker.app.ui.actors.CockpitActor;
 import org.scify.moonwalker.app.ui.actors.calculator.CalculatorComponent;
+import org.scify.moonwalker.app.ui.renderables.AvatarSelectionRenderable;
+import org.scify.moonwalker.app.ui.renderables.ButtonsListRenderable;
 import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 
 public class ActorFactory extends ComponentFactory{
@@ -50,6 +53,12 @@ public class ActorFactory extends ComponentFactory{
             case "cockpit":
                 toReturn = createCockpitActor((CockpitRenderable) renderable);
                 break;
+            case "avatar_selection":
+                toReturn = createAvatarSelectionActor((AvatarSelectionRenderable) renderable);
+                break;
+            case "buttons_list_vertical":
+                toReturn = createVerticalButtonList((ButtonsListRenderable) renderable);
+                break;
             case "text_button":
                 toReturn = createTextButton((ActionButton) renderable);
                 break;
@@ -74,17 +83,21 @@ public class ActorFactory extends ComponentFactory{
 
     protected TextButton createTextButton(ActionButton actionButton) {
         TextButton btn = new TextButton(actionButton.getTitle(), skin);
-        setButtonDimensions(actionButton, btn);
-        btn.setName(actionButton.getId());
+        setCommonAttrsAndListener(btn, actionButton);
         return btn;
     }
 
     protected ImageButton createImageButton(ActionButton actionButton) {
         Drawable btnImage = new SpriteDrawable(new Sprite(new Texture(resourceLocator.getFilePath(actionButton.getImgPath()))));
         ImageButton btn = new ImageButton(btnImage);
+        setCommonAttrsAndListener(btn, actionButton);
+        return btn;
+    }
+
+    protected void setCommonAttrsAndListener(Button btn, ActionButton actionButton) {
         setButtonDimensions(actionButton, btn);
         btn.setName(actionButton.getId());
-        return btn;
+        addButtonListener(btn, actionButton);
     }
 
     protected void setButtonDimensions(ActionButton actionButton, Button btn) {
@@ -99,16 +112,43 @@ public class ActorFactory extends ComponentFactory{
     private Actor createCockpitActor(final CockpitRenderable renderable) {
         CockpitActor actor = new CockpitActor(skin, renderable);
         Button navigationBtn = createImageButton(renderable.getNavigationButton());
-        navigationBtn.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                userInputHandler.addUserAction(renderable.getNavigationButton().getUserAction());
-            }
-        });
+        addButtonListener(navigationBtn, renderable.getNavigationButton());
         actor.setPosition(renderable.getxPos(), renderable.getyPos());
         actor.addNavigationSubTable(navigationBtn);
         actor.addDaysAndActionsTable(createImageButton(renderable.getVesselButton()),
                 createImageButton(renderable.getMapButton()), createImageButton(renderable.getContactButton()));
         return actor;
+    }
+
+    private Actor createAvatarSelectionActor(final AvatarSelectionRenderable renderable) {
+        AvatarSelectionActor actor = new AvatarSelectionActor(skin);
+        Button boyBtn = createImageButton(renderable.getBoySelection());
+        Button girlBtn = createImageButton(renderable.getGirlSelection());
+        Button selectionBtn = createTextButton(renderable.getSelectBtn());
+
+        actor.addButton(boyBtn);
+        actor.addButton(selectionBtn);
+        actor.addButton(girlBtn);
+        actor.setRenderable(renderable);
+        return actor;
+    }
+
+    private ButtonList createVerticalButtonList(ButtonsListRenderable buttons) {
+        ButtonList list = new ButtonList(skin, true);
+        list.addMainLabel("Select an Action");
+        for(final ActionButton button : buttons.getButtonList()) {
+            list.addButton(createResourceForType(button));
+        }
+
+        return list;
+    }
+
+    private void addButtonListener(Button button, final ActionButton actionButton) {
+        button.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                userInputHandler.addUserAction(actionButton.getUserAction());
+            }
+        });
     }
 }
