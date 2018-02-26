@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import org.scify.moonwalker.app.helpers.GameInfo;
-import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 
 public class ButtonList extends Table{
 
@@ -18,7 +17,7 @@ public class ButtonList extends Table{
 
     public ButtonList(Skin skin, boolean isVertical) {
         super(skin);
-        this.gameInfo = GameInfo.getInstance();
+        gameInfo = GameInfo.getInstance();
         this.isVertical = isVertical;
         setFillParent(true);
         center().center();
@@ -38,8 +37,7 @@ public class ButtonList extends Table{
         labelCell.row();
     }
 
-    public void addButton(Actor button, UserInputHandlerImpl userInputHandler) {
-        button.addListener(userInputHandler);
+    public void addButton(Actor button) {
         Cell buttonCell = add(button).pad(gameInfo.pixelsWithDensity(BUTTON_PADDING_PIXELS)).height(button.getHeight());
         if(isVertical) {
             buttonCell.width(button.getWidth());
@@ -49,10 +47,10 @@ public class ButtonList extends Table{
         }
     }
 
-    public void setImageButtonsGreyedOutExcept(Actor clickedActor) {
+    public void setImageButtonsGreyedOutExcept(String selectedButtonId) {
         for(Cell cell : this.getCells()) {
             if(cell.getActor().getClass() == ImageButton.class) {
-                if(cell.getActor().getName() != clickedActor.getName())
+                if(cell.getActor().getName() != selectedButtonId)
                     setColorToImageButton((ImageButton) cell.getActor(), Color.DARK_GRAY);
                 else
                     setColorToImageButton((ImageButton) cell.getActor(), Color.WHITE);
