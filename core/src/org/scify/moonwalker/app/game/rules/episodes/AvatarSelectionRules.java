@@ -1,33 +1,27 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
-import com.badlogic.gdx.graphics.Color;
 import org.scify.engine.*;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import org.scify.moonwalker.app.ui.renderables.AvatarSelectionRenderable;
 
 public class AvatarSelectionRules extends BaseEpisodeRules {
 
     protected final float SELECT_BUTTON_HEIGHT_PIXELS = 50;
+    protected AvatarSelectionRenderable renderable;
 
     @Override
     protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
         switch (userAction.getActionCode()) {
             case BOY_SELECTED:
-               removePreviousAvatarSelectionAndAddNew(gsCurrent, "boy");
+                removePreviousAvatarSelectionAndAddNew(gsCurrent, "boy");
+                renderable.setSelectedAvatar(renderable.getBoySelection());
                 break;
             case GIRL_SELECTED:
                 removePreviousAvatarSelectionAndAddNew(gsCurrent, "girl");
+                renderable.setSelectedAvatar(renderable.getGirlSelection());
                 break;
         }
         super.handleUserAction(gsCurrent, userAction);
-    }
-
-    protected void removePreviousAvatarSelectionAndAddNew(GameState gsCurrent, String newSelection) {
-        gsCurrent.removeGameEventsWithType("AVATAR_SELECTED");
-        gsCurrent.addGameEvent(new GameEvent("AVATAR_SELECTED", newSelection));
     }
 
     @Override
@@ -46,18 +40,21 @@ public class AvatarSelectionRules extends BaseEpisodeRules {
         if (!currentState.eventsQueueContainsEventOwnedBy("EPISODE_STARTED", this)) {
             currentState.addGameEvent(new GameEvent("EPISODE_STARTED", null, this));
             currentState.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/Andromeda-galaxy.jpg"));
-            createAvatarsButtonsList(currentState);
+            createAvatarSelectionRenderable(currentState);
 
             ActionButton escape = createEscapeButton();
             escape.setUserAction(new UserAction(UserActionCode.BACK));
             currentState.addRenderable(escape);
-            addRenderableEntry("calculator_finished_button", escape);
-            // set the boy selected by default
-            removePreviousAvatarSelectionAndAddNew(gameState, "boy");
+            addRenderableEntry("back_button", escape);
         }
     }
 
-    protected void createAvatarsButtonsList(GameState currentState) {
+    protected void removePreviousAvatarSelectionAndAddNew(GameState currentState, String newSelection) {
+        currentState.removeGameEventsWithType("AVATAR_SELECTED");
+        currentState.addGameEvent(new GameEvent("AVATAR_SELECTED", newSelection));
+    }
+
+    protected void createAvatarSelectionRenderable(GameState currentState) {
         ActionButton boyBtn = new ActionButton("image_button", "boy");
         boyBtn.setImgPath("img/boy.png");
         boyBtn.setUserAction(new UserAction(UserActionCode.BOY_SELECTED));
@@ -68,11 +65,14 @@ public class AvatarSelectionRules extends BaseEpisodeRules {
         selectBtn.setHeight(SELECT_BUTTON_HEIGHT_PIXELS);
         selectBtn.setTitle("Start Game");
         selectBtn.setUserAction(new UserAction(UserActionCode.FINISH_EPISODE));
-        List<HashMap.SimpleEntry<ActionButton, Color>> buttons = new ArrayList();
-        //white color means transparent (no color)
-        buttons.add(new HashMap.SimpleEntry<>(boyBtn, Color.WHITE));
-        buttons.add(new HashMap.SimpleEntry<>(selectBtn, Color.WHITE));
-        buttons.add(new HashMap.SimpleEntry<>(girlBtn, Color.DARK_GRAY));
-        currentState.addGameEvent(new GameEvent("BUTTONS_LIST_HORIZONTAL", buttons, buttons.get(2)));
+
+        renderable = new AvatarSelectionRenderable(0,0,gameInfo.getScreenWidth(), gameInfo.getScreenHeight(), "avatar_selection");
+        renderable.setBoySelection(boyBtn);
+        renderable.setGirlSelection(girlBtn);
+        renderable.setSelectBtn(selectBtn);
+
+        renderable.setSelectedAvatar(boyBtn);
+        removePreviousAvatarSelectionAndAddNew(currentState, "boy");
+        currentState.addRenderable(renderable);
     }
 }
