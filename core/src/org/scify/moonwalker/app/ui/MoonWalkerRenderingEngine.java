@@ -43,8 +43,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private CameraController cameraController;
     private GameInfo gameInfo;
     private World world;
-    private Map<Renderable, Sprite> renderableSpriteMap;
-    private Map<Renderable, Actor> renderableActorMap;
+    protected RenderableManager renderableManager;
     private ThemeController themeController;
     private UserInputHandlerImpl userInputHandler;
     private Label fpsLabel;
@@ -54,15 +53,14 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private ResourceLocator resourceLocator;
     private static final String TAG = MoonWalkerRenderingEngine.class.getName();
     private List<Actor> additionalActors;
-    private ComponentFactory<Actor> actorFactory;
-    private ComponentFactory<Sprite> spriteFactory;
+
     private boolean bDisposalOngoing;
 
     public MoonWalkerRenderingEngine(UserInputHandler userInputHandler, SpriteBatch batch, Stage stage) {
         this.resourceLocator = new ResourceLocator();
         cameraController = new CameraController();
         this.userInputHandler = (UserInputHandlerImpl) userInputHandler;
-        resetEngine();
+
         additionalActors = new ArrayList<>();
         audioEngine = new GdxAudioEngine();
         gameInfo = GameInfo.getInstance();
@@ -70,9 +68,9 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         this.stage = stage;
         gameViewport = stage.getViewport();
         themeController = new ThemeController();
-        this.actorFactory = new ActorFactory(themeController.getSkin());
-        actorFactory.setUserInputHandler(userInputHandler);
-        this.spriteFactory = new SpriteFactory(themeController.getSkin());
+        renderableManager = new RenderableManager(themeController, userInputHandler);
+        renderableManager.setBatch(batch);
+        renderableManager.setStage(stage);
         cameraController.initCamera(stage);
         createBackgroundDefaultImg();
         initFPSLabel();
@@ -80,6 +78,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         // TODO music should be added from episode rules
         //audioEngine.playSoundLoop("audio/episode_1/music.wav");
         printDebugInfo();
+        resetEngine();
     }
 
     private void printDebugInfo() {
@@ -112,58 +111,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             this.world = gameState.world;
     }
 
-    protected Sprite getSpriteResourceFor(Renderable toDraw) {
-        Sprite resource = null;
-        // If I have an existing sprite
-        if (renderableSpriteMap.containsKey(toDraw)) {
-            // reuse it
-            resource = renderableSpriteMap.get(toDraw);
-        } else {
-            // else
-            try {
-                // createSpriteResourceForType
-                Sprite newResourceForRenderable = spriteFactory.createResourceForType(toDraw);
-                if(newResourceForRenderable != null) {
-                    // and map it to the object
-                    renderableSpriteMap.put(toDraw, newResourceForRenderable);
-                    resource = newResourceForRenderable;
-                }
-            } catch (UnsupportedRenderableTypeException e) {
-                e.printStackTrace();
-            }
-        }
-        return resource;
-    }
-
-    protected Actor getActorResourceFor(final Renderable toDraw) {
-        Actor resource = null;
-        if (renderableActorMap.containsKey(toDraw))
-            resource = renderableActorMap.get(toDraw);
-        else {
-            try {
-                Actor newActorForRenderable = actorFactory.createResourceForType(toDraw);
-                if(newActorForRenderable != null) {
-                    resource = addActor(toDraw, newActorForRenderable);
-                }
-            } catch (UnsupportedRenderableTypeException e) {
-                e.printStackTrace();
-            }
-        }
-        return resource;
-    }
-
-    private Actor addActor(final Renderable toDraw, Actor newActorForRenderable) {
-        addClickListenerIfButton(toDraw, newActorForRenderable);
-        renderableActorMap.put(toDraw, newActorForRenderable);
-        return  newActorForRenderable;
-    }
-
-    protected void addClickListenerIfButton(final Renderable toDraw, Actor newActorForRenderable) {
-        if(toDraw.getType().equals("text_button") || toDraw.getType().equals("image_button")) {
-            userInputHandler.addClickListenerForActor((ActionButton) toDraw, newActorForRenderable);
-        }
-    }
-
     @Override
     public void drawGameState(MoonWalkerGameState currentState) {
         if (!bDisposalOngoing) {
@@ -185,44 +132,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
 
     protected void drawRenderable(Renderable renderable) {
         if (!bDisposalOngoing) {
-            Sprite sToDraw = getSpriteResourceFor(renderable);
-            if (sToDraw != null) {
-                drawSpriteFromRenderable(renderable, sToDraw);
-            } else {
-                Actor aToDraw = getActorResourceFor(renderable);
-                if (aToDraw != null) {
-                    drawActorFromRenderable(renderable, aToDraw);
-                    update(renderable, aToDraw);
-                }
-            }
-        }
-    }
-
-    protected void update(Renderable renderable, Actor actor) {
-        switch (renderable.getType()) {
-            case "avatar_selection":
-                AvatarSelectionRenderable avatarSelectionRenderable = (AvatarSelectionRenderable) renderable;
-                AvatarSelectionActor avatarSelectionActor = (AvatarSelectionActor) actor;
-                avatarSelectionActor.setRenderable(avatarSelectionRenderable);
-        }
-    }
-
-    protected void drawSpriteFromRenderable(Renderable renderable, Sprite sToDraw) {
-        sToDraw.setPosition(renderable.getxPos(), renderable.getyPos());
-        batch.draw(sToDraw, sToDraw.getX() - (sToDraw.getWidth() / 2f), sToDraw.getY() - (sToDraw.getHeight() / 2f), sToDraw.getWidth(), sToDraw.getHeight());
-    }
-
-    protected void drawActorFromRenderable(Renderable renderable, Actor aToDraw) {
-        aToDraw.setPosition(renderable.getxPos(), renderable.getyPos());
-        // update the z index of the actor, according to the renderable's z index
-        if(renderable.getZIndex() > 0)
-            aToDraw.setZIndex(renderable.getZIndex());
-        // if actor does not have a stage, it means that
-        // it is the first time that is added to the stage.
-        if(aToDraw.getStage() == null) {
-            aToDraw.setName(renderable.getId());
-            stage.addActor(aToDraw);
-            printActors();
+            renderableManager.drawRenderable(renderable);
         }
     }
 
@@ -289,7 +199,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         }
     }
 
-
     private void createMultipleSelectionForConversationLines(MultipleConversationLines multipleConversationLinesComponent) {
         MultipleSelectionComponent component = new MultipleSelectionComponent(multipleConversationLinesComponent.getTitle(),
                 multipleConversationLinesComponent.getAvatarImgPath());
@@ -310,7 +219,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     }
 
     private void updateLabelText(HashMap.SimpleEntry<Renderable, String> parameters) {
-        Actor actor = getActorResourceFor(parameters.getKey());
+        Actor actor = renderableManager.getActorResourceFor(parameters.getKey());
         Label label = (Label) actor;
         label.setText(parameters.getValue());
     }
@@ -330,8 +239,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
 
     protected synchronized void resetEngine() {
         bDisposalOngoing = true;
-        renderableSpriteMap = new HashMap<>();
-        renderableActorMap = new HashMap<>();
+        renderableManager.reset();
         additionalActors = new ArrayList<>();
         bDisposalOngoing = false;
     }
@@ -344,17 +252,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     @Override
     public synchronized void disposeRenderables() {
         bDisposalOngoing = true;
-        for(Iterator<Map.Entry<Renderable, Sprite>> it = renderableSpriteMap.entrySet().iterator(); it.hasNext(); ) {
-            Map.Entry<Renderable, Sprite> entry = it.next();
-            entry.getValue().getTexture().dispose();
-            it.remove();
-
-        }
-        for(Iterator<Map.Entry<Renderable, Actor>> it = renderableActorMap.entrySet().iterator(); it.hasNext(); ) {
-            Map.Entry<Renderable, Actor> entry = it.next();
-            entry.getValue().remove();
-            it.remove();
-        }
+        renderableManager.dispose();;
         for(Iterator<Actor> it = additionalActors.iterator(); it.hasNext(); ) {
             Actor entry = it.next();
             entry.remove();
