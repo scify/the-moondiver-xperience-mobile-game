@@ -7,7 +7,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.scify.engine.*;
@@ -20,10 +19,8 @@ import org.scify.moonwalker.app.game.quiz.Question;
 import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.actors.*;
-import org.scify.moonwalker.app.ui.actors.ActionButton;
 import org.scify.engine.UserActionCode;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
-import org.scify.moonwalker.app.ui.renderables.AvatarSelectionRenderable;
 import org.scify.moonwalker.app.ui.sound.GdxAudioEngine;
 
 import java.util.*;
@@ -132,7 +129,11 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
 
     protected void drawRenderable(Renderable renderable) {
         if (!bDisposalOngoing) {
-            renderableManager.drawRenderable(renderable);
+            if(renderableManager.renderableExists(renderable)) {
+                renderableManager.drawRenderable(renderable);
+            } else {
+                renderableManager.createAndAddRenderable(renderable);
+            }
         }
     }
 
@@ -219,7 +220,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     }
 
     private void updateLabelText(HashMap.SimpleEntry<Renderable, String> parameters) {
-        Actor actor = renderableManager.getActorResourceFor(parameters.getKey());
+        Actor actor = renderableManager.getOrCreateActorResourceFor(parameters.getKey());
         Label label = (Label) actor;
         label.setText(parameters.getValue());
     }
@@ -342,13 +343,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 question.getBody(),
                 themeController.getSkin());
         textInputDialog.createForQuestion(question, stage);
-    }
-
-    private void printActors() {
-        System.out.println("printActors");
-        for(Actor stageActor : stage.getActors()) {
-            System.out.println("Actor " + stageActor.getClass() + " " + stageActor.getName() + " " + stageActor.getZIndex());
-        }
     }
 
 }

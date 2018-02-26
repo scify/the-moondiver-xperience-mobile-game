@@ -41,16 +41,24 @@ public class RenderableManager {
         this.stage = stage;
     }
 
+    public void createAndAddRenderable(Renderable renderable) {
+        Sprite sprite = createSpriteResourceFor(renderable);
+        if (sprite != null) {
+            renderableSpriteMap.put(renderable, sprite);
+        } else {
+           createActorResourceFor(renderable);
+        }
+    }
+
     public void drawRenderable(Renderable renderable) {
-        Sprite sToDraw = getSpriteResourceFor(renderable);
-        if (sToDraw != null) {
+
+        if(renderableExistsAsSprite(renderable)) {
+            Sprite sToDraw = renderableSpriteMap.get(renderable);
             drawSpriteFromRenderable(renderable, sToDraw);
         } else {
-            Actor aToDraw = getActorResourceFor(renderable);
-            if (aToDraw != null) {
-                drawActorFromRenderable(renderable, aToDraw);
-                update(renderable, aToDraw);
-            }
+            Actor aToDraw = renderableActorMap.get(renderable);
+            drawActorFromRenderable(renderable, aToDraw);
+            update(renderable, aToDraw);
         }
     }
 
@@ -81,42 +89,31 @@ public class RenderableManager {
         }
     }
 
-    protected Sprite getSpriteResourceFor(Renderable toDraw) {
+    protected Sprite createSpriteResourceFor(Renderable toDraw) {
         Sprite resource = null;
-        // If I have an existing sprite
-        if (renderableSpriteMap.containsKey(toDraw)) {
-            // reuse it
-            resource = renderableSpriteMap.get(toDraw);
-        } else {
-            // else
-            try {
-                // createSpriteResourceForType
-                Sprite newResourceForRenderable = spriteFactory.createResourceForType(toDraw);
-                if(newResourceForRenderable != null) {
-                    // and map it to the object
-                    renderableSpriteMap.put(toDraw, newResourceForRenderable);
-                    resource = newResourceForRenderable;
-                }
-            } catch (UnsupportedRenderableTypeException e) {
-                e.printStackTrace();
+        try {
+            // createSpriteResourceForType
+            Sprite newResourceForRenderable = spriteFactory.createResourceForType(toDraw);
+            if(newResourceForRenderable != null) {
+                resource = newResourceForRenderable;
             }
+        } catch (UnsupportedRenderableTypeException e) {
+            e.printStackTrace();
         }
         return resource;
     }
 
-    protected Actor getActorResourceFor(final Renderable toDraw) {
+    protected Actor createActorResourceFor(final Renderable toDraw) {
         Actor resource = null;
-        if (renderableActorMap.containsKey(toDraw))
-            resource = renderableActorMap.get(toDraw);
-        else {
-            try {
-                Actor newActorForRenderable = actorFactory.createResourceForType(toDraw);
-                if(newActorForRenderable != null) {
-                    resource = addActor(toDraw, newActorForRenderable);
-                }
-            } catch (UnsupportedRenderableTypeException e) {
-                e.printStackTrace();
+        try {
+            Actor newActorForRenderable = actorFactory.createResourceForType(toDraw);
+            if(newActorForRenderable != null) {
+                resource = newActorForRenderable;
+                addActor(toDraw, newActorForRenderable);
+                printActors();
             }
+        } catch (UnsupportedRenderableTypeException e) {
+            e.printStackTrace();
         }
         return resource;
     }
@@ -149,6 +146,34 @@ public class RenderableManager {
             Map.Entry<Renderable, Actor> entry = it.next();
             entry.getValue().remove();
             it.remove();
+        }
+    }
+
+    public boolean renderableExists(Renderable renderable) {
+        return renderableExistsAsSprite(renderable) || renderableExistsAsActor(renderable);
+    }
+
+    protected boolean renderableExistsAsSprite(Renderable renderable) {
+        return renderableSpriteMap.containsKey(renderable);
+    }
+
+    protected boolean renderableExistsAsActor(Renderable renderable) {
+        return renderableActorMap.containsKey(renderable);
+    }
+
+    public Actor getOrCreateActorResourceFor(Renderable renderable) {
+        Actor toReturn;
+        if(renderableExistsAsActor(renderable))
+            toReturn = renderableActorMap.get(renderable);
+        else
+            toReturn = createActorResourceFor(renderable);
+        return toReturn;
+    }
+
+    private void printActors() {
+        System.out.println("printActors");
+        for(Actor stageActor : stage.getActors()) {
+            System.out.println("Actor " + stageActor.getClass() + " " + stageActor.getName() + " " + stageActor.getZIndex());
         }
     }
 }
