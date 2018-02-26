@@ -2,6 +2,7 @@ package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
+import org.scify.moonwalker.app.ui.renderables.ButtonsListRenderable;
 
 import java.util.*;
 
@@ -9,6 +10,7 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
 
     protected float BUTTON_WIDTH;
     protected Map<String, UserActionCode> buttonTitlesAndActionCodes;
+    protected ButtonsListRenderable mainMenuButtons;
 
     public MainMenuEpisodeRules() {
         this.BUTTON_WIDTH = gameInfo.getScreenWidth() / 2f;
@@ -43,14 +45,14 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
 
     protected void createAndAddMainMenuButtons(GameState gsCurrent) {
         initializeButtons();
-        List<ActionButton> mainMenuButtons = new ArrayList<>();
+        mainMenuButtons = new ButtonsListRenderable(0,0, BUTTON_WIDTH, gameInfo.pixelsWithDensity(50), "buttons_list_vertical", "main_menu_buttons");
         for(Map.Entry<String, UserActionCode> buttonTitleAndActionCode : buttonTitlesAndActionCodes.entrySet()) {
             ActionButton newGameBtn = new ActionButton(0,0, BUTTON_WIDTH, gameInfo.pixelsWithDensity(50), "text_button", buttonTitleAndActionCode.getKey());
             newGameBtn.setTitle(buttonTitleAndActionCode.getKey());
             newGameBtn.setUserAction(new UserAction(buttonTitleAndActionCode.getValue()));
-            mainMenuButtons.add(newGameBtn);
+            mainMenuButtons.addButton(newGameBtn);
         }
-        gsCurrent.addGameEvent(new GameEvent("BUTTONS_LIST_VERTICAL", mainMenuButtons));
+        gsCurrent.addRenderable(mainMenuButtons);
     }
 
     protected void initializeButtons() {
