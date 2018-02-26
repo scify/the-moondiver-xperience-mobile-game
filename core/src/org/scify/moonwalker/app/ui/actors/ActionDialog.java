@@ -2,11 +2,8 @@ package org.scify.moonwalker.app.ui.actors;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import org.scify.engine.UserInputHandler;
 import org.scify.engine.Renderable;
 import org.scify.moonwalker.app.helpers.GameInfo;
-
-import java.awt.geom.Point2D;
 
 public class ActionDialog extends Renderable {
 
