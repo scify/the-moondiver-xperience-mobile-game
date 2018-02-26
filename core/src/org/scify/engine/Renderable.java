@@ -1,5 +1,7 @@
 package org.scify.engine;
 
+import java.util.Date;
+
 /**
  * Describes an object that is used in game and has substance in terms of game logic.
  */
@@ -13,6 +15,11 @@ public class Renderable extends Positionable {
     protected String id;
     protected UserInputHandler userInputHandler;
     protected String imgPath;
+
+    /**
+     * timestamp describing when the component was last updated
+     */
+    protected long renderableLastUpdated = new Date().getTime();
 
     public Renderable(float xPos, float yPos, float width, float height, String type, String id) {
         super(xPos, yPos, width, height);
@@ -53,5 +60,13 @@ public class Renderable extends Positionable {
     @Override
     public String toString() {
         return "Type: " + type + " id: " + id + " x: " + xPos + " y: " + yPos;
+    }
+
+    public long getRenderableLastUpdated() {
+        return renderableLastUpdated;
+    }
+    
+    protected void componentWasUpdated() {
+        this.renderableLastUpdated = new Date().getTime();
     }
 }
