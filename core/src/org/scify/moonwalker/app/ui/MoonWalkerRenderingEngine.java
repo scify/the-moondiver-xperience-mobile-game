@@ -69,6 +69,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         gameViewport = stage.getViewport();
         themeController = new ThemeController();
         this.actorFactory = new ActorFactory(themeController.getSkin());
+        actorFactory.setUserInputHandler(userInputHandler);
         this.spriteFactory = new SpriteFactory(themeController.getSkin());
         cameraController.initCamera(stage);
         createBackgroundDefaultImg();
@@ -156,14 +157,8 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     }
 
     protected void addClickListenerIfButton(final Renderable toDraw, Actor newActorForRenderable) {
-        if(toDraw.getType() == "text_button" || toDraw.getType() == "image_button") {
-            newActorForRenderable.addListener(new UserInputHandlerImpl() {
-                ActionButton actionButton = (ActionButton) toDraw;
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    userInputHandler.addUserAction(actionButton.getUserAction());
-                }
-            });
+        if(toDraw.getType().equals("text_button") || toDraw.getType().equals("image_button")) {
+            userInputHandler.addClickListenerForActor((ActionButton) toDraw, newActorForRenderable);
         }
     }
 
