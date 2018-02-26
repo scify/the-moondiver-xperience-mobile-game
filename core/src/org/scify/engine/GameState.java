@@ -144,8 +144,21 @@ public abstract class GameState {
         return renderableList;
     }
 
+
     public void addRenderable(Renderable r) {
         renderableList.add(r);
+    }
+
+    public Renderable getRenderable(Renderable renderable){
+        synchronized (renderableList) {
+            ListIterator<Renderable> listIterator = renderableList.listIterator();
+            while (listIterator.hasNext()) {
+                Renderable current = listIterator.next();
+                if(current == renderable)
+                    return renderable;
+            }
+        }
+        return null;
     }
 
     public Player getPlayer() {
