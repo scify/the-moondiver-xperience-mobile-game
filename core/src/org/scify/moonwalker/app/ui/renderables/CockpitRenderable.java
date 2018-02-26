@@ -3,8 +3,6 @@ package org.scify.moonwalker.app.ui.renderables;
 import org.scify.engine.Renderable;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 
-import java.util.Date;
-
 public class CockpitRenderable extends Renderable {
 
     public final String ENGINE_EFFICIENCY_LABEL = "Αποδοση κινητηρα";
@@ -24,8 +22,6 @@ public class CockpitRenderable extends Renderable {
     protected ActionButton mapButton;
     protected ActionButton contactButton;
 
-    protected long renderableLastUpdated = new Date().getTime();
-
     public CockpitRenderable(float xPos, float yPos, float width, float height, String type, String id) {
         super(xPos, yPos, width, height, type, id);
     }
@@ -36,7 +32,7 @@ public class CockpitRenderable extends Renderable {
 
     public void setEnginePerformanceValue(String enginePerformanceValue) {
         this.enginePerformanceValue = enginePerformanceValue;
-        this.renderableLastUpdated = new Date().getTime();
+        componentWasUpdated();
     }
 
     public String getRemainingEnergyValue() {
@@ -45,7 +41,7 @@ public class CockpitRenderable extends Renderable {
 
     public void setRemainingEnergyValue(String remainingEnergyValue) {
         this.remainingEnergyValue = remainingEnergyValue;
-        this.renderableLastUpdated = new Date().getTime();
+        componentWasUpdated();
     }
 
     public String getDestinationDistanceValue() {
@@ -54,7 +50,7 @@ public class CockpitRenderable extends Renderable {
 
     public void setDestinationDistanceValue(String destinationDistanceValue) {
         this.destinationDistanceValue = destinationDistanceValue;
-        this.renderableLastUpdated = new Date().getTime();
+        componentWasUpdated();
     }
 
     public String getPositionValue() {
@@ -63,7 +59,7 @@ public class CockpitRenderable extends Renderable {
 
     public void setPositionValue(String positionValue) {
         this.positionValue = positionValue;
-        this.renderableLastUpdated = new Date().getTime();
+        componentWasUpdated();
     }
 
     public ActionButton getNavigationButton() {
@@ -104,14 +100,7 @@ public class CockpitRenderable extends Renderable {
 
     public void setDaysLeftValue(String daysLeftValue) {
         this.daysLeftValue = daysLeftValue;
-        this.renderableLastUpdated = new Date().getTime();
+        componentWasUpdated();
     }
 
-    public long getRenderableLastUpdated() {
-        return renderableLastUpdated;
-    }
-
-    public void setRenderableLastUpdated(long renderableLastUpdated) {
-        this.renderableLastUpdated = renderableLastUpdated;
-    }
 }
