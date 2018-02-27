@@ -10,13 +10,9 @@ import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 
-public class CockpitActor extends Table implements Updateable{
-    protected ResourceLocator resourceLocator;
-    protected GameInfo gameInfo;
-    protected Image background;
-    protected final float TABLES_PADDING_PIXELS = 10;
+public class CockpitActor extends TableActor implements Updateable{
+
     protected CockpitRenderable renderable;
-    private long timestamp = 0;
 
     /**
      * When adding values to the table, store the created cells
@@ -51,14 +47,14 @@ public class CockpitActor extends Table implements Updateable{
         Table infoTable = new Table(getSkin());
 
         initSubTable(infoTable);
-        addLabelCell(infoTable, renderable.ENGINE_EFFICIENCY_LABEL);
-        energyEfficiencyValueCell = addValueCell(infoTable, renderable.getEngineEfficiencyValue());
+        addTextCell(infoTable, renderable.ENGINE_EFFICIENCY_LABEL);
+        energyEfficiencyValueCell = addTextCell(infoTable, renderable.getEngineEfficiencyValue());
         infoTable.row();
-        addLabelCell(infoTable, renderable.REMAINING_ENERGY_LABEL);
-        remainingEnergyValueCell = addValueCell(infoTable, renderable.getRemainingEnergyValue());
+        addTextCell(infoTable, renderable.REMAINING_ENERGY_LABEL);
+        remainingEnergyValueCell = addTextCell(infoTable, renderable.getRemainingEnergyValue());
         infoTable.row();
-        addLabelCell(infoTable, renderable.DESTINATION_DISTANCE_LABEL);
-        remainingDestinationValueCell = addValueCell(infoTable, renderable.getDestinationDistanceValue());
+        addTextCell(infoTable, renderable.DESTINATION_DISTANCE_LABEL);
+        remainingDestinationValueCell = addTextCell(infoTable, renderable.getDestinationDistanceValue());
         infoTable.debug();
         add(infoTable).bottom().uniform();
     }
@@ -69,8 +65,8 @@ public class CockpitActor extends Table implements Updateable{
 
         middleTable.add(navigationBtn).width(navigationBtn.getWidth()).height(navigationBtn.getHeight()).colspan(2).center();
         middleTable.row();
-        addLabelCell(middleTable, renderable.POSITION_LABEL);
-        positionValueCell = addValueCell(middleTable, renderable.getPositionValue());
+        addTextCell(middleTable, renderable.POSITION_LABEL);
+        positionValueCell = addTextCell(middleTable, renderable.getPositionValue());
         add(middleTable).uniform().bottom();
     }
 
@@ -78,8 +74,8 @@ public class CockpitActor extends Table implements Updateable{
         Table actionsTable = new Table(getSkin());
         initSubTable(actionsTable);
 
-        addLabelCell(actionsTable, renderable.DAYS_LEFT_LABEL).top().expand().left();
-        daysLeftCell = addValueCell(actionsTable, renderable.getDaysLeftValue()).top().expand().left();
+        addTextCell(actionsTable, renderable.DAYS_LEFT_LABEL).top().expand().left();
+        daysLeftCell = addTextCell(actionsTable, renderable.getDaysLeftValue()).top().expand().left();
 
         actionsTable.row();
         actionsTable.add(vesselButton).bottom().width(vesselButton.getWidth()).height(vesselButton.getHeight());
@@ -90,20 +86,6 @@ public class CockpitActor extends Table implements Updateable{
         actionsTable.row();
         //actionsTable.debug();
         add(actionsTable).expand().fillY();
-    }
-
-    protected void initSubTable(Table subTable) {
-        subTable.defaults().pad(gameInfo.pixelsWithDensity(TABLES_PADDING_PIXELS));
-    }
-
-    public Cell addLabelCell(Table table, String labelTxt) {
-        Label label = new Label(labelTxt, getSkin());
-        return table.add(label).left().uniform();
-    }
-
-    public Cell addValueCell(Table table, String value) {
-        Label label = new Label(value, getSkin());
-        return table.add(label).left().uniform();
     }
 
     @Override

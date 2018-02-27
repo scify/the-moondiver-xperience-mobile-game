@@ -1,23 +1,13 @@
 package org.scify.moonwalker.app.ui.actors;
-
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.scify.engine.Renderable;
-import org.scify.moonwalker.app.helpers.GameInfo;
-import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.renderables.SpaceshipControllerRenderable;
 
-public class SpaceshipControllerActor extends Table implements Updateable {
+public class SpaceshipControllerActor extends TableActor implements Updateable {
 
-    protected ResourceLocator resourceLocator;
-    protected GameInfo gameInfo;
-    protected Image background;
-    protected final float TABLES_PADDING_PIXELS = 10;
+
     protected final float VALUES_PADDING_PIXELS = 80;
     protected SpaceshipControllerRenderable renderable;
-    private long timestamp;
     protected Button calculatorButton;
     protected Button travelButton;
     protected Button chargeButton;
@@ -35,8 +25,7 @@ public class SpaceshipControllerActor extends Table implements Updateable {
 
     public SpaceshipControllerActor(Skin skin, SpaceshipControllerRenderable renderable) {
         super(skin);
-        gameInfo = GameInfo.getInstance();
-        resourceLocator = new ResourceLocator();
+
         this.renderable = renderable;
         timestamp = this.renderable.getRenderableLastUpdated();
         setWidth(renderable.getWidth());
@@ -103,28 +92,6 @@ public class SpaceshipControllerActor extends Table implements Updateable {
         return infoAndActionsTable;
     }
 
-    public Cell addTextCell(Table table, String labelTxt) {
-        Label label = new Label(labelTxt, getSkin());
-        return table.add(label).left().uniform();
-    }
-
-    public Cell addImageCell(Table table, Texture texture) {
-        Image img = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
-        return table.add(img).left().uniform();
-    }
-
-    public Texture imgUrlToTexture(String imgPath) {
-        return new Texture(resourceLocator.getFilePath(imgPath));
-    }
-
-    protected void initSubTable(Table subTable) {
-        subTable.defaults().pad(gameInfo.pixelsWithDensity(TABLES_PADDING_PIXELS));
-    }
-
-    protected Cell addButtonCell(Table table, Button button) {
-        return table.add(button).bottom().width(gameInfo.pixelsWithDensity(button.getWidth())).height(gameInfo.pixelsWithDensity(button.getHeight()));
-    }
-
     @Override
     public void update(Renderable renderable) {
         if(this.renderable.getRenderableLastUpdated() > timestamp) {
@@ -137,13 +104,6 @@ public class SpaceshipControllerActor extends Table implements Updateable {
             setCellValue(remainingEnergyValueCell, this.renderable.getRemainingEnergy());
             setCellValue(destinationDistanceValueCell, this.renderable.getDestinationDistance());
         }
-    }
-
-
-    public void addBackground(String imgPath) {
-        background = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath(imgPath)))));
-        background.setSize(getWidth(), getHeight());
-        addActor(background);
     }
 
     public void setCalculatorButton(Button calculatorButton) {
