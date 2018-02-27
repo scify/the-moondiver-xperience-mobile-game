@@ -7,9 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import org.scify.engine.Renderable;
 import org.scify.engine.UserInputHandler;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
-import org.scify.moonwalker.app.ui.actors.AvatarSelectionActor;
+import org.scify.moonwalker.app.ui.actors.Updateable;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
-import org.scify.moonwalker.app.ui.renderables.AvatarSelectionRenderable;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -63,11 +62,10 @@ public class RenderableManager {
     }
 
     protected void update(Renderable renderable, Actor actor) {
-        switch (renderable.getType()) {
-            case "avatar_selection":
-                AvatarSelectionRenderable avatarSelectionRenderable = (AvatarSelectionRenderable) renderable;
-                AvatarSelectionActor avatarSelectionActor = (AvatarSelectionActor) actor;
-                avatarSelectionActor.setRenderable(avatarSelectionRenderable);
+        // if the Actor implements the Updatable interface, pass the renderable as argument
+        // for it to be updated
+        if(actor instanceof Updateable) {
+            ((Updateable) actor).update(renderable);
         }
     }
 

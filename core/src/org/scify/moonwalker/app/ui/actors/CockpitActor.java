@@ -5,11 +5,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
+import org.scify.engine.Renderable;
 import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 
-public class CockpitActor extends Table {
+public class CockpitActor extends Table implements Updateable{
     protected ResourceLocator resourceLocator;
     protected GameInfo gameInfo;
     protected Image background;
@@ -105,17 +106,18 @@ public class CockpitActor extends Table {
         return table.add(label).left().uniform();
     }
 
-    public void setRenderable(CockpitRenderable renderable) {
+    @Override
+    public void update(Renderable renderable) {
         if(this.renderable.getRenderableLastUpdated() != timestamp){
         System.out.println("setting renderable: " + renderable.getRenderableLastUpdated() + " over: " + this.renderable.getRenderableLastUpdated());
         //if(renderable.getRenderableLastUpdated() > this.renderable.getRenderableLastUpdated()) {
-            this.renderable = renderable;
-            this.timestamp = renderable.getRenderableLastUpdated();
-            setEnergyEfficiency(renderable.getEngineEfficiencyValue());
-            setRemainingEnergy(renderable.getRemainingEnergyValue());
-            setRemainingDestination(renderable.getDestinationDistanceValue());
-            setPosition(renderable.getPositionValue());
-            setDaysLeft(renderable.getDaysLeftValue());
+            this.renderable = (CockpitRenderable) renderable;
+            this.timestamp = this.renderable.getRenderableLastUpdated();
+            setEnergyEfficiency(this.renderable.getEngineEfficiencyValue());
+            setRemainingEnergy(this.renderable.getRemainingEnergyValue());
+            setRemainingDestination(this.renderable.getDestinationDistanceValue());
+            setPosition(this.renderable.getPositionValue());
+            setDaysLeft(this.renderable.getDaysLeftValue());
         }
     }
 
