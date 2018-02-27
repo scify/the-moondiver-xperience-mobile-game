@@ -33,25 +33,23 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
      */
     private GameEvent currentGameEvent;
 
-    private long lLastUpdate = -1L;
-    private Image worldImg;
-    private MoonWalkerGameState currentGameState;
-    private AudioEngine audioEngine;
-    private CameraController cameraController;
-    private GameInfo gameInfo;
-    private World world;
+    protected long lLastUpdate = -1L;
+    protected Image worldImg;
+    protected MoonWalkerGameState currentGameState;
+    protected AudioEngine audioEngine;
+    protected CameraController cameraController;
+    protected GameInfo gameInfo;
+    protected World world;
     protected RenderableManager renderableManager;
-    private ThemeController themeController;
-    private UserInputHandlerImpl userInputHandler;
-    private Label fpsLabel;
-    private SpriteBatch batch;
-    private Stage stage;
-    private Viewport gameViewport;
-    private ResourceLocator resourceLocator;
-    private static final String TAG = MoonWalkerRenderingEngine.class.getName();
-    private List<Actor> additionalActors;
-
-    private boolean bDisposalOngoing;
+    protected ThemeController themeController;
+    protected UserInputHandlerImpl userInputHandler;
+    protected Label fpsLabel;
+    protected SpriteBatch batch;
+    protected Stage stage;
+    protected Viewport gameViewport;
+    protected ResourceLocator resourceLocator;
+    protected List<Actor> additionalActors;
+    protected boolean bDisposalOngoing;
 
     public MoonWalkerRenderingEngine(UserInputHandler userInputHandler, SpriteBatch batch, Stage stage) {
         this.resourceLocator = new ResourceLocator();
