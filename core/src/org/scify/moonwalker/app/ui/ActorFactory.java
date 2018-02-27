@@ -9,15 +9,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import org.scify.moonwalker.app.ui.actors.ActionButton;
+import org.scify.moonwalker.app.ui.actors.*;
 import org.scify.engine.Renderable;
-import org.scify.moonwalker.app.ui.actors.AvatarSelectionActor;
-import org.scify.moonwalker.app.ui.actors.ButtonList;
-import org.scify.moonwalker.app.ui.actors.CockpitActor;
 import org.scify.moonwalker.app.ui.actors.calculator.CalculatorComponent;
 import org.scify.moonwalker.app.ui.renderables.AvatarSelectionRenderable;
 import org.scify.moonwalker.app.ui.renderables.ButtonsListRenderable;
 import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
+import org.scify.moonwalker.app.ui.renderables.SpaceshipControllerRenderable;
 
 public class ActorFactory extends ComponentFactory{
 
@@ -68,6 +66,9 @@ public class ActorFactory extends ComponentFactory{
             case "calculator":
                 toReturn = new CalculatorComponent(skin);
                 break;
+            case "spaceship_controller":
+                toReturn = createSpaceshipControllerActor((SpaceshipControllerRenderable) renderable);
+                break;
             default:
                 throw new UnsupportedRenderableTypeException("renderable with type " + renderable.getType() + " is unsupported.");
         }
@@ -79,6 +80,14 @@ public class ActorFactory extends ComponentFactory{
         Image img = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath(imgFileRelevantPath)))));
         img.setSize(renderable.getWidth(), renderable.getHeight());
         return img;
+    }
+
+    protected Button createButton(ActionButton button) {
+        if(button.getType().equals("image_button"))
+            return createImageButton(button);
+        else if (button.getType().equals("text_button"))
+            return createTextButton(button);
+        return null;
     }
 
     protected TextButton createTextButton(ActionButton actionButton) {
@@ -111,20 +120,20 @@ public class ActorFactory extends ComponentFactory{
 
     private Actor createCockpitActor(final CockpitRenderable renderable) {
         CockpitActor actor = new CockpitActor(skin, renderable);
-        Button navigationBtn = createImageButton(renderable.getNavigationButton());
+        Button navigationBtn = createButton(renderable.getNavigationButton());
         addButtonListener(navigationBtn, renderable.getNavigationButton());
         actor.setPosition(renderable.getxPos(), renderable.getyPos());
         actor.addNavigationSubTable(navigationBtn);
-        actor.addDaysAndActionsTable(createImageButton(renderable.getVesselButton()),
-                createImageButton(renderable.getMapButton()), createImageButton(renderable.getContactButton()));
+        actor.addDaysAndActionsTable(createButton(renderable.getVesselButton()),
+                createButton(renderable.getMapButton()), createButton(renderable.getContactButton()));
         return actor;
     }
 
     private Actor createAvatarSelectionActor(final AvatarSelectionRenderable renderable) {
         AvatarSelectionActor actor = new AvatarSelectionActor(skin);
-        Button boyBtn = createImageButton(renderable.getBoySelection());
-        Button girlBtn = createImageButton(renderable.getGirlSelection());
-        Button selectionBtn = createTextButton(renderable.getSelectBtn());
+        Button boyBtn = createButton(renderable.getBoySelection());
+        Button girlBtn = createButton(renderable.getGirlSelection());
+        Button selectionBtn = createButton(renderable.getSelectBtn());
 
         actor.addButton(boyBtn);
         actor.addButton(selectionBtn);
@@ -138,8 +147,16 @@ public class ActorFactory extends ComponentFactory{
         for(final ActionButton button : buttons.getButtonList()) {
             list.addButton(createResourceForType(button));
         }
-
         return list;
+    }
+
+    protected Actor createSpaceshipControllerActor(final SpaceshipControllerRenderable renderable) {
+        SpaceshipControllerActor spaceshipControllerActor = new SpaceshipControllerActor(skin, renderable);
+        spaceshipControllerActor.setCalculatorButton(createButton(renderable.getCalculatorButton()));
+        spaceshipControllerActor.setTravelButton(createButton(renderable.getTravelButton()));
+        spaceshipControllerActor.setChargeButton(createButton(renderable.getChargeButton()));
+        spaceshipControllerActor.init();
+        return spaceshipControllerActor;
     }
 
     private void addButtonListener(Button button, final ActionButton actionButton) {
