@@ -129,7 +129,6 @@ public class ActorFactory extends ComponentFactory{
         actor.addButton(boyBtn);
         actor.addButton(selectionBtn);
         actor.addButton(girlBtn);
-        actor.setRenderable(renderable);
         return actor;
     }
 
