@@ -108,9 +108,8 @@ public class CockpitActor extends Table implements Updateable{
 
     @Override
     public void update(Renderable renderable) {
-        if(this.renderable.getRenderableLastUpdated() != timestamp){
+        if(this.renderable.getRenderableLastUpdated() > timestamp){
         System.out.println("setting renderable: " + renderable.getRenderableLastUpdated() + " over: " + this.renderable.getRenderableLastUpdated());
-        //if(renderable.getRenderableLastUpdated() > this.renderable.getRenderableLastUpdated()) {
             this.renderable = (CockpitRenderable) renderable;
             this.timestamp = this.renderable.getRenderableLastUpdated();
             setEnergyEfficiency(this.renderable.getEngineEfficiencyValue());
@@ -122,23 +121,23 @@ public class CockpitActor extends Table implements Updateable{
     }
 
 
-    public void setEnergyEfficiency(String newValue) {
+    protected void setEnergyEfficiency(String newValue) {
         updateLabelCell(energyEfficiencyValueCell, newValue);
     }
 
-    public void setRemainingEnergy(String newValue) {
+    protected void setRemainingEnergy(String newValue) {
         updateLabelCell(remainingEnergyValueCell, newValue);
     }
 
-    public void setRemainingDestination(String newValue) {
+    protected void setRemainingDestination(String newValue) {
         updateLabelCell(remainingDestinationValueCell, newValue);
     }
 
-    public void setPosition(String newValue) {
+    protected void setPosition(String newValue) {
         updateLabelCell(positionValueCell, newValue);
     }
 
-    public void setDaysLeft(String newValue) {
+    protected void setDaysLeft(String newValue) {
         updateLabelCell(daysLeftCell, newValue);
     }
 
