@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 
-public class TableActor extends Table {
+public abstract class TableActor extends Table {
 
     protected ResourceLocator resourceLocator;
     protected GameInfo gameInfo;
