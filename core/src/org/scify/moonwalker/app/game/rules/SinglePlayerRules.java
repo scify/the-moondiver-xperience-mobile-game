@@ -35,14 +35,16 @@ public abstract class SinglePlayerRules extends MoonWalkerRules {
      * and set the avatar according to the game event's value (boy or girl).
      */
     protected void addPlayerAvatar(GameState gsCurrent) {
-        GameEvent avatarSelectionEvent = initialGameState.getGameEventsWithType("AVATAR_SELECTED");
-        if(avatarSelectionEvent != null) {
-            String avatarIdentifier = (String) avatarSelectionEvent.parameters;
-            createPlayerAvatar(avatarIdentifier, gsCurrent);
-            // transfer the avatar selection to current game state also
-            // to be used by other episodes
-            // TODO Ask ggianna
-            gsCurrent.addGameEvent(new GameEvent("AVATAR_SELECTED", avatarIdentifier));
+        if(initialGameState != null) {
+            GameEvent avatarSelectionEvent = initialGameState.getGameEventsWithType("AVATAR_SELECTED");
+            if (avatarSelectionEvent != null) {
+                String avatarIdentifier = (String) avatarSelectionEvent.parameters;
+                createPlayerAvatar(avatarIdentifier, gsCurrent);
+                // transfer the avatar selection to current game state also
+                // to be used by other episodes
+                // TODO Ask ggianna
+                gsCurrent.addGameEvent(new GameEvent("AVATAR_SELECTED", avatarIdentifier));
+            }
         }
     }
 
