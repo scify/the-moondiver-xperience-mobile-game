@@ -88,11 +88,11 @@ public class CockpitActor extends TableActor implements Updateable{
         daysLeftCell = addTextCell(actionsTable, renderable.getDaysLeftValue()).top().expand().left();
 
         actionsTable.row();
-        actionsTable.add(vesselButton).bottom().width(vesselButton.getWidth()).height(vesselButton.getHeight());
+        actionsTable.add(vesselButton).bottom().width(vesselButton.getWidth()).height(vesselButton.getHeight()).colspan(2);
         actionsTable.row();
-        actionsTable.add(mapButton).bottom().width(mapButton.getWidth()).height(mapButton.getHeight());
+        actionsTable.add(mapButton).bottom().width(mapButton.getWidth()).height(mapButton.getHeight()).colspan(2);
         actionsTable.row();
-        actionsTable.add(contactButton).bottom().width(contactButton.getWidth()).height(contactButton.getHeight());
+        actionsTable.add(contactButton).bottom().width(contactButton.getWidth()).height(contactButton.getHeight()).colspan(2);
         actionsTable.row();
         actionsTable.debug();
         return actionsTable;
