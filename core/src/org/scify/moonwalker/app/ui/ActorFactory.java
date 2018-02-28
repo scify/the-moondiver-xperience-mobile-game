@@ -155,6 +155,7 @@ public class ActorFactory extends ComponentFactory{
         spaceshipControllerActor.setCalculatorButton(createButton(renderable.getCalculatorButton()));
         spaceshipControllerActor.setTravelButton(createButton(renderable.getTravelButton()));
         spaceshipControllerActor.setChargeButton(createButton(renderable.getChargeButton()));
+        spaceshipControllerActor.setEscapeButton(createButton(renderable.getEscapeButton()));
         spaceshipControllerActor.init();
         return spaceshipControllerActor;
     }
