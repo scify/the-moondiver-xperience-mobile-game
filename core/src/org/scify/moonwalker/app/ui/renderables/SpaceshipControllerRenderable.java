@@ -33,18 +33,18 @@ public class SpaceshipControllerRenderable extends Renderable{
     public SpaceshipControllerRenderable(float xPos, float yPos, float width, float height, String id) {
         super(xPos, yPos, width, height, "spaceship_controller", id);
         calculatorButton = new ActionButton("image_button", "calculator_button");
-        calculatorButton.setHeight(100);
+        calculatorButton.setHeight(40);
         //TODO update
         calculatorButton.setUserAction(new UserAction(UserActionCode.FINISH_EPISODE));
         calculatorButton.setImgPath("img/button.png");
         travelButton = new ActionButton("image_button", "travel_button");
-        travelButton.setHeight(100);
+        travelButton.setHeight(40);
         travelButton.setUserAction(new UserAction(UserActionCode.FINISH_EPISODE));
         travelButton.setImgPath("img/button.png");
         chargeButton = new ActionButton("image_button", "charge_button");
         chargeButton.setUserAction(new UserAction(UserActionCode.FINISH_EPISODE));
         chargeButton.setImgPath("img/button.png");
-        chargeButton.setHeight(100);
+        chargeButton.setHeight(40);
     }
 
     public ActionButton getCalculatorButton() {
@@ -129,5 +129,13 @@ public class SpaceshipControllerRenderable extends Renderable{
 
     public void setCurrentMoonPhaseImgPath(String currentMoonPhaseImgPath) {
         this.currentMoonPhaseImgPath = currentMoonPhaseImgPath;
+    }
+
+    public ActionButton getEscapeButton() {
+        return escapeButton;
+    }
+
+    public void setEscapeButton(ActionButton escapeButton) {
+        this.escapeButton = escapeButton;
     }
 }

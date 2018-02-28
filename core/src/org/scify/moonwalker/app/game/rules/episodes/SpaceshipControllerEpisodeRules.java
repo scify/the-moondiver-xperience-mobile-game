@@ -26,9 +26,10 @@ public class SpaceshipControllerEpisodeRules extends BaseEpisodeRules{
         spaceshipControllerRenderable.setCurrentMoonPhaseImgPath("img/moon.png");
         spaceshipControllerRenderable.setNextMoonPhaseImgPath1("img/moon.png");
         spaceshipControllerRenderable.setNextMoonPhaseImgPath2("img/moon.png");
-        currentState.addRenderable(spaceshipControllerRenderable);
+
         ActionButton escape = createEscapeButton();
         escape.setUserAction(new UserAction(UserActionCode.BACK));
-        currentState.addRenderable(escape);
+        spaceshipControllerRenderable.setEscapeButton(escape);
+        currentState.addRenderable(spaceshipControllerRenderable);
     }
 }
