@@ -82,6 +82,7 @@ public class RenderableManager {
         // if actor does not have a stage, it means that
         // it is the first time that is added to the stage.
         if(aToDraw.getStage() == null) {
+            System.out.println("new actor with name: " + renderable.getId());
             aToDraw.setName(renderable.getId());
             stage.addActor(aToDraw);
         }
