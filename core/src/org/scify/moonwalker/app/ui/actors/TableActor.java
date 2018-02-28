@@ -12,7 +12,7 @@ public abstract class TableActor extends Table {
     protected ResourceLocator resourceLocator;
     protected GameInfo gameInfo;
     protected Image background;
-    protected final float TABLES_PADDING_PIXELS = 10;
+    protected final float TABLES_PADDING_PIXELS = 7;
     protected long timestamp;
 
     public TableActor(Skin skin) {
@@ -23,12 +23,12 @@ public abstract class TableActor extends Table {
 
     public Cell addTextCell(Table table, String labelTxt) {
         Label label = new Label(labelTxt, getSkin());
-        return table.add(label).left().uniform();
+        return table.add(label).left().expandX();
     }
 
     public Cell addImageCell(Table table, Texture texture) {
         Image img = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
-        return table.add(img).left().uniform();
+        return table.add(img).left().expandX();
     }
 
     public Texture imgUrlToTexture(String imgPath) {
@@ -40,7 +40,7 @@ public abstract class TableActor extends Table {
     }
 
     protected Cell addButtonCell(Table table, Button button) {
-        return table.add(button).bottom().width(gameInfo.pixelsWithDensity(button.getWidth())).height(gameInfo.pixelsWithDensity(button.getHeight()));
+        return table.add(button).bottom().center().width(gameInfo.pixelsWithDensity(button.getWidth())).height(gameInfo.pixelsWithDensity(button.getHeight()));
     }
 
     public void addBackground(String imgPath) {

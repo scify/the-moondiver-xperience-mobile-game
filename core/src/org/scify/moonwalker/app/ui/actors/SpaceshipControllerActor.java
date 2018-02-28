@@ -5,12 +5,11 @@ import org.scify.moonwalker.app.ui.renderables.SpaceshipControllerRenderable;
 
 public class SpaceshipControllerActor extends TableActor implements Updateable {
 
-
-    protected final float VALUES_PADDING_PIXELS = 80;
     protected SpaceshipControllerRenderable renderable;
     protected Button calculatorButton;
     protected Button travelButton;
     protected Button chargeButton;
+    protected Button escapeButton;
 
     /**
      * When adding values to the table, store the created cells
@@ -35,8 +34,9 @@ public class SpaceshipControllerActor extends TableActor implements Updateable {
     }
 
     public void init() {
-        add(createMoonPhasesTable()).top().left();
-        add(createInfoAndActionsTable()).bottom().right();
+        add(createMoonPhasesTable()).top().left().expand().width(getWidth() / 2f).height(getHeight());
+        add(createInfoAndActionsTable()).bottom().right().expand().width(getWidth() / 2f).height(getHeight());
+        System.out.println(getHeight() +", " + getWidth());
     }
 
     protected Table createMoonPhasesTable() {
@@ -61,16 +61,18 @@ public class SpaceshipControllerActor extends TableActor implements Updateable {
     }
 
     protected Cell addMoonPhaseImgCell(Table table, String moonPhaseImgPath) {
-        return addImageCell(table, imgUrlToTexture(moonPhaseImgPath)).padLeft(gameInfo.pixelsWithDensity(VALUES_PADDING_PIXELS)).padRight(gameInfo.pixelsWithDensity(VALUES_PADDING_PIXELS));
+        return addImageCell(table, imgUrlToTexture(moonPhaseImgPath));
     }
 
     protected Cell addMoonPhaseTextCell(Table table, String value) {
-        return addTextCell(table, value).padLeft(gameInfo.pixelsWithDensity(VALUES_PADDING_PIXELS)).padRight(gameInfo.pixelsWithDensity(VALUES_PADDING_PIXELS));
+        return addTextCell(table, value);
     }
 
     protected Table createInfoAndActionsTable() {
         Table infoAndActionsTable = new Table(getSkin());
         initSubTable(infoAndActionsTable);
+        infoAndActionsTable.add(escapeButton).colspan(2).right();
+        infoAndActionsTable.row();
         addTextCell(infoAndActionsTable, renderable.MOTOR_EFFICIENCY_LABEL);
         motorEfficiencyValueCell = addTextCell(infoAndActionsTable, String.valueOf(renderable.getMotorEfficiency()));
         infoAndActionsTable.row();
@@ -116,6 +118,10 @@ public class SpaceshipControllerActor extends TableActor implements Updateable {
 
     public void setChargeButton(Button chargeButton) {
         this.chargeButton = chargeButton;
+    }
+
+    public void setEscapeButton(Button escapeButton) {
+        this.escapeButton = escapeButton;
     }
 
     protected void setCellValue(Cell cell, int newValue) {
