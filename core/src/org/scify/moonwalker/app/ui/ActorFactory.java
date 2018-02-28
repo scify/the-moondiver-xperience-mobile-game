@@ -12,10 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.scify.moonwalker.app.ui.actors.*;
 import org.scify.engine.Renderable;
 import org.scify.moonwalker.app.ui.actors.calculator.CalculatorComponent;
-import org.scify.moonwalker.app.ui.renderables.AvatarSelectionRenderable;
-import org.scify.moonwalker.app.ui.renderables.ButtonsListRenderable;
-import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
-import org.scify.moonwalker.app.ui.renderables.SpaceshipControllerRenderable;
+import org.scify.moonwalker.app.ui.renderables.*;
 
 public class ActorFactory extends ComponentFactory{
 
@@ -68,6 +65,8 @@ public class ActorFactory extends ComponentFactory{
                 break;
             case "spaceship_controller":
                 toReturn = createSpaceshipControllerActor((SpaceshipControllerRenderable) renderable);
+            case "map_location":
+                toReturn = createMapLocationActor((MapLocationRenderable) renderable);
                 break;
             default:
                 throw new UnsupportedRenderableTypeException("renderable with type " + renderable.getType() + " is unsupported.");
@@ -160,6 +159,11 @@ public class ActorFactory extends ComponentFactory{
         spaceshipControllerActor.setEscapeButton(createButton(renderable.getEscapeButton()));
         spaceshipControllerActor.addSubTables();
         return spaceshipControllerActor;
+    }
+
+    private Actor createMapLocationActor(MapLocationRenderable renderable) {
+        MapLocationActor mapLocationActor = new MapLocationActor(skin, renderable, createButton(renderable.getButton()));
+        return mapLocationActor;
     }
 
     private void addButtonListener(Button button, final ActionButton actionButton) {
