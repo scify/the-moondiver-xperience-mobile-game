@@ -34,14 +34,16 @@ public class SpaceshipControllerRenderable extends Renderable{
         super(xPos, yPos, width, height, "spaceship_controller", id);
         calculatorButton = new ActionButton("image_button", "calculator_button");
         calculatorButton.setHeight(40);
-        //TODO update
-        calculatorButton.setUserAction(new UserAction(UserActionCode.FINISH_EPISODE));
+
+        calculatorButton.setUserAction(new UserAction(UserActionCode.CALCULATOR));
         calculatorButton.setImgPath("img/button.png");
         travelButton = new ActionButton("image_button", "travel_button");
         travelButton.setHeight(40);
+        //TODO update
         travelButton.setUserAction(new UserAction(UserActionCode.FINISH_EPISODE));
         travelButton.setImgPath("img/button.png");
         chargeButton = new ActionButton("image_button", "charge_button");
+        //TODO update
         chargeButton.setUserAction(new UserAction(UserActionCode.FINISH_EPISODE));
         chargeButton.setImgPath("img/button.png");
         chargeButton.setHeight(40);
