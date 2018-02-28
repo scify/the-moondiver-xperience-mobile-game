@@ -146,4 +146,8 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
         button.setHeight(gameInfo.pixelsWithDensity(heightPixels));
         return button;
     }
+
+    protected void addEpisodeBackgroundImage(GameState currentState, String imgPath) {
+        currentState.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", imgPath));
+    }
 }

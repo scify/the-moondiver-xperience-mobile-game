@@ -123,9 +123,11 @@ public class ActorFactory extends ComponentFactory{
         Button navigationBtn = createButton(renderable.getNavigationButton());
         addButtonListener(navigationBtn, renderable.getNavigationButton());
         actor.setPosition(renderable.getxPos(), renderable.getyPos());
-        actor.addNavigationSubTable(navigationBtn);
-        actor.addDaysAndActionsTable(createButton(renderable.getVesselButton()),
-                createButton(renderable.getMapButton()), createButton(renderable.getContactButton()));
+        actor.setNavigationButton(navigationBtn);
+        actor.setMapButton(createButton(renderable.getMapButton()));
+        actor.setVesselButton(createButton(renderable.getVesselButton()));
+        actor.setContactButton(createButton(renderable.getContactButton()));
+        actor.addSubTables();
         return actor;
     }
 
@@ -156,7 +158,7 @@ public class ActorFactory extends ComponentFactory{
         spaceshipControllerActor.setTravelButton(createButton(renderable.getTravelButton()));
         spaceshipControllerActor.setChargeButton(createButton(renderable.getChargeButton()));
         spaceshipControllerActor.setEscapeButton(createButton(renderable.getEscapeButton()));
-        spaceshipControllerActor.init();
+        spaceshipControllerActor.addSubTables();
         return spaceshipControllerActor;
     }
 

@@ -37,7 +37,7 @@ public class CalculatorEpisodeRules extends BaseEpisodeRules {
     public void gameStartedEvents(GameState gsCurrent) {
         if (!gsCurrent.eventsQueueContainsEventOwnedBy("EPISODE_STARTED", this)) {
             gsCurrent.addGameEvent(new GameEvent("EPISODE_STARTED", null, this));
-            gsCurrent.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/calculator_episode/bg.jpg"));
+            addEpisodeBackgroundImage(gsCurrent, "img/calculator_episode/bg.jpg");
             Renderable calculator = new Renderable("calculator", "calculator_button");
             gsCurrent.addRenderable(calculator);
             ActionButton escape = createEscapeButton();

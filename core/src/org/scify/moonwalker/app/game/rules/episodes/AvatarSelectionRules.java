@@ -37,9 +37,9 @@ public class AvatarSelectionRules extends BaseEpisodeRules {
 
     @Override
     public void gameStartedEvents(GameState currentState) {
-        if (!currentState.eventsQueueContainsEventOwnedBy("EPISODE_STARTED", this)) {
-            currentState.addGameEvent(new GameEvent("EPISODE_STARTED", null, this));
-            currentState.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/Andromeda-galaxy.jpg"));
+        if (!gameHasStarted(currentState)) {
+            addGameStartedEvents(currentState);
+            addEpisodeBackgroundImage(currentState, "img/Andromeda-galaxy.jpg");
             createAvatarSelectionRenderable(currentState);
 
             ActionButton escape = createEscapeButton();

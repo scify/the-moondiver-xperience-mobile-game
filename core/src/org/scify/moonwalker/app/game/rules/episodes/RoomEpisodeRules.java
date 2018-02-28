@@ -19,7 +19,7 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
     public void gameStartedEvents(GameState gsCurrent) {
         if (!gsCurrent.eventsQueueContainsEventOwnedBy("EPISODE_STARTED", this)) {
             gsCurrent.addGameEvent(new GameEvent("EPISODE_STARTED", null, this));
-            gsCurrent.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/episode_0/bg.jpg"));
+            addEpisodeBackgroundImage(gsCurrent, "img/episode_0/bg.jpg");
             float labelWidth = gameInfo.getScreenWidth() * 0.2f;
             float labelHeight = gameInfo.getScreenHeight()* 0.5f;
             messagesLabel = new Renderable(gameInfo.getScreenWidth() - labelWidth - 20, gameInfo.getScreenHeight() / 2f - 100, labelWidth, labelHeight, "label", "messagesLabel");
@@ -95,14 +95,14 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
 
     @Override
     public boolean isGameFinished(GameState gsCurrent) {
-        return gsCurrent.eventsQueueContainsEvent("CALCULATOR_STARTED");
+        return gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED");
     }
 
     @Override
     public EpisodeEndState determineEndState(GameState gsCurrent) {
         EpisodeEndStateCode code = EpisodeEndStateCode.EPISODE_FINISHED_FAILURE;
-        if(gsCurrent.eventsQueueContainsEvent("CALCULATOR_STARTED"))
-            code = EpisodeEndStateCode.CALCULATOR_STARTED;
+        if(gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED"))
+            code = EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS;
         return new EpisodeEndState(code, cleanUpState(gsCurrent));
     }
 

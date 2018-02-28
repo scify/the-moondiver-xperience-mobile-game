@@ -61,4 +61,12 @@ public class BaseEpisodeRules extends SinglePlayerRules {
         currentState.removeAllGameEventsOwnedBy(this);
         return currentState;
     }
+
+    protected boolean gameHasStarted(GameState currentState) {
+        return currentState.eventsQueueContainsEventOwnedBy("EPISODE_STARTED", this);
+    }
+
+    protected void addGameStartedEvents(GameState currentState) {
+        currentState.addGameEvent(new GameEvent("EPISODE_STARTED", null, this));
+    }
 }

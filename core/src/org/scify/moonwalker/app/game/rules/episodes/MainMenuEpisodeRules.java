@@ -36,9 +36,9 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
 
     @Override
     public void gameStartedEvents(GameState gsCurrent) {
-        if (!gsCurrent.eventsQueueContainsEventOwnedBy("EPISODE_STARTED", this)) {
-            gsCurrent.addGameEvent(new GameEvent("EPISODE_STARTED", null, this));
-            gsCurrent.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/Andromeda-galaxy.jpg"));
+        if (!gameHasStarted(gsCurrent)) {
+            addGameStartedEvents(gsCurrent);
+            addEpisodeBackgroundImage(gsCurrent, "img/Andromeda-galaxy.jpg");
             createAndAddMainMenuButtons(gsCurrent);
         }
     }
