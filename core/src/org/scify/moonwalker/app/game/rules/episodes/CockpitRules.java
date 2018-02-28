@@ -11,9 +11,11 @@ public class CockpitRules extends BaseEpisodeRules {
     @Override
     protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
         switch (userAction.getActionCode()) {
-            // TODO update
             case FINISH_EPISODE:
                 cockpit.setRemainingEnergyValue("1124564");
+                break;
+            default:
+                super.handleUserAction(gsCurrent, userAction);
                 break;
         }
     }
@@ -44,7 +46,7 @@ public class CockpitRules extends BaseEpisodeRules {
         cockpit.setImgPath("img/cockpit.png");
         ActionButton navigationBtn = createCockpitButton("navigation_button", "img/navigation.png", UserActionCode.FINISH_EPISODE);
         ActionButton vesselBtn = createCockpitButton("vessel_button", "img/rocket.png", UserActionCode.FINISH_EPISODE);
-        ActionButton mapBtn = createCockpitButton("map_button", "img/map.png", UserActionCode.FINISH_EPISODE);
+        ActionButton mapBtn = createCockpitButton("map_button", "img/map.png", UserActionCode.MAP);
         ActionButton contactBtn = createCockpitButton("contact_button", "img/contact.png", UserActionCode.FINISH_EPISODE);
 
         cockpit.setNavigationButton(navigationBtn);
