@@ -19,5 +19,6 @@ public enum UserActionCode {
     BOY_SELECTED,
     GIRL_SELECTED,
     BACK,
-    CALCULATOR
+    CALCULATOR,
+    MAP
 }
