@@ -16,6 +16,10 @@ public class MoonWalkerScenario extends Scenario {
         addEpisodeAfter(secondEpisode, roomEpisode);
         Episode forestEpisode = new ForestEpisode();
         addEpisodeAfter(roomEpisode, forestEpisode);
+        Episode cockpitEpisode = new CockpitEpisode();
+        addEpisodeAfter(forestEpisode, cockpitEpisode);
+        Episode spaceshipControllerEpisode = new SpaceshipControllerEpisode();
+        addEpisodeAfter(forestEpisode, spaceshipControllerEpisode);
     }
 
     @Override
@@ -24,11 +28,18 @@ public class MoonWalkerScenario extends Scenario {
         switch (endStateCode) {
             case CALCULATOR_STARTED:
                 // add as first candidate for execution the calculator episode
-                Episode calcEpisode = new CalculatorEpisode(state.getGameState());
-                addEpisodeAsFirstCandidateEpisodeAfterCurrentEpisode(calcEpisode);
                 try {
                     // Use new episode LIKE the current one (i.e. NOT the same)
-                    addAfterXEpisodeLikeY(calcEpisode, currentEpisode);
+                    addIntermediateEpisode(new CalculatorEpisode(state.getGameState()));
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+                break;
+            case MAP_EPISODE_STARTED:
+                try {
+                    // Use new episode LIKE the current one (i.e. NOT the same)
+                    addIntermediateEpisode(new MapEpisode(state.getGameState()));
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                     return null;
@@ -45,5 +56,11 @@ public class MoonWalkerScenario extends Scenario {
                 break;
         }
         return super.getNextEpisode(state);
+    }
+
+    protected void addIntermediateEpisode(Episode intermediate) throws CloneNotSupportedException {
+        addEpisodeAsFirstCandidateEpisodeAfterCurrentEpisode(intermediate);
+        // Use new episode LIKE the current one (i.e. NOT the same)
+        addAfterXEpisodeLikeY(intermediate, currentEpisode);
     }
 }
