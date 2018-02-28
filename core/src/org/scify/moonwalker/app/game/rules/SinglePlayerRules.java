@@ -28,4 +28,29 @@ public abstract class SinglePlayerRules extends MoonWalkerRules {
         return false;
     }
 
+    /**
+     * Avatar information is stored in the game state that was delivered
+     * by the Avatar selection episode.
+     * So we need to search for the appropriate {@link GameEvent} in the previous GameState
+     * and set the avatar according to the game event's value (boy or girl).
+     */
+    protected void addPlayerAvatar(GameState gsCurrent) {
+        GameEvent avatarSelectionEvent = initialGameState.getGameEventsWithType("AVATAR_SELECTED");
+        if(avatarSelectionEvent != null) {
+            String avatarIdentifier = (String) avatarSelectionEvent.parameters;
+            createPlayerAvatar(avatarIdentifier, gsCurrent);
+            // transfer the avatar selection to current game state also
+            // to be used by other episodes
+            // TODO Ask ggianna
+            gsCurrent.addGameEvent(new GameEvent("AVATAR_SELECTED", avatarIdentifier));
+        }
+    }
+
+    private void createPlayerAvatar(String avatarIdentifier, GameState gsCurrent) {
+        pPlayer = new Player(gameInfo.getScreenWidth() / 2f,
+                gameInfo.getScreenHeight() / 2f - 80,  gameInfo.getScreenWidth() * 0.3f, gameInfo.getScreenWidth() * 0.3f,
+                avatarIdentifier, "player");
+        gsCurrent.addRenderable(pPlayer);
+    }
+
 }

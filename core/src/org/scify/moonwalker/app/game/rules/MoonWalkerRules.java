@@ -104,7 +104,7 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
 
     protected void createConversation(GameState gsCurrent, String conversationResFile) {
         conversationRules = new ConversationRules(conversationResFile);
-        gsCurrent.addGameEvent(new GameEvent("CONVERSATION_STARTED"));
+        gsCurrent.addGameEvent(new GameEvent("CONVERSATION_STARTED", null, this));
     }
 
     @Override
@@ -149,5 +149,21 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
 
     protected void addEpisodeBackgroundImage(GameState currentState, String imgPath) {
         currentState.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", imgPath));
+    }
+
+    protected boolean isConversationOngoing(GameState gsCurrent) {
+        return isConversationStarted(gsCurrent) && ! isConversationFinished(gsCurrent);
+    }
+
+    protected boolean conversationHasNotStartedAndNotFinished(GameState gsCurrent) {
+        return !isConversationStarted(gsCurrent) && !isConversationFinished(gsCurrent);
+    }
+
+    protected boolean isConversationStarted(GameState gsCurrent) {
+        return gsCurrent.eventsQueueContainsEventOwnedBy("CONVERSATION_STARTED", this);
+    }
+
+    protected boolean isConversationFinished(GameState gsCurrent) {
+        return gsCurrent.eventsQueueContainsEventOwnedBy("CONVERSATION_FINISHED", this);
     }
 }

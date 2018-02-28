@@ -29,27 +29,6 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
         }
     }
 
-    /**
-     * Avatar information is stored in the game state that was delivered
-     * by the Avatar selection episode.
-     * So we need to search for the appropriate {@link GameEvent} in the previous GameState
-     * and set the avatar according to the game event's value (boy or girl).
-     */
-    private void addPlayerAvatar(GameState gsCurrent) {
-        GameEvent avatarSelectionEvent = initialGameState.getGameEventsWithType("AVATAR_SELECTED");
-        if(avatarSelectionEvent != null) {
-            String avatarIdentifier = (String) avatarSelectionEvent.parameters;
-            createPlayerAvatar(avatarIdentifier, gsCurrent);
-        }
-    }
-
-    private void createPlayerAvatar(String avatarIdentifier, GameState gsCurrent) {
-        pPlayer = new Player(gameInfo.getScreenWidth() / 2f,
-        gameInfo.getScreenHeight() / 2f - 80,  gameInfo.getScreenWidth() * 0.3f, gameInfo.getScreenWidth() * 0.3f,
-                avatarIdentifier, "player");
-        gsCurrent.addRenderable(pPlayer);
-    }
-
 
     protected GameState handleConversationRules(GameState gsCurrent, UserAction userAction) {
         // begin conversation with Yoda
@@ -68,22 +47,6 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
 
         handleTriggerEventForCurrentConversationLine(gsCurrent);
         return gsCurrent;
-    }
-
-    protected boolean isConversationOngoing(GameState gsCurrent) {
-        return isConversationStarted(gsCurrent) && ! isConversationFinished(gsCurrent);
-    }
-
-    protected boolean conversationHasNotStartedAndNotFinished(GameState gsCurrent) {
-        return !isConversationStarted(gsCurrent) && !isConversationFinished(gsCurrent);
-    }
-
-    protected boolean isConversationStarted(GameState gsCurrent) {
-        return gsCurrent.eventsQueueContainsEvent("CONVERSATION_STARTED");
-    }
-
-    protected boolean isConversationFinished(GameState gsCurrent) {
-        return gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED");
     }
 
     protected void handleTriggerEventForCurrentConversationLine(GameState gameState) {
