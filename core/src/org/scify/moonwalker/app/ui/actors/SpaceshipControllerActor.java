@@ -33,10 +33,9 @@ public class SpaceshipControllerActor extends TableActor implements Updateable {
         debug();
     }
 
-    public void init() {
+    public void addSubTables() {
         add(createMoonPhasesTable()).top().left().expand().width(getWidth() / 2f).height(getHeight());
         add(createInfoAndActionsTable()).bottom().right().expand().width(getWidth() / 2f).height(getHeight());
-        System.out.println(getHeight() +", " + getWidth());
     }
 
     protected Table createMoonPhasesTable() {
