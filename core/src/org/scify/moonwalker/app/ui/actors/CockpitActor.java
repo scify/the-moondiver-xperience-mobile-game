@@ -14,6 +14,11 @@ public class CockpitActor extends TableActor implements Updateable{
 
     protected CockpitRenderable renderable;
 
+    protected Button navigationButton;
+    protected Button vesselButton;
+    protected Button mapButton;
+    protected Button contactButton;
+
     /**
      * When adding values to the table, store the created cells
      * into Cell instances, so that they can easily be updated later.
@@ -33,7 +38,6 @@ public class CockpitActor extends TableActor implements Updateable{
         setWidth(renderable.getWidth());
         setHeight(renderable.getHeight());
         addBackground(renderable.getImgPath());
-        addInfoSubTable();
         debug();
     }
 
@@ -43,7 +47,13 @@ public class CockpitActor extends TableActor implements Updateable{
         addActor(background);
     }
 
-    public void addInfoSubTable() {
+    public void addSubTables() {
+        add(createInfoSubTable()).bottom().width(getWidth() / 2f);
+        add(createNavigationSubTable()).bottom().width(getWidth() / 4f);
+        add(createDaysAndActionsTable()).bottom().height(getHeight()).width(getWidth() / 4f);
+    }
+
+    public Table createInfoSubTable() {
         Table infoTable = new Table(getSkin());
 
         initSubTable(infoTable);
@@ -56,21 +66,21 @@ public class CockpitActor extends TableActor implements Updateable{
         addTextCell(infoTable, renderable.DESTINATION_DISTANCE_LABEL);
         remainingDestinationValueCell = addTextCell(infoTable, renderable.getDestinationDistanceValue());
         infoTable.debug();
-        add(infoTable).bottom().uniform();
+        return infoTable;
     }
 
-    public void addNavigationSubTable(Button navigationBtn) {
+    public Table createNavigationSubTable() {
         Table middleTable = new Table(getSkin());
         initSubTable(middleTable);
 
-        middleTable.add(navigationBtn).width(navigationBtn.getWidth()).height(navigationBtn.getHeight()).colspan(2).center();
+        middleTable.add(navigationButton).width(navigationButton.getWidth()).height(navigationButton.getHeight()).colspan(2).center();
         middleTable.row();
         addTextCell(middleTable, renderable.POSITION_LABEL);
         positionValueCell = addTextCell(middleTable, renderable.getPositionValue());
-        add(middleTable).uniform().bottom();
+        return middleTable;
     }
 
-    public void addDaysAndActionsTable(Button vesselButton, Button mapBtn, Button contactBtn) {
+    public Table createDaysAndActionsTable() {
         Table actionsTable = new Table(getSkin());
         initSubTable(actionsTable);
 
@@ -80,12 +90,12 @@ public class CockpitActor extends TableActor implements Updateable{
         actionsTable.row();
         actionsTable.add(vesselButton).bottom().width(vesselButton.getWidth()).height(vesselButton.getHeight());
         actionsTable.row();
-        actionsTable.add(mapBtn).bottom().width(mapBtn.getWidth()).height(mapBtn.getHeight());
+        actionsTable.add(mapButton).bottom().width(mapButton.getWidth()).height(mapButton.getHeight());
         actionsTable.row();
-        actionsTable.add(contactBtn).bottom().width(contactBtn.getWidth()).height(contactBtn.getHeight());
+        actionsTable.add(contactButton).bottom().width(contactButton.getWidth()).height(contactButton.getHeight());
         actionsTable.row();
-        //actionsTable.debug();
-        add(actionsTable).expand().fillY();
+        actionsTable.debug();
+        return actionsTable;
     }
 
     @Override
@@ -126,5 +136,21 @@ public class CockpitActor extends TableActor implements Updateable{
     protected void updateLabelCell(Cell cell, String newValue) {
         Label label = (Label) cell.getActor();
         label.setText(newValue);
+    }
+
+    public void setNavigationButton(Button navigationButton) {
+        this.navigationButton = navigationButton;
+    }
+
+    public void setVesselButton(Button vesselButton) {
+        this.vesselButton = vesselButton;
+    }
+
+    public void setMapButton(Button mapButton) {
+        this.mapButton = mapButton;
+    }
+
+    public void setContactButton(Button contactButton) {
+        this.contactButton = contactButton;
     }
 }
