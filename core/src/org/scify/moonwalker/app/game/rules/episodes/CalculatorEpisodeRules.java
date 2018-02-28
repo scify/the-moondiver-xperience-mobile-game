@@ -47,24 +47,9 @@ public class CalculatorEpisodeRules extends BaseEpisodeRules {
         }
     }
 
-    /**
-     * This method is similar to isGameFinished
-     * However, it is used internally by the getNextState method
-     * in order to decide whether the ending Game Events should be added
-     * to the current game state
-     * @param gsCurrent the current {@link GameState}
-     * @return
-     */
-    protected boolean episodeFinished(GameState gsCurrent) {
-        // this episode is considered finished either
-        // when the player has reached the top border of the screen
-        // or the base rules class decides that should finish
-        return gsCurrent.eventsQueueContainsEvent("PREVIOUS_EPISODE") || super.isGameFinished(gsCurrent);
-    }
-
     @Override
     public boolean isGameFinished(GameState gsCurrent) {
-        return episodeFinished(gsCurrent);
+        return gsCurrent.eventsQueueContainsEvent("PREVIOUS_EPISODE");
     }
 
     @Override
@@ -82,10 +67,5 @@ public class CalculatorEpisodeRules extends BaseEpisodeRules {
     public void gameEndedEvents(GameState gsCurrent) {
         gsCurrent.addGameEvent(new GameEvent("PREVIOUS_EPISODE"));
         gsCurrent.addGameEvent(new GameEvent("EPISODE_FINISHED"));
-    }
-
-    @Override
-    public void gameResumedEvents(GameState currentState) {
-
     }
 }
