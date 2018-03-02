@@ -6,7 +6,7 @@ import org.scify.moonwalker.app.ui.renderables.SpaceshipChargerRenderable;
 
 public class SpaceshipChargerEpisodeRules extends BaseEpisodeRules{
 
-    SpaceshipChargerRenderable spaceshipControllerRenderable;
+    SpaceshipChargerRenderable spaceshipChargerRenderable;
 
     public SpaceshipChargerEpisodeRules(GameState gsCurrent) {
         this.initialGameState = gsCurrent;
@@ -28,15 +28,15 @@ public class SpaceshipChargerEpisodeRules extends BaseEpisodeRules{
     }
 
     protected void initializeAndAddRocketController(GameState currentState) {
-        spaceshipControllerRenderable = new SpaceshipChargerRenderable(0,0,gameInfo.getScreenWidth(), gameInfo.getScreenHeight(), "spaceship_controller");
-        spaceshipControllerRenderable.setImgPath("img/rocket_controller.png");
-        spaceshipControllerRenderable.setCurrentMoonPhaseImgPath("img/moon.png");
-        spaceshipControllerRenderable.setNextMoonPhaseImgPath1("img/moon.png");
-        spaceshipControllerRenderable.setNextMoonPhaseImgPath2("img/moon.png");
+        spaceshipChargerRenderable = new SpaceshipChargerRenderable(0,0,gameInfo.getScreenWidth(), gameInfo.getScreenHeight(), "spaceship_controller");
+        spaceshipChargerRenderable.setImgPath("img/rocket_controller.png");
+        spaceshipChargerRenderable.setCurrentMoonPhaseImgPath("img/moon.png");
+        spaceshipChargerRenderable.setNextMoonPhaseImgPath1("img/moon.png");
+        spaceshipChargerRenderable.setNextMoonPhaseImgPath2("img/moon.png");
 
         ActionButton escape = createEscapeButton();
         escape.setUserAction(new UserAction(UserActionCode.BACK));
-        spaceshipControllerRenderable.setEscapeButton(escape);
-        currentState.addRenderable(spaceshipControllerRenderable);
+        spaceshipChargerRenderable.setEscapeButton(escape);
+        currentState.addRenderable(spaceshipChargerRenderable);
     }
 }
