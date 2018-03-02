@@ -14,10 +14,11 @@ public class CockpitActor extends TableActor implements Updateable{
 
     protected CockpitRenderable renderable;
 
-    protected Button navigationButton;
-    protected Button vesselButton;
+    protected Button launchButton;
+    protected Button spaceshipPartsButton;
     protected Button mapButton;
     protected Button contactButton;
+    protected Button chargeEpisodeButton;
 
     /**
      * When adding values to the table, store the created cells
@@ -73,7 +74,9 @@ public class CockpitActor extends TableActor implements Updateable{
         Table middleTable = new Table(getSkin());
         initSubTable(middleTable);
 
-        middleTable.add(navigationButton).width(navigationButton.getWidth()).height(navigationButton.getHeight()).colspan(2).center();
+        middleTable.add(launchButton).width(launchButton.getWidth()).height(launchButton.getHeight()).colspan(2).center();
+        middleTable.row();
+        middleTable.add(chargeEpisodeButton).width(chargeEpisodeButton.getWidth()).height(chargeEpisodeButton.getHeight()).colspan(2).center();
         middleTable.row();
         addTextCell(middleTable, renderable.POSITION_LABEL);
         positionValueCell = addTextCell(middleTable, renderable.getPositionValue());
@@ -88,7 +91,7 @@ public class CockpitActor extends TableActor implements Updateable{
         daysLeftCell = addTextCell(actionsTable, renderable.getDaysLeftValue()).top().expand().left();
 
         actionsTable.row();
-        actionsTable.add(vesselButton).bottom().width(vesselButton.getWidth()).height(vesselButton.getHeight()).colspan(2);
+        actionsTable.add(spaceshipPartsButton).bottom().width(spaceshipPartsButton.getWidth()).height(spaceshipPartsButton.getHeight()).colspan(2);
         actionsTable.row();
         actionsTable.add(mapButton).bottom().width(mapButton.getWidth()).height(mapButton.getHeight()).colspan(2);
         actionsTable.row();
@@ -138,12 +141,12 @@ public class CockpitActor extends TableActor implements Updateable{
         label.setText(newValue);
     }
 
-    public void setNavigationButton(Button navigationButton) {
-        this.navigationButton = navigationButton;
+    public void setLaunchButton(Button launchButton) {
+        this.launchButton = launchButton;
     }
 
-    public void setVesselButton(Button vesselButton) {
-        this.vesselButton = vesselButton;
+    public void setSpaceshipPartsButton(Button spaceshipPartsButton) {
+        this.spaceshipPartsButton = spaceshipPartsButton;
     }
 
     public void setMapButton(Button mapButton) {
@@ -152,5 +155,9 @@ public class CockpitActor extends TableActor implements Updateable{
 
     public void setContactButton(Button contactButton) {
         this.contactButton = contactButton;
+    }
+
+    public void setChargeEpisodeButton(Button chargeEpisodeButton) {
+        this.chargeEpisodeButton = chargeEpisodeButton;
     }
 }
