@@ -159,7 +159,6 @@ public class ActorFactory extends ComponentFactory{
     protected Actor createSpaceshipControllerActor(final SpaceshipChargerRenderable renderable) {
         SpaceshipChargerActor spaceshipControllerActor = new SpaceshipChargerActor(skin, renderable);
         spaceshipControllerActor.setCalculatorButton(createButton(renderable.getCalculatorButton()));
-        spaceshipControllerActor.setTravelButton(createButton(renderable.getTravelButton()));
         spaceshipControllerActor.setChargeButton(createButton(renderable.getChargeButton()));
         spaceshipControllerActor.setEscapeButton(createButton(renderable.getEscapeButton()));
         spaceshipControllerActor.addSubTables();

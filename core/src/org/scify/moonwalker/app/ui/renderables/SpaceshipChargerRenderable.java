@@ -15,7 +15,6 @@ public class SpaceshipChargerRenderable extends Renderable{
     public final String DESTINATION_DISTANCE_LABEL= "Απόσταση προορισμού";
 
     protected ActionButton calculatorButton;
-    protected ActionButton travelButton;
     protected ActionButton chargeButton;
     protected ActionButton escapeButton;
 
@@ -37,11 +36,7 @@ public class SpaceshipChargerRenderable extends Renderable{
 
         calculatorButton.setUserAction(new UserAction(UserActionCode.CALCULATOR_EPISODE));
         calculatorButton.setImgPath("img/button.png");
-        travelButton = new ActionButton("image_button", "travel_button");
-        travelButton.setHeight(40);
-        //TODO update
-        travelButton.setUserAction(new UserAction(UserActionCode.FINISH_EPISODE));
-        travelButton.setImgPath("img/button.png");
+
         chargeButton = new ActionButton("image_button", "charge_button");
         //TODO update
         chargeButton.setUserAction(new UserAction(UserActionCode.FINISH_EPISODE));
@@ -51,10 +46,6 @@ public class SpaceshipChargerRenderable extends Renderable{
 
     public ActionButton getCalculatorButton() {
         return calculatorButton;
-    }
-
-    public ActionButton getTravelButton() {
-        return travelButton;
     }
 
     public ActionButton getChargeButton() {

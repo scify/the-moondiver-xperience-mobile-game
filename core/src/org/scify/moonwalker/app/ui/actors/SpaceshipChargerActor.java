@@ -7,7 +7,6 @@ public class SpaceshipChargerActor extends TableActor implements Updateable {
 
     protected SpaceshipChargerRenderable renderable;
     protected Button calculatorButton;
-    protected Button travelButton;
     protected Button chargeButton;
     protected Button escapeButton;
 
@@ -84,8 +83,6 @@ public class SpaceshipChargerActor extends TableActor implements Updateable {
 
         addButtonCell(infoAndActionsTable, calculatorButton).colspan(2);
         infoAndActionsTable.row();
-        addButtonCell(infoAndActionsTable, travelButton).colspan(2);
-        infoAndActionsTable.row();
         addButtonCell(infoAndActionsTable, chargeButton).colspan(2);
         infoAndActionsTable.row();
 
@@ -109,10 +106,6 @@ public class SpaceshipChargerActor extends TableActor implements Updateable {
 
     public void setCalculatorButton(Button calculatorButton) {
         this.calculatorButton = calculatorButton;
-    }
-
-    public void setTravelButton(Button travelButton) {
-        this.travelButton = travelButton;
     }
 
     public void setChargeButton(Button chargeButton) {
