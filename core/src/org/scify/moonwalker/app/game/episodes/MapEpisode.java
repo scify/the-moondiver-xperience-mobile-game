@@ -8,8 +8,4 @@ public class MapEpisode extends EpisodeWithEndState {
     public MapEpisode(GameState gsCurrent) {
         super(new MapEpisodeRules(gsCurrent));
     }
-
-    public MapEpisode() {
-        super(new MapEpisodeRules());
-    }
 }
