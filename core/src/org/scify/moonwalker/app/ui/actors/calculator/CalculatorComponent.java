@@ -113,7 +113,6 @@ public class CalculatorComponent extends Table {
 
     protected void parseButtonClick(String buttonValue) {
         // if operator clicked, parse the string to number and append to main Label
-        System.out.println(buttonValue);
         if(buttonValue.equals("result")) {
             mainLabel.setText(calculator.parseResult());
             calculator.resetCalculator();
