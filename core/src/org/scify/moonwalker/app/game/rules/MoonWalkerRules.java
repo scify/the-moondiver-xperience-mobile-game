@@ -127,7 +127,6 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
 
     protected ActionButton createEscapeButton() {
         float btnRealSize = gameInfo.pixelsWithDensity(ESCAPE_BUTTON_SIZE_PIXELS);
-        System.out.println(btnRealSize);
         ActionButton escape = new ActionButton(0, gameInfo.getScreenHeight() - btnRealSize, btnRealSize, btnRealSize, "image_button", "escape_button");
         escape.setPadding(gameInfo.pixelsWithDensity(ESCAPE_BUTTON_PADDING_PIXELS));
         escape.setImgPath("img/close.png");
