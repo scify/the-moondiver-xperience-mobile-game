@@ -75,4 +75,9 @@ public abstract class Episode<T> implements Callable<T>, Cloneable {
     public void setInitialEpisodeState(EpisodeState initialEpisodeState) {
         gameEngine.setInitialGameState(initialEpisodeState.getGameState());
     }
+
+    @Override
+    public String toString() {
+        return getClass().getCanonicalName();
+    }
 }
