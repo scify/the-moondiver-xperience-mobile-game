@@ -2,7 +2,14 @@ package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
 
-public class TemporaryEpisodeRules extends BaseEpisodeRules {
+/**
+ * This is a self-contained episode (meaning that it usually gets invoked
+ * by another episode).
+ * The constructor takes a {@link GameState} instance as an argument
+ * in order to set the already defined (in another episode) game state
+ * to the rules.
+ */
+public abstract class TemporaryEpisodeRules extends BaseEpisodeRules {
 
     public TemporaryEpisodeRules(GameState gsCurrent) {
         this.initialGameState = gsCurrent;
@@ -13,6 +20,9 @@ public class TemporaryEpisodeRules extends BaseEpisodeRules {
         switch (userAction.getActionCode()) {
             case BACK:
                 gameEndedEvents(gsCurrent);
+                break;
+            default:
+                super.handleUserAction(gsCurrent, userAction);
                 break;
         }
     }
