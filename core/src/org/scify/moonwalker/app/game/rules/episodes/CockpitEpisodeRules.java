@@ -4,7 +4,7 @@ import org.scify.engine.*;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 
-public class CockpitRules extends BaseEpisodeRules {
+public class CockpitEpisodeRules extends BaseEpisodeRules {
 
     CockpitRenderable cockpit;
 

@@ -18,8 +18,6 @@ public class MoonWalkerScenario extends Scenario {
         addEpisodeAfter(roomEpisode, forestEpisode);
         Episode cockpitEpisode = new CockpitEpisode();
         addEpisodeAfter(forestEpisode, cockpitEpisode);
-        Episode spaceshipControllerEpisode = new SpaceshipControllerEpisode();
-        addEpisodeAfter(forestEpisode, spaceshipControllerEpisode);
     }
 
     @Override
@@ -40,6 +38,15 @@ public class MoonWalkerScenario extends Scenario {
                 try {
                     // Use new episode LIKE the current one (i.e. NOT the same)
                     addIntermediateEpisode(new MapEpisode(state.getGameState()));
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+                break;
+            case SPACESHIP_CHARGER_EPISODE_STARTED:
+                try {
+                    // Use new episode LIKE the current one (i.e. NOT the same)
+                    addIntermediateEpisode(new SpaceshipChargerEpisode(state.getGameState()));
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                     return null;

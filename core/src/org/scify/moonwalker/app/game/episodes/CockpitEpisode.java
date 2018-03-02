@@ -1,10 +1,10 @@
 package org.scify.moonwalker.app.game.episodes;
 
 import org.scify.engine.EpisodeWithEndState;
-import org.scify.moonwalker.app.game.rules.episodes.CockpitRules;
+import org.scify.moonwalker.app.game.rules.episodes.CockpitEpisodeRules;
 
 public class CockpitEpisode extends EpisodeWithEndState {
     public CockpitEpisode() {
-        super(new CockpitRules());
+        super(new CockpitEpisodeRules());
     }
 }

@@ -4,15 +4,12 @@ import org.scify.engine.*;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 import org.scify.moonwalker.app.ui.renderables.SpaceshipChargerRenderable;
 
-public class SpaceshipChargerEpisodeRules extends BaseEpisodeRules{
+public class SpaceshipChargerEpisodeRules extends TemporaryEpisodeRules {
 
     SpaceshipChargerRenderable spaceshipChargerRenderable;
 
     public SpaceshipChargerEpisodeRules(GameState gsCurrent) {
-        this.initialGameState = gsCurrent;
-    }
-
-    public SpaceshipChargerEpisodeRules() {
+        super(gsCurrent);
     }
 
     @Override
@@ -28,7 +25,7 @@ public class SpaceshipChargerEpisodeRules extends BaseEpisodeRules{
     }
 
     protected void initializeAndAddRocketController(GameState currentState) {
-        spaceshipChargerRenderable = new SpaceshipChargerRenderable(0,0,gameInfo.getScreenWidth(), gameInfo.getScreenHeight(), "spaceship_controller");
+        spaceshipChargerRenderable = new SpaceshipChargerRenderable(0,0,gameInfo.getScreenWidth(), gameInfo.getScreenHeight(), "spaceship_charger");
         spaceshipChargerRenderable.setImgPath("img/rocket_controller.png");
         spaceshipChargerRenderable.setCurrentMoonPhaseImgPath("img/moon.png");
         spaceshipChargerRenderable.setNextMoonPhaseImgPath1("img/moon.png");

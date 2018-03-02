@@ -19,13 +19,13 @@ public class BaseEpisodeRules extends SinglePlayerRules {
 
     protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
         switch (userAction.getActionCode()) {
-            case CALCULATOR:
+            case CALCULATOR_EPISODE:
                 gameEndedEvents(gsCurrent);
                 gsCurrent.addGameEvent(new GameEvent("CALCULATOR_STARTED", null, this));
                 break;
-            case MAP:
+            case MAP_EPISODE:
                 gameEndedEvents(gsCurrent);
-                gsCurrent.addGameEvent(new GameEvent("MAP_STARTED", null, this));
+                gsCurrent.addGameEvent(new GameEvent("MAP_EPISODE_STARTED", null, this));
                 break;
             case FINISH_EPISODE:
                 gameEndedEvents(gameState);
@@ -46,8 +46,6 @@ public class BaseEpisodeRules extends SinglePlayerRules {
     public EpisodeEndState determineEndState(GameState currentState) {
         if(currentState.eventsQueueContainsEventOwnedBy("CALCULATOR_STARTED", this))
             return new EpisodeEndState(EpisodeEndStateCode.CALCULATOR_STARTED, cleanUpState(currentState));
-        else if(currentState.eventsQueueContainsEventOwnedBy("MAP_STARTED", this))
-            return new EpisodeEndState(EpisodeEndStateCode.MAP_EPISODE_STARTED, cleanUpState(currentState));
         return null;
     }
 
