@@ -96,7 +96,6 @@ public abstract class Scenario {
         // get the next episode from the list of candidate episodes and set it
         // as the current episode
         setCurrentEpisode(getNextEpisode(endState));
-        removeLastEpisode();
         playCurrentEpisode();
     }
 
@@ -219,14 +218,19 @@ public abstract class Scenario {
         System.out.println("\n\n");
     }
 
-    protected void addTemporaryEpisode(Episode temp) throws CloneNotSupportedException {
-        // Create duplicate of current episode, keeping all the possible next ones.
-        Episode clone = cloneCurrentEpisodeWithCandidateLinks();
-        // Make the temporary episode point to the duplicate as its successor.
-        initListForEpisode(temp);
-        episodeListMap.get(temp).add(clone);
-        // Assign the temporary episode as the first/only possible next episode to the current one
-        addEpisodeAsFirstCandidateEpisodeAfterCurrentEpisode(temp);
+    protected void addTemporaryEpisode(Episode temp) {
+        try {
+            // Create duplicate of current episode, keeping all the possible next ones.
+            Episode clone = cloneCurrentEpisodeWithCandidateLinks();
+            // Make the temporary episode point to the duplicate as its successor.
+            initListForEpisode(temp);
+            episodeListMap.get(temp).add(clone);
+            // Assign the temporary episode as the first/only possible next episode to the current one
+            addEpisodeAsFirstCandidateEpisodeAfterCurrentEpisode(temp);
+            removeLastEpisode();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
