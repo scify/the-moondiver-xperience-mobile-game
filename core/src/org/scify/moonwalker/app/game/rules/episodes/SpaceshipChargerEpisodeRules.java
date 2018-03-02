@@ -36,4 +36,14 @@ public class SpaceshipChargerEpisodeRules extends TemporaryEpisodeRules {
         spaceshipChargerRenderable.setEscapeButton(escape);
         currentState.addRenderable(spaceshipChargerRenderable);
     }
+
+    @Override
+    public EpisodeEndState determineEndState(GameState currentState) {
+        if(currentState.eventsQueueContainsEventOwnedBy("CALCULATOR_STARTED", this))
+            return new EpisodeEndState(EpisodeEndStateCode.CALCULATOR_STARTED, cleanUpState(currentState));
+        EpisodeEndState endStateFromParent = super.determineEndState(currentState);
+        if(endStateFromParent != null)
+            return endStateFromParent;
+        return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE, cleanUpState(currentState));
+    }
 }
