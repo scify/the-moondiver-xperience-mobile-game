@@ -64,7 +64,7 @@ public abstract class Scenario {
      * Initializes and clears the episode order structure.
      */
     protected void initEpisodesList() {
-        episodeListMap = new HashMap<>();
+        episodeListMap = new LinkedHashMap<>();
     }
 
     /**
@@ -84,17 +84,19 @@ public abstract class Scenario {
      * Executes the actual loop of playing episodes, until there is no candidate episode left.
      */
     protected void playCurrentEpisode() {
+        printEpisodeList();
         if(currentEpisode == null) {
             System.out.println("Scenario ended");
             return;
         }
-        System.out.println("Ready to start episode: " + currentEpisode.getName());
+        System.out.println("Ready to start episode: " + currentEpisode.toString());
         // The endState is a variable containing a code describing the way
         // the episode was terminated, as well as the current game state
         final EpisodeEndState endState = (EpisodeEndState) currentEpisode.play(renderingEngine, userInputHandler);
         // get the next episode from the list of candidate episodes and set it
         // as the current episode
         setCurrentEpisode(getNextEpisode(endState));
+        removeLastEpisode();
         playCurrentEpisode();
     }
 
@@ -135,6 +137,7 @@ public abstract class Scenario {
      * @param episodeToClone The episode we want to clone.
      * @throws CloneNotSupportedException
      */
+    @Deprecated
     protected void addAfterXEpisodeLikeY(Episode episodeBefore, Episode episodeToClone) throws CloneNotSupportedException {
         // make sure that the episodeBefore has a list of candidate episodes
         initListForEpisode(episodeBefore);
@@ -180,20 +183,19 @@ public abstract class Scenario {
      * @param newCurrentEpisode The new episode.
      */
     protected void setCurrentEpisode(Episode newCurrentEpisode) {
-        lastEpisode = this.currentEpisode;
-        this.currentEpisode = newCurrentEpisode;
+        lastEpisode = currentEpisode;
+        currentEpisode = newCurrentEpisode;
+        //System.out.println("last episode is: " + lastEpisode.getClass().getName());
+        //System.out.println("current episode is: " + currentEpisode.getClass().getName());
     }
 
     /**
      * Removes the last playing episode from the list of episodes (with appropriate cleanup).
      */
-    protected void removeLastEpisodeAndCandidateEpisodes() {
-        // get last episode's first possible next episode
-        Episode firstPossibleEpisodeAfterLastEpisode = episodeListMap.get(lastEpisode).get(0);
-        // remove this episode from episode set
-        episodeListMap.remove(firstPossibleEpisodeAfterLastEpisode);
-        // remove all possible episodes from first candidate position of the previous episode
-        episodeListMap.get(lastEpisode).remove(0);
+    protected void removeLastEpisode() {
+        System.out.println("removing last episode: " + lastEpisode.getClass().getName());
+        // remove episode from scenario
+        episodeListMap.remove(lastEpisode);
     }
 
     /**
@@ -204,5 +206,46 @@ public abstract class Scenario {
     protected void addEpisodeAsFirstCandidateEpisodeAfterCurrentEpisode(Episode episode) {
         initListForEpisode(currentEpisode);
         episodeListMap.get(currentEpisode).add(0, episode);
+    }
+
+    private void printEpisodeList() {
+        System.out.println("\n\nEpisode list:");
+        for(Map.Entry<Episode, List<Episode>> episodeListSimpleEntry: episodeListMap.entrySet()) {
+            System.out.println(episodeListSimpleEntry.getKey().toString());
+            for(Episode candidateEpisode: episodeListSimpleEntry.getValue()) {
+                System.out.println("\t" + candidateEpisode.toString());
+            }
+        }
+        System.out.println("\n\n");
+    }
+
+    protected void addTemporaryEpisode(Episode temp) throws CloneNotSupportedException {
+        // Create duplicate of current episode, keeping all the possible next ones.
+        Episode clone = cloneCurrentEpisodeWithCandidateLinks();
+        // Make the temporary episode point to the duplicate as its successor.
+        initListForEpisode(temp);
+        episodeListMap.get(temp).add(clone);
+        // Assign the temporary episode as the first/only possible next episode to the current one
+        addEpisodeAsFirstCandidateEpisodeAfterCurrentEpisode(temp);
+    }
+
+    /**
+     * Clones an episode, using all the candidate next episodes for the clone as well.
+     * @return The cloned episode.
+     * @throws CloneNotSupportedException
+     */
+    protected Episode cloneCurrentEpisodeWithCandidateLinks() throws CloneNotSupportedException {
+        // make sure that the episodeBefore has a list of candidate episodes
+        initListForEpisode(currentEpisode);
+        // Clone the episode
+        Episode newEpisode = (Episode) currentEpisode.clone();
+        // initializes a list of candidate episodes after the cloned episode
+        initListForEpisode(newEpisode);
+        // Make sure that the cloned episode has the same "next episode" list as the original
+        // by getting all the candidate episodes that the original episode had
+        // and set them as candidate episodes for the cloned episode.
+        episodeListMap.get(newEpisode).addAll(episodeListMap.get(currentEpisode));
+
+        return newEpisode;
     }
 }

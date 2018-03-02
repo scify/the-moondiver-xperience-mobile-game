@@ -9,15 +9,15 @@ public class MoonWalkerScenario extends Scenario {
     public MoonWalkerScenario() {
         Episode firstEpisode = new MainMenuEpisode();
         //setFirstEpisode(new CockpitEpisode());
-        setFirstEpisode(firstEpisode);
-        Episode secondEpisode = new AvatarSelectionEpisode();
-        addEpisodeAfterCurrent(secondEpisode);
-        Episode roomEpisode = new RoomEpisode();
-        addEpisodeAfter(secondEpisode, roomEpisode);
-        Episode forestEpisode = new ForestEpisode();
-        addEpisodeAfter(roomEpisode, forestEpisode);
-        Episode cockpitEpisode = new CockpitEpisode();
-        addEpisodeAfter(forestEpisode, cockpitEpisode);
+        setFirstEpisode(new CockpitEpisode());
+//        Episode secondEpisode = new AvatarSelectionEpisode();
+//        addEpisodeAfterCurrent(secondEpisode);
+//        Episode roomEpisode = new RoomEpisode();
+//        addEpisodeAfter(secondEpisode, roomEpisode);
+//        Episode forestEpisode = new ForestEpisode();
+//        addEpisodeAfter(roomEpisode, forestEpisode);
+//        Episode cockpitEpisode = new CockpitEpisode();
+//        addEpisodeAfter(forestEpisode, cockpitEpisode);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class MoonWalkerScenario extends Scenario {
                 // add as first candidate for execution the calculator episode
                 try {
                     // Use new episode LIKE the current one (i.e. NOT the same)
-                    addIntermediateEpisode(new CalculatorEpisode(state.getGameState()));
+                    addTemporaryEpisode(new CalculatorEpisode(state.getGameState()));
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                     return null;
@@ -37,7 +37,7 @@ public class MoonWalkerScenario extends Scenario {
             case MAP_EPISODE_STARTED:
                 try {
                     // Use new episode LIKE the current one (i.e. NOT the same)
-                    addIntermediateEpisode(new MapEpisode(state.getGameState()));
+                    addTemporaryEpisode(new MapEpisode(state.getGameState()));
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                     return null;
@@ -46,28 +46,23 @@ public class MoonWalkerScenario extends Scenario {
             case SPACESHIP_CHARGER_EPISODE_STARTED:
                 try {
                     // Use new episode LIKE the current one (i.e. NOT the same)
-                    addIntermediateEpisode(new SpaceshipChargerEpisode(state.getGameState()));
+                    addTemporaryEpisode(new SpaceshipChargerEpisode(state.getGameState()));
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                     return null;
                 }
                 break;
             case TEMP_EPISODE_FINISHED:
-                removeLastEpisodeAndCandidateEpisodes();
-                return lastEpisode;
+                // we want to remove the current episode (temp episode)
+                // and return the parent episode (last episode)
+//                removeLastEpisode();
+//                return lastEpisode;
+                break;
             case PREVIOUS_EPISODE:
                 return lastEpisode;
             case APP_QUIT:
                 return  null;
-            default:
-                break;
         }
         return super.getNextEpisode(state);
-    }
-
-    protected void addIntermediateEpisode(Episode intermediate) throws CloneNotSupportedException {
-        addEpisodeAsFirstCandidateEpisodeAfterCurrentEpisode(intermediate);
-        // Use new episode LIKE the current one (i.e. NOT the same)
-        addAfterXEpisodeLikeY(intermediate, currentEpisode);
     }
 }

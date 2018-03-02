@@ -40,8 +40,8 @@ public abstract class TemporaryEpisodeRules extends BaseEpisodeRules {
 
     @Override
     public void gameEndedEvents(GameState gsCurrent) {
-        gsCurrent.addGameEvent(new GameEvent("PREVIOUS_EPISODE", null, this));
         gsCurrent.addGameEvent(new GameEvent("EPISODE_FINISHED", null, this));
+        gsCurrent.addGameEvent(new GameEvent("PREVIOUS_EPISODE", null, this));
     }
 
     @Override
