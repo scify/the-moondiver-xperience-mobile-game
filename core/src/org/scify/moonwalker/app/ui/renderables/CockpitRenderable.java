@@ -8,7 +8,7 @@ public class CockpitRenderable extends Renderable {
     public final String ENGINE_EFFICIENCY_LABEL = "Αποδοση κινητηρα";
     public final String REMAINING_ENERGY_LABEL = "Διαθεσιμη ενεργεια";
     public final String DESTINATION_DISTANCE_LABEL = "Αποσταση προορισμου";
-    public final String POSITION_LABEL = "Τοποθεσια";
+    public final String POSITION_LABEL = "Τοποθεσια:";
     public final String DAYS_LEFT_LABEL = "Days left:";
 
     protected String enginePerformanceValue = "0";
@@ -17,8 +17,9 @@ public class CockpitRenderable extends Renderable {
     protected String positionValue = "0";
     protected String daysLeftValue = "0";
 
-    protected ActionButton navigationButton;
-    protected ActionButton vesselButton;
+    protected ActionButton launchButton;
+    protected ActionButton chargeButton;
+    protected ActionButton spaceshipPartsButton;
     protected ActionButton mapButton;
     protected ActionButton contactButton;
 
@@ -62,20 +63,20 @@ public class CockpitRenderable extends Renderable {
         componentWasUpdated();
     }
 
-    public ActionButton getNavigationButton() {
-        return navigationButton;
+    public ActionButton getLaunchButton() {
+        return launchButton;
     }
 
-    public void setNavigationButton(ActionButton navigationButton) {
-        this.navigationButton = navigationButton;
+    public void setLaunchButton(ActionButton launchButton) {
+        this.launchButton = launchButton;
     }
 
-    public ActionButton getVesselButton() {
-        return vesselButton;
+    public ActionButton getSpaceshipPartsButton() {
+        return spaceshipPartsButton;
     }
 
-    public void setVesselButton(ActionButton vesselButton) {
-        this.vesselButton = vesselButton;
+    public void setSpaceshipPartsButton(ActionButton spaceshipPartsButton) {
+        this.spaceshipPartsButton = spaceshipPartsButton;
     }
 
     public ActionButton getMapButton() {
@@ -103,4 +104,11 @@ public class CockpitRenderable extends Renderable {
         componentWasUpdated();
     }
 
+    public ActionButton getChargeButton() {
+        return chargeButton;
+    }
+
+    public void setChargeButton(ActionButton chargeButton) {
+        this.chargeButton = chargeButton;
+    }
 }
