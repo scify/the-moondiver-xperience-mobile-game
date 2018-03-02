@@ -45,7 +45,7 @@ public class MapEpisodeRules extends BaseEpisodeRules {
             currentState.addRenderable(escape);
             createMapLocationRenderables();
             for(MapLocationRenderable renderable : mapLocationRenderables)
-                gameState.addRenderable(renderable);
+                currentState.addRenderable(renderable);
         }
     }
 
