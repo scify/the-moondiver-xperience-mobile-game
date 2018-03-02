@@ -1,11 +1,11 @@
 package org.scify.moonwalker.app.ui.actors;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import org.scify.engine.Renderable;
-import org.scify.moonwalker.app.ui.renderables.SpaceshipControllerRenderable;
+import org.scify.moonwalker.app.ui.renderables.SpaceshipChargerRenderable;
 
-public class SpaceshipControllerActor extends TableActor implements Updateable {
+public class SpaceshipChargerActor extends TableActor implements Updateable {
 
-    protected SpaceshipControllerRenderable renderable;
+    protected SpaceshipChargerRenderable renderable;
     protected Button calculatorButton;
     protected Button travelButton;
     protected Button chargeButton;
@@ -22,7 +22,7 @@ public class SpaceshipControllerActor extends TableActor implements Updateable {
     protected Cell remainingEnergyValueCell;
     protected Cell destinationDistanceValueCell;
 
-    public SpaceshipControllerActor(Skin skin, SpaceshipControllerRenderable renderable) {
+    public SpaceshipChargerActor(Skin skin, SpaceshipChargerRenderable renderable) {
         super(skin);
 
         this.renderable = renderable;
@@ -97,7 +97,7 @@ public class SpaceshipControllerActor extends TableActor implements Updateable {
     public void update(Renderable renderable) {
         if(this.renderable.getRenderableLastUpdated() > timestamp) {
             System.out.println("setting renderable: " + renderable.getRenderableLastUpdated() + " over: " + this.renderable.getRenderableLastUpdated());
-            this.renderable = (SpaceshipControllerRenderable) renderable;
+            this.renderable = (SpaceshipChargerRenderable) renderable;
             setCellValue(moonPhaseValueCell, this.renderable.getCurrentMoonPhase());
             setCellValue(nextNightValueCell1, this.renderable.getNextMoonPhase1());
             setCellValue(nextNightValueCell2, this.renderable.getNextMoonPhase2());
