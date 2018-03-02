@@ -63,8 +63,9 @@ public class ActorFactory extends ComponentFactory{
             case "calculator":
                 toReturn = new CalculatorComponent(skin);
                 break;
-            case "spaceship_controller":
-                toReturn = createSpaceshipControllerActor((SpaceshipControllerRenderable) renderable);
+            case "spaceship_charger":
+                toReturn = createSpaceshipControllerActor((SpaceshipChargerRenderable) renderable);
+                break;
             case "map_location":
                 toReturn = createMapLocationActor((MapLocationRenderable) renderable);
                 break;
@@ -119,12 +120,16 @@ public class ActorFactory extends ComponentFactory{
 
     private Actor createCockpitActor(final CockpitRenderable renderable) {
         CockpitActor actor = new CockpitActor(skin, renderable);
-        Button navigationBtn = createButton(renderable.getNavigationButton());
-        addButtonListener(navigationBtn, renderable.getNavigationButton());
+        Button launchBtn = createButton(renderable.getLaunchButton());
+        addButtonListener(launchBtn, renderable.getLaunchButton());
+        Button chargeEpisodeBtn = createButton(renderable.getChargeButton());
+        addButtonListener(chargeEpisodeBtn, renderable.getChargeButton());
+
         actor.setPosition(renderable.getxPos(), renderable.getyPos());
-        actor.setNavigationButton(navigationBtn);
+        actor.setLaunchButton(launchBtn);
+        actor.setChargeEpisodeButton(chargeEpisodeBtn);
         actor.setMapButton(createButton(renderable.getMapButton()));
-        actor.setVesselButton(createButton(renderable.getVesselButton()));
+        actor.setSpaceshipPartsButton(createButton(renderable.getSpaceshipPartsButton()));
         actor.setContactButton(createButton(renderable.getContactButton()));
         actor.addSubTables();
         return actor;
@@ -151,8 +156,8 @@ public class ActorFactory extends ComponentFactory{
         return list;
     }
 
-    protected Actor createSpaceshipControllerActor(final SpaceshipControllerRenderable renderable) {
-        SpaceshipControllerActor spaceshipControllerActor = new SpaceshipControllerActor(skin, renderable);
+    protected Actor createSpaceshipControllerActor(final SpaceshipChargerRenderable renderable) {
+        SpaceshipChargerActor spaceshipControllerActor = new SpaceshipChargerActor(skin, renderable);
         spaceshipControllerActor.setCalculatorButton(createButton(renderable.getCalculatorButton()));
         spaceshipControllerActor.setTravelButton(createButton(renderable.getTravelButton()));
         spaceshipControllerActor.setChargeButton(createButton(renderable.getChargeButton()));
