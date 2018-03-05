@@ -22,7 +22,6 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
     protected int worldY;
     protected Map<String, Renderable> idToRenderable;
     protected ConversationRules conversationRules;
-    protected GameState gameState;
     protected GameInfo gameInfo;
     protected MoonWalkerPhysicsRules physics;
     protected float ESCAPE_BUTTON_SIZE_PIXELS = 70;
