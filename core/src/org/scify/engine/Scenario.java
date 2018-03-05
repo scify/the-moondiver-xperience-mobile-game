@@ -84,12 +84,11 @@ public abstract class Scenario {
      * Executes the actual loop of playing episodes, until there is no candidate episode left.
      */
     protected void playCurrentEpisode() {
-        printEpisodeList();
+        //printEpisodeList();
         if(currentEpisode == null) {
             System.out.println("Scenario ended");
             return;
         }
-        System.out.println("Ready to start episode: " + currentEpisode.toString());
         // The endState is a variable containing a code describing the way
         // the episode was terminated, as well as the current game state
         final EpisodeEndState endState = (EpisodeEndState) currentEpisode.play(renderingEngine, userInputHandler);
@@ -227,7 +226,6 @@ public abstract class Scenario {
             episodeListMap.get(temp).add(clone);
             // Assign the temporary episode as the first/only possible next episode to the current one
             addEpisodeAsFirstCandidateEpisodeAfterCurrentEpisode(temp);
-            removeLastEpisode();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
