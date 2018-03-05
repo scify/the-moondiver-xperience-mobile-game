@@ -18,9 +18,9 @@ public abstract class SinglePlayerRules extends MoonWalkerRules {
     @Override
     public GameState getInitialState() {
         List<GameEvent> eventQueue = Collections.synchronizedList(new LinkedList<GameEvent>());
-        if(gameState == null)
-            gameState = new MoonWalkerGameState(eventQueue, pPlayer, physics.world);
-        return gameState;
+        if(initialGameState == null)
+            initialGameState = new MoonWalkerGameState(eventQueue, pPlayer, physics.world);
+        return initialGameState;
     }
 
     @Override
