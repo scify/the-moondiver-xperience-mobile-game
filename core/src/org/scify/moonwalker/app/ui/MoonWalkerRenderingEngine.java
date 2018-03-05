@@ -95,10 +95,9 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     }
 
     protected void createBackgroundDefaultImg() {
-        //TODO create actor
-//        worldImg = new Image(new Texture(resourceLocator.getFilePath("img/theworld.png")));
-//        worldImg.setWidth(gameInfo.getScreenWidth());
-//        worldImg.setHeight(gameInfo.getScreenHeight());
+        worldImg = new Image(new Texture(resourceLocator.getFilePath("img/theworld.png")));
+        worldImg.setWidth(gameInfo.getScreenWidth());
+        worldImg.setHeight(gameInfo.getScreenHeight());
     }
 
     @Override
@@ -166,11 +165,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             case "BACKGROUND_IMG_UI":
                 String imgPath = (String) gameEvent.parameters;
                 worldImg.setDrawable(new SpriteDrawable(new Sprite(new Texture(resourceLocator.getFilePath(imgPath)))));
-                if(worldImg.getStage() == null) {
-
-                    stage.addActor(worldImg);
-                }
-                worldImg.setZIndex(1);
                 listIterator.remove();
                 break;
             case "BORDER_UI":
@@ -260,12 +254,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     public synchronized void disposeRenderables() {
         bDisposalOngoing = true;
         renderableManager.dispose();
-//        for(Iterator<Actor> it = additionalActors.iterator(); it.hasNext(); ) {
-//            Actor entry = it.next();
-//            System.out.println("removing additional actor: " + entry.getName());
-//            entry.remove();
-//            it.remove();
-//        }
         resetEngine();
         bDisposalOngoing = false;
     }
@@ -312,13 +300,14 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
 
     protected void drawComponents(Float delta, long lNewTime) {
         if (!bDisposalOngoing) {
-            Gdx.gl.glClearColor(1, 0, 0, 1);
+            Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             //stage.setDebugAll(true);
             synchronized (batch) {
                 batch.begin();
                 fpsLabel.setText(String.valueOf(1000 / (lNewTime - lLastUpdate)));
                 fpsLabel.draw(batch, 1);
+                worldImg.draw(batch, 1);
                 drawGameState(currentGameState);
                 batch.end();
                 cameraController.update();
