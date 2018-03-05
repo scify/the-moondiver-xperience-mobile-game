@@ -56,4 +56,9 @@ public class BaseEpisodeRules extends SinglePlayerRules {
         currentState.removeAllGameEventsOwnedBy(this);
         return currentState;
     }
+
+    protected void endGameAndAddEventWithType(GameState gsCurrent, String gameEventType) {
+        episodeEndedEvents(gsCurrent);
+        gsCurrent.addGameEvent(new GameEvent(gameEventType, null, this));
+    }
 }
