@@ -3,6 +3,7 @@ package org.scify.moonwalker.app.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -258,16 +259,13 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     @Override
     public synchronized void disposeRenderables() {
         bDisposalOngoing = true;
-//        renderableManager.dispose();
+        renderableManager.dispose();
 //        for(Iterator<Actor> it = additionalActors.iterator(); it.hasNext(); ) {
 //            Actor entry = it.next();
 //            System.out.println("removing additional actor: " + entry.getName());
 //            entry.remove();
 //            it.remove();
 //        }
-
-
-        stage.clear();
         resetEngine();
         bDisposalOngoing = false;
     }
@@ -324,9 +322,9 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 drawGameState(currentGameState);
                 batch.end();
                 cameraController.update();
+                stage.act(delta);
+                stage.draw();
             }
-            stage.act(delta);
-            stage.draw();
         }
     }
 
