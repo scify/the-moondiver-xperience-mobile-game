@@ -94,9 +94,10 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     }
 
     protected void createBackgroundDefaultImg() {
-        worldImg = new Image(new Texture(resourceLocator.getFilePath("img/theworld.png")));
-        worldImg.setWidth(gameInfo.getScreenWidth());
-        worldImg.setHeight(gameInfo.getScreenHeight());
+        //TODO create actor
+//        worldImg = new Image(new Texture(resourceLocator.getFilePath("img/theworld.png")));
+//        worldImg.setWidth(gameInfo.getScreenWidth());
+//        worldImg.setHeight(gameInfo.getScreenHeight());
     }
 
     @Override
@@ -153,17 +154,22 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private void handleCurrentGameEvent(GameEvent gameEvent, ListIterator<GameEvent> listIterator) {
         String eventType = currentGameEvent.type;
         switch (eventType) {
-            case "QUESTION_UI":
-                try {
-                    handleQuestion(gameEvent);
-                } catch (UnsupportedOperationException e) {
-                    e.printStackTrace();
-                }
-                listIterator.remove();
-                break;
+//            case "QUESTION_UI":
+//                try {
+//                    handleQuestion(gameEvent);
+//                } catch (UnsupportedOperationException e) {
+//                    e.printStackTrace();
+//                }
+//                listIterator.remove();
+//                break;
             case "BACKGROUND_IMG_UI":
                 String imgPath = (String) gameEvent.parameters;
                 worldImg.setDrawable(new SpriteDrawable(new Sprite(new Texture(resourceLocator.getFilePath(imgPath)))));
+                if(worldImg.getStage() == null) {
+
+                    stage.addActor(worldImg);
+                }
+                worldImg.setZIndex(1);
                 listIterator.remove();
                 break;
             case "BORDER_UI":
@@ -232,6 +238,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 userInputHandler.addUserAction(toThrow);
             }
         });
+        component.setZIndex(2);
         additionalActors.add(component);
         stage.addActor(component);
     }
@@ -251,12 +258,16 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     @Override
     public synchronized void disposeRenderables() {
         bDisposalOngoing = true;
-        renderableManager.dispose();;
-        for(Iterator<Actor> it = additionalActors.iterator(); it.hasNext(); ) {
-            Actor entry = it.next();
-            entry.remove();
-            it.remove();
-        }
+//        renderableManager.dispose();
+//        for(Iterator<Actor> it = additionalActors.iterator(); it.hasNext(); ) {
+//            Actor entry = it.next();
+//            System.out.println("removing additional actor: " + entry.getName());
+//            entry.remove();
+//            it.remove();
+//        }
+
+
+        stage.clear();
         resetEngine();
         bDisposalOngoing = false;
     }
@@ -264,7 +275,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     @Override
     public void initialize() {
         Gdx.input.setInputProcessor(stage);
-        stage.addActor(worldImg);
     }
 
     @Override
@@ -307,8 +317,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             Gdx.gl.glClearColor(1, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             //stage.setDebugAll(true);
-            stage.act(delta);
-            stage.draw();
             synchronized (batch) {
                 batch.begin();
                 fpsLabel.setText(String.valueOf(1000 / (lNewTime - lLastUpdate)));
@@ -317,30 +325,31 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 batch.end();
                 cameraController.update();
             }
+            stage.act(delta);
+            stage.draw();
         }
     }
 
-    // TODO refactor method into separate class?
-    protected void handleQuestion(GameEvent gameEvent) {
-        Question question = (Question) gameEvent.parameters;
-        switch (question.type) {
-            case FREE_TEXT:
-                showTextInputDialog(question);
-                break;
-            default:
-                throw new UnsupportedOperationException("Question type " + question.type + " not supported");
-        }
-    }
-
-    void showTextInputDialog(Question question) {
-        TextInputDialog textInputDialog = new TextInputDialog(gameInfo.getScreenWidth() / 2f,
-                gameInfo.getScreenHeight() / 2f,
-                gameInfo.getScreenWidth() * 0.8f,
-                gameInfo.getScreenHeight() * 0.6f,
-                question.getTitle(),
-                question.getBody(),
-                themeController.getSkin());
-        textInputDialog.createForQuestion(question, stage);
-    }
+//    protected void handleQuestion(GameEvent gameEvent) {
+//        Question question = (Question) gameEvent.parameters;
+//        switch (question.type) {
+//            case FREE_TEXT:
+//                showTextInputDialog(question);
+//                break;
+//            default:
+//                throw new UnsupportedOperationException("Question type " + question.type + " not supported");
+//        }
+//    }
+//
+//    void showTextInputDialog(Question question) {
+//        TextInputDialog textInputDialog = new TextInputDialog(gameInfo.getScreenWidth() / 2f,
+//                gameInfo.getScreenHeight() / 2f,
+//                gameInfo.getScreenWidth() * 0.8f,
+//                gameInfo.getScreenHeight() * 0.6f,
+//                question.getTitle(),
+//                question.getBody(),
+//                themeController.getSkin());
+//        textInputDialog.createForQuestion(question, stage);
+//    }
 
 }
