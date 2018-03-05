@@ -16,9 +16,9 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
     }
 
     @Override
-    public void gameStartedEvents(GameState gsCurrent) {
-        if (!gsCurrent.eventsQueueContainsEventOwnedBy("EPISODE_STARTED", this)) {
-            gsCurrent.addGameEvent(new GameEvent("EPISODE_STARTED", null, this));
+    public void episodeStartedEvents(GameState gsCurrent) {
+        if (!isEpisodeStarted(gsCurrent)) {
+            super.episodeStartedEvents(gsCurrent);
             addEpisodeBackgroundImage(gsCurrent, "img/episode_0/bg.jpg");
             float labelWidth = gameInfo.getScreenWidth() * 0.2f;
             float labelHeight = gameInfo.getScreenHeight()* 0.5f;

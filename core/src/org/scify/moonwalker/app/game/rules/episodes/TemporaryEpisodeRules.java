@@ -19,7 +19,7 @@ public abstract class TemporaryEpisodeRules extends BaseEpisodeRules {
     protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
         switch (userAction.getActionCode()) {
             case BACK:
-                gameEndedEvents(gsCurrent);
+                episodeEndedEvents(gsCurrent);
                 break;
             default:
                 super.handleUserAction(gsCurrent, userAction);
@@ -39,7 +39,7 @@ public abstract class TemporaryEpisodeRules extends BaseEpisodeRules {
     }
 
     @Override
-    public void gameEndedEvents(GameState gsCurrent) {
+    public void episodeEndedEvents(GameState gsCurrent) {
         gsCurrent.addGameEvent(new GameEvent("EPISODE_FINISHED", null, this));
         gsCurrent.addGameEvent(new GameEvent("PREVIOUS_EPISODE", null, this));
     }

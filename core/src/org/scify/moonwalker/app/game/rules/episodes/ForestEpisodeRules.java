@@ -14,9 +14,9 @@ public class ForestEpisodeRules extends BaseEpisodeRules{
     }
 
     @Override
-    public void gameStartedEvents(GameState currentState) {
-        if (!gameHasStarted(currentState)) {
-            addGameStartedEvents(currentState);
+    public void episodeStartedEvents(GameState currentState) {
+        if (!isEpisodeStarted(currentState)) {
+            super.episodeStartedEvents(currentState);
             addEpisodeBackgroundImage(currentState, "img/forest.jpg");
             createAndAddRocket(currentState);
             addPlayerAvatar(currentState);

@@ -11,12 +11,13 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
     @Override
     protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
         switch (userAction.getActionCode()) {
-            case BACK:
-                gameEndedEvents(gsCurrent);
+            case MAP_EPISODE:
+                gsCurrent.addGameEvent(new GameEvent("MAP_EPISODE_STARTED", null, this));
+                episodeEndedEvents(gsCurrent);
                 break;
             case CHARGE_SPACESHIP_EPISODE:
                 gsCurrent.addGameEvent(new GameEvent("SPACESHIP_CHARGER_EPISODE_STARTED", null, this));
-                gameEndedEvents(gsCurrent);
+                episodeEndedEvents(gsCurrent);
                 break;
             default:
                 super.handleUserAction(gsCurrent, userAction);
@@ -25,9 +26,9 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
     }
 
     @Override
-    public void gameStartedEvents(GameState currentState) {
-        if (!currentState.eventsQueueContainsEvent("EPISODE_STARTED")) {
-            currentState.addGameEvent(new GameEvent("EPISODE_STARTED"));
+    public void episodeStartedEvents(GameState currentState) {
+        if (!isEpisodeStarted(currentState)) {
+            super.episodeStartedEvents(currentState);
             Renderable spaceImage = new Renderable(0,0, gameInfo.getScreenWidth(), gameInfo.getScreenHeight(), "image", "space");
             spaceImage.setImgPath("img/space1.png");
             currentState.addRenderable(spaceImage);

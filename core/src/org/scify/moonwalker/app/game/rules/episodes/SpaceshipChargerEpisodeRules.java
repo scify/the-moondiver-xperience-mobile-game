@@ -13,9 +13,22 @@ public class SpaceshipChargerEpisodeRules extends TemporaryEpisodeRules {
     }
 
     @Override
-    public void gameStartedEvents(GameState currentState) {
-        if (!currentState.eventsQueueContainsEvent("EPISODE_STARTED")) {
-            currentState.addGameEvent(new GameEvent("EPISODE_STARTED"));
+    protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
+        switch (userAction.getActionCode()) {
+            case CALCULATOR_EPISODE:
+                episodeEndedEvents(gsCurrent);
+                gsCurrent.addGameEvent(new GameEvent("CALCULATOR_STARTED", null, this));
+                break;
+            default:
+                super.handleUserAction(gsCurrent, userAction);
+                break;
+        }
+    }
+
+    @Override
+    public void episodeStartedEvents(GameState currentState) {
+        if (!isEpisodeStarted(currentState)) {
+            super.episodeStartedEvents(currentState);
             Renderable spaceImage = new Renderable(0,0, gameInfo.getScreenWidth(), gameInfo.getScreenHeight(), "image", "space");
             spaceImage.setImgPath("img/space1.png");
             currentState.addRenderable(spaceImage);

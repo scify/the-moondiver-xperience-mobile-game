@@ -17,9 +17,9 @@ public class CalculatorEpisodeRules extends TemporaryEpisodeRules {
     }
 
     @Override
-    public void gameStartedEvents(GameState gsCurrent) {
-        if (!gsCurrent.eventsQueueContainsEventOwnedBy("EPISODE_STARTED", this)) {
-            gsCurrent.addGameEvent(new GameEvent("EPISODE_STARTED", null, this));
+    public void episodeStartedEvents(GameState gsCurrent) {
+        if (!isEpisodeStarted(gsCurrent)) {
+            super.episodeStartedEvents(gsCurrent);
             addEpisodeBackgroundImage(gsCurrent, "img/calculator_episode/bg.jpg");
             Renderable calculator = new Renderable("calculator", "calculator_button");
             gsCurrent.addRenderable(calculator);

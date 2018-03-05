@@ -16,9 +16,9 @@ public class MapEpisodeRules extends TemporaryEpisodeRules {
     }
 
     @Override
-    public void gameStartedEvents(GameState currentState) {
-        if (!gameHasStarted(currentState)) {
-            addGameStartedEvents(currentState);
+    public void episodeStartedEvents(GameState currentState) {
+        if (!isEpisodeStarted(currentState)) {
+            super.episodeStartedEvents(currentState);
             addEpisodeBackgroundImage(currentState, "img/map.jpg");
             addPlayerAvatar(currentState);
             ActionButton escape = createEscapeButton();

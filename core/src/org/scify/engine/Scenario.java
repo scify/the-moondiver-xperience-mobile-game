@@ -184,8 +184,8 @@ public abstract class Scenario {
     protected void setCurrentEpisode(Episode newCurrentEpisode) {
         lastEpisode = currentEpisode;
         currentEpisode = newCurrentEpisode;
-        //System.out.println("last episode is: " + lastEpisode.getClass().getName());
-        //System.out.println("current episode is: " + currentEpisode.getClass().getName());
+        System.out.println("last episode is: " + lastEpisode.getClass().getName());
+        System.out.println("current episode is: " + currentEpisode.getClass().getName());
     }
 
     /**

@@ -30,14 +30,14 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
     }
 
     protected void endGameAndAddEventWithType(GameState gsCurrent, String gameEventType) {
-        gameEndedEvents(gsCurrent);
+        episodeEndedEvents(gsCurrent);
         gsCurrent.addGameEvent(new GameEvent(gameEventType, null, this));
     }
 
     @Override
-    public void gameStartedEvents(GameState gsCurrent) {
-        if (!gameHasStarted(gsCurrent)) {
-            addGameStartedEvents(gsCurrent);
+    public void episodeStartedEvents(GameState gsCurrent) {
+        if (!isEpisodeStarted(gsCurrent)) {
+            super.episodeStartedEvents(gsCurrent);
             addEpisodeBackgroundImage(gsCurrent, "img/Andromeda-galaxy.jpg");
             createAndAddMainMenuButtons(gsCurrent);
         }
@@ -76,7 +76,7 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
     }
 
     @Override
-    public void gameEndedEvents(GameState currentState) {
-        gameState.addGameEvent(new GameEvent("EPISODE_FINISHED", null, this));
+    public void episodeEndedEvents(GameState currentState) {
+        currentState.addGameEvent(new GameEvent("EPISODE_FINISHED", null, this));
     }
 }

@@ -10,8 +10,7 @@ public class BaseEpisodeRules extends SinglePlayerRules {
         gsCurrent = super.getNextState(gsCurrent, userAction);
         if(isGamePaused(gsCurrent))
             return gsCurrent;
-        gameStartedEvents(gsCurrent);
-        gameResumedEvents(gsCurrent);
+        episodeStartedEvents(gsCurrent);
         if(userAction != null)
             handleUserAction(gsCurrent, userAction);
         return gsCurrent;
@@ -19,20 +18,12 @@ public class BaseEpisodeRules extends SinglePlayerRules {
 
     protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
         switch (userAction.getActionCode()) {
-            case CALCULATOR_EPISODE:
-                gameEndedEvents(gsCurrent);
-                gsCurrent.addGameEvent(new GameEvent("CALCULATOR_STARTED", null, this));
-                break;
-            case MAP_EPISODE:
-                gameEndedEvents(gsCurrent);
-                gsCurrent.addGameEvent(new GameEvent("MAP_EPISODE_STARTED", null, this));
-                break;
             case FINISH_EPISODE:
-                gameEndedEvents(gameState);
+                episodeEndedEvents(gsCurrent);
                 break;
             case BACK:
                 gsCurrent.addGameEvent(new GameEvent("BACK", null, this));
-                gameEndedEvents(gameState);
+                episodeEndedEvents(gsCurrent);
                 break;
         }
     }
@@ -42,6 +33,10 @@ public class BaseEpisodeRules extends SinglePlayerRules {
         return gsCurrent.eventsQueueContainsEventOwnedBy("EPISODE_FINISHED", this);
     }
 
+    protected boolean isEpisodeStarted(GameState gsCurrent) {
+        return gsCurrent.eventsQueueContainsEventOwnedBy("EPISODE_STARTED", this);
+    }
+
     @Override
     public EpisodeEndState determineEndState(GameState currentState) {
         if(currentState.eventsQueueContainsEventOwnedBy("CALCULATOR_STARTED", this))
@@ -49,28 +44,16 @@ public class BaseEpisodeRules extends SinglePlayerRules {
         return null;
     }
 
-    public void gameStartedEvents(GameState currentState) {
-
+    protected void episodeStartedEvents(GameState currentState) {
+        currentState.addGameEvent(new GameEvent("EPISODE_STARTED", null, this));
     }
 
-    public void gameEndedEvents(GameState currentState) {
+    protected void episodeEndedEvents(GameState currentState) {
         currentState.addGameEvent(new GameEvent("EPISODE_FINISHED", null, this));
-    }
-
-    public void gameResumedEvents(GameState currentState) {
-
     }
 
     protected GameState cleanUpState(GameState currentState) {
         currentState.removeAllGameEventsOwnedBy(this);
         return currentState;
-    }
-
-    protected boolean gameHasStarted(GameState currentState) {
-        return currentState.eventsQueueContainsEventOwnedBy("EPISODE_STARTED", this);
-    }
-
-    protected void addGameStartedEvents(GameState currentState) {
-        currentState.addGameEvent(new GameEvent("EPISODE_STARTED", null, this));
     }
 }
