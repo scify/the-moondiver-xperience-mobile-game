@@ -9,11 +9,7 @@ import java.util.List;
 
 public class MapEpisodeRules extends TemporaryEpisodeRules {
 
-    List<MapLocationRenderable> mapLocationRenderables;
-
-    public MapEpisodeRules(GameState gsCurrent) {
-        super(gsCurrent);
-    }
+    protected List<Renderable> mapLocationRenderables;
 
     @Override
     public void episodeStartedEvents(GameState currentState) {
@@ -25,8 +21,7 @@ public class MapEpisodeRules extends TemporaryEpisodeRules {
             escape.setUserAction(new UserAction(UserActionCode.BACK));
             currentState.addRenderable(escape);
             createMapLocationRenderables();
-            for(MapLocationRenderable renderable : mapLocationRenderables)
-                currentState.addRenderable(renderable);
+            currentState.addRenderables(mapLocationRenderables);
         }
     }
 

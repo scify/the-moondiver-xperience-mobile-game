@@ -8,10 +8,6 @@ public class SpaceshipChargerEpisodeRules extends TemporaryEpisodeRules {
 
     protected SpaceshipChargerRenderable spaceshipChargerRenderable;
 
-    public SpaceshipChargerEpisodeRules(GameState gsCurrent) {
-        super(gsCurrent);
-    }
-
     @Override
     protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
         switch (userAction.getActionCode()) {

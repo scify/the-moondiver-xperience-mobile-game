@@ -12,10 +12,6 @@ import org.scify.moonwalker.app.ui.actors.ActionButton;
  */
 public class CalculatorEpisodeRules extends TemporaryEpisodeRules {
 
-    public CalculatorEpisodeRules(GameState gsCurrent) {
-        super(gsCurrent);
-    }
-
     @Override
     public void episodeStartedEvents(GameState gsCurrent) {
         if (!isEpisodeStarted(gsCurrent)) {

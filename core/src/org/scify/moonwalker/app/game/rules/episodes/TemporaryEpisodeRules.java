@@ -11,10 +11,6 @@ import org.scify.engine.*;
  */
 public abstract class TemporaryEpisodeRules extends BaseEpisodeRules {
 
-    public TemporaryEpisodeRules(GameState gsCurrent) {
-        this.initialGameState = gsCurrent;
-    }
-
     @Override
     protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
         switch (userAction.getActionCode()) {
@@ -29,10 +25,10 @@ public abstract class TemporaryEpisodeRules extends BaseEpisodeRules {
 
     @Override
     public EpisodeEndState determineEndState(GameState gsCurrent) {
-        GameState toReturn = gsCurrent;
-        if(initialGameState != null) {
-            toReturn = this.initialGameState;
-        }
+        GameState toReturn = cleanUpState(gsCurrent);
+//        if(initialGameState != null) {
+//            toReturn = this.initialGameState;
+//        }
         if(gsCurrent.eventsQueueContainsEventOwnedBy("PREVIOUS_EPISODE", this))
             return new EpisodeEndState(EpisodeEndStateCode.TEMP_EPISODE_FINISHED, toReturn);
         return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE, toReturn);

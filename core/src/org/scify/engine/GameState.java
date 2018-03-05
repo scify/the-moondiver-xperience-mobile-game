@@ -25,8 +25,12 @@ public abstract class GameState {
 
     public GameState(List<GameEvent> eventQueue) {
         this.eventQueue = eventQueue;
-        renderableList = Collections.synchronizedList(new LinkedList<Renderable>());
+        clearRendereablesList();
         additionalDataMap = new HashMap<>();
+    }
+
+    public void clearRendereablesList() {
+        renderableList = Collections.synchronizedList(new LinkedList<Renderable>());
     }
 
     /**
