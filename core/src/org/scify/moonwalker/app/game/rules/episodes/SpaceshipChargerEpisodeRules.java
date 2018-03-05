@@ -16,8 +16,8 @@ public class SpaceshipChargerEpisodeRules extends TemporaryEpisodeRules {
     protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
         switch (userAction.getActionCode()) {
             case CALCULATOR_EPISODE:
-                episodeEndedEvents(gsCurrent);
                 gsCurrent.addGameEvent(new GameEvent("CALCULATOR_STARTED", null, this));
+                episodeEndedEvents(gsCurrent);
                 break;
             default:
                 super.handleUserAction(gsCurrent, userAction);
