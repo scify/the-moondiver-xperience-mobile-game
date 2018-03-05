@@ -25,17 +25,13 @@ public class MoonWalkerScenario extends Scenario {
         EpisodeEndStateCode endStateCode = state.getEndStateCode();
         switch (endStateCode) {
             case CALCULATOR_STARTED:
-                // add as first candidate for execution the calculator episode
-                // Use new episode LIKE the current one (i.e. NOT the same)
-                addTemporaryEpisode(new CalculatorEpisode(state.getGameState()));
+                addTemporaryEpisode(new CalculatorEpisode());
                 break;
             case MAP_EPISODE_STARTED:
-                // Use new episode LIKE the current one (i.e. NOT the same)
-                addTemporaryEpisode(new MapEpisode(state.getGameState()));
+                addTemporaryEpisode(new MapEpisode());
                 break;
             case SPACESHIP_CHARGER_EPISODE_STARTED:
-                // Use new episode LIKE the current one (i.e. NOT the same)
-                addTemporaryEpisode(new SpaceshipChargerEpisode(state.getGameState()));
+                addTemporaryEpisode(new SpaceshipChargerEpisode());
                 break;
             case TEMP_EPISODE_FINISHED:
                 break;
