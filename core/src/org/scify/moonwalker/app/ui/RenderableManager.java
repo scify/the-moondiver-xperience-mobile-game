@@ -71,7 +71,7 @@ public class RenderableManager {
 
     protected void drawSpriteFromRenderable(Renderable renderable, Sprite sToDraw) {
         sToDraw.setPosition(renderable.getxPos(), renderable.getyPos());
-        batch.draw(sToDraw, sToDraw.getX() - (sToDraw.getWidth() / 2f), sToDraw.getY() - (sToDraw.getHeight() / 2f), sToDraw.getWidth(), sToDraw.getHeight());
+        batch.draw(sToDraw, sToDraw.getX(), sToDraw.getY(), sToDraw.getWidth(), sToDraw.getHeight());
     }
 
     protected void drawActorFromRenderable(Renderable renderable, Actor aToDraw) {
@@ -137,12 +137,14 @@ public class RenderableManager {
     public void dispose() {
         for(Iterator<Map.Entry<Renderable, Sprite>> it = renderableSpriteMap.entrySet().iterator(); it.hasNext(); ) {
             Map.Entry<Renderable, Sprite> entry = it.next();
+            System.out.println("removing sprite: " + entry.getValue().getClass().getName());
             entry.getValue().getTexture().dispose();
             it.remove();
 
         }
         for(Iterator<Map.Entry<Renderable, Actor>> it = renderableActorMap.entrySet().iterator(); it.hasNext(); ) {
             Map.Entry<Renderable, Actor> entry = it.next();
+            System.out.println("removing actor: " + entry.getValue().getName());
             entry.getValue().remove();
             it.remove();
         }
