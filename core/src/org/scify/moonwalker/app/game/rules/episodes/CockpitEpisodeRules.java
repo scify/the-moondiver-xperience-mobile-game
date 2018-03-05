@@ -29,10 +29,7 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
     public void episodeStartedEvents(GameState currentState) {
         if (!isEpisodeStarted(currentState)) {
             super.episodeStartedEvents(currentState);
-            Renderable spaceImage = new Renderable(0,0, gameInfo.getScreenWidth(), gameInfo.getScreenHeight(), "image", "space");
-            spaceImage.setImgPath("img/space1.png");
-            currentState.addRenderable(spaceImage);
-            addRenderableEntry("space", spaceImage);
+            addEpisodeBackgroundImage(currentState, "img/space1.png");
             initializeAndAddCockpit(currentState);
         }
     }
