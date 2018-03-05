@@ -25,13 +25,7 @@ public abstract class TemporaryEpisodeRules extends BaseEpisodeRules {
 
     @Override
     public EpisodeEndState determineEndState(GameState gsCurrent) {
-        GameState toReturn = cleanUpState(gsCurrent);
-//        if(initialGameState != null) {
-//            toReturn = this.initialGameState;
-//        }
-        if(gsCurrent.eventsQueueContainsEventOwnedBy("PREVIOUS_EPISODE", this))
-            return new EpisodeEndState(EpisodeEndStateCode.TEMP_EPISODE_FINISHED, toReturn);
-        return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE, toReturn);
+        return new EpisodeEndState(EpisodeEndStateCode.TEMP_EPISODE_FINISHED, this.initialGameState);
     }
 
     @Override
