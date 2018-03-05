@@ -149,6 +149,10 @@ public abstract class GameState {
         renderableList.add(r);
     }
 
+    public void addRenderables(List<Renderable> renderables) {
+        renderableList.addAll(renderables);
+    }
+
     public Renderable getRenderable(Renderable renderable){
         synchronized (renderableList) {
             ListIterator<Renderable> listIterator = renderableList.listIterator();
