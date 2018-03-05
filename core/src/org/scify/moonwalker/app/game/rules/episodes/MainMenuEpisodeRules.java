@@ -29,11 +29,6 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
         super.handleUserAction(gsCurrent, userAction);
     }
 
-    protected void endGameAndAddEventWithType(GameState gsCurrent, String gameEventType) {
-        episodeEndedEvents(gsCurrent);
-        gsCurrent.addGameEvent(new GameEvent(gameEventType, null, this));
-    }
-
     @Override
     public void episodeStartedEvents(GameState gsCurrent) {
         if (!isEpisodeStarted(gsCurrent)) {
@@ -52,6 +47,7 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
             newGameBtn.setUserAction(new UserAction(buttonTitleAndActionCode.getValue()));
             mainMenuButtons.addButton(newGameBtn);
         }
+        mainMenuButtons.setZIndex(2);
         gsCurrent.addRenderable(mainMenuButtons);
     }
 
