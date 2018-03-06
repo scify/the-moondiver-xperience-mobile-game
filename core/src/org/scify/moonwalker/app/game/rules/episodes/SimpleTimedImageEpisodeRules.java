@@ -9,12 +9,9 @@ public class SimpleTimedImageEpisodeRules extends TemporaryEpisodeRules {
 
     protected long episodeEndTimestamp;
 
-    public SimpleTimedImageEpisodeRules() {
-        episodeEndTimestamp = new Date().getTime() + 4000;
-    }
-
     @Override
     public GameState getNextState(GameState gsCurrent, UserAction userAction) {
+        episodeStartedEvents(gsCurrent);
         if(new Date().getTime() > episodeEndTimestamp)
             episodeEndedEvents(gsCurrent);
         return super.getNextState(gsCurrent, userAction);
@@ -23,6 +20,7 @@ public class SimpleTimedImageEpisodeRules extends TemporaryEpisodeRules {
     @Override
     public void episodeStartedEvents(GameState currentState) {
         if (!isEpisodeStarted(currentState)) {
+            episodeEndTimestamp = new Date().getTime() + (int) initialGameState.getAdditionalDataEntry("timed_episode_milliseconds");
             super.episodeStartedEvents(currentState);
             addEpisodeBackgroundImage(currentState, (String) initialGameState.getAdditionalDataEntry("timed_episode_img_path"));
         }

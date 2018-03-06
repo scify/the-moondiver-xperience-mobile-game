@@ -171,7 +171,8 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
         return gsCurrent.eventsQueueContainsEventOwnedBy("CONVERSATION_FINISHED", this);
     }
 
-    protected void addImgPathForTimedEpisode(GameState gsCurrent, String imgPath) {
+    protected void setTimedEpisode(GameState gsCurrent, String imgPath, int millisecondsToLast) {
         gsCurrent.storeAdditionalDataEntry("timed_episode_img_path", imgPath);
+        gsCurrent.storeAdditionalDataEntry("timed_episode_milliseconds", millisecondsToLast);
     }
 }
