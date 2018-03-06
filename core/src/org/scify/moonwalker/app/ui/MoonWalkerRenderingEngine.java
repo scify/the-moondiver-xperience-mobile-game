@@ -1,13 +1,16 @@
 package org.scify.moonwalker.app.ui;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.scify.engine.*;
@@ -16,16 +19,14 @@ import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.conversation.MultipleConversationLines;
 import org.scify.engine.conversation.SingleConversationLine;
 import org.scify.moonwalker.app.MoonWalkerGameState;
-import org.scify.moonwalker.app.game.quiz.Question;
 import org.scify.moonwalker.app.helpers.GameInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
-import org.scify.moonwalker.app.ui.actors.*;
-import org.scify.engine.UserActionCode;
+import org.scify.moonwalker.app.ui.actors.AvatarWithMessageComponent;
+import org.scify.moonwalker.app.ui.actors.MultipleSelectionComponent;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 import org.scify.moonwalker.app.ui.sound.GdxAudioEngine;
 
 import java.util.*;
-import java.util.List;
 
 public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGameState> {
     /**
@@ -90,8 +91,8 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         fpsLabel = new Label("", themeController.getSkin());
         fpsLabel.setStyle(new Label.LabelStyle(themeController.getFont(), Color.RED));
         fpsLabel.setPosition(20, gameInfo.getScreenHeight() - 20);
-        // fps label has thrice the normal font size
-        fpsLabel.setFontScale(3);
+        // fps label has twice the normal font size
+        fpsLabel.setFontScale(2);
     }
 
     protected void createBackgroundDefaultImg() {
@@ -154,14 +155,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private void handleCurrentGameEvent(GameEvent gameEvent, ListIterator<GameEvent> listIterator) {
         String eventType = currentGameEvent.type;
         switch (eventType) {
-//            case "QUESTION_UI":
-//                try {
-//                    handleQuestion(gameEvent);
-//                } catch (UnsupportedOperationException e) {
-//                    e.printStackTrace();
-//                }
-//                listIterator.remove();
-//                break;
             case "BACKGROUND_IMG_UI":
                 String imgPath = (String) gameEvent.parameters;
                 worldImg.setDrawable(new SpriteDrawable(new Sprite(new Texture(resourceLocator.getFilePath(imgPath)))));
@@ -316,27 +309,4 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             }
         }
     }
-
-//    protected void handleQuestion(GameEvent gameEvent) {
-//        Question question = (Question) gameEvent.parameters;
-//        switch (question.type) {
-//            case FREE_TEXT:
-//                showTextInputDialog(question);
-//                break;
-//            default:
-//                throw new UnsupportedOperationException("Question type " + question.type + " not supported");
-//        }
-//    }
-//
-//    void showTextInputDialog(Question question) {
-//        TextInputDialog textInputDialog = new TextInputDialog(gameInfo.getScreenWidth() / 2f,
-//                gameInfo.getScreenHeight() / 2f,
-//                gameInfo.getScreenWidth() * 0.8f,
-//                gameInfo.getScreenHeight() * 0.6f,
-//                question.getTitle(),
-//                question.getBody(),
-//                themeController.getSkin());
-//        textInputDialog.createForQuestion(question, stage);
-//    }
-
 }
