@@ -43,8 +43,8 @@ public class AvatarWithMessageActor extends TableActor {
 
     protected void initTable() {
         setFillParent(true);
-        setWidth(renderable.getWidth());
-        setHeight(renderable.getHeight());
+        setWidth(appInfo.pixelsWithDensity(renderable.getWidth()));
+        setHeight(appInfo.pixelsWithDensity(renderable.getHeight()));
         bottom().left();
         background = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath("img/component_background.png")))));
         background.setSize(appInfo.getScreenWidth(), appInfo.getScreenHeight() / 4f);
