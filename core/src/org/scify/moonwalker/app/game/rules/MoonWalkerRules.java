@@ -10,7 +10,7 @@ import org.scify.engine.conversation.ConversationRules;
 import org.scify.moonwalker.app.game.quiz.Answer;
 import org.scify.engine.UserAction;
 import org.scify.moonwalker.app.game.quiz.Question;
-import org.scify.moonwalker.app.helpers.GameInfo;
+import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 
 import java.util.HashMap;
@@ -22,7 +22,7 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
     protected int worldY;
     protected Map<String, Renderable> idToRenderable;
     protected ConversationRules conversationRules;
-    protected GameInfo gameInfo;
+    protected AppInfo appInfo;
     protected MoonWalkerPhysicsRules physics;
     protected float ESCAPE_BUTTON_SIZE_PIXELS = 70;
     protected float ESCAPE_BUTTON_PADDING_PIXELS = 10;
@@ -30,9 +30,9 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
 
     public MoonWalkerRules() {
         idToRenderable = new HashMap<>();
-        gameInfo = GameInfo.getInstance();
-        worldX = gameInfo.getScreenWidth();
-        worldY = gameInfo.getScreenHeight();
+        appInfo = AppInfo.getInstance();
+        worldX = appInfo.getScreenWidth();
+        worldY = appInfo.getScreenHeight();
         physics = new MoonWalkerPhysicsRules(worldX, worldY);
     }
 
@@ -126,9 +126,9 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
     }
 
     protected ActionButton createEscapeButton() {
-        float btnRealSize = gameInfo.pixelsWithDensity(ESCAPE_BUTTON_SIZE_PIXELS);
-        ActionButton escape = new ActionButton(0, gameInfo.getScreenHeight() - btnRealSize, btnRealSize, btnRealSize, "image_button", "escape_button");
-        escape.setPadding(gameInfo.pixelsWithDensity(ESCAPE_BUTTON_PADDING_PIXELS));
+        float btnRealSize = appInfo.pixelsWithDensity(ESCAPE_BUTTON_SIZE_PIXELS);
+        ActionButton escape = new ActionButton(0, appInfo.getScreenHeight() - btnRealSize, btnRealSize, btnRealSize, "image_button", "escape_button");
+        escape.setPadding(appInfo.pixelsWithDensity(ESCAPE_BUTTON_PADDING_PIXELS));
         escape.setImgPath("img/close.png");
         return escape;
     }
@@ -141,14 +141,14 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
         ActionButton button = new ActionButton("image_button", id);
         button.setImgPath(imgPath);
         button.setUserAction(userAction);
-        button.setWidth(gameInfo.pixelsWithDensity(widthPixels));
-        button.setHeight(gameInfo.pixelsWithDensity(heightPixels));
+        button.setWidth(appInfo.pixelsWithDensity(widthPixels));
+        button.setHeight(appInfo.pixelsWithDensity(heightPixels));
         return button;
     }
 
     protected void addEpisodeBackgroundImage(GameState currentState, String imgPath) {
         currentState.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", imgPath));
-//        Renderable spaceImage = new Renderable(0,0, gameInfo.getScreenWidth(), gameInfo.getScreenHeight(), "background_image", "space");
+//        Renderable spaceImage = new Renderable(0,0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), "background_image", "space");
 //        spaceImage.setImgPath(imgPath);
 //        currentState.addRenderable(spaceImage);
     }

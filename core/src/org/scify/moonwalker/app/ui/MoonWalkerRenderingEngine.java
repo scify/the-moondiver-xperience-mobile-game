@@ -19,7 +19,7 @@ import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.conversation.MultipleConversationLines;
 import org.scify.engine.conversation.SingleConversationLine;
 import org.scify.moonwalker.app.MoonWalkerGameState;
-import org.scify.moonwalker.app.helpers.GameInfo;
+import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.actors.AvatarWithMessageComponent;
 import org.scify.moonwalker.app.ui.actors.MultipleSelectionComponent;
@@ -40,7 +40,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     protected MoonWalkerGameState currentGameState;
     protected AudioEngine audioEngine;
     protected CameraController cameraController;
-    protected GameInfo gameInfo;
+    protected AppInfo appInfo;
     protected World world;
     protected RenderableManager renderableManager;
     protected ThemeController themeController;
@@ -60,7 +60,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
 
         additionalActors = new ArrayList<>();
         audioEngine = new GdxAudioEngine();
-        gameInfo = GameInfo.getInstance();
+        appInfo = AppInfo.getInstance();
         this.batch = batch;
         this.stage = stage;
         gameViewport = stage.getViewport();
@@ -80,8 +80,8 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
 
     private void printDebugInfo() {
         System.out.println("\n\n");
-        System.out.println("Screen height: " + gameInfo.getScreenHeight());
-        System.out.println("Screen width: " + gameInfo.getScreenWidth());
+        System.out.println("Screen height: " + appInfo.getScreenHeight());
+        System.out.println("Screen width: " + appInfo.getScreenWidth());
         System.out.println("Density: " + Gdx.graphics.getDensity());
         System.out.println("GL version: " + Gdx.graphics.getGLVersion().getDebugVersionString());
         System.out.println("\n\n");
@@ -90,15 +90,15 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private void initFPSLabel() {
         fpsLabel = new Label("", themeController.getSkin());
         fpsLabel.setStyle(new Label.LabelStyle(themeController.getFont(), Color.RED));
-        fpsLabel.setPosition(20, gameInfo.getScreenHeight() - 20);
+        fpsLabel.setPosition(20, appInfo.getScreenHeight() - 20);
         // fps label has twice the normal font size
         fpsLabel.setFontScale(2);
     }
 
     protected void createBackgroundDefaultImg() {
         worldImg = new Image(new Texture(resourceLocator.getFilePath("img/theworld.png")));
-        worldImg.setWidth(gameInfo.getScreenWidth());
-        worldImg.setHeight(gameInfo.getScreenHeight());
+        worldImg.setWidth(appInfo.getScreenWidth());
+        worldImg.setHeight(appInfo.getScreenHeight());
     }
 
     @Override
@@ -259,8 +259,8 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     @Override
     public void resize(int width, int height) {
         gameViewport.update(width, height);
-        gameInfo.setScreenWidth(width);
-        gameInfo.setScreenHeight(height);
+        appInfo.setScreenWidth(width);
+        appInfo.setScreenHeight(height);
     }
 
     @Override

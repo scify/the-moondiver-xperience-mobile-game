@@ -20,9 +20,9 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
         if (!isEpisodeStarted(gsCurrent)) {
             super.episodeStartedEvents(gsCurrent);
             addEpisodeBackgroundImage(gsCurrent, "img/episode_0/bg.jpg");
-            float labelWidth = gameInfo.getScreenWidth() * 0.2f;
-            float labelHeight = gameInfo.getScreenHeight()* 0.5f;
-            messagesLabel = new Renderable(gameInfo.getScreenWidth() - labelWidth - 20, gameInfo.getScreenHeight() / 2f - 100, labelWidth, labelHeight, "label", "messagesLabel");
+            float labelWidth = appInfo.getScreenWidth() * 0.2f;
+            float labelHeight = appInfo.getScreenHeight()* 0.5f;
+            messagesLabel = new Renderable(appInfo.getScreenWidth() - labelWidth - 20, appInfo.getScreenHeight() / 2f - 100, labelWidth, labelHeight, "label", "messagesLabel");
             gsCurrent.addRenderable(messagesLabel);
             gsCurrent.addGameEvent(new GameEvent("UPDATE_LABEL_TEXT_UI", new HashMap.SimpleEntry<>(messagesLabel, mainLabelText)));
             addPlayerAvatar(gsCurrent);

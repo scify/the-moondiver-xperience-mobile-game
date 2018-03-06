@@ -9,7 +9,7 @@ import org.scify.engine.EpisodeEndState;
 import org.scify.engine.rules.PhysicsRules;
 import org.scify.engine.Player;
 import org.scify.moonwalker.app.game.BodyFactory;
-import org.scify.moonwalker.app.helpers.GameInfo;
+import org.scify.moonwalker.app.helpers.AppInfo;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,14 +19,14 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
     World world;
     protected Map<Renderable, Body> renderableBodyMap = new HashMap<>();
     private final float keyStrokeAcceleration = 70f;
-    private GameInfo gameInfo;
+    private AppInfo appInfo;
     protected BodyFactory bodyFactory;
     private boolean bDisposalOngoing;
 
     public MoonWalkerPhysicsRules(int worldX, int worldY) {
         super(worldX, worldY);
         createWorld();
-        gameInfo = GameInfo.getInstance();
+        appInfo = AppInfo.getInstance();
         bodyFactory = new BodyFactory(world);
     }
 
@@ -122,7 +122,7 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
         if(pPlayer != null) {
             Body body = getResourceFor(pPlayer);
             if(body != null) {
-                if (body.getPosition().y + pPlayer.getHeight() / 2f > gameInfo.getScreenHeight()) {
+                if (body.getPosition().y + pPlayer.getHeight() / 2f > appInfo.getScreenHeight()) {
                     body.setLinearVelocity(body.getLinearVelocity().x, -keyStrokeAcceleration);
                     addPlayerBorderEvents(gameState, 0);
                 }
@@ -134,7 +134,7 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
                     body.setLinearVelocity(+keyStrokeAcceleration, body.getLinearVelocity().y);
                     addPlayerBorderEvents(gameState, 2);
                 }
-                if (body.getPosition().x + pPlayer.getHeight() / 2f > gameInfo.getScreenWidth()) {
+                if (body.getPosition().x + pPlayer.getHeight() / 2f > appInfo.getScreenWidth()) {
                     body.setLinearVelocity(-keyStrokeAcceleration, body.getLinearVelocity().y);
                     addPlayerBorderEvents(gameState, 3);
                 }

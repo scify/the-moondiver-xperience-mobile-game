@@ -28,8 +28,8 @@ public class MapEpisodeRules extends TemporaryEpisodeRules {
     protected void createMapLocationRenderables() {
         // use linked list to be ordered
         mapLocationRenderables = new LinkedList<>();
-        MapLocationRenderable renderable1 = new MapLocationRenderable(gameInfo.pixelsWithDensity(50), gameInfo.pixelsWithDensity(50), gameInfo.pixelsWithDensity(150), gameInfo.pixelsWithDensity(100), "location1");
-        ActionButton location1Btn = new ActionButton(gameInfo.pixelsWithDensity(50), gameInfo.pixelsWithDensity(25), gameInfo.pixelsWithDensity(20), gameInfo.pixelsWithDensity(20), "image_button", "location1Btn");
+        MapLocationRenderable renderable1 = new MapLocationRenderable(appInfo.pixelsWithDensity(50), appInfo.pixelsWithDensity(50), appInfo.pixelsWithDensity(150), appInfo.pixelsWithDensity(100), "location1");
+        ActionButton location1Btn = new ActionButton(appInfo.pixelsWithDensity(50), appInfo.pixelsWithDensity(25), appInfo.pixelsWithDensity(20), appInfo.pixelsWithDensity(20), "image_button", "location1Btn");
         location1Btn.setUserAction(new UserAction(UserActionCode.FINISH_EPISODE));
         location1Btn.setImgPath("img/acropolis.jpg");
         renderable1.setButton(location1Btn);
@@ -37,8 +37,8 @@ public class MapEpisodeRules extends TemporaryEpisodeRules {
         renderable1.setDestinationName("Athens");
         renderable1.setImgPath("img/component_background.png");
 
-        MapLocationRenderable renderable2 = new MapLocationRenderable(gameInfo.pixelsWithDensity(300), gameInfo.pixelsWithDensity(200), gameInfo.pixelsWithDensity(150), gameInfo.pixelsWithDensity(100), "location2");
-        ActionButton location2Btn = new ActionButton(gameInfo.pixelsWithDensity(50), gameInfo.pixelsWithDensity(25), gameInfo.pixelsWithDensity(20), gameInfo.pixelsWithDensity(20), "image_button", "location3Btn");
+        MapLocationRenderable renderable2 = new MapLocationRenderable(appInfo.pixelsWithDensity(300), appInfo.pixelsWithDensity(200), appInfo.pixelsWithDensity(150), appInfo.pixelsWithDensity(100), "location2");
+        ActionButton location2Btn = new ActionButton(appInfo.pixelsWithDensity(50), appInfo.pixelsWithDensity(25), appInfo.pixelsWithDensity(20), appInfo.pixelsWithDensity(20), "image_button", "location3Btn");
         location2Btn.setUserAction(new UserAction(UserActionCode.FINISH_EPISODE));
         location2Btn.setImgPath("img/madrid.jpg");
         renderable2.setButton(location2Btn);

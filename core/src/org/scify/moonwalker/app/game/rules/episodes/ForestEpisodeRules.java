@@ -24,13 +24,13 @@ public class ForestEpisodeRules extends BaseEpisodeRules{
     }
 
     protected void createAndAddRocket(GameState currentState) {
-        final float rocketWidth = gameInfo.pixelsWithDensity(ROCKET_IMG_WIDTH_PIXELS);
-        final float rocketHeight = gameInfo.pixelsWithDensity(ROCKET_IMG_HEIGHT_PIXELS);
+        final float rocketWidth = appInfo.pixelsWithDensity(ROCKET_IMG_WIDTH_PIXELS);
+        final float rocketHeight = appInfo.pixelsWithDensity(ROCKET_IMG_HEIGHT_PIXELS);
         Renderable renderable = new Renderable("image", "rocket");
         renderable.setWidth(rocketWidth);
         renderable.setHeight(rocketHeight);
         renderable.setxPos(rocketWidth);
-        renderable.setyPos(gameInfo.getScreenHeight() / 2f - rocketHeight);
+        renderable.setyPos(appInfo.getScreenHeight() / 2f - rocketHeight);
         renderable.setImgPath("img/rocket.png");
         currentState.addRenderable(renderable);
     }

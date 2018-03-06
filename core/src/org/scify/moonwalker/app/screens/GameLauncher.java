@@ -12,7 +12,7 @@ import org.scify.engine.Scenario;
 import org.scify.engine.UserInputHandler;
 import org.scify.moonwalker.app.MoonWalker;
 import org.scify.moonwalker.app.game.scenarios.MoonWalkerScenario;
-import org.scify.moonwalker.app.helpers.GameInfo;
+import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.ui.MoonWalkerRenderingEngine;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 
@@ -26,7 +26,7 @@ public class GameLauncher implements Screen {
     private SpriteBatch batch;
     private Viewport gameViewport;
     private OrthographicCamera mainCamera;
-    private GameInfo gameInfo;
+    private AppInfo appInfo;
 
     /**
      * We initialize the game, taking into account the underlying MoonWalker (LibGDX) application.
@@ -35,9 +35,9 @@ public class GameLauncher implements Screen {
     public GameLauncher(MoonWalker app) {
         this.app = app;
         batch = new SpriteBatch();
-        gameInfo = GameInfo.getInstance();
-        int width = gameInfo.getScreenWidth();
-        int height = gameInfo.getScreenHeight();
+        appInfo = AppInfo.getInstance();
+        int width = appInfo.getScreenWidth();
+        int height = appInfo.getScreenHeight();
         mainCamera = new OrthographicCamera(width, height);
         mainCamera.position.set(width / 2f, height / 2, 0);
 

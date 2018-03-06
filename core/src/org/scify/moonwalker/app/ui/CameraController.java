@@ -6,22 +6,22 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import org.scify.moonwalker.app.helpers.GameInfo;
+import org.scify.moonwalker.app.helpers.AppInfo;
 
 public class CameraController {
 
-    private GameInfo gameInfo;
+    private AppInfo appInfo;
     private OrthographicCamera box2DCamera;
     private Box2DDebugRenderer debugRenderer;
     private Camera mainCamera;
 
     public CameraController() {
-        gameInfo = GameInfo.getInstance();
+        appInfo = AppInfo.getInstance();
     }
 
     public void initCamera(Stage stage) {
-        int width = gameInfo.getScreenWidth();
-        int height = gameInfo.getScreenHeight();
+        int width = appInfo.getScreenWidth();
+        int height = appInfo.getScreenHeight();
 
         box2DCamera = new OrthographicCamera();
         box2DCamera.setToOrtho(false, width,

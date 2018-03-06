@@ -13,7 +13,7 @@ import org.scify.engine.UserAction;
 import org.scify.engine.UserActionCode;
 import org.scify.engine.UserInputHandler;
 import org.scify.moonwalker.app.game.quiz.Answer;
-import org.scify.moonwalker.app.helpers.GameInfo;
+import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 
 import java.util.ArrayList;
@@ -26,10 +26,10 @@ public class UserInputHandlerImpl extends ChangeListener implements UserInputHan
      * List of actions captured by the user interaction. User in the Player-derived methods.
      */
     private List<UserAction> pendingUserActions = Collections.synchronizedList(new ArrayList<UserAction>());
-    protected GameInfo gameInfo;
+    protected AppInfo appInfo;
 
     public UserInputHandlerImpl() {
-        gameInfo = GameInfo.getInstance();
+        appInfo = AppInfo.getInstance();
     }
 
     private void listenForUserInput() {
@@ -50,16 +50,16 @@ public class UserInputHandlerImpl extends ChangeListener implements UserInputHan
     }
 
     protected void touchInputs() {
-        if(Gdx.input.getX() < gameInfo.getScreenWidth() / 2f){
+        if(Gdx.input.getX() < appInfo.getScreenWidth() / 2f){
             pendingUserActions.add(new UserAction(UserActionCode.LEFT));
         }
-        if(Gdx.input.getX() > gameInfo.getScreenWidth() / 2f){
+        if(Gdx.input.getX() > appInfo.getScreenWidth() / 2f){
             pendingUserActions.add(new UserAction(UserActionCode.RIGHT));
         }
-        if(Gdx.input.getY() > gameInfo.getScreenHeight() / 2f){
+        if(Gdx.input.getY() > appInfo.getScreenHeight() / 2f){
             pendingUserActions.add(new UserAction(UserActionCode.UP));
         }
-        if(Gdx.input.getY() < gameInfo.getScreenHeight() / 2f){
+        if(Gdx.input.getY() < appInfo.getScreenHeight() / 2f){
             pendingUserActions.add(new UserAction(UserActionCode.DOWN));
         }
     }

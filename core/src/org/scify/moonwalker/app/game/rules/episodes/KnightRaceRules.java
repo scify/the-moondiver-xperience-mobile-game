@@ -29,9 +29,9 @@ public class KnightRaceRules extends SinglePlayerRules {
         if(!gsCurrent.eventsQueueContainsEvent("EPISODE_STARTED")) {
             gsCurrent.addGameEvent(new GameEvent("EPISODE_STARTED"));
             gsCurrent.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/episode_1/bg.png"));
-            float labelWidth = gameInfo.getScreenWidth() * 0.2f;
-            float labelHeight = gameInfo.getScreenHeight()* 0.5f;
-            messagesLabel = new Renderable(gameInfo.getScreenWidth() - labelWidth - 20, gameInfo.getScreenHeight() / 2f - 100, labelWidth, labelHeight, "label", "messagesLabel");
+            float labelWidth = appInfo.getScreenWidth() * 0.2f;
+            float labelHeight = appInfo.getScreenHeight()* 0.5f;
+            messagesLabel = new Renderable(appInfo.getScreenWidth() - labelWidth - 20, appInfo.getScreenHeight() / 2f - 100, labelWidth, labelHeight, "label", "messagesLabel");
             gsCurrent.addRenderable(messagesLabel);
             gsCurrent.addGameEvent(new GameEvent("UPDATE_LABEL_TEXT_UI", new HashMap.SimpleEntry<>(messagesLabel, mainLabelText)));
         }
@@ -49,7 +49,7 @@ public class KnightRaceRules extends SinglePlayerRules {
 
     protected GameState handleConversationRules(GameState gsCurrent, UserAction userAction) {
         Player player = gsCurrent.getPlayer();
-        if(player.getxPos() < gameInfo.getScreenWidth() / 2f) {
+        if(player.getxPos() < appInfo.getScreenWidth() / 2f) {
             // begin conversation with Yoda
             // if the conversation has not started and has not finished too
             // TODO add conversation id in case we have multiple conversations in an episode

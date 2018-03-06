@@ -49,8 +49,8 @@ public abstract class SinglePlayerRules extends MoonWalkerRules {
     }
 
     private void createPlayerAvatar(String avatarIdentifier, GameState gsCurrent) {
-        pPlayer = new Player(gameInfo.getScreenWidth() / 2f,
-                gameInfo.getScreenHeight() / 2f - 80,  gameInfo.getScreenWidth() * 0.3f, gameInfo.getScreenWidth() * 0.3f,
+        pPlayer = new Player(appInfo.getScreenWidth() / 2f,
+                appInfo.getScreenHeight() / 2f - 80,  appInfo.getScreenWidth() * 0.3f, appInfo.getScreenWidth() * 0.3f,
                 avatarIdentifier, "player");
         gsCurrent.addRenderable(pPlayer);
     }

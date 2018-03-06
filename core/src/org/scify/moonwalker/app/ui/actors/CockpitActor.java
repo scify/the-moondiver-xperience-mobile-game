@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import org.scify.engine.Renderable;
-import org.scify.moonwalker.app.helpers.GameInfo;
+import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 
@@ -32,7 +32,7 @@ public class CockpitActor extends TableActor implements Updateable{
 
     public CockpitActor(Skin skin, CockpitRenderable renderable) {
         super(skin);
-        gameInfo = GameInfo.getInstance();
+        appInfo = AppInfo.getInstance();
         resourceLocator = new ResourceLocator();
         this.renderable = renderable;
         timestamp = this.renderable.getRenderableLastUpdated();

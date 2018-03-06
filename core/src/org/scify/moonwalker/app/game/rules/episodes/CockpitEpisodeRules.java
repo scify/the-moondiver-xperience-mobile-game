@@ -47,8 +47,8 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
     }
     
     protected void initializeAndAddCockpit(GameState currentState) {
-        cockpit = new CockpitRenderable(0,0, gameInfo.getScreenWidth(),
-                gameInfo.getScreenHeight(), "cockpit", "cockpit");
+        cockpit = new CockpitRenderable(0,0, appInfo.getScreenWidth(),
+                appInfo.getScreenHeight(), "cockpit", "cockpit");
         cockpit.setImgPath("img/cockpit.png");
         ActionButton launchBtn = createCockpitButton("navigation_button", "img/launch.png", UserActionCode.FINISH_EPISODE);
         ActionButton spaceshipPartsButton = createCockpitButton("spaceship_parts_button", "img/rocket.png", UserActionCode.SPACESHIP_PARTS_EPISODE);

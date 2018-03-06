@@ -66,7 +66,7 @@ public class AvatarSelectionRules extends BaseEpisodeRules {
         selectBtn.setTitle("Start Game");
         selectBtn.setUserAction(new UserAction(UserActionCode.FINISH_EPISODE));
 
-        renderable = new AvatarSelectionRenderable(0,0,gameInfo.getScreenWidth(), gameInfo.getScreenHeight(), "avatar_selection");
+        renderable = new AvatarSelectionRenderable(0,0,appInfo.getScreenWidth(), appInfo.getScreenHeight(), "avatar_selection");
         renderable.setBoySelection(boyBtn);
         renderable.setGirlSelection(girlBtn);
         renderable.setSelectBtn(selectBtn);

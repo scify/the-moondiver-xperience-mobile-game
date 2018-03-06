@@ -4,20 +4,20 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import org.scify.moonwalker.app.helpers.GameInfo;
+import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 
 public abstract class TableActor extends Table {
 
     protected ResourceLocator resourceLocator;
-    protected GameInfo gameInfo;
+    protected AppInfo appInfo;
     protected Image background;
     protected final float TABLES_PADDING_PIXELS = 7;
     protected long timestamp;
 
     public TableActor(Skin skin) {
         super(skin);
-        gameInfo = GameInfo.getInstance();
+        appInfo = AppInfo.getInstance();
         resourceLocator = new ResourceLocator();
     }
 
@@ -36,11 +36,11 @@ public abstract class TableActor extends Table {
     }
 
     protected void initSubTable(Table subTable) {
-        subTable.defaults().pad(gameInfo.pixelsWithDensity(TABLES_PADDING_PIXELS));
+        subTable.defaults().pad(appInfo.pixelsWithDensity(TABLES_PADDING_PIXELS));
     }
 
     protected Cell addButtonCell(Table table, Button button) {
-        return table.add(button).bottom().center().width(gameInfo.pixelsWithDensity(button.getWidth())).height(gameInfo.pixelsWithDensity(button.getHeight()));
+        return table.add(button).bottom().center().width(appInfo.pixelsWithDensity(button.getWidth())).height(appInfo.pixelsWithDensity(button.getHeight()));
     }
 
     public void addBackground(String imgPath) {

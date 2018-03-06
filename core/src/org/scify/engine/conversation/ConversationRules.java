@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Json;
 import org.scify.engine.*;
 import org.scify.engine.EpisodeEndState;
 import org.scify.moonwalker.app.game.rules.MoonWalkerRules;
-import org.scify.moonwalker.app.helpers.GameInfo;
+import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.engine.UserActionCode;
 import java.util.ArrayList;
@@ -18,10 +18,10 @@ public class ConversationRules extends MoonWalkerRules {
     protected ResourceLocator resourceLocator;
     protected String ID;
     private static final String TAG = ConversationRules.class.getName();
-    private GameInfo gameInfo;
+    private AppInfo appInfo;
 
     public ConversationRules(String conversationJSONFilePath) {
-        gameInfo = GameInfo.getInstance();
+        appInfo = AppInfo.getInstance();
         conversationLines = new ArrayList<>();
         resourceLocator = new ResourceLocator();
         json = new Json();
@@ -145,7 +145,7 @@ public class ConversationRules extends MoonWalkerRules {
         // If the speaker does not exist
         if (!renderableExist(currentLine.getSpeakerId())) {
             // add the renderable character
-            Renderable newSpeaker = new Renderable(50, 70, gameInfo.getScreenWidth() * 0.3f, gameInfo.getScreenWidth() * 0.4f, currentLine.speakerId, currentLine.speakerId);
+            Renderable newSpeaker = new Renderable(50, 70, appInfo.getScreenWidth() * 0.3f, appInfo.getScreenWidth() * 0.4f, currentLine.speakerId, currentLine.speakerId);
             // update my lookup map
             addRenderableEntry(currentLine.speakerId, newSpeaker);
             // update state

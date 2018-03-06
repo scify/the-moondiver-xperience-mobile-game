@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
-import org.scify.moonwalker.app.helpers.GameInfo;
+import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 
@@ -20,7 +20,7 @@ public class MultipleSelectionComponent extends Group {
     protected Sprite avatarSprite;
     protected String questionText;
     protected ResourceLocator resourceLocator;
-    protected GameInfo gameInfo;
+    protected AppInfo appInfo;
     protected Table table;
     protected Image background;
 
@@ -28,8 +28,8 @@ public class MultipleSelectionComponent extends Group {
         this.resourceLocator = new ResourceLocator();
         this.relativeAvatarPath = relativeAvatarPath;
         this.questionText = labelTxt;
-        this.gameInfo = GameInfo.getInstance();
-        setWidth(gameInfo.getScreenWidth());
+        this.appInfo = AppInfo.getInstance();
+        setWidth(appInfo.getScreenWidth());
     }
 
     public void initActor(Skin skin) {
@@ -44,7 +44,7 @@ public class MultipleSelectionComponent extends Group {
         if(relativeAvatarPath != null)
             addAvatarToTable();
         background = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath("img/component_background.png")))));
-        background.setSize(gameInfo.getScreenWidth(), gameInfo.getScreenHeight() / 2f);
+        background.setSize(appInfo.getScreenWidth(), appInfo.getScreenHeight() / 2f);
         addActor(background);
         addActor(table);
     }
@@ -57,7 +57,7 @@ public class MultipleSelectionComponent extends Group {
         newBtn.padBottom(5).padTop(5).padLeft(10).padRight(10);
         newBtn.addListener(inputHandler);
         // set the width as 1/2 of the screen, minus 40 pixels margin
-        table.add(newBtn).width(gameInfo.getScreenWidth() * 0.5f - 40).align(alignment).pad(10);
+        table.add(newBtn).width(appInfo.getScreenWidth() * 0.5f - 40).align(alignment).pad(10);
         if(btnIndex % 2 == 0) {
             table.row();
         }
@@ -72,9 +72,9 @@ public class MultipleSelectionComponent extends Group {
 
     private void addAvatarToTable() {
         avatarSprite = new Sprite(new Texture(resourceLocator.getFilePath(relativeAvatarPath)));
-        avatarSprite.setSize((float) (gameInfo.getScreenWidth() * 0.15), (float) (gameInfo.getScreenWidth() * 0.1));
+        avatarSprite.setSize((float) (appInfo.getScreenWidth() * 0.15), (float) (appInfo.getScreenWidth() * 0.1));
         avatarImg = new Image(new SpriteDrawable(avatarSprite));
 
-        table.add(avatarImg).width(gameInfo.getScreenWidth() * 0.2f).padLeft(5).padBottom(10);
+        table.add(avatarImg).width(appInfo.getScreenWidth() * 0.2f).padLeft(5).padBottom(10);
     }
 }

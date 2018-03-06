@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
-import org.scify.moonwalker.app.helpers.GameInfo;
+import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.ThemeController;
 
@@ -31,7 +31,7 @@ public class CalculatorComponent extends Table {
     protected String[] operationIds = {"add", "subtract", "multiply", "divide", "result"};
     protected Skin skin;
     protected ResourceLocator resourceLocator;
-    protected GameInfo gameInfo;
+    protected AppInfo appInfo;
     protected Image background;
     protected CalculatorController calculator;
 
@@ -39,7 +39,7 @@ public class CalculatorComponent extends Table {
         super(skin);
         this.skin = skin;
         this.resourceLocator = new ResourceLocator();
-        this.gameInfo = GameInfo.getInstance();
+        this.appInfo = AppInfo.getInstance();
         createBackground();
 
         // Init controller
@@ -49,7 +49,7 @@ public class CalculatorComponent extends Table {
         // add the opaque background
         addActor(background);
         // Create top label, that will have a 20% height
-        MAIN_LABEL_HEIGHT = gameInfo.getScreenHeight() * 0.2f;
+        MAIN_LABEL_HEIGHT = appInfo.getScreenHeight() * 0.2f;
         this.add(createMainLabel()).colspan(2).expandX().pad(pixelsWithDensity(MAIN_LABEL_PADDING_PIXELS));
         this.row();
 
@@ -64,7 +64,7 @@ public class CalculatorComponent extends Table {
 
     protected void createBackground() {
         background = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath("img/component_background.png")))));
-        background.setSize(gameInfo.getScreenWidth(), gameInfo.getScreenHeight());
+        background.setSize(appInfo.getScreenWidth(), appInfo.getScreenHeight());
     }
 
     protected Label createMainLabel() {
@@ -135,7 +135,7 @@ public class CalculatorComponent extends Table {
     }
 
     protected float pixelsWithDensity(float pixels) {
-        return gameInfo.pixelsWithDensity(pixels);
+        return appInfo.pixelsWithDensity(pixels);
     }
 
 }

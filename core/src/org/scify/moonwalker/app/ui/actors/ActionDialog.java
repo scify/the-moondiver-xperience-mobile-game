@@ -3,19 +3,19 @@ package org.scify.moonwalker.app.ui.actors;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.scify.engine.Renderable;
-import org.scify.moonwalker.app.helpers.GameInfo;
+import org.scify.moonwalker.app.helpers.AppInfo;
 
 public class ActionDialog extends Renderable {
 
     protected Dialog dialog;
     protected Skin skin;
     protected String title;
-    protected GameInfo gameInfo;
+    protected AppInfo appInfo;
     private ActionDialog instance = this;
 
     public ActionDialog(float xPos, float yPos, float width, float height, String title, String bodyText, Skin sKin) {
         super(xPos, yPos, width, height, "dialog", title);
-        gameInfo = GameInfo.getInstance();
+        appInfo = AppInfo.getInstance();
         this.skin = sKin;
         this.title = title;
         dialog = new Dialog(title, skin, "dialog") {
