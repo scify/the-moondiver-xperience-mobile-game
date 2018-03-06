@@ -80,4 +80,6 @@ public abstract class Episode<T> implements Callable<T>, Cloneable {
     public String toString() {
         return getClass().getCanonicalName();
     }
+
+    public abstract void init();
 }
