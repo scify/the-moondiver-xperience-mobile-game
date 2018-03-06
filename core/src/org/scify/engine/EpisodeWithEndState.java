@@ -8,11 +8,16 @@ public class EpisodeWithEndState extends Episode<EpisodeEndState> {
 
     public EpisodeWithEndState(Rules rules) {
         this.rules = rules;
+    }
+
+    @Override
+    public void init() {
         gameEngine.initialize(rules);
     }
 
     @Override
     public EpisodeEndState call() {
+
         EpisodeEndState endState = gameEngine.execute();
         Gdx.app.postRunnable(new Runnable() {
             @Override
