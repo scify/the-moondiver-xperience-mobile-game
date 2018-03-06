@@ -1,5 +1,7 @@
 package org.scify.engine;
 
+import org.scify.moonwalker.app.helpers.AppInfo;
+
 import java.util.Date;
 
 /**
@@ -15,7 +17,7 @@ public class Renderable extends Positionable {
     protected String id;
     protected UserInputHandler userInputHandler;
     protected String imgPath;
-
+    protected AppInfo appInfo;
     /**
      * timestamp describing when the component was last updated
      */
@@ -25,12 +27,14 @@ public class Renderable extends Positionable {
         super(xPos, yPos, width, height);
         this.type = type;
         this.id = id;
+        appInfo = AppInfo.getInstance();
     }
 
     public Renderable(String type, String id) {
         super(0, 0, 0, 0);
         this.type = type;
         this.id = id;
+        appInfo = AppInfo.getInstance();
     }
 
     public String getType() {

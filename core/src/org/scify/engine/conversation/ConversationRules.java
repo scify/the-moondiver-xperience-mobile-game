@@ -13,12 +13,25 @@ import java.util.List;
 import java.util.UUID;
 
 public class ConversationRules extends MoonWalkerRules {
+    /**
+     * All conversation lines that are read from the json file for
+     * this conversation.
+     */
     protected List<ConversationLine> conversationLines;
     private Json json;
     protected ResourceLocator resourceLocator;
-    protected String ID;
-    private static final String TAG = ConversationRules.class.getName();
     private AppInfo appInfo;
+    /**
+     * This id is used as a key when storing the current conversation line
+     * in the game state
+     */
+    protected String ID;
+
+    /**
+     * Every conversation line that is added to the game state
+     * is added to this list as well.
+     */
+    protected List<Renderable> oldConversationLines;
 
     public ConversationRules(String conversationJSONFilePath) {
         appInfo = AppInfo.getInstance();
@@ -27,6 +40,7 @@ public class ConversationRules extends MoonWalkerRules {
         json = new Json();
         conversationLines = json.fromJson(ArrayList.class, ConversationLine.class, Gdx.files.internal(resourceLocator.getFilePath(conversationJSONFilePath)));
         ID = UUID.randomUUID().toString();
+        oldConversationLines = new ArrayList<>();
     }
 
     @Override
@@ -46,12 +60,12 @@ public class ConversationRules extends MoonWalkerRules {
                 gameState.addGameEvent(new GameEvent("CONVERSATION_FINISHED"));
         }
         // If conversation is paused
-        if (gameState.eventsQueueContainsEvent("CONVERSATION_PAUSED"))
+        if (isConversationPaused(gameState))
             // return the current game state
             return gameState;
         // Get next alternatives
         List<ConversationLine> nextLines = getPossibleNextLines(gameState, userAction);
-        handleNextConversationLine(nextLines, gameState, userAction);
+        handleNextConversationState(nextLines, gameState, userAction);
         handleTriggerEventForCurrentConversationLine(gameState);
         return gameState;
     }
@@ -73,8 +87,17 @@ public class ConversationRules extends MoonWalkerRules {
         gameState.removeGameEventsWithType("CONVERSATION_PAUSED");
     }
 
+    /**
+     * Removind all past conversation lines so that the screen is cleared
+     * @param gameState the current game state
+     */
     protected void removeActiveConversationComponents(GameState gameState) {
-        gameState.addGameEvent(new GameEvent("REMOVE_CONVERSATIONS"));
+        for(Renderable oldLine : oldConversationLines) {
+            Renderable line = gameState.getRenderable(oldLine);
+            // setting a negative z-index value will cause the rendering engine
+            // to hide the corresponding UI instance of the renderable.
+            line.setZIndex(-1);
+        }
     }
 
     protected void handleAnswerToMultipleQuestion(GameState gameState, UserAction userAction) {
@@ -85,29 +108,37 @@ public class ConversationRules extends MoonWalkerRules {
         }
     }
 
-    protected void handleNextConversationLine(List<ConversationLine> nextLines, GameState gameState, UserAction userAction) {
+    protected void handleNextConversationState(List<ConversationLine> nextLines, GameState gameState, UserAction userAction) {
         // If one line returned
         if (nextLines.size() == 1) {
             // render it
-            // TODO change
-            SingleConversationLine singleConversationLine = new SingleConversationLine( nextLines.get(0),
-                    "img/avatars/" + nextLines.get(0).getSpeakerId() + ".jpg", getCurrentSpeaker( nextLines.get(0)));
-            ArrayList<Object> payload = new ArrayList<>();
-            payload.add(singleConversationLine);
-            // Declare which user action should be thrown when button is pressed
-            payload.add(new UserAction(UserActionCode.NEXT_CONVERSATION_LINE));
-            gameState.addGameEvent(new GameEvent("CONVERSATION_LINE",
-                    payload));
-            // update current line and speaker
-            setCurrentConversationLine(gameState, nextLines.get(0));
+            addSingleConversationLine(nextLines.get(0), gameState);
             // await next event
-            gameState.addGameEvent(new GameEvent("CONVERSATION_PAUSED"));
+            pauseConversation(gameState);
         } else if(nextLines.size() > 1){
             // render dialog
-            gameState.addGameEvent(new GameEvent("CONVERSATION_PAUSED"));
-            MultipleConversationLines conversationLines = new MultipleConversationLines(getCurrentConversationLine(gameState).text, nextLines);
-            gameState.addGameEvent(new GameEvent("CONVERSATION_LINES", conversationLines));
+            addMultipleConversationLines(nextLines, gameState);
+            pauseConversation(gameState);
         }
+    }
+
+    protected void addSingleConversationLine(ConversationLine conversationLine, GameState gameState) {
+        SingleConversationLine singleConversationLine = new SingleConversationLine("new_single_conversation");
+        singleConversationLine.setConversationLine(conversationLine);
+        singleConversationLine.setRelativeAvatarPath(conversationLine.getSpeakerId() + ".jpg");
+
+        gameState.addRenderable(singleConversationLine);
+        setCurrentConversationLine(gameState, conversationLine);
+        oldConversationLines.add(singleConversationLine);
+    }
+
+    protected void addMultipleConversationLines(List<ConversationLine> nextLines, GameState gameState) {
+        MultipleConversationLines conversationLines = new MultipleConversationLines("multiple_lines");
+        conversationLines.setTitle(getCurrentConversationLine(gameState).text);
+        conversationLines.setConversationLines(nextLines);
+        conversationLines.setRelativeAvatarImgPath(getCurrentConversationLine(gameState).getSpeakerId() + ".jpg");
+        gameState.addRenderable(conversationLines);
+        oldConversationLines.add(conversationLines);
     }
 
     @Override
@@ -117,8 +148,7 @@ public class ConversationRules extends MoonWalkerRules {
 
     @Override
     public void disposeResources() {
-        // Remove speaker renderables
-        // Clear current line
+        oldConversationLines = new ArrayList<>();
     }
 
     @Override
@@ -181,5 +211,13 @@ public class ConversationRules extends MoonWalkerRules {
             if(line.getId() == id)
                 return line;
         return null;
+    }
+
+    protected boolean isConversationPaused(GameState gameState) {
+        return gameState.eventsQueueContainsEvent("CONVERSATION_PAUSED");
+    }
+
+    protected void pauseConversation(GameState gameState) {
+        gameState.addGameEvent(new GameEvent("CONVERSATION_PAUSED"));
     }
 }

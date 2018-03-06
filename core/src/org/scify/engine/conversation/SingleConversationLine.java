@@ -15,7 +15,6 @@ public class SingleConversationLine extends Renderable {
 
     public SingleConversationLine(String id) {
         super("single_conversation_line", id);
-        AppInfo appInfo = AppInfo.getInstance();
         xPos = 0;
         yPos = 0;
         width = appInfo.getScreenWidth();

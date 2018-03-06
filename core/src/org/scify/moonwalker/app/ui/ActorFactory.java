@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import org.scify.engine.conversation.MultipleConversationLines;
+import org.scify.engine.conversation.SingleConversationLine;
 import org.scify.moonwalker.app.ui.actors.*;
 import org.scify.engine.Renderable;
 import org.scify.moonwalker.app.ui.actors.calculator.CalculatorComponent;
@@ -68,6 +70,12 @@ public class ActorFactory extends ComponentFactory{
                 break;
             case "map_location":
                 toReturn = createMapLocationActor((MapLocationRenderable) renderable);
+                break;
+            case "single_conversation_line":
+                toReturn = createSingleConversationLineActor((SingleConversationLine) renderable);
+                break;
+            case "multiple_conversation_lines":
+                toReturn = createMultipleSelectionActor((MultipleConversationLines) renderable);
                 break;
             default:
                 throw new UnsupportedRenderableTypeException("renderable with type " + renderable.getType() + " is unsupported.");
@@ -168,6 +176,24 @@ public class ActorFactory extends ComponentFactory{
     private Actor createMapLocationActor(MapLocationRenderable renderable) {
         MapLocationActor mapLocationActor = new MapLocationActor(skin, renderable, createButton(renderable.getButton()));
         return mapLocationActor;
+    }
+
+    private Actor createSingleConversationLineActor(SingleConversationLine conversationLine) {
+        AvatarWithMessageActor actor = new AvatarWithMessageActor(skin, conversationLine);
+        actor.setZIndex(1);
+        actor.setButton(createButton(conversationLine.getButtonNext()));
+        return actor;
+    }
+
+    private Actor createMultipleSelectionActor(MultipleConversationLines multipleConversationLines) {
+        MultipleSelectionActor actor = new MultipleSelectionActor(skin, multipleConversationLines);
+        actor.setZIndex(1);
+        int btnIndex = 1;
+        for(ActionButton button : multipleConversationLines.getButtons()) {
+            actor.addButton(createButton(button), btnIndex);
+            btnIndex++;
+        }
+        return actor;
     }
 
     private void addButtonListener(Button button, final ActionButton actionButton) {

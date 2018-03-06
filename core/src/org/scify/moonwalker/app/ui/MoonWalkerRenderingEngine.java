@@ -15,12 +15,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.scify.engine.*;
 import org.scify.engine.audio.AudioEngine;
-import org.scify.engine.conversation.ConversationLine;
-import org.scify.engine.conversation.MultipleConversationLines;
 import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
-import org.scify.moonwalker.app.ui.actors.MultipleSelectionComponent;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 import org.scify.moonwalker.app.ui.sound.GdxAudioEngine;
 
@@ -48,15 +45,12 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     protected Stage stage;
     protected Viewport gameViewport;
     protected ResourceLocator resourceLocator;
-    protected List<Actor> additionalActors;
     protected boolean bDisposalOngoing;
 
     public MoonWalkerRenderingEngine(UserInputHandler userInputHandler, SpriteBatch batch, Stage stage) {
         this.resourceLocator = new ResourceLocator();
         cameraController = new CameraController();
         this.userInputHandler = (UserInputHandlerImpl) userInputHandler;
-
-        additionalActors = new ArrayList<>();
         audioEngine = new GdxAudioEngine();
         appInfo = AppInfo.getInstance();
         this.batch = batch;
@@ -170,36 +164,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 updateLabelText((HashMap.SimpleEntry<Renderable, String>) currentGameEvent.parameters);
                 listIterator.remove();
                 break;
-            case "CONVERSATION_LINES":
-                MultipleConversationLines multipleConversationLines = (MultipleConversationLines) currentGameEvent.parameters;
-                createMultipleSelectionForConversationLines(multipleConversationLines);
-                listIterator.remove();
-                break;
-            case "REMOVE_CONVERSATIONS":
-                for(Actor actor : additionalActors)
-                    actor.remove();
-                listIterator.remove();
-                break;
         }
-    }
-
-    private void createMultipleSelectionForConversationLines(MultipleConversationLines multipleConversationLinesComponent) {
-        MultipleSelectionComponent component = new MultipleSelectionComponent(multipleConversationLinesComponent.getTitle(),
-                multipleConversationLinesComponent.getAvatarImgPath());
-        component.initActor(themeController.getSkin());
-        int btnIndex = 1;
-        for(final ConversationLine conversationLine : multipleConversationLinesComponent.getConversationLines()) {
-            component.addButton(conversationLine.getText(), new UserInputHandlerImpl() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    //System.out.println("answer was " + conversationLine.getText() + " with order id " + conversationLine.getId());
-                    userInputHandler.addUserAction(new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine.getId()));
-                }
-            }, btnIndex);
-            btnIndex++;
-        }
-        additionalActors.add(component);
-        stage.addActor(component);
     }
 
     private void updateLabelText(HashMap.SimpleEntry<Renderable, String> parameters) {
@@ -211,7 +176,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     protected synchronized void resetEngine() {
         bDisposalOngoing = true;
         renderableManager.reset();
-        additionalActors = new ArrayList<>();
         bDisposalOngoing = false;
     }
 

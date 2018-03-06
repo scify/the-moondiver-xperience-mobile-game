@@ -78,8 +78,10 @@ public class RenderableManager {
     protected void drawActorFromRenderable(Renderable renderable, Actor aToDraw) {
         aToDraw.setPosition(renderable.getxPos(), renderable.getyPos());
         // update the z index of the actor, according to the renderable's z index
-        if(renderable.getZIndex() > 0)
+        if(renderable.getZIndex() >= 0)
             aToDraw.setZIndex(renderable.getZIndex());
+        else
+            aToDraw.setVisible(false);
         // if actor does not have a stage, it means that
         // it is the first time that is added to the stage.
         if(aToDraw.getStage() == null) {
@@ -136,20 +138,6 @@ public class RenderableManager {
     }
 
     public void dispose() {
-//        for(Iterator<Map.Entry<Renderable, Sprite>> it = renderableSpriteMap.entrySet().iterator(); it.hasNext(); ) {
-//            Map.Entry<Renderable, Sprite> entry = it.next();
-//            System.out.println("removing sprite: " + entry.getValue().getClass().getName());
-//            entry.getValue().getTexture().dispose();
-//            it.remove();
-//
-//        }
-//        for(Iterator<Map.Entry<Renderable, Actor>> it = renderableActorMap.entrySet().iterator(); it.hasNext(); ) {
-//            Map.Entry<Renderable, Actor> entry = it.next();
-//            System.out.println("removing actor: " + entry.getValue().getName());
-//            entry.getValue().remove();
-//            it.remove();
-//        }
-
         synchronized (stage) {
             for(Actor actor : stage.getActors()) {
                 System.out.println("removing: " + actor.getName());
