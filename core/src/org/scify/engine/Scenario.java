@@ -80,6 +80,7 @@ public abstract class Scenario {
         playCurrentEpisode();
     }
 
+    EpisodeEndState lastEpisodeEndState;
     /**
      * Executes the actual loop of playing episodes, until there is no candidate episode left.
      */
@@ -89,12 +90,15 @@ public abstract class Scenario {
             System.out.println("Scenario ended");
             return;
         }
+        currentEpisode.init();
+        if(lastEpisodeEndState != null)
+            currentEpisode.setInitialEpisodeState(lastEpisodeEndState);
         // The endState is a variable containing a code describing the way
         // the episode was terminated, as well as the current game state
-        final EpisodeEndState endState = (EpisodeEndState) currentEpisode.play(renderingEngine, userInputHandler);
+        lastEpisodeEndState = (EpisodeEndState) currentEpisode.play(renderingEngine, userInputHandler);
         // get the next episode from the list of candidate episodes and set it
         // as the current episode
-        setCurrentEpisode(getNextEpisode(endState));
+        setCurrentEpisode(getNextEpisode(lastEpisodeEndState));
         playCurrentEpisode();
     }
 
@@ -167,7 +171,6 @@ public abstract class Scenario {
             return null;
         for(Episode candidateEpisode : possibleNextEpisodes) {
             if(candidateEpisode.isAccessible(state)) {
-                candidateEpisode.setInitialEpisodeState(state);
                 return candidateEpisode;
             }
         }
