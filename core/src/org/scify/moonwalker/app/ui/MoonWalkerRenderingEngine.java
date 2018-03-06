@@ -17,11 +17,9 @@ import org.scify.engine.*;
 import org.scify.engine.audio.AudioEngine;
 import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.conversation.MultipleConversationLines;
-import org.scify.engine.conversation.SingleConversationLine;
 import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
-import org.scify.moonwalker.app.ui.actors.AvatarWithMessageComponent;
 import org.scify.moonwalker.app.ui.actors.MultipleSelectionComponent;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 import org.scify.moonwalker.app.ui.sound.GdxAudioEngine;
@@ -172,13 +170,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 updateLabelText((HashMap.SimpleEntry<Renderable, String>) currentGameEvent.parameters);
                 listIterator.remove();
                 break;
-            case "CONVERSATION_LINE":
-                List parameters = (List) currentGameEvent.parameters;
-                SingleConversationLine conversationLine = (SingleConversationLine) parameters.get(0);
-                UserAction action = (UserAction) parameters.get(1);
-                renderConversationLine(conversationLine, action);
-                listIterator.remove();
-                break;
             case "CONVERSATION_LINES":
                 MultipleConversationLines multipleConversationLines = (MultipleConversationLines) currentGameEvent.parameters;
                 createMultipleSelectionForConversationLines(multipleConversationLines);
@@ -215,20 +206,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         Actor actor = renderableManager.getOrCreateActorResourceFor(parameters.getKey());
         Label label = (Label) actor;
         label.setText(parameters.getValue());
-    }
-
-    private void renderConversationLine(final SingleConversationLine conversationLine, final UserAction toThrow) {
-        AvatarWithMessageComponent component = new AvatarWithMessageComponent(conversationLine.getConversationLine().getText(),
-                conversationLine.getRenderableReferenced(), conversationLine.getRelativeAvatarPath(), true);
-        component.initActor(themeController.getSkin(), new UserInputHandlerImpl() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                userInputHandler.addUserAction(toThrow);
-            }
-        });
-        component.setZIndex(2);
-        additionalActors.add(component);
-        stage.addActor(component);
     }
 
     protected synchronized void resetEngine() {
