@@ -33,10 +33,9 @@ public class SpaceshipChargerEpisodeRules extends TemporaryEpisodeRules {
     protected void initializeAndAddRocketController(GameState currentState) {
         spaceshipChargerRenderable = new SpaceshipChargerRenderable(0,0,appInfo.getScreenWidth(), appInfo.getScreenHeight(), "spaceship_charger");
         spaceshipChargerRenderable.setImgPath("img/rocket_controller.png");
-        spaceshipChargerRenderable.setCurrentMoonPhaseImgPath("img/moon.png");
-        spaceshipChargerRenderable.setNextMoonPhaseImgPath1("img/moon.png");
-        spaceshipChargerRenderable.setNextMoonPhaseImgPath2("img/moon.png");
-
+        spaceshipChargerRenderable.setCurrentMoonPhase(gameInfo.getCurrentMoonPhase());
+        spaceshipChargerRenderable.setNextMoonPhase(gameInfo.getNextMoonPhase());
+        spaceshipChargerRenderable.setPostNextMoonPhase(gameInfo.getPostNextMoonPhase());
         ActionButton escape = createEscapeButton();
         escape.setUserAction(new UserAction(UserActionCode.BACK));
         spaceshipChargerRenderable.setEscapeButton(escape);

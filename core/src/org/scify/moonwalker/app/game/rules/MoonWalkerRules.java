@@ -7,6 +7,7 @@ import org.scify.engine.rules.Rules;
 import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.engine.GameState;
 import org.scify.engine.conversation.ConversationRules;
+import org.scify.moonwalker.app.game.GameInfo;
 import org.scify.moonwalker.app.game.quiz.Answer;
 import org.scify.engine.UserAction;
 import org.scify.moonwalker.app.game.quiz.Question;
@@ -27,10 +28,12 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
     protected float ESCAPE_BUTTON_SIZE_PIXELS = 70;
     protected float ESCAPE_BUTTON_PADDING_PIXELS = 10;
     protected GameState initialGameState;
+    protected GameInfo gameInfo;
 
     public MoonWalkerRules() {
         idToRenderable = new HashMap<>();
         appInfo = AppInfo.getInstance();
+        gameInfo = GameInfo.getInstance();
         worldX = appInfo.getScreenWidth();
         worldY = appInfo.getScreenHeight();
         physics = new MoonWalkerPhysicsRules(worldX, worldY);

@@ -3,6 +3,7 @@ package org.scify.moonwalker.app.ui.renderables;
 import org.scify.engine.Renderable;
 import org.scify.engine.UserAction;
 import org.scify.engine.UserActionCode;
+import org.scify.moonwalker.app.game.MoonPhase;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 
 public class SpaceshipChargerRenderable extends Renderable{
@@ -18,13 +19,10 @@ public class SpaceshipChargerRenderable extends Renderable{
     protected ActionButton chargeButton;
     protected ActionButton escapeButton;
 
-    protected String currentMoonPhaseImgPath;
-    protected String nextMoonPhaseImgPath1;
-    protected String nextMoonPhaseImgPath2;
+    protected MoonPhase currentMoonPhase;
+    protected MoonPhase nextMoonPhase;
+    protected MoonPhase postNextMoonPhase;
 
-    protected int currentMoonPhase;
-    protected int nextMoonPhase1;
-    protected int nextMoonPhase2;
     protected int motorEfficiency;
     protected int remainingEnergy;
     protected int destinationDistance;
@@ -52,16 +50,16 @@ public class SpaceshipChargerRenderable extends Renderable{
         return chargeButton;
     }
 
-    public void setCurrentMoonPhase(int currentMoonPhase) {
+    public void setCurrentMoonPhase(MoonPhase currentMoonPhase) {
         this.currentMoonPhase = currentMoonPhase;
     }
 
-    public void setNextMoonPhase1(int nextMoonPhase1) {
-        this.nextMoonPhase1 = nextMoonPhase1;
+    public void setNextMoonPhase(MoonPhase nextMoonPhase) {
+        this.nextMoonPhase = nextMoonPhase;
     }
 
-    public void setNextMoonPhase2(int nextMoonPhase2) {
-        this.nextMoonPhase2 = nextMoonPhase2;
+    public void setPostNextMoonPhase(MoonPhase postNextMoonPhase) {
+        this.postNextMoonPhase = postNextMoonPhase;
     }
 
     public void setMotorEfficiency(int motorEfficiency) {
@@ -76,16 +74,16 @@ public class SpaceshipChargerRenderable extends Renderable{
         this.destinationDistance = destinationDistance;
     }
 
-    public int getCurrentMoonPhase() {
-        return currentMoonPhase;
+    public int getCurrentMoonPhaseUnits() {
+        return currentMoonPhase.getEnergyUnits();
     }
 
-    public int getNextMoonPhase1() {
-        return nextMoonPhase1;
+    public int getNextMoonPhaseUnits() {
+        return nextMoonPhase.getEnergyUnits();
     }
 
-    public int getNextMoonPhase2() {
-        return nextMoonPhase2;
+    public int getPostNextMoonPhaseUnits() {
+        return postNextMoonPhase.getEnergyUnits();
     }
 
     public int getMotorEfficiency() {
@@ -100,28 +98,16 @@ public class SpaceshipChargerRenderable extends Renderable{
         return destinationDistance;
     }
 
-    public String getNextMoonPhaseImgPath1() {
-        return nextMoonPhaseImgPath1;
+    public String getNextMoonPhaseImgPath() {
+        return nextMoonPhase.getImgPath();
     }
 
-    public void setNextMoonPhaseImgPath1(String nextMoonPhaseImgPath1) {
-        this.nextMoonPhaseImgPath1 = nextMoonPhaseImgPath1;
-    }
-
-    public String getNextMoonPhaseImgPath2() {
-        return nextMoonPhaseImgPath2;
-    }
-
-    public void setNextMoonPhaseImgPath2(String nextMoonPhaseImgPath2) {
-        this.nextMoonPhaseImgPath2 = nextMoonPhaseImgPath2;
+    public String getPostNextMoonPhaseImgPath() {
+        return postNextMoonPhase.getImgPath();
     }
 
     public String getCurrentMoonPhaseImgPath() {
-        return currentMoonPhaseImgPath;
-    }
-
-    public void setCurrentMoonPhaseImgPath(String currentMoonPhaseImgPath) {
-        this.currentMoonPhaseImgPath = currentMoonPhaseImgPath;
+        return currentMoonPhase.getImgPath();
     }
 
     public ActionButton getEscapeButton() {

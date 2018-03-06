@@ -44,16 +44,16 @@ public class SpaceshipChargerActor extends TableActor implements Updateable {
         addTextCell(moonPhasesTable, renderable.UNITS_LABEL);
         moonPhasesTable.row();
         addMoonPhaseImgCell(moonPhasesTable, renderable.getCurrentMoonPhaseImgPath());
-        moonPhaseValueCell = addTextCell(moonPhasesTable, String.valueOf(renderable.getCurrentMoonPhase()));
+        moonPhaseValueCell = addTextCell(moonPhasesTable, String.valueOf(renderable.getCurrentMoonPhaseUnits()));
         moonPhasesTable.row();
         addTextCell(moonPhasesTable, renderable.NEXT_NIGHTS_LABEL);
         addTextCell(moonPhasesTable, renderable.UNITS_LABEL);
         moonPhasesTable.row();
-        addMoonPhaseImgCell(moonPhasesTable, renderable.getNextMoonPhaseImgPath1());
-        nextNightValueCell1 = addMoonPhaseTextCell(moonPhasesTable, String.valueOf(renderable.getNextMoonPhase1()));
+        addMoonPhaseImgCell(moonPhasesTable, renderable.getNextMoonPhaseImgPath());
+        nextNightValueCell1 = addMoonPhaseTextCell(moonPhasesTable, String.valueOf(renderable.getNextMoonPhaseUnits()));
         moonPhasesTable.row();
-        addMoonPhaseImgCell(moonPhasesTable, renderable.getNextMoonPhaseImgPath2());
-        nextNightValueCell2 = addMoonPhaseTextCell(moonPhasesTable, String.valueOf(renderable.getNextMoonPhase2()));
+        addMoonPhaseImgCell(moonPhasesTable, renderable.getPostNextMoonPhaseImgPath());
+        nextNightValueCell2 = addMoonPhaseTextCell(moonPhasesTable, String.valueOf(renderable.getPostNextMoonPhaseUnits()));
         moonPhasesTable.debug();
         return moonPhasesTable;
     }
@@ -95,9 +95,9 @@ public class SpaceshipChargerActor extends TableActor implements Updateable {
         if(this.renderable.getRenderableLastUpdated() > timestamp) {
             System.out.println("setting renderable: " + renderable.getRenderableLastUpdated() + " over: " + this.renderable.getRenderableLastUpdated());
             this.renderable = (SpaceshipChargerRenderable) renderable;
-            setCellValue(moonPhaseValueCell, this.renderable.getCurrentMoonPhase());
-            setCellValue(nextNightValueCell1, this.renderable.getNextMoonPhase1());
-            setCellValue(nextNightValueCell2, this.renderable.getNextMoonPhase2());
+            setCellValue(moonPhaseValueCell, this.renderable.getCurrentMoonPhaseUnits());
+            setCellValue(nextNightValueCell1, this.renderable.getNextMoonPhaseUnits());
+            setCellValue(nextNightValueCell2, this.renderable.getPostNextMoonPhaseUnits());
             setCellValue(motorEfficiencyValueCell, this.renderable.getMotorEfficiency());
             setCellValue(remainingEnergyValueCell, this.renderable.getRemainingEnergy());
             setCellValue(destinationDistanceValueCell, this.renderable.getDestinationDistance());
