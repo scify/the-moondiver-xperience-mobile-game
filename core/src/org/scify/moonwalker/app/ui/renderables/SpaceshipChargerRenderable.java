@@ -29,6 +29,7 @@ public class SpaceshipChargerRenderable extends Renderable{
 
     public SpaceshipChargerRenderable(float xPos, float yPos, float width, float height, String id) {
         super(xPos, yPos, width, height, "spaceship_charger", id);
+        remainingEnergy = 0;
         calculatorButton = new ActionButton("image_button", "calculator_button");
         calculatorButton.setHeight(40);
 
@@ -37,7 +38,7 @@ public class SpaceshipChargerRenderable extends Renderable{
 
         chargeButton = new ActionButton("image_button", "charge_button");
         //TODO update
-        chargeButton.setUserAction(new UserAction(UserActionCode.FINISH_EPISODE));
+        chargeButton.setUserAction(new UserAction(UserActionCode.CHARGE_SPACESHIP_PASS_DAY));
         chargeButton.setImgPath("img/button.png");
         chargeButton.setHeight(40);
     }
@@ -52,26 +53,36 @@ public class SpaceshipChargerRenderable extends Renderable{
 
     public void setCurrentMoonPhase(MoonPhase currentMoonPhase) {
         this.currentMoonPhase = currentMoonPhase;
+        renderableWasUpdated();
     }
 
     public void setNextMoonPhase(MoonPhase nextMoonPhase) {
         this.nextMoonPhase = nextMoonPhase;
+        renderableWasUpdated();
     }
 
     public void setPostNextMoonPhase(MoonPhase postNextMoonPhase) {
         this.postNextMoonPhase = postNextMoonPhase;
+        renderableWasUpdated();
     }
 
     public void setMotorEfficiency(int motorEfficiency) {
         this.motorEfficiency = motorEfficiency;
     }
 
-    public void setRemainingEnergy(int remainingEnergy) {
-        this.remainingEnergy = remainingEnergy;
+    public void addEnergy(int energy) {
+        this.remainingEnergy += energy;
+        renderableWasUpdated();
+    }
+
+    public void setEnergy(int energy) {
+        this.remainingEnergy = energy;
+        renderableWasUpdated();
     }
 
     public void setDestinationDistance(int destinationDistance) {
         this.destinationDistance = destinationDistance;
+        renderableWasUpdated();
     }
 
     public int getCurrentMoonPhaseUnits() {
@@ -116,5 +127,6 @@ public class SpaceshipChargerRenderable extends Renderable{
 
     public void setEscapeButton(ActionButton escapeButton) {
         this.escapeButton = escapeButton;
+        renderableWasUpdated();
     }
 }

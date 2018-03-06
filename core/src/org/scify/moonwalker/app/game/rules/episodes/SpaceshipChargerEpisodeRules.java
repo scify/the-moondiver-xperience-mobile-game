@@ -15,6 +15,9 @@ public class SpaceshipChargerEpisodeRules extends TemporaryEpisodeRules {
                 gsCurrent.addGameEvent(new GameEvent("CALCULATOR_STARTED", null, this));
                 episodeEndedEvents(gsCurrent);
                 break;
+            case CHARGE_SPACESHIP_PASS_DAY:
+                chargeAndPassDay(gsCurrent);
+                break;
             default:
                 super.handleUserAction(gsCurrent, userAction);
                 break;
@@ -33,13 +36,28 @@ public class SpaceshipChargerEpisodeRules extends TemporaryEpisodeRules {
     protected void initializeAndAddRocketController(GameState currentState) {
         spaceshipChargerRenderable = new SpaceshipChargerRenderable(0,0,appInfo.getScreenWidth(), appInfo.getScreenHeight(), "spaceship_charger");
         spaceshipChargerRenderable.setImgPath("img/rocket_controller.png");
-        spaceshipChargerRenderable.setCurrentMoonPhase(gameInfo.getCurrentMoonPhase());
-        spaceshipChargerRenderable.setNextMoonPhase(gameInfo.getNextMoonPhase());
-        spaceshipChargerRenderable.setPostNextMoonPhase(gameInfo.getPostNextMoonPhase());
+        initMoonPhases();
+        // set the initial energy units if not in first day
+        if(gameInfo.getCurrentDay() != 0)
+            spaceshipChargerRenderable.setEnergy(gameInfo.getCurrentMoonPhase().getEnergyUnits());
         ActionButton escape = createEscapeButton();
         escape.setUserAction(new UserAction(UserActionCode.BACK));
         spaceshipChargerRenderable.setEscapeButton(escape);
         currentState.addRenderable(spaceshipChargerRenderable);
+    }
+
+    protected void chargeAndPassDay(GameState currentState) {
+        // charging means that we take the energy units from the current moon phase
+        // and add them to the remaining energy of the spaceship
+        spaceshipChargerRenderable.addEnergy(gameInfo.getCurrentMoonPhase().getEnergyUnits());
+        gameInfo.dayPassed();
+        initMoonPhases();
+    }
+
+    protected void initMoonPhases() {
+        spaceshipChargerRenderable.setCurrentMoonPhase(gameInfo.getCurrentMoonPhase());
+        spaceshipChargerRenderable.setNextMoonPhase(gameInfo.getNextMoonPhase());
+        spaceshipChargerRenderable.setPostNextMoonPhase(gameInfo.getPostNextMoonPhase());
     }
 
     @Override

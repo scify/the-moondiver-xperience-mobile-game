@@ -44,6 +44,6 @@ public class AvatarSelectionRenderable extends Renderable {
 
     public void setSelectedAvatar(ActionButton selectedAvatar) {
         this.selectedAvatar = selectedAvatar;
-        componentWasUpdated();
+        renderableWasUpdated();
     }
 }

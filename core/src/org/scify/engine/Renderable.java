@@ -66,7 +66,7 @@ public class Renderable extends Positionable {
         return renderableLastUpdated;
     }
     
-    protected void componentWasUpdated() {
+    protected void renderableWasUpdated() {
         this.renderableLastUpdated = new Date().getTime();
     }
 }

@@ -33,7 +33,7 @@ public class CockpitRenderable extends Renderable {
 
     public void setEnginePerformanceValue(String enginePerformanceValue) {
         this.enginePerformanceValue = enginePerformanceValue;
-        componentWasUpdated();
+        renderableWasUpdated();
     }
 
     public String getRemainingEnergyValue() {
@@ -42,7 +42,7 @@ public class CockpitRenderable extends Renderable {
 
     public void setRemainingEnergyValue(String remainingEnergyValue) {
         this.remainingEnergyValue = remainingEnergyValue;
-        componentWasUpdated();
+        renderableWasUpdated();
     }
 
     public String getDestinationDistanceValue() {
@@ -51,7 +51,7 @@ public class CockpitRenderable extends Renderable {
 
     public void setDestinationDistanceValue(String destinationDistanceValue) {
         this.destinationDistanceValue = destinationDistanceValue;
-        componentWasUpdated();
+        renderableWasUpdated();
     }
 
     public String getPositionValue() {
@@ -60,7 +60,7 @@ public class CockpitRenderable extends Renderable {
 
     public void setPositionValue(String positionValue) {
         this.positionValue = positionValue;
-        componentWasUpdated();
+        renderableWasUpdated();
     }
 
     public ActionButton getLaunchButton() {
@@ -101,7 +101,7 @@ public class CockpitRenderable extends Renderable {
 
     public void setDaysLeftValue(String daysLeftValue) {
         this.daysLeftValue = daysLeftValue;
-        componentWasUpdated();
+        renderableWasUpdated();
     }
 
     public ActionButton getChargeButton() {

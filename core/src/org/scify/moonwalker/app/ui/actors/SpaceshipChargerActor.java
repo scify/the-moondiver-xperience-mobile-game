@@ -1,5 +1,7 @@
 package org.scify.moonwalker.app.ui.actors;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.scify.engine.Renderable;
 import org.scify.moonwalker.app.ui.renderables.SpaceshipChargerRenderable;
 
@@ -14,9 +16,14 @@ public class SpaceshipChargerActor extends TableActor implements Updateable {
      * When adding values to the table, store the created cells
      * into Cell instances, so that they can easily be updated later.
      */
-    protected Cell moonPhaseValueCell;
-    protected Cell nextNightValueCell1;
-    protected Cell nextNightValueCell2;
+    protected Cell currentMoonPhaseEnergyCell;
+    protected Cell nextMoonPhaseEnergyCell;
+    protected Cell postNextMoonPhaseEnergyCell;
+
+    protected Cell currentMoonPhaseImgCell;
+    protected Cell nextMoonPhaseImgCell;
+    protected Cell postNextMoonPhaseImgCell;
+
     protected Cell motorEfficiencyValueCell;
     protected Cell remainingEnergyValueCell;
     protected Cell destinationDistanceValueCell;
@@ -43,17 +50,17 @@ public class SpaceshipChargerActor extends TableActor implements Updateable {
         addTextCell(moonPhasesTable, renderable.CURRENT_MOON_PHASE_LABEL);
         addTextCell(moonPhasesTable, renderable.UNITS_LABEL);
         moonPhasesTable.row();
-        addMoonPhaseImgCell(moonPhasesTable, renderable.getCurrentMoonPhaseImgPath());
-        moonPhaseValueCell = addTextCell(moonPhasesTable, String.valueOf(renderable.getCurrentMoonPhaseUnits()));
+        currentMoonPhaseImgCell = addMoonPhaseImgCell(moonPhasesTable, renderable.getCurrentMoonPhaseImgPath());
+        currentMoonPhaseEnergyCell = addTextCell(moonPhasesTable, String.valueOf(renderable.getCurrentMoonPhaseUnits()));
         moonPhasesTable.row();
         addTextCell(moonPhasesTable, renderable.NEXT_NIGHTS_LABEL);
         addTextCell(moonPhasesTable, renderable.UNITS_LABEL);
         moonPhasesTable.row();
-        addMoonPhaseImgCell(moonPhasesTable, renderable.getNextMoonPhaseImgPath());
-        nextNightValueCell1 = addMoonPhaseTextCell(moonPhasesTable, String.valueOf(renderable.getNextMoonPhaseUnits()));
+        nextMoonPhaseImgCell = addMoonPhaseImgCell(moonPhasesTable, renderable.getNextMoonPhaseImgPath());
+        nextMoonPhaseEnergyCell = addMoonPhaseTextCell(moonPhasesTable, String.valueOf(renderable.getNextMoonPhaseUnits()));
         moonPhasesTable.row();
-        addMoonPhaseImgCell(moonPhasesTable, renderable.getPostNextMoonPhaseImgPath());
-        nextNightValueCell2 = addMoonPhaseTextCell(moonPhasesTable, String.valueOf(renderable.getPostNextMoonPhaseUnits()));
+        postNextMoonPhaseImgCell = addMoonPhaseImgCell(moonPhasesTable, renderable.getPostNextMoonPhaseImgPath());
+        postNextMoonPhaseEnergyCell = addMoonPhaseTextCell(moonPhasesTable, String.valueOf(renderable.getPostNextMoonPhaseUnits()));
         moonPhasesTable.debug();
         return moonPhasesTable;
     }
@@ -95,12 +102,16 @@ public class SpaceshipChargerActor extends TableActor implements Updateable {
         if(this.renderable.getRenderableLastUpdated() > timestamp) {
             System.out.println("setting renderable: " + renderable.getRenderableLastUpdated() + " over: " + this.renderable.getRenderableLastUpdated());
             this.renderable = (SpaceshipChargerRenderable) renderable;
-            setCellValue(moonPhaseValueCell, this.renderable.getCurrentMoonPhaseUnits());
-            setCellValue(nextNightValueCell1, this.renderable.getNextMoonPhaseUnits());
-            setCellValue(nextNightValueCell2, this.renderable.getPostNextMoonPhaseUnits());
-            setCellValue(motorEfficiencyValueCell, this.renderable.getMotorEfficiency());
-            setCellValue(remainingEnergyValueCell, this.renderable.getRemainingEnergy());
-            setCellValue(destinationDistanceValueCell, this.renderable.getDestinationDistance());
+            timestamp = this.renderable.getRenderableLastUpdated();
+            setTextCellValue(currentMoonPhaseEnergyCell, this.renderable.getCurrentMoonPhaseUnits());
+            setTextCellValue(nextMoonPhaseEnergyCell, this.renderable.getNextMoonPhaseUnits());
+            setTextCellValue(postNextMoonPhaseEnergyCell, this.renderable.getPostNextMoonPhaseUnits());
+            setTextCellValue(motorEfficiencyValueCell, this.renderable.getMotorEfficiency());
+            setTextCellValue(remainingEnergyValueCell, this.renderable.getRemainingEnergy());
+            setTextCellValue(destinationDistanceValueCell, this.renderable.getDestinationDistance());
+            updateImgCell(currentMoonPhaseImgCell, this.renderable.getCurrentMoonPhaseImgPath());
+            updateImgCell(nextMoonPhaseImgCell, this.renderable.getNextMoonPhaseImgPath());
+            updateImgCell(postNextMoonPhaseImgCell, this.renderable.getPostNextMoonPhaseImgPath());
         }
     }
 
@@ -116,12 +127,7 @@ public class SpaceshipChargerActor extends TableActor implements Updateable {
         this.escapeButton = escapeButton;
     }
 
-    protected void setCellValue(Cell cell, int newValue) {
+    protected void setTextCellValue(Cell cell, int newValue) {
         updateLabelCell(cell, String.valueOf(newValue));
-    }
-
-    protected void updateLabelCell(Cell cell, String newValue) {
-        Label label = (Label) cell.getActor();
-        label.setText(newValue);
     }
 }

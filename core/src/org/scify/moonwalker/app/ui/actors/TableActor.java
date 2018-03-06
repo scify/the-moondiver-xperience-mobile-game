@@ -48,4 +48,14 @@ public abstract class TableActor extends Table {
         background.setSize(getWidth(), getHeight());
         addActor(background);
     }
+
+    protected void updateLabelCell(Cell cell, String newValue) {
+        Label label = (Label) cell.getActor();
+        label.setText(newValue);
+    }
+
+    protected void updateImgCell(Cell cell, String newImgPath) {
+        Image image = (Image) cell.getActor();
+        image.setDrawable(new TextureRegionDrawable(new TextureRegion(imgUrlToTexture(newImgPath))));
+    }
 }
