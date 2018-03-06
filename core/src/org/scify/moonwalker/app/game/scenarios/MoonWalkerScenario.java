@@ -33,6 +33,9 @@ public class MoonWalkerScenario extends Scenario {
             case SPACESHIP_CHARGER_EPISODE_STARTED:
                 addTemporaryEpisode(new SpaceshipChargerEpisode());
                 break;
+            case SIMPLE_TIMED_IMAGE_EPISODE:
+                addTemporaryEpisode(new SimpleTimedImageEpisode());
+                break;
             case TEMP_EPISODE_FINISHED:
                 break;
             case PREVIOUS_EPISODE:
