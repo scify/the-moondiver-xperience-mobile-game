@@ -16,6 +16,9 @@ public class SpaceshipChargerEpisodeRules extends TemporaryEpisodeRules {
                 episodeEndedEvents(gsCurrent);
                 break;
             case CHARGE_SPACESHIP_PASS_DAY:
+                addImgPathForTimedEpisode(gsCurrent, "img/next_day.jpg");
+                gsCurrent.addGameEvent(new GameEvent("SIMPLE_TIMED_IMAGE_EPISODE_STARTED", null, this));
+                episodeEndedEvents(gsCurrent);
                 chargeAndPassDay(gsCurrent);
                 break;
             default:
@@ -37,21 +40,17 @@ public class SpaceshipChargerEpisodeRules extends TemporaryEpisodeRules {
         spaceshipChargerRenderable = new SpaceshipChargerRenderable(0,0,appInfo.getScreenWidth(), appInfo.getScreenHeight(), "spaceship_charger");
         spaceshipChargerRenderable.setImgPath("img/rocket_controller.png");
         setMoonPhases();
-        // set the initial energy units if not in first day
-        if(gameInfo.getCurrentDay() != 0)
-            spaceshipChargerRenderable.setEnergy(gameInfo.getCurrentMoonPhase().getEnergyUnits());
+        spaceshipChargerRenderable.setRemainingEnergy(gameInfo.getRemainingEnergy());
+
         ActionButton escape = createEscapeButton();
         escape.setUserAction(new UserAction(UserActionCode.BACK));
+
         spaceshipChargerRenderable.setEscapeButton(escape);
         currentState.addRenderable(spaceshipChargerRenderable);
     }
 
     protected void chargeAndPassDay(GameState currentState) {
-        // charging means that we take the energy units from the current moon phase
-        // and add them to the remaining energy of the spaceship
-        spaceshipChargerRenderable.addEnergy(gameInfo.getCurrentMoonPhase().getEnergyUnits());
         gameInfo.dayPassed();
-        setMoonPhases();
     }
 
     protected void setMoonPhases() {
@@ -64,6 +63,8 @@ public class SpaceshipChargerEpisodeRules extends TemporaryEpisodeRules {
     public EpisodeEndState determineEndState(GameState currentState) {
         if(currentState.eventsQueueContainsEventOwnedBy("CALCULATOR_STARTED", this))
             return new EpisodeEndState(EpisodeEndStateCode.CALCULATOR_STARTED, cleanUpState(currentState));
+        if(currentState.eventsQueueContainsEventOwnedBy("SIMPLE_TIMED_IMAGE_EPISODE_STARTED", this))
+            return new EpisodeEndState(EpisodeEndStateCode.SIMPLE_TIMED_IMAGE_EPISODE, cleanUpState(currentState));
         EpisodeEndState endStateFromParent = super.determineEndState(currentState);
         if(endStateFromParent != null)
             return endStateFromParent;

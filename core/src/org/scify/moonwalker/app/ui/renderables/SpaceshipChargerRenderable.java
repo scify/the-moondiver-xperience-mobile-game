@@ -75,7 +75,7 @@ public class SpaceshipChargerRenderable extends Renderable{
         renderableWasUpdated();
     }
 
-    public void setEnergy(int energy) {
+    public void setRemainingEnergy(int energy) {
         this.remainingEnergy = energy;
         renderableWasUpdated();
     }
