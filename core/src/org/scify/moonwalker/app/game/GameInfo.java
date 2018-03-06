@@ -29,9 +29,7 @@ public class GameInfo {
         currentDestinationDistance = -1;
         currentDestinationName = "";
         daysLeftForDestination = -1;
-        currentMoonPhase = moonPhasesController.getMoonPhaseForDay(currentDay);
-        nextMoonPhase = moonPhasesController.getMoonPhaseForDay(currentDay + 1);
-        postNextMoonPhase = moonPhasesController.getMoonPhaseForDay(currentDay + 2);
+        setMoonPhases();
     }
 
     public int getCurrentDay() {
@@ -40,6 +38,11 @@ public class GameInfo {
 
     public void dayPassed() {
         currentDay++;
+        remainingEnergy += currentMoonPhase.energyUnits;
+        setMoonPhases();
+    }
+
+    protected void setMoonPhases() {
         currentMoonPhase = moonPhasesController.getMoonPhaseForDay(currentDay);
         nextMoonPhase = moonPhasesController.getMoonPhaseForDay(currentDay + 1);
         postNextMoonPhase = moonPhasesController.getMoonPhaseForDay(currentDay + 2);
