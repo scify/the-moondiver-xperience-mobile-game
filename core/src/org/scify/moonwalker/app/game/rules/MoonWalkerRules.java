@@ -41,7 +41,6 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
 
     public void setInitialState(GameState initialGameState) {
         this.initialGameState = initialGameState;
-        this.initialGameState.clearRendereablesList();
     }
 
     /**

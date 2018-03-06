@@ -54,6 +54,7 @@ public class BaseEpisodeRules extends SinglePlayerRules {
 
     protected GameState cleanUpState(GameState currentState) {
         currentState.removeAllGameEventsOwnedBy(this);
+        currentState.clearRendereablesList();
         return currentState;
     }
 
