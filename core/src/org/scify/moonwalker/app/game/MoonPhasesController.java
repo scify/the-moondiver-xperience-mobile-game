@@ -20,7 +20,6 @@ public class MoonPhasesController {
         moonPhaseEnergyUnitsMap.add(new MoonPhase("img/moon9.png", 400));
         moonPhaseEnergyUnitsMap.add(new MoonPhase("img/moon10.png", 300));
         moonPhaseEnergyUnitsMap.add(new MoonPhase("img/moon11.png", 200));
-        moonPhaseEnergyUnitsMap.add(new MoonPhase("img/moon12.png", 100));
     }
 
     public MoonPhase getMoonPhaseForDay(int day) {
