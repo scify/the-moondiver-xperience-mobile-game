@@ -86,6 +86,10 @@ public abstract class GameState {
         return additionalDataMap.get(dataId);
     }
 
+    public boolean additionalDataEntryExists(String dataId) {
+        return additionalDataMap.containsKey(dataId);
+    }
+
     /**
      * Get the first game event with a given type
      * @param type
