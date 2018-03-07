@@ -11,11 +11,11 @@ public class CockpitRenderable extends Renderable {
     public final String POSITION_LABEL_IMG_PATH = "img/location.png";
     public final String DAYS_LEFT_LABEL = "Days left:";
 
-    protected String enginePerformanceValue = "0";
-    protected String remainingEnergyValue = "0";
-    protected String destinationDistanceValue = "0";
-    protected String positionValue = "0";
-    protected String daysLeftValue = "0";
+    protected String motorEfficiencyValue;
+    protected String remainingEnergyValue;
+    protected String destinationDistanceValue;
+    protected String positionValue;
+    protected String daysLeftValue;
 
     protected ActionButton launchButton;
     protected ActionButton chargeButton;
@@ -27,12 +27,12 @@ public class CockpitRenderable extends Renderable {
         super(xPos, yPos, width, height, type, id);
     }
 
-    public String getEngineEfficiencyValue() {
-        return enginePerformanceValue;
+    public String getMotorEfficiencyValue() {
+        return motorEfficiencyValue;
     }
 
-    public void setEnginePerformanceValue(String enginePerformanceValue) {
-        this.enginePerformanceValue = enginePerformanceValue;
+    public void setMotorEfficiencyValue(String motorEfficiencyValue) {
+        this.motorEfficiencyValue = motorEfficiencyValue;
         renderableWasUpdated();
     }
 

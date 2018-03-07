@@ -1,12 +1,14 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
+import org.scify.moonwalker.app.game.LocationController;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 
 public class CockpitEpisodeRules extends BaseEpisodeRules {
 
-    CockpitRenderable cockpit;
+    protected CockpitRenderable cockpit;
+    protected LocationController locationController;
 
     @Override
     protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
@@ -28,6 +30,7 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
     @Override
     public void episodeStartedEvents(GameState currentState) {
         if (!isEpisodeStarted(currentState)) {
+            locationController = new LocationController();
             super.episodeStartedEvents(currentState);
             addEpisodeBackgroundImage(currentState, "img/space1.png");
             initializeAndAddCockpit(currentState);
@@ -49,20 +52,35 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
     protected void initializeAndAddCockpit(GameState currentState) {
         cockpit = new CockpitRenderable(0,0, appInfo.getScreenWidth(),
                 appInfo.getScreenHeight(), "cockpit", "cockpit");
+        setCockpitFieldValues();
+        setCockpitButtons();
         cockpit.setImgPath("img/cockpit.png");
+
+        currentState.addRenderable(cockpit);
+    }
+
+    protected void setCockpitFieldValues() {
+        if(gameInfo.getNextLocation() != null)
+            cockpit.setDestinationDistanceValue(String.valueOf(gameInfo.getNextLocation().getDistanceFromLocation(gameInfo.getCurrentLocation())));
+        if(gameInfo.getCurrentLocation() != null)
+            cockpit.setPositionValue(gameInfo.getCurrentLocationName());
+        cockpit.setRemainingEnergyValue(String.valueOf(gameInfo.getRemainingEnergy()));
+        cockpit.setMotorEfficiencyValue(String.valueOf(gameInfo.getMotorEfficiency()));
+    }
+
+    protected void setCockpitButtons() {
         ActionButton launchBtn = createCockpitButton("navigation_button", "img/launch.png", UserActionCode.FINISH_EPISODE);
         ActionButton spaceshipPartsButton = createCockpitButton("spaceship_parts_button", "img/rocket.png", UserActionCode.SPACESHIP_PARTS_EPISODE);
         ActionButton mapBtn = createCockpitButton("map_button", "img/map.png", UserActionCode.MAP_EPISODE);
         ActionButton contactBtn = createCockpitButton("contact_button", "img/contact.png", UserActionCode.FINISH_EPISODE);
         ActionButton chargeBtn = createCockpitButton("charge_button", "img/charge.png", UserActionCode.CHARGE_SPACESHIP_EPISODE);
 
+
         cockpit.setLaunchButton(launchBtn);
         cockpit.setSpaceshipPartsButton(spaceshipPartsButton);
         cockpit.setMapButton(mapBtn);
         cockpit.setContactButton(contactBtn);
         cockpit.setChargeButton(chargeBtn);
-
-        currentState.addRenderable(cockpit);
     }
 
     protected ActionButton createCockpitButton(String id, String imgPath, UserActionCode code) {

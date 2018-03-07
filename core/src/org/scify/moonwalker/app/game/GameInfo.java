@@ -5,8 +5,8 @@ public class GameInfo {
     protected int currentDay;
     protected int motorEfficiency;
     protected int remainingEnergy;
-    protected int currentDestinationDistance;
-    protected String currentDestinationName;
+    protected Location currentLocation;
+    protected Location nextLocation;
     protected int daysLeftForDestination;
     protected MoonPhase currentMoonPhase;
     protected MoonPhase nextMoonPhase;
@@ -26,8 +26,6 @@ public class GameInfo {
         currentDay = 0;
         motorEfficiency = 0;
         remainingEnergy = 0;
-        currentDestinationDistance = -1;
-        currentDestinationName = "";
         daysLeftForDestination = -1;
         setMoonPhases();
     }
@@ -64,20 +62,24 @@ public class GameInfo {
         this.remainingEnergy = remainingEnergy;
     }
 
-    public int getCurrentDestinationDistance() {
-        return currentDestinationDistance;
+    public int getNextLocationDistance() {
+        return nextLocation.getDistanceInKilometers();
     }
 
-    public void setCurrentDestinationDistance(int currentDestinationDistance) {
-        this.currentDestinationDistance = currentDestinationDistance;
+    public void setNextLocation(Location location) {
+        this.nextLocation = location;
     }
 
-    public String getCurrentDestinationName() {
-        return currentDestinationName;
+    public String getCurrentLocationName() {
+        return currentLocation.getName();
     }
 
-    public void setCurrentDestinationName(String currentDestinationName) {
-        this.currentDestinationName = currentDestinationName;
+    public void setCurrentLocation(Location location) {
+        this.currentLocation = location;
+    }
+
+    public Location getCurrentLocation() {
+        return currentLocation;
     }
 
     public int getDaysLeftForDestination() {
@@ -98,5 +100,9 @@ public class GameInfo {
 
     public MoonPhase getPostNextMoonPhase() {
         return postNextMoonPhase;
+    }
+
+    public Location getNextLocation() {
+        return nextLocation;
     }
 }

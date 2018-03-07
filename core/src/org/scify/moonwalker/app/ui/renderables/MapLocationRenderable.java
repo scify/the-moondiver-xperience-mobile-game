@@ -1,12 +1,12 @@
 package org.scify.moonwalker.app.ui.renderables;
 
 import org.scify.engine.Renderable;
+import org.scify.moonwalker.app.game.Location;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 
 public class MapLocationRenderable extends Renderable{
 
-    protected String destinationName;
-    protected float destinationDistance;
+    protected Location location;
     protected String destinationInfo;
     protected ActionButton button;
 
@@ -14,12 +14,8 @@ public class MapLocationRenderable extends Renderable{
         super(xPos, yPos, width, height, "map_location", id);
     }
 
-    public void setDestinationName(String destinationName) {
-        this.destinationName = destinationName;
-    }
-
-    public void setDestinationDistance(float destinationDistance) {
-        this.destinationDistance = destinationDistance;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public void setDestinationInfo(String destinationInfo) {
@@ -27,11 +23,11 @@ public class MapLocationRenderable extends Renderable{
     }
 
     public String getDestinationName() {
-        return destinationName;
+        return location.getName();
     }
 
     public float getDestinationDistance() {
-        return destinationDistance;
+        return location.getDistanceInKilometers();
     }
 
     public String getDestinationInfo() {
