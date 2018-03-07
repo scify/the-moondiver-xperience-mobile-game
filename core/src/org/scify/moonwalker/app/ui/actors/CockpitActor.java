@@ -59,7 +59,7 @@ public class CockpitActor extends TableActor implements Updateable{
         infoTable.setWidth(getWidth() * 0.4f);
         initSubTable(infoTable);
         addImageCell(infoTable, imgUrlToTexture(renderable.MOTOR_EFFICIENCY_IMG_PATH));
-        energyEfficiencyValueCell = addTextCell(infoTable, renderable.getEngineEfficiencyValue());
+        energyEfficiencyValueCell = addTextCell(infoTable, renderable.getMotorEfficiencyValue());
         infoTable.row();
         addImageCell(infoTable, imgUrlToTexture(renderable.REMAINING_ENERGY_IMG_PATH));
         remainingEnergyValueCell = addTextCell(infoTable, renderable.getRemainingEnergyValue());
@@ -113,7 +113,7 @@ public class CockpitActor extends TableActor implements Updateable{
         System.out.println("setting renderable: " + renderable.getRenderableLastUpdated() + " over: " + this.renderable.getRenderableLastUpdated());
             this.renderable = (CockpitRenderable) renderable;
             this.timestamp = this.renderable.getRenderableLastUpdated();
-            setEnergyEfficiency(this.renderable.getEngineEfficiencyValue());
+            setEnergyEfficiency(this.renderable.getMotorEfficiencyValue());
             setRemainingEnergy(this.renderable.getRemainingEnergyValue());
             setRemainingDestination(this.renderable.getDestinationDistanceValue());
             setPosition(this.renderable.getPositionValue());
