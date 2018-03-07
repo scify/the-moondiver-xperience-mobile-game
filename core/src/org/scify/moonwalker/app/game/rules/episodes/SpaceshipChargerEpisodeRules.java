@@ -16,7 +16,7 @@ public class SpaceshipChargerEpisodeRules extends TemporaryEpisodeRules {
                 episodeEndedEvents(gsCurrent);
                 break;
             case CHARGE_SPACESHIP_PASS_DAY:
-                setTimedEpisode(gsCurrent, "img/next_day.jpg", 4000);
+                setFieldsForTimedEpisode(gsCurrent, "img/next_day.jpg", 4000);
                 gsCurrent.addGameEvent(new GameEvent("SIMPLE_TIMED_IMAGE_EPISODE_STARTED", null, this));
                 episodeEndedEvents(gsCurrent);
                 chargeAndPassDay(gsCurrent);
