@@ -20,9 +20,11 @@ public class SimpleTimedImageEpisodeRules extends TemporaryEpisodeRules {
     @Override
     public void episodeStartedEvents(GameState currentState) {
         if (!isEpisodeStarted(currentState)) {
-            episodeEndTimestamp = new Date().getTime() + (int) initialGameState.getAdditionalDataEntry("timed_episode_milliseconds");
+            if (initialGameState.additionalDataEntryExists("timed_episode_milliseconds") && initialGameState.additionalDataEntryExists("timed_episode_img_path")) {
+                episodeEndTimestamp = new Date().getTime() + (int) initialGameState.getAdditionalDataEntry("timed_episode_milliseconds");
+                addEpisodeBackgroundImage(currentState, (String) initialGameState.getAdditionalDataEntry("timed_episode_img_path"));
+            }
             super.episodeStartedEvents(currentState);
-            addEpisodeBackgroundImage(currentState, (String) initialGameState.getAdditionalDataEntry("timed_episode_img_path"));
         }
     }
 
