@@ -36,7 +36,7 @@ public class MapEpisodeRules extends TemporaryEpisodeRules {
             locationController = new LocationController();
             gameInfo = GameInfo.getInstance();
             super.episodeStartedEvents(currentState);
-            addEpisodeBackgroundImage(currentState, "img/map.jpg");
+            addEpisodeBackgroundImage(currentState, "img/map_europe.png");
             addPlayerAvatar(currentState);
             ActionButton escape = createEscapeButton();
             escape.setUserAction(new UserAction(UserActionCode.BACK));
