@@ -54,7 +54,7 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
         ActionButton spaceshipPartsButton = createCockpitButton("spaceship_parts_button", "img/rocket.png", UserActionCode.SPACESHIP_PARTS_EPISODE);
         ActionButton mapBtn = createCockpitButton("map_button", "img/map.png", UserActionCode.MAP_EPISODE);
         ActionButton contactBtn = createCockpitButton("contact_button", "img/contact.png", UserActionCode.FINISH_EPISODE);
-        ActionButton chargeBtn = createCockpitButton("charge_button", "img/battery.png", UserActionCode.CHARGE_SPACESHIP_EPISODE);
+        ActionButton chargeBtn = createCockpitButton("charge_button", "img/charge.png", UserActionCode.CHARGE_SPACESHIP_EPISODE);
 
         cockpit.setLaunchButton(launchBtn);
         cockpit.setSpaceshipPartsButton(spaceshipPartsButton);
@@ -66,6 +66,6 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
     }
 
     protected ActionButton createCockpitButton(String id, String imgPath, UserActionCode code) {
-        return createImageButton(id, imgPath, new UserAction(code), 100, 100);
+        return createImageButton(id, imgPath, new UserAction(code), 0, 0);
     }
 }

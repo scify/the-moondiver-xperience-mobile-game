@@ -5,10 +5,10 @@ import org.scify.moonwalker.app.ui.actors.ActionButton;
 
 public class CockpitRenderable extends Renderable {
 
-    public final String ENGINE_EFFICIENCY_LABEL = "Αποδοση κινητηρα";
-    public final String REMAINING_ENERGY_LABEL = "Διαθεσιμη ενεργεια";
-    public final String DESTINATION_DISTANCE_LABEL = "Αποσταση προορισμου";
-    public final String POSITION_LABEL = "Τοποθεσια:";
+    public final String MOTOR_EFFICIENCY_IMG_PATH = "img/motor_efficiency.png";
+    public final String REMAINING_ENERGY_IMG_PATH = "img/remaining_energy.png";
+    public final String DESTINATION_DISTANCE_IMG_PATH = "img/destination_distance.png";
+    public final String POSITION_LABEL_IMG_PATH = "img/location.png";
     public final String DAYS_LEFT_LABEL = "Days left:";
 
     protected String enginePerformanceValue = "0";

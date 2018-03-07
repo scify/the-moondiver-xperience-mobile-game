@@ -49,22 +49,22 @@ public class CockpitActor extends TableActor implements Updateable{
     }
 
     public void addSubTables() {
-        add(createInfoSubTable()).bottom().width(getWidth() / 2f);
-        add(createNavigationSubTable()).bottom().width(getWidth() / 4f);
-        add(createDaysAndActionsTable()).bottom().height(getHeight()).width(getWidth() / 4f);
+        add(createInfoSubTable()).bottom().width(getWidth() * 0.4f);
+        add(createNavigationSubTable()).bottom().width(getWidth() * 0.3f);
+        add(createDaysAndActionsTable()).bottom().height(getHeight()).width(getWidth() * 0.3f);
     }
 
     public Table createInfoSubTable() {
         Table infoTable = new Table(getSkin());
-
+        infoTable.setWidth(getWidth() * 0.4f);
         initSubTable(infoTable);
-        addTextCell(infoTable, renderable.ENGINE_EFFICIENCY_LABEL);
+        addImageCell(infoTable, imgUrlToTexture(renderable.MOTOR_EFFICIENCY_IMG_PATH));
         energyEfficiencyValueCell = addTextCell(infoTable, renderable.getEngineEfficiencyValue());
         infoTable.row();
-        addTextCell(infoTable, renderable.REMAINING_ENERGY_LABEL);
+        addImageCell(infoTable, imgUrlToTexture(renderable.REMAINING_ENERGY_IMG_PATH));
         remainingEnergyValueCell = addTextCell(infoTable, renderable.getRemainingEnergyValue());
         infoTable.row();
-        addTextCell(infoTable, renderable.DESTINATION_DISTANCE_LABEL);
+        addImageCell(infoTable, imgUrlToTexture(renderable.DESTINATION_DISTANCE_IMG_PATH));
         remainingDestinationValueCell = addTextCell(infoTable, renderable.getDestinationDistanceValue());
         infoTable.debug();
         return infoTable;
@@ -72,30 +72,36 @@ public class CockpitActor extends TableActor implements Updateable{
 
     public Table createNavigationSubTable() {
         Table middleTable = new Table(getSkin());
+        middleTable.setWidth(getWidth() * 0.3f);
         initSubTable(middleTable);
 
-        middleTable.add(launchButton).width(launchButton.getWidth()).height(launchButton.getHeight()).colspan(2).center();
+        middleTable.add(launchButton).width(middleTable.getWidth()).left();
         middleTable.row();
-        middleTable.add(chargeEpisodeButton).width(chargeEpisodeButton.getWidth()).height(chargeEpisodeButton.getHeight()).colspan(2).center();
+        middleTable.add(chargeEpisodeButton).width(middleTable.getWidth()).left();
         middleTable.row();
-        addTextCell(middleTable, renderable.POSITION_LABEL);
+        addImageCell(middleTable, imgUrlToTexture(renderable.POSITION_LABEL_IMG_PATH)).width(middleTable.getWidth() / 2f);
         positionValueCell = addTextCell(middleTable, renderable.getPositionValue());
+        middleTable.debug();
         return middleTable;
     }
 
     public Table createDaysAndActionsTable() {
         Table actionsTable = new Table(getSkin());
+        actionsTable.setHeight(getHeight());
+        actionsTable.setWidth(getWidth() * 0.3f);
+        System.out.println(getWidth());
+        System.out.println(getHeight());
         initSubTable(actionsTable);
 
         addTextCell(actionsTable, renderable.DAYS_LEFT_LABEL).top().expand().left();
         daysLeftCell = addTextCell(actionsTable, renderable.getDaysLeftValue()).top().expand().left();
 
         actionsTable.row();
-        actionsTable.add(spaceshipPartsButton).bottom().width(spaceshipPartsButton.getWidth()).height(spaceshipPartsButton.getHeight()).colspan(2);
+        actionsTable.add(spaceshipPartsButton).bottom().width(actionsTable.getWidth());
         actionsTable.row();
-        actionsTable.add(mapButton).bottom().width(mapButton.getWidth()).height(mapButton.getHeight()).colspan(2);
+        actionsTable.add(mapButton).bottom().width(actionsTable.getWidth());
         actionsTable.row();
-        actionsTable.add(contactButton).bottom().width(contactButton.getWidth()).height(contactButton.getHeight()).colspan(2);
+        actionsTable.add(contactButton).bottom().width(actionsTable.getWidth());
         actionsTable.row();
         actionsTable.debug();
         return actionsTable;
