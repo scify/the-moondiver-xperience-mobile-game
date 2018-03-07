@@ -150,9 +150,6 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
 
     protected void addEpisodeBackgroundImage(GameState currentState, String imgPath) {
         currentState.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", imgPath));
-//        Renderable spaceImage = new Renderable(0,0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), "background_image", "space");
-//        spaceImage.setImgPath(imgPath);
-//        currentState.addRenderable(spaceImage);
     }
 
     protected boolean isConversationOngoing(GameState gsCurrent) {
