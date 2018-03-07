@@ -14,8 +14,10 @@ public class MoonWalkerScenario extends Scenario {
         addEpisodeAfterCurrent(secondEpisode);
         Episode roomEpisode = new RoomEpisode();
         addEpisodeAfter(secondEpisode, roomEpisode);
+        Episode forestLoadingEpisode = new ForestLoadingEpisode();
+        addEpisodeAfter(roomEpisode, forestLoadingEpisode);
         Episode forestEpisode = new ForestEpisode();
-        addEpisodeAfter(roomEpisode, forestEpisode);
+        addEpisodeAfter(forestLoadingEpisode, forestEpisode);
         Episode cockpitEpisode = new CockpitEpisode();
         addEpisodeAfter(forestEpisode, cockpitEpisode);
     }
