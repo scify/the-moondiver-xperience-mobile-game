@@ -139,7 +139,7 @@ public class ActorFactory extends ComponentFactory{
         actor.setMapButton(createButton(renderable.getMapButton()));
         actor.setSpaceshipPartsButton(createButton(renderable.getSpaceshipPartsButton()));
         actor.setContactButton(createButton(renderable.getContactButton()));
-        actor.addSubTables();
+        actor.init();
         return actor;
     }
 
