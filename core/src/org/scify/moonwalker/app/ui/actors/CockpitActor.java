@@ -2,9 +2,12 @@ package org.scify.moonwalker.app.ui.actors;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
+import com.badlogic.gdx.utils.Align;
 import org.scify.engine.Renderable;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
@@ -39,7 +42,7 @@ public class CockpitActor extends TableActor implements Updateable{
         setWidth(renderable.getWidth());
         setHeight(renderable.getHeight());
         addBackground(renderable.getImgPath());
-        debug();
+        //debug();
     }
 
     public void addBackground(String imgPath) {
@@ -74,7 +77,7 @@ public class CockpitActor extends TableActor implements Updateable{
         addImageCell(dayLeftTable,
                 imgUrlToTexture(renderable.DAYS_LEFT_IMG_PATH)).width(dayLeftTable.getWidth() * 0.1f - getDefaultCellPadding()*2);
 
-        dayLeftTable.debug();
+        //dayLeftTable.debug();
         return dayLeftTable;
     }
 
@@ -96,14 +99,29 @@ public class CockpitActor extends TableActor implements Updateable{
         remainingDestinationValueCell = addInfoAndActionTableRow(renderable.DESTINATION_DISTANCE_IMG_PATH, renderable.getDestinationDistanceValue(), mapButton);
         positionValueCell = addInfoAndActionTableRow(renderable.POSITION_LABEL_IMG_PATH, renderable.getPositionValue(), spaceshipPartsButton);
 
-        infoAndActionsTable.debug();
+        //infoAndActionsTable.debug();
         return infoAndActionsTable;
     }
 
     protected Cell addInfoAndActionTableRow(String imgPath, String valueData, Button button) {
         Cell imageCell = addImageCell(infoAndActionsTable, imgUrlToTexture(imgPath));
         setCellDimensions(imageCell, infoAndActionsTable, 0.5f, 4);
-        Cell valueCell = addTextCell(infoAndActionsTable, valueData);
+        //Cell valueCell = addTextCell(infoAndActionsTable, valueData);
+
+        Group group = new Group();
+        Image cellBagkckground = new Image(new TextureRegionDrawable(new TextureRegion(imgUrlToTexture("img/cockpit/cell_background.png"))));
+        cellBagkckground.setWidth(infoAndActionsTable.getWidth() * 0.1f - getDefaultCellPadding() * 2);
+        cellBagkckground.setHeight((infoAndActionsTable.getHeight() / 4) - getDefaultCellPadding() * 2);
+        group.addActor(cellBagkckground);
+        Label valueLabel = new Label(valueData, getSkin());
+        valueLabel.setAlignment(Align.center);
+        //valueLabel.setDebug(true);
+        valueLabel.setWidth(infoAndActionsTable.getWidth() * 0.1f - getDefaultCellPadding() * 2);
+        valueLabel.setHeight((infoAndActionsTable.getHeight() / 4) - getDefaultCellPadding() * 2);
+        //group.setDebug(true);
+        group.addActor(valueLabel);
+        Cell valueCell = infoAndActionsTable.add(group);
+
         setCellDimensions(valueCell, infoAndActionsTable, 0.1f, 4);
         Cell buttonCell = infoAndActionsTable.add(button);
         setCellDimensions(buttonCell, infoAndActionsTable, 0.4f, 4);
@@ -116,7 +134,7 @@ public class CockpitActor extends TableActor implements Updateable{
     @Override
     public void update(Renderable renderable) {
         if(this.renderable.getRenderableLastUpdated() > timestamp){
-        System.out.println("setting renderable: " + renderable.getRenderableLastUpdated() + " over: " + this.renderable.getRenderableLastUpdated());
+            System.out.println("setting renderable: " + renderable.getRenderableLastUpdated() + " over: " + this.renderable.getRenderableLastUpdated());
             this.renderable = (CockpitRenderable) renderable;
             this.timestamp = this.renderable.getRenderableLastUpdated();
             setMotorEfficiency(this.renderable.getMotorEfficiencyValue());
@@ -128,28 +146,34 @@ public class CockpitActor extends TableActor implements Updateable{
     }
 
     protected void setMotorEfficiency(String newValue) {
-        updateLabelCell(motorEfficiencyValueCell, newValue);
+        updateInfoValueCell(motorEfficiencyValueCell, newValue);
     }
 
     protected void setRemainingEnergy(String newValue) {
-        updateLabelCell(remainingEnergyValueCell, newValue);
+        updateInfoValueCell(remainingEnergyValueCell, newValue);
     }
 
     protected void setRemainingDestination(String newValue) {
-        updateLabelCell(remainingDestinationValueCell, newValue);
+        updateInfoValueCell(remainingDestinationValueCell, newValue);
     }
 
     protected void setPosition(String newValue) {
-        updateLabelCell(positionValueCell, newValue);
+        updateInfoValueCell(positionValueCell, newValue);
     }
 
     protected void setDaysLeft(String newValue) {
-        updateLabelCell(daysLeftCell, newValue);
+        updateInfoValueCell(daysLeftCell, newValue);
     }
 
-    protected void updateLabelCell(Cell cell, String newValue) {
-        Label label = (Label) cell.getActor();
-        label.setText(newValue);
+    protected void updateInfoValueCell(Cell cell, String newValue) {
+        // we need to search for the Label type actor in the group we have stored in the cell
+        Group group = (Group) cell.getActor();
+        for(Actor actor : group.getChildren()) {
+            if(actor instanceof Label) {
+                Label label = (Label) actor;
+                label.setText(newValue);
+            }
+        }
     }
 
     public void setLaunchButton(Button launchButton) {
