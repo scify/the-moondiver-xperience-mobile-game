@@ -36,7 +36,7 @@ public abstract class TableActor extends Table {
     }
 
     protected void initSubTable(Table subTable) {
-        subTable.defaults().pad(appInfo.pixelsWithDensity(TABLES_PADDING_PIXELS));
+        subTable.defaults().pad(getDefaultCellPadding());
     }
 
     protected Cell addButtonCell(Table table, Button button) {
@@ -57,5 +57,13 @@ public abstract class TableActor extends Table {
     protected void updateImgCell(Cell cell, String newImgPath) {
         Image image = (Image) cell.getActor();
         image.setDrawable(new TextureRegionDrawable(new TextureRegion(imgUrlToTexture(newImgPath))));
+    }
+
+    protected float getDefaultCellPadding() {
+        return appInfo.pixelsWithDensity(TABLES_PADDING_PIXELS);
+    }
+
+    protected void setCellDimensions(Cell cell, Table table, float widthPercentage, int numOfRows) {
+        cell.width(table.getWidth() * widthPercentage - getDefaultCellPadding() * 2).height((table.getHeight() / numOfRows) - getDefaultCellPadding() * 2);
     }
 }
