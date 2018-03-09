@@ -5,11 +5,11 @@ import org.scify.moonwalker.app.ui.actors.ActionButton;
 
 public class CockpitRenderable extends Renderable {
 
-    public final String MOTOR_EFFICIENCY_IMG_PATH = "img/motor_efficiency.png";
-    public final String REMAINING_ENERGY_IMG_PATH = "img/remaining_energy.png";
-    public final String DESTINATION_DISTANCE_IMG_PATH = "img/destination_distance.png";
-    public final String POSITION_LABEL_IMG_PATH = "img/location.png";
-    public final String DAYS_LEFT_LABEL = "Days left:";
+    public final String MOTOR_EFFICIENCY_IMG_PATH = "img/cockpit/motor_efficiency.png";
+    public final String REMAINING_ENERGY_IMG_PATH = "img/cockpit/remaining_energy.png";
+    public final String DESTINATION_DISTANCE_IMG_PATH = "img/cockpit/destination_distance.png";
+    public final String POSITION_LABEL_IMG_PATH = "img/cockpit/location.png";
+    public final String DAYS_LEFT_IMG_PATH = "img/cockpit/days_left.png";
 
     protected String motorEfficiencyValue;
     protected String remainingEnergyValue;

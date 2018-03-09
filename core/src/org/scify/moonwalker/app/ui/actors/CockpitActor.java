@@ -13,7 +13,7 @@ import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 public class CockpitActor extends TableActor implements Updateable{
 
     protected CockpitRenderable renderable;
-
+    protected Table infoAndActionsTable;
     protected Button launchButton;
     protected Button spaceshipPartsButton;
     protected Button mapButton;
@@ -24,7 +24,7 @@ public class CockpitActor extends TableActor implements Updateable{
      * When adding values to the table, store the created cells
      * into Cell instances, so that they can easily be updated later.
      */
-    protected Cell energyEfficiencyValueCell;
+    protected Cell motorEfficiencyValueCell;
     protected Cell remainingEnergyValueCell;
     protected Cell remainingDestinationValueCell;
     protected Cell positionValueCell;
@@ -48,64 +48,70 @@ public class CockpitActor extends TableActor implements Updateable{
         addActor(background);
     }
 
-    public void addSubTables() {
-        add(createInfoSubTable()).bottom().width(getWidth() * 0.4f);
-        add(createNavigationSubTable()).bottom().width(getWidth() * 0.3f);
-        add(createDaysAndActionsTable()).bottom().height(getHeight()).width(getWidth() * 0.3f);
+    public void init() {
+        // Create 4 rows
+        // 1st row:days
+        row().height(0.2f * getHeight());
+        add(createDaysLeftTable()).right();
+        // 2nd row: empty/post-it
+        row().expandY();
+        Table empty = new Table();
+
+        add(empty);
+        // 3rd row: launch
+        row().height(0.1f *getHeight());
+        add(createLaunchTable());
+        // 4th row: info & actions
+        row().height(0.4f * getHeight());
+        add(createInfoSubTable());
+    }
+
+    public Table createDaysLeftTable() {
+        Table dayLeftTable = new Table(getSkin());
+        initSubTable(dayLeftTable);
+        dayLeftTable.setWidth(getWidth());
+        dayLeftTable.setHeight(getHeight() * 0.2f);
+        addImageCell(dayLeftTable,
+                imgUrlToTexture(renderable.DAYS_LEFT_IMG_PATH)).width(dayLeftTable.getWidth() * 0.1f - getDefaultCellPadding()*2);
+
+        dayLeftTable.debug();
+        return dayLeftTable;
+    }
+
+    public Table createLaunchTable() {
+        Table launchTable = new Table(getSkin());
+        initSubTable(launchTable);
+        launchTable.add(launchButton).fillY().width(0.2f * getWidth());
+        return launchTable;
     }
 
     public Table createInfoSubTable() {
-        Table infoTable = new Table(getSkin());
-        infoTable.setWidth(getWidth() * 0.4f);
-        initSubTable(infoTable);
-        addImageCell(infoTable, imgUrlToTexture(renderable.MOTOR_EFFICIENCY_IMG_PATH));
-        energyEfficiencyValueCell = addTextCell(infoTable, renderable.getMotorEfficiencyValue());
-        infoTable.row();
-        addImageCell(infoTable, imgUrlToTexture(renderable.REMAINING_ENERGY_IMG_PATH));
-        remainingEnergyValueCell = addTextCell(infoTable, renderable.getRemainingEnergyValue());
-        infoTable.row();
-        addImageCell(infoTable, imgUrlToTexture(renderable.DESTINATION_DISTANCE_IMG_PATH));
-        remainingDestinationValueCell = addTextCell(infoTable, renderable.getDestinationDistanceValue());
-        infoTable.debug();
-        return infoTable;
+        infoAndActionsTable = new Table(getSkin());
+        initSubTable(infoAndActionsTable);
+        infoAndActionsTable.setWidth(getWidth());
+        infoAndActionsTable.setHeight(getHeight() * 0.4f);
+
+        motorEfficiencyValueCell = addInfoAndActionTableRow(renderable.MOTOR_EFFICIENCY_IMG_PATH, renderable.getMotorEfficiencyValue(), contactButton);
+        remainingEnergyValueCell = addInfoAndActionTableRow(renderable.REMAINING_ENERGY_IMG_PATH, renderable.getRemainingEnergyValue(), chargeEpisodeButton);
+        remainingDestinationValueCell = addInfoAndActionTableRow(renderable.DESTINATION_DISTANCE_IMG_PATH, renderable.getDestinationDistanceValue(), mapButton);
+        positionValueCell = addInfoAndActionTableRow(renderable.POSITION_LABEL_IMG_PATH, renderable.getPositionValue(), spaceshipPartsButton);
+
+        infoAndActionsTable.debug();
+        return infoAndActionsTable;
     }
 
-    public Table createNavigationSubTable() {
-        Table middleTable = new Table(getSkin());
-        middleTable.setWidth(getWidth() * 0.3f);
-        initSubTable(middleTable);
+    protected Cell addInfoAndActionTableRow(String imgPath, String valueData, Button button) {
+        Cell imageCell = addImageCell(infoAndActionsTable, imgUrlToTexture(imgPath));
+        setCellDimensions(imageCell, infoAndActionsTable, 0.5f, 4);
+        Cell valueCell = addTextCell(infoAndActionsTable, valueData);
+        setCellDimensions(valueCell, infoAndActionsTable, 0.1f, 4);
+        Cell buttonCell = infoAndActionsTable.add(button);
+        setCellDimensions(buttonCell, infoAndActionsTable, 0.4f, 4);
 
-        middleTable.add(launchButton).width(middleTable.getWidth()).left();
-        middleTable.row();
-        middleTable.add(chargeEpisodeButton).width(middleTable.getWidth()).left();
-        middleTable.row();
-        addImageCell(middleTable, imgUrlToTexture(renderable.POSITION_LABEL_IMG_PATH)).width(middleTable.getWidth() / 2f);
-        positionValueCell = addTextCell(middleTable, renderable.getPositionValue());
-        middleTable.debug();
-        return middleTable;
+        infoAndActionsTable.row().fillY();
+        return valueCell;
     }
 
-    public Table createDaysAndActionsTable() {
-        Table actionsTable = new Table(getSkin());
-        actionsTable.setHeight(getHeight());
-        actionsTable.setWidth(getWidth() * 0.3f);
-        System.out.println(getWidth());
-        System.out.println(getHeight());
-        initSubTable(actionsTable);
-
-        addTextCell(actionsTable, renderable.DAYS_LEFT_LABEL).top().expand().left();
-        daysLeftCell = addTextCell(actionsTable, renderable.getDaysLeftValue()).top().expand().left();
-
-        actionsTable.row();
-        actionsTable.add(spaceshipPartsButton).bottom().width(actionsTable.getWidth());
-        actionsTable.row();
-        actionsTable.add(mapButton).bottom().width(actionsTable.getWidth());
-        actionsTable.row();
-        actionsTable.add(contactButton).bottom().width(actionsTable.getWidth());
-        actionsTable.row();
-        actionsTable.debug();
-        return actionsTable;
-    }
 
     @Override
     public void update(Renderable renderable) {
@@ -113,7 +119,7 @@ public class CockpitActor extends TableActor implements Updateable{
         System.out.println("setting renderable: " + renderable.getRenderableLastUpdated() + " over: " + this.renderable.getRenderableLastUpdated());
             this.renderable = (CockpitRenderable) renderable;
             this.timestamp = this.renderable.getRenderableLastUpdated();
-            setEnergyEfficiency(this.renderable.getMotorEfficiencyValue());
+            setMotorEfficiency(this.renderable.getMotorEfficiencyValue());
             setRemainingEnergy(this.renderable.getRemainingEnergyValue());
             setRemainingDestination(this.renderable.getDestinationDistanceValue());
             setPosition(this.renderable.getPositionValue());
@@ -121,9 +127,8 @@ public class CockpitActor extends TableActor implements Updateable{
         }
     }
 
-
-    protected void setEnergyEfficiency(String newValue) {
-        updateLabelCell(energyEfficiencyValueCell, newValue);
+    protected void setMotorEfficiency(String newValue) {
+        updateLabelCell(motorEfficiencyValueCell, newValue);
     }
 
     protected void setRemainingEnergy(String newValue) {

@@ -34,6 +34,8 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
             super.episodeStartedEvents(currentState);
             addEpisodeBackgroundImage(currentState, "img/space1.png");
             initializeAndAddCockpit(currentState);
+        } else {
+
         }
     }
 
@@ -54,7 +56,7 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
                 appInfo.getScreenHeight(), "cockpit", "cockpit");
         setCockpitFieldValues();
         setCockpitButtons();
-        cockpit.setImgPath("img/cockpit.png");
+        cockpit.setImgPath("img/cockpit/cockpit_background.png");
 
         currentState.addRenderable(cockpit);
     }
@@ -69,11 +71,11 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
     }
 
     protected void setCockpitButtons() {
-        ActionButton launchBtn = createCockpitButton("navigation_button", "img/launch.png", UserActionCode.FINISH_EPISODE);
-        ActionButton spaceshipPartsButton = createCockpitButton("spaceship_parts_button", "img/rocket.png", UserActionCode.SPACESHIP_PARTS_EPISODE);
-        ActionButton mapBtn = createCockpitButton("map_button", "img/map.png", UserActionCode.MAP_EPISODE);
-        ActionButton contactBtn = createCockpitButton("contact_button", "img/contact.png", UserActionCode.FINISH_EPISODE);
-        ActionButton chargeBtn = createCockpitButton("charge_button", "img/charge.png", UserActionCode.CHARGE_SPACESHIP_EPISODE);
+        ActionButton launchBtn = createCockpitButton("navigation_button", "img/cockpit/launch.png", UserActionCode.FINISH_EPISODE);
+        ActionButton spaceshipPartsButton = createCockpitButton("spaceship_parts_button", "img/cockpit/spaceship.png", UserActionCode.SPACESHIP_PARTS_EPISODE);
+        ActionButton mapBtn = createCockpitButton("map_button", "img/cockpit/map.png", UserActionCode.MAP_EPISODE);
+        ActionButton contactBtn = createCockpitButton("contact_button", "img/cockpit/contact.png", UserActionCode.FINISH_EPISODE);
+        ActionButton chargeBtn = createCockpitButton("charge_button", "img/cockpit/charge.png", UserActionCode.CHARGE_SPACESHIP_EPISODE);
 
 
         cockpit.setLaunchButton(launchBtn);
