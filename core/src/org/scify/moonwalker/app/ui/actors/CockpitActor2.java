@@ -63,8 +63,9 @@ public class CockpitActor2 extends TableActor implements Updateable {
         //topRightLabel.setAlignment(1);
         Table topRightTable = new Table();
         topRightTable.defaults();
-        topRightTable.add(launchButton).height(0.24f *screenHeight).width(0.2f *screenWidth);
+        //topRightTable.add(launchButton).height(0.24f *screenHeight).width(0.2f *screenWidth);
         //topRightTable.add(topRightLabel);
+        addImageCell(topRightTable, imgUrlToTexture(renderable.DAYS_LEFT_IMG_PATH)).height(0.24f *screenHeight).width(0.2f *screenWidth);
         add(topRightTable).expandX().top().right().padTop(screenHeight * 0.09f).padRight(screenWidth * 0.04f);
         row().padTop(0.1f * screenHeight);
 
