@@ -33,6 +33,7 @@ public class SpaceshipChargerEpisodeRules extends TemporaryEpisodeRules {
             super.episodeStartedEvents(currentState);
             addEpisodeBackgroundImage(currentState, "img/space1.png");
             initializeAndAddRocketController(currentState);
+            currentState.addGameEvent(new GameEvent("SCREEN_FADE_IN", 1f, this));
         }
     }
 
