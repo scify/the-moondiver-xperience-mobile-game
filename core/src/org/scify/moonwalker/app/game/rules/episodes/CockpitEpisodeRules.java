@@ -5,6 +5,8 @@ import org.scify.moonwalker.app.game.LocationController;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 
+import java.util.Date;
+
 public class CockpitEpisodeRules extends BaseEpisodeRules {
 
     protected CockpitRenderable cockpit;
@@ -18,13 +20,27 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
                 episodeEndedEvents(gsCurrent);
                 break;
             case CHARGE_SPACESHIP_EPISODE:
-                gsCurrent.addGameEvent(new GameEvent("SPACESHIP_CHARGER_EPISODE_STARTED", null, this));
-                episodeEndedEvents(gsCurrent);
+                gsCurrent.addGameEvent(new GameEvent("SCREEN_FADE_OUT", 3f));
+                GameEvent gameEvent = new GameEvent("EPISODE_ENDED_DELAY", "SPACESHIP_CHARGER_EPISODE_STARTED", this);
+                gameEvent.delay = new Date().getTime() + 2500;
+                gsCurrent.addGameEvent(gameEvent);
                 break;
             default:
                 super.handleUserAction(gsCurrent, userAction);
                 break;
         }
+    }
+
+    @Override
+    public GameState getNextState(GameState gsCurrent, UserAction userAction) {
+        if(gsCurrent.eventsQueueContainsEvent("EPISODE_ENDED_DELAY")) {
+            GameEvent gameEvent = gsCurrent.getGameEventsWithType("EPISODE_ENDED_DELAY");
+            if(gameEvent != null && new Date().getTime() > gameEvent.delay) {
+                gsCurrent.addGameEvent(new GameEvent("SPACESHIP_CHARGER_EPISODE_STARTED", null, this));
+                episodeEndedEvents(gsCurrent);
+            }
+        }
+        return super.getNextState(gsCurrent, userAction);
     }
 
     @Override
@@ -34,6 +50,7 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
             super.episodeStartedEvents(currentState);
             addEpisodeBackgroundImage(currentState, "img/space1.png");
             initializeAndAddCockpit(currentState);
+            currentState.addGameEvent(new GameEvent("SCREEN_FADE_IN", 1f, this));
         } else {
 
         }
