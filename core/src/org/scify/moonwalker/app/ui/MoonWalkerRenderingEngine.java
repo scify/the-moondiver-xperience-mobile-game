@@ -7,13 +7,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import org.scify.engine.*;
+import org.scify.engine.GameEvent;
+import org.scify.engine.Renderable;
+import org.scify.engine.RenderingEngine;
+import org.scify.engine.UserInputHandler;
 import org.scify.engine.audio.AudioEngine;
 import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.moonwalker.app.helpers.AppInfo;
@@ -21,7 +25,13 @@ import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 import org.scify.moonwalker.app.ui.sound.GdxAudioEngine;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ListIterator;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
 
 public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGameState> {
     /**
@@ -144,12 +154,23 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         }
     }
 
-    private void handleCurrentGameEvent(GameEvent gameEvent, ListIterator<GameEvent> listIterator) {
+    private void handleCurrentGameEvent(GameEvent gameEvent, final ListIterator<GameEvent> listIterator) {
         String eventType = currentGameEvent.type;
         switch (eventType) {
             case "BACKGROUND_IMG_UI":
                 String imgPath = (String) gameEvent.parameters;
                 worldImg.setDrawable(new SpriteDrawable(new Sprite(new Texture(resourceLocator.getFilePath(imgPath)))));
+                listIterator.remove();
+                break;
+            case "SCREEN_FADE_OUT":
+                listIterator.remove();
+                Action fadeOut = fadeOut((Float) gameEvent.parameters);
+                stage.getRoot().addAction(fadeOut);
+                break;
+            case "SCREEN_FADE_IN":
+                stage.getRoot().getColor().a = 0;
+                Action action = fadeIn((Float) gameEvent.parameters);
+                stage.getRoot().addAction(action);
                 listIterator.remove();
                 break;
             case "BORDER_UI":
