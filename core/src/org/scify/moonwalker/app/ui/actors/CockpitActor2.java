@@ -6,14 +6,13 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-
 import com.badlogic.gdx.utils.Align;
 import org.scify.engine.Renderable;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 
-public class CockpitActor extends TableActor implements Updateable{
+public class CockpitActor2 extends TableActor implements Updateable {
 
     protected CockpitRenderable renderable;
     protected Table infoAndActionsTable;
@@ -22,6 +21,7 @@ public class CockpitActor extends TableActor implements Updateable{
     protected Button mapButton;
     protected Button contactButton;
     protected Button chargeEpisodeButton;
+
 
     /**
      * When adding values to the table, store the created cells
@@ -33,7 +33,7 @@ public class CockpitActor extends TableActor implements Updateable{
     protected Cell positionValueCell;
     protected Cell daysLeftCell;
 
-    public CockpitActor(Skin skin, CockpitRenderable renderable) {
+    public CockpitActor2(Skin skin, CockpitRenderable renderable) {
         super(skin);
         appInfo = AppInfo.getInstance();
         resourceLocator = new ResourceLocator();
@@ -52,22 +52,83 @@ public class CockpitActor extends TableActor implements Updateable{
     }
 
     public void init() {
+        float screenHeight = getHeight();
+        float screenWidth = getWidth();
+
         // Create 4 rows
         // 1st row:days
-        row().height(0.2f * getHeight());
-        add(createDaysLeftTable()).right();
-        // 2nd row: empty/post-it
-        row().expandY();
-        Table empty = new Table();
+        top();
 
-        add(empty);
-        // 3rd row: launch
-        row().height(0.1f *getHeight());
-        add(createLaunchTable());
-        // 4th row: info & actions
-        row().height(0.4f * getHeight());
-        add(createInfoSubTable());
+        //Label topRightLabel = new Label("Λονδίνο", getSkin());
+        //topRightLabel.setAlignment(1);
+        Table topRightTable = new Table();
+        topRightTable.defaults();
+        topRightTable.add(launchButton).height(0.24f *screenHeight).width(0.2f *screenWidth);
+        //topRightTable.add(topRightLabel);
+        add(topRightTable).expandX().top().right().padTop(screenHeight * 0.09f).padRight(screenWidth * 0.04f);
+        row().padTop(0.1f * screenHeight);
+
+        //
+        /*Table bottomMenu = new Table();
+        bottomMenu.defaults();
+
+        Table leftBottomPart = new Table();
+        leftBottomPart.defaults();
+        Label leftMenu = new Label("leftMenu", getSkin());
+        leftMenu.setAlignment(1);
+        leftBottomPart.add(leftMenu);
+
+        Table centralBottomPart = new Table();
+        centralBottomPart.defaults();
+        Label centralMenu1 = new Label("ΕΠΙΚΟΙΝΩΝΙΑ", getSkin());
+        centralMenu1.setAlignment(1);
+        centralBottomPart.add(centralMenu1);
+        centralBottomPart.row();
+        Label centralMenu2 = new Label("ΦΟΡΤΙΣΗ", getSkin());
+        centralMenu2.setAlignment(1);
+        centralBottomPart.add(centralMenu2);
+        centralBottomPart.row();
+        Label centralMenu3 = new Label("ΣΚΑΦΟΣ", getSkin());
+        centralMenu3.setAlignment(1);
+        centralBottomPart.add(centralMenu3);
+        centralBottomPart.row();
+        Label centralMenu4 = new Label("ΧΑΡΤΗΣ", getSkin());
+        centralMenu4.setAlignment(1);
+        centralBottomPart.add(centralMenu4);
+        centralBottomPart.row();
+        Label centralMenu5 = new Label("ΑΠΟΓΕΙΩΣΗ", getSkin());
+        centralMenu5.setAlignment(1);
+        centralBottomPart.add(centralMenu5);
+
+
+        Table rightBottomPart = new Table();
+        rightBottomPart.defaults();
+        Label rightMenu = new Label("rightMenu", getSkin());
+        rightMenu.setAlignment(1);
+        rightBottomPart.add(rightMenu);
+
+        bottomMenu.add(leftBottomPart).width(0.3f * screenWidth).height(0.20f * screenHeight).padTop(0.2f *screenHeight);
+        bottomMenu.add(centralBottomPart).width(0.3f * screenWidth).height(0.55f * screenHeight);
+        bottomMenu.add(rightBottomPart).width(0.3f * screenWidth).height(0.20f * screenHeight).padTop(0.2f *screenHeight);
+        add(bottomMenu);*/
+
+
+        //row().height(0.2f * getHeight());
+        //add(createDaysLeftTable()).right();
+        //add(createDaysLeftTable());
         debug();
+        // 2nd row: empty/post-it
+        //row().expandY();
+        //Table empty = new Table();
+
+        //add(empty);
+        // 3rd row: launch
+        /*row().height(0.1f *getHeight());
+        add(createLaunchTable());*/
+        // 4th row: info & actions
+        /*row().height(0.4f * getHeight());
+        add(createInfoSubTable());*/
+        //debug();
     }
 
     public Table createDaysLeftTable() {
@@ -75,9 +136,7 @@ public class CockpitActor extends TableActor implements Updateable{
         initSubTable(dayLeftTable);
         dayLeftTable.setWidth(getWidth());
         dayLeftTable.setHeight(getHeight() * 0.2f);
-        addImageCell(dayLeftTable,
-                imgUrlToTexture(renderable.DAYS_LEFT_IMG_PATH)).width(dayLeftTable.getWidth() * 0.1f - getDefaultCellPadding()*2);
-
+        addImageCell(dayLeftTable, imgUrlToTexture(renderable.DAYS_LEFT_IMG_PATH)).width(dayLeftTable.getWidth() * 0.1f - getDefaultCellPadding() * 2);
         //dayLeftTable.debug();
         return dayLeftTable;
     }
@@ -134,7 +193,7 @@ public class CockpitActor extends TableActor implements Updateable{
 
     @Override
     public void update(Renderable renderable) {
-        if(this.renderable.getRenderableLastUpdated() > timestamp){
+        if (this.renderable.getRenderableLastUpdated() > timestamp) {
             System.out.println("setting renderable: " + renderable.getRenderableLastUpdated() + " over: " + this.renderable.getRenderableLastUpdated());
             this.renderable = (CockpitRenderable) renderable;
             this.timestamp = this.renderable.getRenderableLastUpdated();
@@ -169,8 +228,8 @@ public class CockpitActor extends TableActor implements Updateable{
     protected void updateInfoValueCell(Cell cell, String newValue) {
         // we need to search for the Label type actor in the group we have stored in the cell
         Group group = (Group) cell.getActor();
-        for(Actor actor : group.getChildren()) {
-            if(actor instanceof Label) {
+        for (Actor actor : group.getChildren()) {
+            if (actor instanceof Label) {
                 Label label = (Label) actor;
                 label.setText(newValue);
             }

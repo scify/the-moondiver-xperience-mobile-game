@@ -56,8 +56,8 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
                 appInfo.getScreenHeight(), "cockpit", "cockpit");
         setCockpitFieldValues();
         setCockpitButtons();
-        cockpit.setImgPath("img/cockpit/cockpit_background.png");
-
+        //cockpit.setImgPath("img/cockpit/cockpit_background.png");
+        cockpit.setImgPath("img/cockpit/cockpit_background2.png");
         currentState.addRenderable(cockpit);
     }
 

@@ -127,7 +127,8 @@ public class ActorFactory extends ComponentFactory{
     }
 
     private Actor createCockpitActor(final CockpitRenderable renderable) {
-        CockpitActor actor = new CockpitActor(skin, renderable);
+        CockpitActor2 actor = new CockpitActor2(skin, renderable);
+
         Button launchBtn = createButton(renderable.getLaunchButton());
         addButtonListener(launchBtn, renderable.getLaunchButton());
         Button chargeEpisodeBtn = createButton(renderable.getChargeButton());
