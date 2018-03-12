@@ -46,6 +46,7 @@ public class BaseEpisodeRules extends SinglePlayerRules {
 
     protected void episodeStartedEvents(GameState currentState) {
         currentState.addGameEvent(new GameEvent("EPISODE_STARTED", null, this));
+        currentState.addGameEvent(new GameEvent("SCREEN_FADE_IN", 1f, this));
     }
 
     protected void episodeEndedEvents(GameState currentState) {
