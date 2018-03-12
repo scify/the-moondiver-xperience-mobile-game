@@ -43,7 +43,7 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
             gsCurrent = conversationRules.getNextState(gsCurrent, userAction);
         }
         if(isConversationFinished(gsCurrent))
-            gsCurrent.addGameEvent(new GameEvent("CALCULATOR_STARTED", null, this));
+            gsCurrent.addGameEvent(new GameEvent("EPISODE_FINISHED", null, this));
 
         handleTriggerEventForCurrentConversationLine(gsCurrent);
         return gsCurrent;
@@ -54,11 +54,6 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
         switch (currLine.getTriggerEvent()) {
 
         }
-    }
-
-    @Override
-    public boolean isGameFinished(GameState gsCurrent) {
-        return gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED");
     }
 
     @Override
