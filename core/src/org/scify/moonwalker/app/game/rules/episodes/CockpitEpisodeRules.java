@@ -71,13 +71,15 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
     }
 
     protected void setCockpitButtons() {
-        ActionButton launchBtn = createCockpitButton("navigation_button", "img/cockpit/launch.png", UserActionCode.FINISH_EPISODE);
+        ActionButton navigateBtn = createCockpitButton("navigation_button", "img/cockpit/navigate.png", UserActionCode.FINISH_EPISODE);
+        ActionButton launchBtn = createCockpitButton("launch_button", "img/cockpit/launch.png", UserActionCode.FINISH_EPISODE);
         ActionButton spaceshipPartsButton = createCockpitButton("spaceship_parts_button", "img/cockpit/spaceship.png", UserActionCode.SPACESHIP_PARTS_EPISODE);
         ActionButton mapBtn = createCockpitButton("map_button", "img/cockpit/map.png", UserActionCode.MAP_EPISODE);
         ActionButton contactBtn = createCockpitButton("contact_button", "img/cockpit/contact.png", UserActionCode.FINISH_EPISODE);
         ActionButton chargeBtn = createCockpitButton("charge_button", "img/cockpit/charge.png", UserActionCode.CHARGE_SPACESHIP_EPISODE);
 
 
+        cockpit.setNavigateButton(navigateBtn);
         cockpit.setLaunchButton(launchBtn);
         cockpit.setSpaceshipPartsButton(spaceshipPartsButton);
         cockpit.setMapButton(mapBtn);

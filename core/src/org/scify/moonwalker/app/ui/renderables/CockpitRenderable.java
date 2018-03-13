@@ -17,6 +17,7 @@ public class CockpitRenderable extends Renderable {
     protected String positionValue;
     protected String daysLeftValue;
 
+    protected ActionButton navigateButton;
     protected ActionButton launchButton;
     protected ActionButton chargeButton;
     protected ActionButton spaceshipPartsButton;
@@ -63,8 +64,16 @@ public class CockpitRenderable extends Renderable {
         renderableWasUpdated();
     }
 
+    public ActionButton getNavigateButton() {
+        return navigateButton;
+    }
+
     public ActionButton getLaunchButton() {
         return launchButton;
+    }
+
+    public void setNavigateButton(ActionButton navigateButton) {
+        this.navigateButton = navigateButton;
     }
 
     public void setLaunchButton(ActionButton launchButton) {

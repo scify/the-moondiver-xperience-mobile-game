@@ -129,13 +129,16 @@ public class ActorFactory extends ComponentFactory{
     private Actor createCockpitActor(final CockpitRenderable renderable) {
         CockpitActor2 actor = new CockpitActor2(skin, renderable);
 
-        Button launchBtn = createButton(renderable.getLaunchButton());
-        addButtonListener(launchBtn, renderable.getLaunchButton());
+        Button launchBtn = createButton(renderable.getNavigateButton());
+        addButtonListener(launchBtn, renderable.getNavigateButton());
+        Button launch2Btn = createButton(renderable.getNavigateButton());
+        addButtonListener(launch2Btn, renderable.getLaunchButton());
         Button chargeEpisodeBtn = createButton(renderable.getChargeButton());
         addButtonListener(chargeEpisodeBtn, renderable.getChargeButton());
 
         actor.setPosition(renderable.getxPos(), renderable.getyPos());
-        actor.setLaunchButton(launchBtn);
+        actor.setNavigateButton(launchBtn);
+        actor.setLaunchButton(launch2Btn);
         actor.setChargeEpisodeButton(chargeEpisodeBtn);
         actor.setMapButton(createButton(renderable.getMapButton()));
         actor.setSpaceshipPartsButton(createButton(renderable.getSpaceshipPartsButton()));

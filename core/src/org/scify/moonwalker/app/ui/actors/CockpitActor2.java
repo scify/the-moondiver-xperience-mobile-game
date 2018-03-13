@@ -12,13 +12,11 @@ import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 
-import javax.xml.soap.Text;
-import java.security.AllPermission;
-
 public class CockpitActor2 extends TableActor implements Updateable {
 
     protected CockpitRenderable renderable;
     protected Table infoAndActionsTable;
+    protected Button navigateButton;
     protected Button launchButton;
     protected Button spaceshipPartsButton;
     protected Button mapButton;
@@ -66,7 +64,7 @@ public class CockpitActor2 extends TableActor implements Updateable {
         topLeftTable.align(Align.left);
         texture = imgUrlToTexture(renderable.POSITION_LABEL_IMG_PATH);
         addImageCell(topLeftTable,texture);
-        add(topLeftTable).top().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight())).padTop(0.03f * screenHeight).padRight(0.5f * screenWidth);
+        add(topLeftTable).colspan(2).top().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight())).padTop(0.03f * screenHeight).padRight(0.5f * screenWidth);
         //DaysToGo
         Table topRightTable = new Table();
         topRightTable.defaults();
@@ -77,6 +75,8 @@ public class CockpitActor2 extends TableActor implements Updateable {
         row();
 
         //Central
+        add(navigateButton).width(convertWidth(navigateButton.getWidth())).height(convertHeight(navigateButton.getHeight())).padTop(0.13f * screenHeight).padRight(0.08f * screenWidth);
+
         Table centralTable = new Table();
         centralTable.defaults();
         centralTable.align(Align.center);
@@ -85,7 +85,9 @@ public class CockpitActor2 extends TableActor implements Updateable {
         centralTable.row();
         centralTable.add(chargeEpisodeButton).width(convertWidth(chargeEpisodeButton.getWidth())).height(convertHeight(chargeEpisodeButton.getHeight()));
         centralTable.add(mapButton).width(convertWidth(mapButton.getWidth())).height(convertHeight(mapButton.getHeight()));
-        add(centralTable).colspan(2);
+        add(centralTable);
+
+        add(launchButton).width(convertWidth(launchButton.getWidth())).height(convertHeight(launchButton.getHeight())).padTop(0.13f * screenHeight).padLeft(0.08f * screenWidth);;
 
         //
         /*Table bottomMenu = new Table();
@@ -163,7 +165,7 @@ public class CockpitActor2 extends TableActor implements Updateable {
     public Table createLaunchTable() {
         Table launchTable = new Table(getSkin());
         initSubTable(launchTable);
-        launchTable.add(launchButton).fillY().width(0.2f * getWidth());
+        launchTable.add(navigateButton).fillY().width(0.2f * getWidth());
         return launchTable;
     }
 
@@ -267,6 +269,10 @@ public class CockpitActor2 extends TableActor implements Updateable {
                 label.setText(newValue);
             }
         }
+    }
+
+    public void setNavigateButton(Button navigateButton) {
+        this.navigateButton = navigateButton;
     }
 
     public void setLaunchButton(Button launchButton) {
