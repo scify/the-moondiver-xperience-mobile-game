@@ -12,6 +12,9 @@ import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 
+import javax.xml.soap.Text;
+import java.security.AllPermission;
+
 public class CockpitActor2 extends TableActor implements Updateable {
 
     protected CockpitRenderable renderable;
@@ -54,20 +57,35 @@ public class CockpitActor2 extends TableActor implements Updateable {
     public void init() {
         float screenHeight = getHeight();
         float screenWidth = getWidth();
-
-        // Create 4 rows
-        // 1st row:days
+        Texture texture;
         top();
 
-        //Label topRightLabel = new Label("Λονδίνο", getSkin());
-        //topRightLabel.setAlignment(1);
+        //Location
+        Table topLeftTable = new Table();
+        topLeftTable.defaults();
+        topLeftTable.align(Align.left);
+        texture = imgUrlToTexture(renderable.POSITION_LABEL_IMG_PATH);
+        addImageCell(topLeftTable,texture);
+        add(topLeftTable).top().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight())).padTop(0.03f * screenHeight).padRight(0.5f * screenWidth);
+        //DaysToGo
         Table topRightTable = new Table();
         topRightTable.defaults();
-        //topRightTable.add(launchButton).height(0.24f *screenHeight).width(0.2f *screenWidth);
-        //topRightTable.add(topRightLabel);
-        addImageCell(topRightTable, imgUrlToTexture(renderable.DAYS_LEFT_IMG_PATH)).height(0.24f *screenHeight).width(0.2f *screenWidth);
-        add(topRightTable).expandX().top().right().padTop(screenHeight * 0.09f).padRight(screenWidth * 0.04f);
-        row().padTop(0.1f * screenHeight);
+        topRightTable.align(Align.right);
+        texture = imgUrlToTexture(renderable.DAYS_LEFT_IMG_PATH);
+        addImageCell(topRightTable, texture);
+        add(topRightTable).top().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight()));
+        row();
+
+        //Central
+        Table centralTable = new Table();
+        centralTable.defaults();
+        centralTable.align(Align.center);
+        centralTable.add(contactButton).width(convertWidth(contactButton.getWidth())).height(convertHeight(contactButton.getHeight()));
+        centralTable.add(spaceshipPartsButton).width(convertWidth(spaceshipPartsButton.getWidth())).height(convertHeight(spaceshipPartsButton.getHeight()));
+        centralTable.row();
+        centralTable.add(chargeEpisodeButton).width(convertWidth(chargeEpisodeButton.getWidth())).height(convertHeight(chargeEpisodeButton.getHeight()));
+        centralTable.add(mapButton).width(convertWidth(mapButton.getWidth())).height(convertHeight(mapButton.getHeight()));
+        add(centralTable).colspan(2);
 
         //
         /*Table bottomMenu = new Table();
@@ -204,6 +222,20 @@ public class CockpitActor2 extends TableActor implements Updateable {
             setPosition(this.renderable.getPositionValue());
             setDaysLeft(this.renderable.getDaysLeftValue());
         }
+    }
+
+    protected float convertHeight (float initialHeight) {
+        int initialBackgroundHeight  = 1080;
+        float ret = getHeight() * initialHeight;
+        ret = ret / initialBackgroundHeight;
+        return ret;
+    }
+
+    protected float convertWidth (float initialWidth) {
+        int initialBackgroundWidth  = 1920;
+        float ret = getWidth() * initialWidth;
+        ret = ret / initialBackgroundWidth;
+        return ret;
     }
 
     protected void setMotorEfficiency(String newValue) {
