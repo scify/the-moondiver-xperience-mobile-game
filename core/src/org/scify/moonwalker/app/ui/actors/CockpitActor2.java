@@ -64,17 +64,32 @@ public class CockpitActor2 extends TableActor implements Updateable {
         topLeftTable.align(Align.left);
         texture = imgUrlToTexture(renderable.POSITION_LABEL_IMG_PATH);
         addImageCell(topLeftTable,texture);
+
         add(topLeftTable).top().left().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight())).padTop(0.03f * screenHeight).padLeft(0.04f * screenWidth);
 
         //Mid empty cell
         add().width(0.55f* screenWidth).height(0.56f * screenHeight);
         //DaysToGo
-        Table topRightTable = new Table();
+        /*Table topRightTable = new Table();
         topRightTable.defaults();
         topRightTable.align(Align.right);
         texture = imgUrlToTexture(renderable.DAYS_LEFT_IMG_PATH);
         addImageCell(topRightTable, texture);
-        add(topRightTable).top().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight()));
+        add(topRightTable).top().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight()));*/
+
+        //test
+        Group g = new Group();
+        texture = imgUrlToTexture(renderable.DAYS_LEFT_IMG_PATH);
+        Image image = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
+        image.setWidth(convertWidth(texture.getWidth()));
+        image.setHeight(convertHeight(texture.getHeight()));
+        g.addActor(image);
+        Label l = new Label("5",getSkin());
+        l.setWidth(100);
+        l.setHeight(100);
+        l.setAlignment(Align.center);
+        g.addActor(l);
+        add(g).top().right().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight()));
         row();
 
         //Central
@@ -96,36 +111,8 @@ public class CockpitActor2 extends TableActor implements Updateable {
         add(launchButton).width(convertWidth(launchButton.getWidth())).height(convertHeight(launchButton.getHeight())).align(Align.center).padTop(0.08f * screenHeight).padRight(0.04f * screenWidth);
 
         debug();
-        // 2nd row: empty/post-it
-        //row().expandY();
-        //Table empty = new Table();
-
-        //add(empty);
-        // 3rd row: launch
-        /*row().height(0.1f *getHeight());
-        add(createLaunchTable());*/
-        // 4th row: info & actions
-        /*row().height(0.4f * getHeight());
-        add(createInfoSubTable());*/
-        //debug();
     }
 
-    public Table createDaysLeftTable() {
-        Table dayLeftTable = new Table(getSkin());
-        initSubTable(dayLeftTable);
-        dayLeftTable.setWidth(getWidth());
-        dayLeftTable.setHeight(getHeight() * 0.2f);
-        addImageCell(dayLeftTable, imgUrlToTexture(renderable.DAYS_LEFT_IMG_PATH)).width(dayLeftTable.getWidth() * 0.1f - getDefaultCellPadding() * 2);
-        //dayLeftTable.debug();
-        return dayLeftTable;
-    }
-
-    public Table createLaunchTable() {
-        Table launchTable = new Table(getSkin());
-        initSubTable(launchTable);
-        launchTable.add(navigateButton).fillY().width(0.2f * getWidth());
-        return launchTable;
-    }
 
     public Table createInfoSubTable() {
         infoAndActionsTable = new Table(getSkin());
