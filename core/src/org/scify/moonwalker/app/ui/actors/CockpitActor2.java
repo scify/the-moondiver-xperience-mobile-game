@@ -64,7 +64,10 @@ public class CockpitActor2 extends TableActor implements Updateable {
         topLeftTable.align(Align.left);
         texture = imgUrlToTexture(renderable.POSITION_LABEL_IMG_PATH);
         addImageCell(topLeftTable,texture);
-        add(topLeftTable).colspan(2).top().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight())).padTop(0.03f * screenHeight).padRight(0.5f * screenWidth);
+        add(topLeftTable).top().left().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight())).padTop(0.03f * screenHeight).padLeft(0.04f * screenWidth);
+
+        //Mid empty cell
+        add().width(0.55f* screenWidth).height(0.56f * screenHeight);
         //DaysToGo
         Table topRightTable = new Table();
         topRightTable.defaults();
@@ -75,68 +78,23 @@ public class CockpitActor2 extends TableActor implements Updateable {
         row();
 
         //Central
-        add(navigateButton).width(convertWidth(navigateButton.getWidth())).height(convertHeight(navigateButton.getHeight())).padTop(0.13f * screenHeight).padRight(0.08f * screenWidth);
+        add(navigateButton).width(convertWidth(navigateButton.getWidth())).height(convertHeight(navigateButton.getHeight())).align(Align.center).padTop(0.1f * screenHeight);
 
         Table centralTable = new Table();
         centralTable.defaults();
-        centralTable.align(Align.center);
-        centralTable.add(contactButton).width(convertWidth(contactButton.getWidth())).height(convertHeight(contactButton.getHeight()));
+        centralTable.align(Align.top);
+        centralTable.add(contactButton).width(convertWidth(contactButton.getWidth())).height(convertHeight(contactButton.getHeight())).padRight(0.02f*screenWidth);
         centralTable.add(spaceshipPartsButton).width(convertWidth(spaceshipPartsButton.getWidth())).height(convertHeight(spaceshipPartsButton.getHeight()));
         centralTable.row();
-        centralTable.add(chargeEpisodeButton).width(convertWidth(chargeEpisodeButton.getWidth())).height(convertHeight(chargeEpisodeButton.getHeight()));
+        float distanceBetweenRows = convertHeight(contactButton.getHeight());
+        centralTable.add().height(distanceBetweenRows);
+        centralTable.row();
+        centralTable.add(chargeEpisodeButton).width(convertWidth(chargeEpisodeButton.getWidth())).height(convertHeight(chargeEpisodeButton.getHeight())).padRight(0.02f*screenWidth);
         centralTable.add(mapButton).width(convertWidth(mapButton.getWidth())).height(convertHeight(mapButton.getHeight()));
-        add(centralTable);
+        add(centralTable).height(0.3f * screenHeight);
 
-        add(launchButton).width(convertWidth(launchButton.getWidth())).height(convertHeight(launchButton.getHeight())).padTop(0.13f * screenHeight).padLeft(0.08f * screenWidth);;
+        add(launchButton).width(convertWidth(launchButton.getWidth())).height(convertHeight(launchButton.getHeight())).align(Align.center).padTop(0.08f * screenHeight).padRight(0.04f * screenWidth);
 
-        //
-        /*Table bottomMenu = new Table();
-        bottomMenu.defaults();
-
-        Table leftBottomPart = new Table();
-        leftBottomPart.defaults();
-        Label leftMenu = new Label("leftMenu", getSkin());
-        leftMenu.setAlignment(1);
-        leftBottomPart.add(leftMenu);
-
-        Table centralBottomPart = new Table();
-        centralBottomPart.defaults();
-        Label centralMenu1 = new Label("ΕΠΙΚΟΙΝΩΝΙΑ", getSkin());
-        centralMenu1.setAlignment(1);
-        centralBottomPart.add(centralMenu1);
-        centralBottomPart.row();
-        Label centralMenu2 = new Label("ΦΟΡΤΙΣΗ", getSkin());
-        centralMenu2.setAlignment(1);
-        centralBottomPart.add(centralMenu2);
-        centralBottomPart.row();
-        Label centralMenu3 = new Label("ΣΚΑΦΟΣ", getSkin());
-        centralMenu3.setAlignment(1);
-        centralBottomPart.add(centralMenu3);
-        centralBottomPart.row();
-        Label centralMenu4 = new Label("ΧΑΡΤΗΣ", getSkin());
-        centralMenu4.setAlignment(1);
-        centralBottomPart.add(centralMenu4);
-        centralBottomPart.row();
-        Label centralMenu5 = new Label("ΑΠΟΓΕΙΩΣΗ", getSkin());
-        centralMenu5.setAlignment(1);
-        centralBottomPart.add(centralMenu5);
-
-
-        Table rightBottomPart = new Table();
-        rightBottomPart.defaults();
-        Label rightMenu = new Label("rightMenu", getSkin());
-        rightMenu.setAlignment(1);
-        rightBottomPart.add(rightMenu);
-
-        bottomMenu.add(leftBottomPart).width(0.3f * screenWidth).height(0.20f * screenHeight).padTop(0.2f *screenHeight);
-        bottomMenu.add(centralBottomPart).width(0.3f * screenWidth).height(0.55f * screenHeight);
-        bottomMenu.add(rightBottomPart).width(0.3f * screenWidth).height(0.20f * screenHeight).padTop(0.2f *screenHeight);
-        add(bottomMenu);*/
-
-
-        //row().height(0.2f * getHeight());
-        //add(createDaysLeftTable()).right();
-        //add(createDaysLeftTable());
         debug();
         // 2nd row: empty/post-it
         //row().expandY();
