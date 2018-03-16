@@ -68,6 +68,7 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
             cockpit.setPositionValue(gameInfo.getCurrentLocationName());
         cockpit.setRemainingEnergyValue(String.valueOf(gameInfo.getRemainingEnergy()));
         cockpit.setMotorEfficiencyValue(String.valueOf(gameInfo.getMotorEfficiency()));
+        cockpit.setDaysLeftValue("10");
     }
 
     protected void setCockpitButtons() {

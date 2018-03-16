@@ -1,18 +1,24 @@
 package org.scify.moonwalker.app.ui.actors;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import org.scify.engine.Renderable;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
+import org.scify.moonwalker.app.ui.ThemeController;
 import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 
 public class CockpitActor2 extends TableActor implements Updateable {
+
+    protected ThemeController themeController = new ThemeController();
 
     protected CockpitRenderable renderable;
     protected Table infoAndActionsTable;
@@ -33,6 +39,7 @@ public class CockpitActor2 extends TableActor implements Updateable {
     protected Cell remainingDestinationValueCell;
     protected Cell positionValueCell;
     protected Cell daysLeftCell;
+    protected Cell currentLocationCell;
 
     public CockpitActor2(Skin skin, CockpitRenderable renderable) {
         super(skin);
@@ -55,62 +62,92 @@ public class CockpitActor2 extends TableActor implements Updateable {
     public void init() {
         float screenHeight = getHeight();
         float screenWidth = getWidth();
-        Texture texture;
         top();
 
-        //Location
-        Table topLeftTable = new Table();
-        topLeftTable.defaults();
-        topLeftTable.align(Align.left);
-        texture = imgUrlToTexture(renderable.POSITION_LABEL_IMG_PATH);
-        addImageCell(topLeftTable,texture);
-
-        add(topLeftTable).top().left().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight())).padTop(0.03f * screenHeight).padLeft(0.04f * screenWidth);
+        //Top Left Pad Location
+        currentLocationCell = drawTopLeftPad(screenHeight, screenWidth);
 
         //Mid empty cell
-        add().width(0.55f* screenWidth).height(0.56f * screenHeight);
-        //DaysToGo
-        /*Table topRightTable = new Table();
-        topRightTable.defaults();
-        topRightTable.align(Align.right);
-        texture = imgUrlToTexture(renderable.DAYS_LEFT_IMG_PATH);
-        addImageCell(topRightTable, texture);
-        add(topRightTable).top().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight()));*/
+        //add().width(0.55f * screenWidth).height(0.56f * screenHeight);
+        add().width(0.50f * screenWidth).height(0.56f * screenHeight);
 
-        //test
-        Group g = new Group();
-        texture = imgUrlToTexture(renderable.DAYS_LEFT_IMG_PATH);
-        Image image = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
-        image.setWidth(convertWidth(texture.getWidth()));
-        image.setHeight(convertHeight(texture.getHeight()));
-        g.addActor(image);
-        Label l = new Label("5",getSkin());
-        l.setWidth(100);
-        l.setHeight(100);
-        l.setAlignment(Align.center);
-        g.addActor(l);
-        add(g).top().right().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight()));
+        //Top Right Pad DaysToGo
+        remainingDestinationValueCell = drawTopRightPad(screenHeight, screenWidth);
         row();
 
         //Central
-        add(navigateButton).width(convertWidth(navigateButton.getWidth())).height(convertHeight(navigateButton.getHeight())).align(Align.center).padTop(0.1f * screenHeight);
+        //add(navigateButton).width(convertWidth(navigateButton.getWidth())).height(convertHeight(navigateButton.getHeight())).align(Align.center).padTop(0.1f * screenHeight);
 
-        Table centralTable = new Table();
+        /*Table centralTable = new Table();
         centralTable.defaults();
         centralTable.align(Align.top);
-        centralTable.add(contactButton).width(convertWidth(contactButton.getWidth())).height(convertHeight(contactButton.getHeight())).padRight(0.02f*screenWidth);
+        centralTable.add(contactButton).width(convertWidth(contactButton.getWidth())).height(convertHeight(contactButton.getHeight())).padRight(0.02f * screenWidth);
         centralTable.add(spaceshipPartsButton).width(convertWidth(spaceshipPartsButton.getWidth())).height(convertHeight(spaceshipPartsButton.getHeight()));
         centralTable.row();
         float distanceBetweenRows = convertHeight(contactButton.getHeight());
         centralTable.add().height(distanceBetweenRows);
         centralTable.row();
-        centralTable.add(chargeEpisodeButton).width(convertWidth(chargeEpisodeButton.getWidth())).height(convertHeight(chargeEpisodeButton.getHeight())).padRight(0.02f*screenWidth);
+        centralTable.add(chargeEpisodeButton).width(convertWidth(chargeEpisodeButton.getWidth())).height(convertHeight(chargeEpisodeButton.getHeight())).padRight(0.02f * screenWidth);
         centralTable.add(mapButton).width(convertWidth(mapButton.getWidth())).height(convertHeight(mapButton.getHeight()));
         add(centralTable).height(0.3f * screenHeight);
 
-        add(launchButton).width(convertWidth(launchButton.getWidth())).height(convertHeight(launchButton.getHeight())).align(Align.center).padTop(0.08f * screenHeight).padRight(0.04f * screenWidth);
+        add(launchButton).width(convertWidth(launchButton.getWidth())).height(convertHeight(launchButton.getHeight())).align(Align.center).padTop(0.08f * screenHeight).padRight(0.04f * screenWidth);*/
 
-        debug();
+        //debug();
+    }
+
+    protected Cell drawTopLeftPad(float screenHeight, float screenWidth) {
+        Group g = new Group();
+        Texture texture = imgUrlToTexture(renderable.POSITION_LABEL_IMG_PATH);
+        Image image = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
+        image.setWidth(convertWidth(texture.getWidth()));
+        image.setHeight(convertHeight(texture.getHeight()));
+        g.addActor(image);
+        //Label l = new Label(renderable.getPositionValue(), getSkin());
+        Label l = new Label("Λονδίνο", getSkin());
+        /*Label.LabelStyle ls = new Label.LabelStyle();
+        ls.font = themeController.getFont();
+        ls.fontColor = Color.valueOf("2f312c");
+        l.setStyle(ls);*/
+        l.setAlignment(Align.center);
+        l.debug();
+        //Container c = new Container(l);
+        //c.setHeight(image.getHeight());
+        //c.setWidth(image.getWidth()/3);
+        //c.align(Align.topLeft);
+        /*c.padLeft(0.08f * screenWidth);
+        c.padTop(0.13f * screenHeight);*/
+        //c.debug();
+        g.addActor(l);
+        //g.addAction(Actions.rotateBy(-3));
+        //return add(g).top().left().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight())).padTop(0.03f * screenHeight).padLeft(0.04f * screenWidth);
+        //return  add(g).top().left().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight()));
+        return  add(g).top().left().width(0.25f * screenWidth).height(0.56f * screenHeight);
+    }
+
+    protected Cell drawTopRightPad(float screenHeight, float screenWidth) {
+        Group g = new Group();
+        Texture texture = imgUrlToTexture(renderable.DAYS_LEFT_IMG_PATH);
+        Image image = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
+        image.setWidth(convertWidth(texture.getWidth()));
+        image.setHeight(convertHeight(texture.getHeight()));
+        g.addActor(image);
+        Label l = new Label(renderable.getDaysLeftValue(), getSkin());
+        Label.LabelStyle ls = new Label.LabelStyle();
+        ls.font = themeController.getFont();
+        ls.font.getData().setScale(2, 2);
+        ls.fontColor = Color.valueOf("2f312c");
+        l.setStyle(ls);
+        l.setWidth(image.getWidth());
+        l.setHeight(image.getHeight());
+        l.setAlignment(Align.center);
+        g.addActor(l);
+        debugAll();
+        //g.addAction(Actions.rotateBy(-3));
+        //return add(g).top().right().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight())).padRight(0.03f * screenWidth);
+        Cell ret = add(g).width(0.25f * screenWidth).height(0.56f * screenHeight).fill().top().right();
+        debugAll();
+        return ret;
     }
 
 
@@ -171,15 +208,15 @@ public class CockpitActor2 extends TableActor implements Updateable {
         }
     }
 
-    protected float convertHeight (float initialHeight) {
-        int initialBackgroundHeight  = 1080;
+    protected float convertHeight(float initialHeight) {
+        int initialBackgroundHeight = 1080;
         float ret = getHeight() * initialHeight;
         ret = ret / initialBackgroundHeight;
         return ret;
     }
 
-    protected float convertWidth (float initialWidth) {
-        int initialBackgroundWidth  = 1920;
+    protected float convertWidth(float initialWidth) {
+        int initialBackgroundWidth = 1920;
         float ret = getWidth() * initialWidth;
         ret = ret / initialBackgroundWidth;
         return ret;
