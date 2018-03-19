@@ -18,8 +18,6 @@ import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 
 public class CockpitActor2 extends TableActor implements Updateable {
 
-    protected ThemeController themeController = new ThemeController();
-
     protected CockpitRenderable renderable;
     protected Table infoAndActionsTable;
     protected Button navigateButton;
@@ -65,14 +63,15 @@ public class CockpitActor2 extends TableActor implements Updateable {
         top();
 
         //Top Left Pad Location
-        currentLocationCell = drawTopLeftPad(screenHeight, screenWidth);
+        currentLocationCell = drawTopLeftPad(screenWidth, screenHeight);
 
         //Mid empty cell
         //add().width(0.55f * screenWidth).height(0.56f * screenHeight);
-        add().width(0.50f * screenWidth).height(0.56f * screenHeight);
+        //add().width(0.55f * screenWidth).height(0.56f * screenHeight);
+        add().width(0.55f * screenWidth).height(0.56f * screenHeight);
 
         //Top Right Pad DaysToGo
-        remainingDestinationValueCell = drawTopRightPad(screenHeight, screenWidth);
+        remainingDestinationValueCell = drawTopRightPad(screenWidth, screenHeight);
         row();
 
         //Central
@@ -96,57 +95,53 @@ public class CockpitActor2 extends TableActor implements Updateable {
         //debug();
     }
 
-    protected Cell drawTopLeftPad(float screenHeight, float screenWidth) {
-        Group g = new Group();
+    protected Cell drawTopLeftPad(float screenWidth, float screenHeight) {
+        Stack stack = new Stack();
+        stack.setTransform(true);
         Texture texture = imgUrlToTexture(renderable.POSITION_LABEL_IMG_PATH);
         Image image = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
-        image.setWidth(convertWidth(texture.getWidth()));
-        image.setHeight(convertHeight(texture.getHeight()));
-        g.addActor(image);
-        //Label l = new Label(renderable.getPositionValue(), getSkin());
-        Label l = new Label("Λονδίνο", getSkin());
-        /*Label.LabelStyle ls = new Label.LabelStyle();
+        image.setAlign(Align.center);
+        stack.addActor(image);
+        //Label label = new Label(renderable.getPositionValue(), getSkin());
+        Label label = new Label("Λονδίνο", getSkin());
+        Label.LabelStyle ls = new Label.LabelStyle();
+        ThemeController themeController = new ThemeController();
         ls.font = themeController.getFont();
+        //ls.font.getData().setScale(2, 2);
         ls.fontColor = Color.valueOf("2f312c");
-        l.setStyle(ls);*/
-        l.setAlignment(Align.center);
-        l.debug();
-        //Container c = new Container(l);
-        //c.setHeight(image.getHeight());
-        //c.setWidth(image.getWidth()/3);
-        //c.align(Align.topLeft);
-        /*c.padLeft(0.08f * screenWidth);
-        c.padTop(0.13f * screenHeight);*/
-        //c.debug();
-        g.addActor(l);
-        //g.addAction(Actions.rotateBy(-3));
-        //return add(g).top().left().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight())).padTop(0.03f * screenHeight).padLeft(0.04f * screenWidth);
-        //return  add(g).top().left().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight()));
-        return  add(g).top().left().width(0.25f * screenWidth).height(0.56f * screenHeight);
+        label.setStyle(ls);
+        Container container = new Container(label);
+        container.center();
+        container.padBottom(screenHeight * 0.1f);
+        container.padLeft(screenWidth * 0.05f);
+        stack.add(container);
+        stack.rotateBy(4);
+        return  add(stack).top().left().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight()));
     }
 
-    protected Cell drawTopRightPad(float screenHeight, float screenWidth) {
-        Group g = new Group();
+    protected Cell drawTopRightPad(float screenWidth, float screenHeight) {
+        Stack stack = new Stack();
+        stack.setTransform(true);
         Texture texture = imgUrlToTexture(renderable.DAYS_LEFT_IMG_PATH);
         Image image = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
-        image.setWidth(convertWidth(texture.getWidth()));
-        image.setHeight(convertHeight(texture.getHeight()));
-        g.addActor(image);
-        Label l = new Label(renderable.getDaysLeftValue(), getSkin());
+        //image.setAlign(Align.center);
+        stack.add(image);
+        Label label = new Label(renderable.getDaysLeftValue(), getSkin());
         Label.LabelStyle ls = new Label.LabelStyle();
+        ThemeController themeController = new ThemeController();
         ls.font = themeController.getFont();
-        ls.font.getData().setScale(2, 2);
-        ls.fontColor = Color.valueOf("2f312c");
-        l.setStyle(ls);
-        l.setWidth(image.getWidth());
-        l.setHeight(image.getHeight());
-        l.setAlignment(Align.center);
-        g.addActor(l);
-        debugAll();
-        //g.addAction(Actions.rotateBy(-3));
-        //return add(g).top().right().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight())).padRight(0.03f * screenWidth);
-        Cell ret = add(g).width(0.25f * screenWidth).height(0.56f * screenHeight).fill().top().right();
-        debugAll();
+        //ls.font.getData().setScale(themeController.getFontScale(screenWidth, screenHeight));
+        //ls.font.getData().setScale(2);
+        ls.fontColor = Color.valueOf("912d25");
+        label.setStyle(ls);
+        Container container = new Container(label);
+        container.center();
+        container.padRight(0.02f * screenWidth);
+        container.padTop(0.1f * screenHeight);
+
+        stack.add(container);
+        Cell ret = add(stack).top().right().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight()));
+        debug();
         return ret;
     }
 
