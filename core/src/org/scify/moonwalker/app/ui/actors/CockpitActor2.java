@@ -64,33 +64,15 @@ public class CockpitActor2 extends TableActor implements Updateable {
 
         //Top Left Pad Location
         currentLocationCell = drawTopLeftPad(screenWidth, screenHeight);
-
         //Mid empty cell
-        //add().width(0.55f * screenWidth).height(0.56f * screenHeight);
-        //add().width(0.55f * screenWidth).height(0.56f * screenHeight);
-        add().width(0.55f * screenWidth).height(0.56f * screenHeight);
-
+        add().width(0.55f * screenWidth).height(0.57f * screenHeight);
         //Top Right Pad DaysToGo
         remainingDestinationValueCell = drawTopRightPad(screenWidth, screenHeight);
+
         row();
 
         //Central
-        //add(navigateButton).width(convertWidth(navigateButton.getWidth())).height(convertHeight(navigateButton.getHeight())).align(Align.center).padTop(0.1f * screenHeight);
-
-        /*Table centralTable = new Table();
-        centralTable.defaults();
-        centralTable.align(Align.top);
-        centralTable.add(contactButton).width(convertWidth(contactButton.getWidth())).height(convertHeight(contactButton.getHeight())).padRight(0.02f * screenWidth);
-        centralTable.add(spaceshipPartsButton).width(convertWidth(spaceshipPartsButton.getWidth())).height(convertHeight(spaceshipPartsButton.getHeight()));
-        centralTable.row();
-        float distanceBetweenRows = convertHeight(contactButton.getHeight());
-        centralTable.add().height(distanceBetweenRows);
-        centralTable.row();
-        centralTable.add(chargeEpisodeButton).width(convertWidth(chargeEpisodeButton.getWidth())).height(convertHeight(chargeEpisodeButton.getHeight())).padRight(0.02f * screenWidth);
-        centralTable.add(mapButton).width(convertWidth(mapButton.getWidth())).height(convertHeight(mapButton.getHeight()));
-        add(centralTable).height(0.3f * screenHeight);
-
-        add(launchButton).width(convertWidth(launchButton.getWidth())).height(convertHeight(launchButton.getHeight())).align(Align.center).padTop(0.08f * screenHeight).padRight(0.04f * screenWidth);*/
+        drawCentral(screenWidth, screenHeight);
 
         //debug();
     }
@@ -103,9 +85,9 @@ public class CockpitActor2 extends TableActor implements Updateable {
         image.setAlign(Align.center);
         stack.addActor(image);
         //Label label = new Label(renderable.getPositionValue(), getSkin());
-        Label label = new Label("Λονδίνο", getSkin());
+        Label label = new Label("ΛΟΝΔΙΝΟ", getSkin());
         Label.LabelStyle ls = new Label.LabelStyle();
-        ThemeController themeController = new ThemeController();
+        ThemeController themeController = new ThemeController(20, "controls");
         ls.font = themeController.getFont();
         //ls.font.getData().setScale(2, 2);
         ls.fontColor = Color.valueOf("2f312c");
@@ -116,7 +98,7 @@ public class CockpitActor2 extends TableActor implements Updateable {
         container.padLeft(screenWidth * 0.05f);
         stack.add(container);
         stack.rotateBy(4);
-        return  add(stack).top().left().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight()));
+        return add(stack).top().left().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight()));
     }
 
     protected Cell drawTopRightPad(float screenWidth, float screenHeight) {
@@ -124,14 +106,11 @@ public class CockpitActor2 extends TableActor implements Updateable {
         stack.setTransform(true);
         Texture texture = imgUrlToTexture(renderable.DAYS_LEFT_IMG_PATH);
         Image image = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
-        //image.setAlign(Align.center);
         stack.add(image);
         Label label = new Label(renderable.getDaysLeftValue(), getSkin());
         Label.LabelStyle ls = new Label.LabelStyle();
-        ThemeController themeController = new ThemeController();
+        ThemeController themeController = new ThemeController(25, "controls");
         ls.font = themeController.getFont();
-        //ls.font.getData().setScale(themeController.getFontScale(screenWidth, screenHeight));
-        //ls.font.getData().setScale(2);
         ls.fontColor = Color.valueOf("912d25");
         label.setStyle(ls);
         Container container = new Container(label);
@@ -141,10 +120,27 @@ public class CockpitActor2 extends TableActor implements Updateable {
 
         stack.add(container);
         Cell ret = add(stack).top().right().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight()));
-        debug();
         return ret;
     }
 
+    protected void drawCentral(float screenWidth, float screenHeight) {
+        add(navigateButton).width(convertWidth(navigateButton.getWidth())).height(convertHeight(navigateButton.getHeight())).align(Align.bottom);
+
+        Table centralTable = new Table();
+        centralTable.defaults();
+        centralTable.align(Align.top);
+        centralTable.add(contactButton).width(convertWidth(contactButton.getWidth())).height(convertHeight(contactButton.getHeight())).padRight(0.02f * screenWidth);
+        centralTable.add(spaceshipPartsButton).width(convertWidth(spaceshipPartsButton.getWidth())).height(convertHeight(spaceshipPartsButton.getHeight()));
+        centralTable.row();
+        float distanceBetweenRows = convertHeight(contactButton.getHeight()* 0.8f);
+        centralTable.add().height(distanceBetweenRows);
+        centralTable.row();
+        centralTable.add(chargeEpisodeButton).width(convertWidth(chargeEpisodeButton.getWidth())).height(convertHeight(chargeEpisodeButton.getHeight())).padRight(0.02f * screenWidth);
+        centralTable.add(mapButton).width(convertWidth(mapButton.getWidth())).height(convertHeight(mapButton.getHeight()));
+        add(centralTable).left().height(0.24f * screenHeight).padLeft(0.03f * screenWidth);
+
+        add(launchButton).width(convertWidth(launchButton.getWidth())).height(convertHeight(launchButton.getHeight())).align(Align.bottom).padRight(0.04f * screenWidth);
+    }
 
     public Table createInfoSubTable() {
         infoAndActionsTable = new Table(getSkin());

@@ -32,7 +32,7 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
         if (!isEpisodeStarted(currentState)) {
             locationController = new LocationController();
             super.episodeStartedEvents(currentState);
-            addEpisodeBackgroundImage(currentState, "img/space1.png");
+            addEpisodeBackgroundImage(currentState, "img/cockpit/generic_background.png");
             initializeAndAddCockpit(currentState);
         } else {
 
@@ -56,7 +56,6 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
                 appInfo.getScreenHeight(), "cockpit", "cockpit");
         setCockpitFieldValues();
         setCockpitButtons();
-        //cockpit.setImgPath("img/cockpit/cockpit_background.png");
         cockpit.setImgPath("img/cockpit/cockpit_background.png");
         currentState.addRenderable(cockpit);
     }

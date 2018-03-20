@@ -28,12 +28,14 @@ public class AppInfo {
     }
 
     public float getAspectRatio() {
-        return (float)getScreenHeight()/(float) getScreenWidth();
+        return (float) getScreenHeight() / (float) getScreenWidth();
     }
 
     public void setScreenDensity(float screenDensity) {
         this.screenDensity = screenDensity;
     }
+
+    public float getScreenDensity() { return screenDensity; }
 
     public float pixelsWithDensity(float pixels) {
         return pixels * screenDensity;
