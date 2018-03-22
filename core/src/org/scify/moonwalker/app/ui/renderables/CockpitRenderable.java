@@ -13,7 +13,7 @@ public class CockpitRenderable extends Renderable {
 
     protected String motorEfficiencyValue;
     protected String remainingEnergyValue;
-    protected String destinationDistanceValue;
+    protected int destinationDistanceValue;
     protected String positionValue;
     protected String daysLeftValue;
 
@@ -46,11 +46,11 @@ public class CockpitRenderable extends Renderable {
         renderableWasUpdated();
     }
 
-    public String getDestinationDistanceValue() {
+    public int getDestinationDistanceValue() {
         return destinationDistanceValue;
     }
 
-    public void setDestinationDistanceValue(String destinationDistanceValue) {
+    public void setDestinationDistanceValue(int destinationDistanceValue) {
         this.destinationDistanceValue = destinationDistanceValue;
         renderableWasUpdated();
     }

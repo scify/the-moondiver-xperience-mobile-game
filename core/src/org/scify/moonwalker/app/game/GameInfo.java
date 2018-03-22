@@ -26,7 +26,9 @@ public class GameInfo {
         currentDay = 0;
         motorEfficiency = 0;
         remainingEnergy = 0;
-        daysLeftForDestination = -1;
+        daysLeftForDestination = 90;
+        LocationController lc = new LocationController();
+        currentLocation = lc.getLocations().get(0);
         setMoonPhases();
     }
 

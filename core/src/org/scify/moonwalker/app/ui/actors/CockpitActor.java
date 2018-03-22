@@ -97,7 +97,7 @@ public class CockpitActor extends TableActor implements Updateable{
 
         motorEfficiencyValueCell = addInfoAndActionTableRow(renderable.MOTOR_EFFICIENCY_IMG_PATH, renderable.getMotorEfficiencyValue(), contactButton);
         remainingEnergyValueCell = addInfoAndActionTableRow(renderable.REMAINING_ENERGY_IMG_PATH, renderable.getRemainingEnergyValue(), chargeEpisodeButton);
-        remainingDestinationValueCell = addInfoAndActionTableRow(renderable.DESTINATION_DISTANCE_IMG_PATH, renderable.getDestinationDistanceValue(), mapButton);
+        remainingDestinationValueCell = addInfoAndActionTableRow(renderable.DESTINATION_DISTANCE_IMG_PATH, renderable.getDestinationDistanceValue() + "", mapButton);
         positionValueCell = addInfoAndActionTableRow(renderable.POSITION_LABEL_IMG_PATH, renderable.getPositionValue(), spaceshipPartsButton);
 
         //infoAndActionsTable.debug();
@@ -140,7 +140,7 @@ public class CockpitActor extends TableActor implements Updateable{
             this.timestamp = this.renderable.getRenderableLastUpdated();
             setMotorEfficiency(this.renderable.getMotorEfficiencyValue());
             setRemainingEnergy(this.renderable.getRemainingEnergyValue());
-            setRemainingDestination(this.renderable.getDestinationDistanceValue());
+            setRemainingDestination(this.renderable.getDestinationDistanceValue() + "");
             setPosition(this.renderable.getPositionValue());
             setDaysLeft(this.renderable.getDaysLeftValue());
         }

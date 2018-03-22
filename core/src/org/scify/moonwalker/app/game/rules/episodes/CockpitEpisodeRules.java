@@ -61,13 +61,13 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
     }
 
     protected void setCockpitFieldValues() {
-        if(gameInfo.getNextLocation() != null)
-            cockpit.setDestinationDistanceValue(String.valueOf(gameInfo.getNextLocation().getDistanceFromLocation(gameInfo.getCurrentLocation())));
         if(gameInfo.getCurrentLocation() != null)
             cockpit.setPositionValue(gameInfo.getCurrentLocationName());
         cockpit.setRemainingEnergyValue(String.valueOf(gameInfo.getRemainingEnergy()));
         cockpit.setMotorEfficiencyValue(String.valueOf(gameInfo.getMotorEfficiency()));
-        cockpit.setDaysLeftValue("10");
+        cockpit.setPositionValue(String.valueOf(gameInfo.getCurrentLocation().getName()));
+        cockpit.setDaysLeftValue("99");
+        cockpit.setDestinationDistanceValue(1000);
     }
 
     protected void setCockpitButtons() {

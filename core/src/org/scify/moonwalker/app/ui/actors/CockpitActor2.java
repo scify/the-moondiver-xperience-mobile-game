@@ -6,8 +6,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import org.scify.engine.Renderable;
@@ -16,10 +18,12 @@ import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.ThemeController;
 import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 
+import javax.xml.soap.Text;
+
 public class CockpitActor2 extends TableActor implements Updateable {
 
     protected CockpitRenderable renderable;
-    protected Table infoAndActionsTable;
+    protected Table bottomTable;
     protected Button navigateButton;
     protected Button launchButton;
     protected Button spaceshipPartsButton;
@@ -73,8 +77,8 @@ public class CockpitActor2 extends TableActor implements Updateable {
 
         //Central
         drawCentral(screenWidth, screenHeight);
-
-        //debug();
+        row();
+        drawBottom(screenWidth, screenHeight);
     }
 
     protected Cell drawTopLeftPad(float screenWidth, float screenHeight) {
@@ -85,7 +89,8 @@ public class CockpitActor2 extends TableActor implements Updateable {
         image.setAlign(Align.center);
         stack.addActor(image);
         //Label label = new Label(renderable.getPositionValue(), getSkin());
-        Label label = new Label("ΛΟΝΔΙΝΟ", getSkin());
+        //Label label = new Label("ΛΟΝΔΙΝΟ", getSkin());
+        Label label = new Label(renderable.getPositionValue(), getSkin());
         Label.LabelStyle ls = new Label.LabelStyle();
         ThemeController themeController = new ThemeController(20, "controls");
         ls.font = themeController.getFont();
@@ -142,46 +147,40 @@ public class CockpitActor2 extends TableActor implements Updateable {
         add(launchButton).width(convertWidth(launchButton.getWidth())).height(convertHeight(launchButton.getHeight())).align(Align.bottom).padRight(0.04f * screenWidth);
     }
 
-    public Table createInfoSubTable() {
-        infoAndActionsTable = new Table(getSkin());
-        initSubTable(infoAndActionsTable);
-        infoAndActionsTable.setWidth(getWidth());
-        infoAndActionsTable.setHeight(getHeight() * 0.4f);
+    protected void drawBottom(float screenWidth, float screenHeight) {
 
-        motorEfficiencyValueCell = addInfoAndActionTableRow(renderable.MOTOR_EFFICIENCY_IMG_PATH, renderable.getMotorEfficiencyValue(), contactButton);
-        remainingEnergyValueCell = addInfoAndActionTableRow(renderable.REMAINING_ENERGY_IMG_PATH, renderable.getRemainingEnergyValue(), chargeEpisodeButton);
-        remainingDestinationValueCell = addInfoAndActionTableRow(renderable.DESTINATION_DISTANCE_IMG_PATH, renderable.getDestinationDistanceValue(), mapButton);
-        positionValueCell = addInfoAndActionTableRow(renderable.POSITION_LABEL_IMG_PATH, renderable.getPositionValue(), spaceshipPartsButton);
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        ThemeController themeController = new ThemeController(18, "controls");
+        labelStyle.font = themeController.getFont();
+        labelStyle.fontColor = Color.valueOf("436272");
 
-        //infoAndActionsTable.debug();
-        return infoAndActionsTable;
-    }
+        bottomTable = new Table();
 
-    protected Cell addInfoAndActionTableRow(String imgPath, String valueData, Button button) {
-        Cell imageCell = addImageCell(infoAndActionsTable, imgUrlToTexture(imgPath));
-        setCellDimensions(imageCell, infoAndActionsTable, 0.5f, 4);
-        //Cell valueCell = addTextCell(infoAndActionsTable, valueData);
+        bottomTable.add().height(screenHeight * 0.167f).width(0.28f * screenWidth);
 
-        Group group = new Group();
-        Image cellBagkckground = new Image(new TextureRegionDrawable(new TextureRegion(imgUrlToTexture("img/cockpit/cell_background.png"))));
-        cellBagkckground.setWidth(infoAndActionsTable.getWidth() * 0.1f - getDefaultCellPadding() * 2);
-        cellBagkckground.setHeight((infoAndActionsTable.getHeight() / 4) - getDefaultCellPadding() * 2);
-        group.addActor(cellBagkckground);
-        Label valueLabel = new Label(valueData, getSkin());
-        valueLabel.setAlignment(Align.center);
-        //valueLabel.setDebug(true);
-        valueLabel.setWidth(infoAndActionsTable.getWidth() * 0.1f - getDefaultCellPadding() * 2);
-        valueLabel.setHeight((infoAndActionsTable.getHeight() / 4) - getDefaultCellPadding() * 2);
-        //group.setDebug(true);
-        group.addActor(valueLabel);
-        Cell valueCell = infoAndActionsTable.add(group);
+        //Label labelMotorEfficiency = new Label(renderable.getMotorEfficiencyValue() + "%", getSkin());
+        Label labelMotorEfficiency = new Label("100%", getSkin());
+        //final TextTooltip textTooltip = new TextTooltip("TEST", getSkin());
 
-        setCellDimensions(valueCell, infoAndActionsTable, 0.1f, 4);
-        Cell buttonCell = infoAndActionsTable.add(button);
-        setCellDimensions(buttonCell, infoAndActionsTable, 0.4f, 4);
+        //labelMotorEfficiency.addListener(textTooltip);
+        labelMotorEfficiency.setStyle(labelStyle);
+        labelMotorEfficiency.setAlignment(Align.center);
+        motorEfficiencyValueCell = bottomTable.add(labelMotorEfficiency).width(0.06f *screenWidth);
 
-        infoAndActionsTable.row().fillY();
-        return valueCell;
+        bottomTable.add().width(0.265f * screenWidth);
+
+        Label labelEnergy = new Label(renderable.getRemainingEnergyValue(), getSkin());
+        labelEnergy.setStyle(labelStyle);
+        labelEnergy.setAlignment(Align.center);
+        remainingEnergyValueCell = bottomTable.add(labelEnergy).width(0.06f *screenWidth);
+
+        bottomTable.add().width(0.27f * screenWidth);
+
+        Label labelDistance = new Label(renderable.getDestinationDistanceValue() + "", getSkin());
+        labelDistance.setStyle(labelStyle);
+        labelDistance.setAlignment(Align.center);
+        remainingDestinationValueCell = bottomTable.add(labelDistance).width(0.06f *screenWidth);
+        add(bottomTable).colspan(3).left();
     }
 
 
@@ -193,11 +192,12 @@ public class CockpitActor2 extends TableActor implements Updateable {
             this.timestamp = this.renderable.getRenderableLastUpdated();
             setMotorEfficiency(this.renderable.getMotorEfficiencyValue());
             setRemainingEnergy(this.renderable.getRemainingEnergyValue());
-            setRemainingDestination(this.renderable.getDestinationDistanceValue());
+            setRemainingDestination(this.renderable.getDestinationDistanceValue() + "");
             setPosition(this.renderable.getPositionValue());
             setDaysLeft(this.renderable.getDaysLeftValue());
         }
     }
+
 
     protected float convertHeight(float initialHeight) {
         int initialBackgroundHeight = 1080;
