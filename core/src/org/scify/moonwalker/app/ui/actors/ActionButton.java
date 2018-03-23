@@ -1,6 +1,6 @@
 package org.scify.moonwalker.app.ui.actors;
 
-import org.scify.engine.Renderable;
+import org.scify.engine.renderables.Renderable;
 import org.scify.engine.UserAction;
 
 public class ActionButton extends Renderable {

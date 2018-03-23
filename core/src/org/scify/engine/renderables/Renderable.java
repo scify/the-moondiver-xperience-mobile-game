@@ -1,5 +1,7 @@
-package org.scify.engine;
+package org.scify.engine.renderables;
 
+import org.scify.engine.Positionable;
+import org.scify.engine.UserInputHandler;
 import org.scify.moonwalker.app.helpers.AppInfo;
 
 import java.util.Date;

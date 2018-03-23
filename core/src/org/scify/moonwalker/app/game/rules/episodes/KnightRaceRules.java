@@ -4,6 +4,7 @@ import org.scify.engine.*;
 import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.EpisodeEndStateCode;
 import org.scify.engine.Player;
+import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.game.rules.SinglePlayerRules;
 
 import java.util.Date;
@@ -11,7 +12,7 @@ import java.util.HashMap;
 
 public class KnightRaceRules extends SinglePlayerRules {
 
-    protected Renderable messagesLabel;
+    protected org.scify.engine.renderables.Renderable messagesLabel;
     protected String mainLabelText = "Episode goal: Help the player reach the top edge of the screen.";
 
     @Override

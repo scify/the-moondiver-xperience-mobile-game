@@ -1,9 +1,9 @@
-package org.scify.engine.conversation;
+package org.scify.engine.renderables;
 
-import org.scify.engine.Renderable;
+import org.scify.engine.conversation.ConversationLine;
+import org.scify.engine.renderables.Renderable;
 import org.scify.engine.UserAction;
 import org.scify.engine.UserActionCode;
-import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 
 public class SingleConversationLine extends Renderable {

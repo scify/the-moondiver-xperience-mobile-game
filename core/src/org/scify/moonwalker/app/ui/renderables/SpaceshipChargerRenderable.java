@@ -1,6 +1,6 @@
 package org.scify.moonwalker.app.ui.renderables;
 
-import org.scify.engine.Renderable;
+import org.scify.engine.renderables.Renderable;
 import org.scify.engine.UserAction;
 import org.scify.engine.UserActionCode;
 import org.scify.moonwalker.app.game.MoonPhase;

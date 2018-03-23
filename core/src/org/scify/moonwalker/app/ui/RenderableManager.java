@@ -5,14 +5,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import org.scify.engine.Renderable;
+import org.scify.engine.renderables.Renderable;
 import org.scify.engine.UserInputHandler;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 import org.scify.moonwalker.app.ui.actors.Updateable;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class RenderableManager {

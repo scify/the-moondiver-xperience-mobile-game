@@ -1,6 +1,6 @@
 package org.scify.moonwalker.app.ui.renderables;
 
-import org.scify.engine.Renderable;
+import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 
 import java.util.LinkedList;

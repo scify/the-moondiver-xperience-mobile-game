@@ -1,8 +1,6 @@
 package org.scify.moonwalker.app.ui.actors;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import org.scify.engine.Renderable;
+import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.ui.renderables.SpaceshipChargerRenderable;
 
 public class SpaceshipChargerActor extends TableActor implements Updateable {

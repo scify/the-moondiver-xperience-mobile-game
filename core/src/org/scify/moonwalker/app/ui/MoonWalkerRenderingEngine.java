@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.scify.engine.*;
 import org.scify.engine.audio.AudioEngine;
+import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
@@ -112,14 +113,14 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     protected void drawRenderables(MoonWalkerGameState currentState) {
         if (!bDisposalOngoing) {
             synchronized (currentState.getRenderableList()) {
-                for (Renderable renderable : currentState.getRenderableList()) {
+                for (org.scify.engine.renderables.Renderable renderable : currentState.getRenderableList()) {
                     drawRenderable(renderable);
                 }
             }
         }
     }
 
-    protected void drawRenderable(Renderable renderable) {
+    protected void drawRenderable(org.scify.engine.renderables.Renderable renderable) {
         if (!bDisposalOngoing) {
             if(renderableManager.renderableExists(renderable)) {
                 renderableManager.drawRenderable(renderable);
@@ -161,7 +162,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 listIterator.remove();
                 break;
             case "UPDATE_LABEL_TEXT_UI":
-                updateLabelText((HashMap.SimpleEntry<Renderable, String>) currentGameEvent.parameters);
+                updateLabelText((HashMap.SimpleEntry<org.scify.engine.renderables.Renderable, String>) currentGameEvent.parameters);
                 listIterator.remove();
                 break;
         }

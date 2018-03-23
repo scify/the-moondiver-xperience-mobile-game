@@ -9,10 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import org.scify.engine.conversation.MultipleConversationLines;
-import org.scify.engine.conversation.SingleConversationLine;
+import org.scify.engine.renderables.MultipleConversationLines;
+import org.scify.engine.renderables.SingleConversationLine;
 import org.scify.moonwalker.app.ui.actors.*;
-import org.scify.engine.Renderable;
+import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.ui.actors.calculator.CalculatorComponent;
 import org.scify.moonwalker.app.ui.renderables.*;
 

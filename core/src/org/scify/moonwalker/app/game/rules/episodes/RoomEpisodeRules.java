@@ -2,8 +2,7 @@ package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
 import org.scify.engine.conversation.ConversationLine;
-
-import java.util.HashMap;
+import org.scify.engine.renderables.Renderable;
 
 public class RoomEpisodeRules extends BaseEpisodeRules {
     protected Renderable messagesLabel;
@@ -19,13 +18,13 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
     public void episodeStartedEvents(GameState gsCurrent) {
         if (!isEpisodeStarted(gsCurrent)) {
             super.episodeStartedEvents(gsCurrent);
-            addEpisodeBackgroundImage(gsCurrent, "img/episode_0/bg.jpg");
+            addEpisodeBackgroundImage(gsCurrent, "img/episode_0/bg.png");
             float labelWidth = appInfo.getScreenWidth() * 0.2f;
             float labelHeight = appInfo.getScreenHeight()* 0.5f;
-            messagesLabel = new Renderable(appInfo.getScreenWidth() - labelWidth - 20, appInfo.getScreenHeight() / 2f - 100, labelWidth, labelHeight, "label", "messagesLabel");
-            gsCurrent.addRenderable(messagesLabel);
-            gsCurrent.addGameEvent(new GameEvent("UPDATE_LABEL_TEXT_UI", new HashMap.SimpleEntry<>(messagesLabel, mainLabelText)));
-            addPlayerAvatar(gsCurrent);
+            //messagesLabel = new Renderable(appInfo.getScreenWidth() - labelWidth - 20, appInfo.getScreenHeight() / 2f - 100, labelWidth, labelHeight, "label", "messagesLabel");
+            //gsCurrent.addRenderable(messagesLabel);
+           // gsCurrent.addGameEvent(new GameEvent("UPDATE_LABEL_TEXT_UI", new HashMap.SimpleEntry<>(messagesLabel, mainLabelText)));
+            //addPlayerAvatar(gsCurrent);
         }
     }
 

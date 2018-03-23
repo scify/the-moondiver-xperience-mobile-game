@@ -1,6 +1,6 @@
-package org.scify.engine.conversation;
+package org.scify.engine.renderables;
 
-import org.scify.engine.Renderable;
+import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.UserAction;
 import org.scify.engine.UserActionCode;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
@@ -53,7 +53,7 @@ public class MultipleConversationLines extends Renderable{
 
     protected void addPossibleAnswer(ConversationLine line) {
         ActionButton button = new ActionButton("text_button", "multiple_selection_answer");
-        button.setTitle(line.text);
+        button.setTitle(line.getText());
         button.setUserAction(new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, line.getId()));
         buttons.add(button);
     }

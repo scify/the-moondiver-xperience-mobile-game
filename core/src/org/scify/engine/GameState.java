@@ -1,5 +1,7 @@
 package org.scify.engine;
 
+import org.scify.engine.renderables.Renderable;
+
 import java.util.*;
 
 /**
@@ -15,7 +17,7 @@ public abstract class GameState {
     /**
      * List of in-game objects, like players, monsters, sprites, etc
      */
-    protected List<Renderable> renderableList;
+    protected List<org.scify.engine.renderables.Renderable> renderableList;
     protected Player player;
     /**
      * Bucket that serves the need for game components to arbitrarily store
@@ -30,7 +32,7 @@ public abstract class GameState {
     }
 
     public void clearRendereablesList() {
-        renderableList = Collections.synchronizedList(new LinkedList<Renderable>());
+        renderableList = Collections.synchronizedList(new LinkedList<org.scify.engine.renderables.Renderable>());
     }
 
     /**
@@ -148,22 +150,22 @@ public abstract class GameState {
         }
     }
 
-    public List<Renderable> getRenderableList() {
+    public List<org.scify.engine.renderables.Renderable> getRenderableList() {
         return renderableList;
     }
 
 
-    public void addRenderable(Renderable r) {
+    public void addRenderable(org.scify.engine.renderables.Renderable r) {
         renderableList.add(r);
     }
 
-    public void addRenderables(List<Renderable> renderables) {
+    public void addRenderables(List<org.scify.engine.renderables.Renderable> renderables) {
         renderableList.addAll(renderables);
     }
 
-    public Renderable getRenderable(Renderable renderable){
+    public org.scify.engine.renderables.Renderable getRenderable(org.scify.engine.renderables.Renderable renderable){
         synchronized (renderableList) {
-            ListIterator<Renderable> listIterator = renderableList.listIterator();
+            ListIterator<org.scify.engine.renderables.Renderable> listIterator = renderableList.listIterator();
             while (listIterator.hasNext()) {
                 Renderable current = listIterator.next();
                 if(current == renderable)

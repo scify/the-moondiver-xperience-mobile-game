@@ -4,6 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Json;
 import org.scify.engine.*;
 import org.scify.engine.EpisodeEndState;
+import org.scify.engine.renderables.MultipleConversationLines;
+import org.scify.engine.renderables.Renderable;
+import org.scify.engine.renderables.SingleConversationLine;
 import org.scify.moonwalker.app.game.rules.MoonWalkerRules;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
@@ -31,7 +34,7 @@ public class ConversationRules extends MoonWalkerRules {
      * Every conversation line that is added to the game state
      * is added to this list as well.
      */
-    protected List<Renderable> oldConversationLines;
+    protected List<org.scify.engine.renderables.Renderable> oldConversationLines;
 
     public ConversationRules(String conversationJSONFilePath) {
         appInfo = AppInfo.getInstance();
@@ -92,8 +95,8 @@ public class ConversationRules extends MoonWalkerRules {
      * @param gameState the current game state
      */
     protected void removeActiveConversationComponents(GameState gameState) {
-        for(Renderable oldLine : oldConversationLines) {
-            Renderable line = gameState.getRenderable(oldLine);
+        for(org.scify.engine.renderables.Renderable oldLine : oldConversationLines) {
+            org.scify.engine.renderables.Renderable line = gameState.getRenderable(oldLine);
             // setting a negative z-index value will cause the rendering engine
             // to hide the corresponding UI instance of the renderable.
             line.setZIndex(-1);
@@ -123,7 +126,7 @@ public class ConversationRules extends MoonWalkerRules {
     }
 
     protected void addSingleConversationLine(ConversationLine conversationLine, GameState gameState) {
-        SingleConversationLine singleConversationLine = new SingleConversationLine("new_single_conversation");
+        org.scify.engine.renderables.SingleConversationLine singleConversationLine = new SingleConversationLine("new_single_conversation");
         singleConversationLine.setConversationLine(conversationLine);
         singleConversationLine.setRelativeAvatarPath(conversationLine.getSpeakerId() + ".jpg");
 
@@ -133,7 +136,7 @@ public class ConversationRules extends MoonWalkerRules {
     }
 
     protected void addMultipleConversationLines(List<ConversationLine> nextLines, GameState gameState) {
-        MultipleConversationLines conversationLines = new MultipleConversationLines("multiple_lines");
+        org.scify.engine.renderables.MultipleConversationLines conversationLines = new MultipleConversationLines("multiple_lines");
         conversationLines.setTitle(getCurrentConversationLine(gameState).text);
         conversationLines.setConversationLines(nextLines);
         conversationLines.setRelativeAvatarImgPath(getCurrentConversationLine(gameState).getSpeakerId() + ".jpg");
@@ -161,7 +164,7 @@ public class ConversationRules extends MoonWalkerRules {
         return (ConversationLine) gameState.getAdditionalDataEntry(ID);
     }
 
-    public Renderable getCurrentSpeaker(ConversationLine conversationLine) {
+    public org.scify.engine.renderables.Renderable getCurrentSpeaker(ConversationLine conversationLine) {
         return getRenderableById(conversationLine.getSpeakerId());
     }
 
@@ -175,7 +178,7 @@ public class ConversationRules extends MoonWalkerRules {
         // If the speaker does not exist
         if (!renderableExist(currentLine.getSpeakerId())) {
             // add the renderable character
-            Renderable newSpeaker = new Renderable(50, 70, appInfo.getScreenWidth() * 0.3f, appInfo.getScreenWidth() * 0.4f, currentLine.speakerId, currentLine.speakerId);
+            org.scify.engine.renderables.Renderable newSpeaker = new Renderable(50, 70, appInfo.getScreenWidth() * 0.3f, appInfo.getScreenWidth() * 0.4f, currentLine.speakerId, currentLine.speakerId);
             // update my lookup map
             addRenderableEntry(currentLine.speakerId, newSpeaker);
             // update state

@@ -1,6 +1,7 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
+import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 
 /**
@@ -17,7 +18,7 @@ public class CalculatorEpisodeRules extends TemporaryEpisodeRules {
         if (!isEpisodeStarted(gsCurrent)) {
             super.episodeStartedEvents(gsCurrent);
             addEpisodeBackgroundImage(gsCurrent, "img/calculator_episode/bg.jpg");
-            Renderable calculator = new Renderable("calculator", "calculator_button");
+            org.scify.engine.renderables.Renderable calculator = new Renderable("calculator", "calculator_button");
             gsCurrent.addRenderable(calculator);
             ActionButton escape = createEscapeButton();
             escape.setUserAction(new UserAction(UserActionCode.BACK));

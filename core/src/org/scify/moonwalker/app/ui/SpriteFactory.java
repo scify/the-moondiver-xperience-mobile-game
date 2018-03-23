@@ -3,7 +3,7 @@ package org.scify.moonwalker.app.ui;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import org.scify.engine.Renderable;
+import org.scify.engine.renderables.Renderable;
 
 public class SpriteFactory extends ComponentFactory{
 

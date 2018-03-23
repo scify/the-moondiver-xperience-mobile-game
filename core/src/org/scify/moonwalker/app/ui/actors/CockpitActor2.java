@@ -3,22 +3,15 @@ package org.scify.moonwalker.app.ui.actors;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
-import org.scify.engine.Renderable;
+import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.ThemeController;
 import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
-
-import javax.xml.soap.Text;
 
 public class CockpitActor2 extends TableActor implements Updateable {
 
@@ -150,7 +143,7 @@ public class CockpitActor2 extends TableActor implements Updateable {
     protected void drawBottom(float screenWidth, float screenHeight) {
 
         Label.LabelStyle labelStyle = new Label.LabelStyle();
-        ThemeController themeController = new ThemeController(18, "controls");
+        ThemeController themeController = new ThemeController(14, "controls");
         labelStyle.font = themeController.getFont();
         labelStyle.fontColor = Color.valueOf("436272");
 
@@ -159,10 +152,34 @@ public class CockpitActor2 extends TableActor implements Updateable {
         bottomTable.add().height(screenHeight * 0.167f).width(0.28f * screenWidth);
 
         //Label labelMotorEfficiency = new Label(renderable.getMotorEfficiencyValue() + "%", getSkin());
-        Label labelMotorEfficiency = new Label("100%", getSkin());
-        //final TextTooltip textTooltip = new TextTooltip("TEST", getSkin());
+        final Label labelMotorEfficiency = new Label("40%", getSkin());
+        /*final TextTooltip textTooltip = new TextTooltip("20 Km/Μονάδα Φεγγαροενέργειας", getSkin());
+        textTooltip.setAlways(true);
+        labelMotorEfficiency.addListener(textTooltip);*/
+        /*labelMotorEfficiency.addListener(new InputListener() {
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                //System.out.println("EVENT: " + event.getStageX() + " " + event.getStageY() + " " + x + " ");
+                InputEvent e = new InputEvent();
+                e.setType(InputEvent.Type.mouseMoved);
+                e.setTarget(event.getTarget());
+                e.setStageX(event.getStageX());
+                e.setStageY(event.getStageY());
+                e.setListenerActor(event.getListenerActor());
+                e.setRelatedActor(event.getRelatedActor());
+                //textTooltip.toC
+                textTooltip.handle(e);
+                //event.getListenerActor().fire(e);
 
-        //labelMotorEfficiency.addListener(textTooltip);
+                return false;
+            }
+
+            *//*@Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                event.setType(InputEvent.Type.exit);
+                textTooltip.handle(event);
+            }*//*
+        });*/
         labelMotorEfficiency.setStyle(labelStyle);
         labelMotorEfficiency.setAlignment(Align.center);
         motorEfficiencyValueCell = bottomTable.add(labelMotorEfficiency).width(0.06f *screenWidth);
@@ -176,7 +193,7 @@ public class CockpitActor2 extends TableActor implements Updateable {
 
         bottomTable.add().width(0.27f * screenWidth);
 
-        Label labelDistance = new Label(renderable.getDestinationDistanceValue() + "", getSkin());
+        Label labelDistance = new Label(renderable.getDestinationDistanceValue() + "KM", getSkin());
         labelDistance.setStyle(labelStyle);
         labelDistance.setAlignment(Align.center);
         remainingDestinationValueCell = bottomTable.add(labelDistance).width(0.06f *screenWidth);
