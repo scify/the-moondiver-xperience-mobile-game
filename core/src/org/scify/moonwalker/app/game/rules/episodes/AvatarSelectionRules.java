@@ -1,6 +1,7 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
+import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 import org.scify.moonwalker.app.ui.renderables.AvatarSelectionRenderable;
 
@@ -15,10 +16,12 @@ public class AvatarSelectionRules extends BaseEpisodeRules {
             case BOY_SELECTED:
                 removePreviousAvatarSelectionAndAddNew(gsCurrent, "boy");
                 renderable.setSelectedAvatar(renderable.getBoySelection());
+                gameInfo.setSelectedPlayer(SelectedPlayer.boy);
                 break;
             case GIRL_SELECTED:
                 removePreviousAvatarSelectionAndAddNew(gsCurrent, "girl");
                 renderable.setSelectedAvatar(renderable.getGirlSelection());
+                gameInfo.setSelectedPlayer(SelectedPlayer.girl);
                 break;
         }
         super.handleUserAction(gsCurrent, userAction);
@@ -73,6 +76,7 @@ public class AvatarSelectionRules extends BaseEpisodeRules {
 
         renderable.setSelectedAvatar(boyBtn);
         removePreviousAvatarSelectionAndAddNew(currentState, "boy");
+        gameInfo.setSelectedPlayer(SelectedPlayer.boy);
         currentState.addRenderable(renderable);
     }
 }

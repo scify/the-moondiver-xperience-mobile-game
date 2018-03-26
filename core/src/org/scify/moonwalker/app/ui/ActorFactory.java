@@ -16,7 +16,7 @@ import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.ui.actors.calculator.CalculatorComponent;
 import org.scify.moonwalker.app.ui.renderables.*;
 
-public class ActorFactory extends ComponentFactory{
+public class ActorFactory extends ComponentFactory {
 
     public ActorFactory(Skin skin) {
         super(skin);
@@ -77,12 +77,14 @@ public class ActorFactory extends ComponentFactory{
             case "multiple_conversation_lines":
                 toReturn = createMultipleSelectionActor((MultipleConversationLines) renderable);
                 break;
+            case "room":
+                toReturn = createRoomActor((RoomRenderable) renderable);
+                break;
             default:
                 throw new UnsupportedRenderableTypeException("renderable with type " + renderable.getType() + " is unsupported.");
         }
         return toReturn;
     }
-
 
     protected Image createImage(String imgFileRelevantPath, Renderable renderable) {
         Image img = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath(imgFileRelevantPath)))));
@@ -91,7 +93,7 @@ public class ActorFactory extends ComponentFactory{
     }
 
     protected Button createButton(ActionButton button) {
-        if(button.getType().equals("image_button"))
+        if (button.getType().equals("image_button"))
             return createImageButton(button);
         else if (button.getType().equals("text_button"))
             return createTextButton(button);
@@ -119,11 +121,18 @@ public class ActorFactory extends ComponentFactory{
 
     protected void setButtonDimensions(ActionButton actionButton, Button btn) {
         btn.setPosition(actionButton.getxPos(), actionButton.getyPos());
-        if(actionButton.getWidth() != 0)
+        if (actionButton.getWidth() != 0)
             btn.setWidth(actionButton.getWidth());
-        if(actionButton.getHeight() != 0)
+        if (actionButton.getHeight() != 0)
             btn.setHeight(actionButton.getHeight());
         btn.pad(actionButton.getPadding());
+    }
+
+    private Actor createRoomActor(final RoomRenderable renderable) {
+        RoomActor actor = new RoomActor(skin, renderable);
+
+        actor.init();
+        return actor;
     }
 
     private Actor createCockpitActor(final CockpitRenderable renderable) {
@@ -162,7 +171,7 @@ public class ActorFactory extends ComponentFactory{
     private ButtonList createVerticalButtonList(ButtonsListRenderable buttons) {
         ButtonList list = new ButtonList(skin, true);
         list.addMainLabel("Select an Action");
-        for(final ActionButton button : buttons.getButtonList()) {
+        for (final ActionButton button : buttons.getButtonList()) {
             list.addButton(createResourceForType(button));
         }
         return list;
@@ -193,7 +202,7 @@ public class ActorFactory extends ComponentFactory{
         MultipleSelectionActor actor = new MultipleSelectionActor(skin, multipleConversationLines);
         actor.setZIndex(1);
         int btnIndex = 1;
-        for(ActionButton button : multipleConversationLines.getButtons()) {
+        for (ActionButton button : multipleConversationLines.getButtons()) {
             actor.addButton(createButton(button), btnIndex);
             btnIndex++;
         }

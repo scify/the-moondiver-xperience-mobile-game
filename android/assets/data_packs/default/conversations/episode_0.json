@@ -1,5 +1,5 @@
 [
-  {"id": "1", "order":"1", "speakerId":"yoda", "text":"Ποιό είναι το όνομα σου; [RED]\u00aa [YELLOW]\u00ac [GREEN]\u00af [WHITE]\u00b1 \u00b2 \u00b3 \u00b5 \u00b9", "prerequisites":"", "triggerEvent":""},
+  {"id": "1", "order":"1", "speakerId":"player", "text":"Ποιό είναι το όνομα σου; [#d4aa00ff]\u00b9 \u00aa \u00ac \u00af \u00b3 [#ff0000ff]\u00b1 [#deaa87ff]\u00b2 [#008080ff]\u00b5 [#ffffffff]\u00ba", "prerequisites":"", "triggerEvent":""},
   {"id": "2", "order":"2", "speakerId":"player", "text":"Σκάσε!", "prerequisites":"", "triggerEvent":"", "nextOrder":"6"},
   {"id": "3", "order":"2", "speakerId":"player", "text":"Δεν σου λέω!", "prerequisites":"", "triggerEvent":"", "nextOrder":"6"},
   {"id": "4", "order":"2", "speakerId":"player", "text":"Μπορείς να επαναλάβεις;", "prerequisites":"", "triggerEvent":"", "nextOrder":"1"},

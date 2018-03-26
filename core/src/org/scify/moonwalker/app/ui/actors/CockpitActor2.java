@@ -143,7 +143,7 @@ public class CockpitActor2 extends TableActor implements Updateable {
     protected void drawBottom(float screenWidth, float screenHeight) {
 
         Label.LabelStyle labelStyle = new Label.LabelStyle();
-        ThemeController themeController = new ThemeController(14, "controls");
+        ThemeController themeController = new ThemeController(16, "controls");
         labelStyle.font = themeController.getFont();
         labelStyle.fontColor = Color.valueOf("436272");
 
@@ -151,40 +151,16 @@ public class CockpitActor2 extends TableActor implements Updateable {
 
         bottomTable.add().height(screenHeight * 0.167f).width(0.28f * screenWidth);
 
-        //Label labelMotorEfficiency = new Label(renderable.getMotorEfficiencyValue() + "%", getSkin());
-        final Label labelMotorEfficiency = new Label("40%", getSkin());
-        /*final TextTooltip textTooltip = new TextTooltip("20 Km/Μονάδα Φεγγαροενέργειας", getSkin());
-        textTooltip.setAlways(true);
-        labelMotorEfficiency.addListener(textTooltip);*/
-        /*labelMotorEfficiency.addListener(new InputListener() {
-            @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                //System.out.println("EVENT: " + event.getStageX() + " " + event.getStageY() + " " + x + " ");
-                InputEvent e = new InputEvent();
-                e.setType(InputEvent.Type.mouseMoved);
-                e.setTarget(event.getTarget());
-                e.setStageX(event.getStageX());
-                e.setStageY(event.getStageY());
-                e.setListenerActor(event.getListenerActor());
-                e.setRelatedActor(event.getRelatedActor());
-                //textTooltip.toC
-                textTooltip.handle(e);
-                //event.getListenerActor().fire(e);
 
-                return false;
-            }
 
-            *//*@Override
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                event.setType(InputEvent.Type.exit);
-                textTooltip.handle(event);
-            }*//*
-        });*/
+        Label labelMotorEfficiency = new Label(renderable.getMotorEfficiencyValue(), getSkin());
         labelMotorEfficiency.setStyle(labelStyle);
         labelMotorEfficiency.setAlignment(Align.center);
+
         motorEfficiencyValueCell = bottomTable.add(labelMotorEfficiency).width(0.06f *screenWidth);
 
         bottomTable.add().width(0.265f * screenWidth);
+
 
         Label labelEnergy = new Label(renderable.getRemainingEnergyValue(), getSkin());
         labelEnergy.setStyle(labelStyle);
@@ -193,7 +169,7 @@ public class CockpitActor2 extends TableActor implements Updateable {
 
         bottomTable.add().width(0.27f * screenWidth);
 
-        Label labelDistance = new Label(renderable.getDestinationDistanceValue() + "KM", getSkin());
+        Label labelDistance = new Label(renderable.getDestinationDistanceValue() + "", getSkin());
         labelDistance.setStyle(labelStyle);
         labelDistance.setAlignment(Align.center);
         remainingDestinationValueCell = bottomTable.add(labelDistance).width(0.06f *screenWidth);

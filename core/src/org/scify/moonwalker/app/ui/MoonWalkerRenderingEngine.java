@@ -113,7 +113,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     protected void drawRenderables(MoonWalkerGameState currentState) {
         if (!bDisposalOngoing) {
             synchronized (currentState.getRenderableList()) {
-                for (org.scify.engine.renderables.Renderable renderable : currentState.getRenderableList()) {
+                for (Renderable renderable : currentState.getRenderableList()) {
                     drawRenderable(renderable);
                 }
             }

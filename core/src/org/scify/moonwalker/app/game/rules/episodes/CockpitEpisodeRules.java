@@ -11,6 +11,27 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
     protected LocationController locationController;
 
     @Override
+    public void episodeStartedEvents(GameState currentState) {
+        if (!isEpisodeStarted(currentState)) {
+            locationController = new LocationController();
+            super.episodeStartedEvents(currentState);
+            addEpisodeBackgroundImage(currentState, "img/cockpit/generic_background.png");
+            initializeAndAddCockpit(currentState);
+        } else {
+
+        }
+    }
+
+    protected void initializeAndAddCockpit(GameState currentState) {
+        cockpit = new CockpitRenderable(0,0, appInfo.getScreenWidth(),
+                appInfo.getScreenHeight(), "cockpit", "cockpit");
+        setCockpitFieldValues();
+        setCockpitButtons();
+        cockpit.setImgPath("img/cockpit/cockpit_background.png");
+        currentState.addRenderable(cockpit);
+    }
+
+    @Override
     protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
         switch (userAction.getActionCode()) {
             case MAP_EPISODE:
@@ -28,18 +49,6 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
     }
 
     @Override
-    public void episodeStartedEvents(GameState currentState) {
-        if (!isEpisodeStarted(currentState)) {
-            locationController = new LocationController();
-            super.episodeStartedEvents(currentState);
-            addEpisodeBackgroundImage(currentState, "img/cockpit/generic_background.png");
-            initializeAndAddCockpit(currentState);
-        } else {
-
-        }
-    }
-
-    @Override
     public EpisodeEndState determineEndState(GameState currentState) {
         EpisodeEndState endStateFromParent = super.determineEndState(currentState);
         if(endStateFromParent != null)
@@ -49,15 +58,6 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
         else if(currentState.eventsQueueContainsEventOwnedBy("SPACESHIP_CHARGER_EPISODE_STARTED", this))
             return new EpisodeEndState(EpisodeEndStateCode.SPACESHIP_CHARGER_EPISODE_STARTED, cleanUpState(currentState));
         return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE, cleanUpState(currentState));
-    }
-    
-    protected void initializeAndAddCockpit(GameState currentState) {
-        cockpit = new CockpitRenderable(0,0, appInfo.getScreenWidth(),
-                appInfo.getScreenHeight(), "cockpit", "cockpit");
-        setCockpitFieldValues();
-        setCockpitButtons();
-        cockpit.setImgPath("img/cockpit/cockpit_background.png");
-        currentState.addRenderable(cockpit);
     }
 
     protected void setCockpitFieldValues() {

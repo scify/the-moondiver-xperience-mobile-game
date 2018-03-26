@@ -12,11 +12,12 @@ public class GameInfo {
     protected MoonPhase nextMoonPhase;
     protected MoonPhase postNextMoonPhase;
     protected MoonPhasesController moonPhasesController;
+    protected SelectedPlayer selectedPlayer;
 
     private static GameInfo instance;
 
     public static GameInfo getInstance() {
-        if(instance == null)
+        if (instance == null)
             instance = new GameInfo();
         return instance;
     }
@@ -24,12 +25,13 @@ public class GameInfo {
     private GameInfo() {
         moonPhasesController = new MoonPhasesController();
         currentDay = 0;
-        motorEfficiency = 0;
+        motorEfficiency = 10;
         remainingEnergy = 0;
         daysLeftForDestination = 90;
         LocationController lc = new LocationController();
         currentLocation = lc.getLocations().get(0);
         setMoonPhases();
+        selectedPlayer = SelectedPlayer.unset;
     }
 
     public int getCurrentDay() {
@@ -106,5 +108,13 @@ public class GameInfo {
 
     public Location getNextLocation() {
         return nextLocation;
+    }
+
+    public void setSelectedPlayer(SelectedPlayer selectedPlayer) {
+        this.selectedPlayer = selectedPlayer;
+    }
+
+    public SelectedPlayer getSelectedPlayer() {
+        return selectedPlayer;
     }
 }
