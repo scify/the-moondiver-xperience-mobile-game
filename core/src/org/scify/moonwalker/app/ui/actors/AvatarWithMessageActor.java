@@ -1,17 +1,17 @@
 package org.scify.moonwalker.app.ui.actors;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.renderables.SingleConversationLine;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
+import org.scify.moonwalker.app.ui.ThemeController;
 
 /**
  * This class describes the conversation component that is drawn
@@ -38,30 +38,63 @@ public class AvatarWithMessageActor extends TableActor {
         this.renderable = renderable;
         appInfo = AppInfo.getInstance();
         resourceLocator = new ResourceLocator();
-        initTable();
     }
 
-    protected void initTable() {
-        setFillParent(true);
-        setWidth(appInfo.pixelsWithDensity(renderable.getWidth()));
-        setHeight(appInfo.pixelsWithDensity(renderable.getHeight()));
-        bottom().left();
-        background = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath("img/component_background.png")))));
-        background.setSize(appInfo.getScreenWidth(), appInfo.getScreenHeight() / 4f);
-        addActor(background);
+    public void init() {
+        //setFillParent(true);
+        float screenHeight = appInfo.getScreenHeight();
+        float screenWidth = appInfo.getScreenWidth();
+        Stack stack = new Stack();
+        Texture chatBox = new Texture(resourceLocator.getFilePath("img/conversations/bg.png"));
+        float width = convertWidth(chatBox.getWidth());
+        float height = convertHeight(chatBox.getHeight());
+        setWidth(screenWidth);
+        setHeight(height * 1.3f);
+        background = new Image(new TextureRegionDrawable(new TextureRegion(chatBox)));
+        stack.add(background);
+
+        Table table = new Table();
+        table.defaults();
+        table.center();
+
+        //avatar
+        Texture avatar = imgUrlToTexture(renderable.getRelativeAvatarPath());
+        Image avatarImage = new Image(new TextureRegionDrawable(new TextureRegion(avatar)));
+        table.add(avatarImage).left().width(convertWidth(avatar.getWidth())).height(convertHeight(avatar.getHeight()));
+
+        table.add().width(0.05f *width).height(height * 0.9f);
+
+        //Text
         lineLabel = new Label(renderable.getConversationLine().getText(), getSkin());
         lineLabel.setWrap(true);
-        lineLabel.setWidth(appInfo.getScreenWidth() * 0.5f);
-        avatarSprite = new Sprite(new Texture(resourceLocator.getFilePath("img/avatars/" + renderable.getRelativeAvatarPath())));
-        avatarSprite.setSize((float) (appInfo.getScreenWidth() * 0.15), (float) (appInfo.getScreenWidth() * 0.1));
-        avatarImg = new Image(new SpriteDrawable(avatarSprite));
-        add(avatarImg).width(appInfo.getScreenWidth() * 0.2f).padLeft(5).padBottom(10);
-        add(lineLabel).width(lineLabel.getWidth()).padLeft(10).align(Align.right);
-        debug();
+        //lineLabel.setWidth(screenWidth * 0.6f);
+        table.add(lineLabel).center().width(0.60f * width);
+        //button
+        table.add(button).right().width(0.2f * width).height(0.4f * height);
+
+        table.add().width(0.02f * width);
+
+        //table.debug();
+        stack.add(table);
+
+        add(stack).height(height).width(width).center();
     }
 
     public void setButton(Button button) {
         this.button = button;
-        add(this.button).width(appInfo.getScreenWidth() * 0.2f).padLeft(10).align(Align.left);
+    }
+
+    protected float convertHeight(float initialHeight) {
+        int initialBackgroundHeight = 1080;
+        float ret = appInfo.getScreenHeight() * initialHeight;
+        ret = ret / initialBackgroundHeight;
+        return ret;
+    }
+
+    protected float convertWidth(float initialWidth) {
+        int initialBackgroundWidth = 1920;
+        float ret = appInfo.getScreenWidth() * initialWidth;
+        ret = ret / initialBackgroundWidth;
+        return ret;
     }
 }

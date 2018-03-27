@@ -17,7 +17,7 @@ public abstract class GameState {
     /**
      * List of in-game objects, like players, monsters, sprites, etc
      */
-    protected List<org.scify.engine.renderables.Renderable> renderableList;
+    protected List<Renderable> renderableList;
     protected Player player;
     /**
      * Bucket that serves the need for game components to arbitrarily store
@@ -32,7 +32,7 @@ public abstract class GameState {
     }
 
     public void clearRendereablesList() {
-        renderableList = Collections.synchronizedList(new LinkedList<org.scify.engine.renderables.Renderable>());
+        renderableList = Collections.synchronizedList(new LinkedList<Renderable>());
     }
 
     /**

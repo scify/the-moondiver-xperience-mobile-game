@@ -47,11 +47,11 @@ public class ThemeController {
         parameter.minFilter = Texture.TextureFilter.Linear;
         FreeTypeFontGenerator generator;
         if (fontId.equals("dialog")) {
-            generator = new FreeTypeFontGenerator(Gdx.files.internal(resourceLocator.getFilePath("fonts/CYN_EdraMT.otf")));
+            generator = new FreeTypeFontGenerator(Gdx.files.internal(resourceLocator.getFilePath("fonts/CYN_EdraN.otf")));
         }else if (fontId.equals("controls")){
             generator = new FreeTypeFontGenerator(Gdx.files.internal(resourceLocator.getFilePath("fonts/PVF_ClimaxTXT.otf")));
         }else {
-            generator = new FreeTypeFontGenerator(Gdx.files.internal(resourceLocator.getFilePath("fonts/CYN_EdraMT.otf")));
+            generator = new FreeTypeFontGenerator(Gdx.files.internal(resourceLocator.getFilePath("fonts/CYN_EdraN.otf")));
         }
         //FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(resourceLocator.getFilePath("fonts/Anonymous_Pro.ttf")));
         //FreeTypeFontGenerator

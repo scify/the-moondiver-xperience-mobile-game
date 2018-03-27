@@ -195,6 +195,7 @@ public class ActorFactory extends ComponentFactory {
         AvatarWithMessageActor actor = new AvatarWithMessageActor(skin, conversationLine);
         actor.setZIndex(1);
         actor.setButton(createButton(conversationLine.getButtonNext()));
+        actor.init();
         return actor;
     }
 

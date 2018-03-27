@@ -150,9 +150,9 @@ public class ConversationRules extends MoonWalkerRules {
         if (speakerId.equals("player")) {
             switch (gameInfo.getSelectedPlayer()) {
                 case boy:
-                    return "boy.png";
+                    return "img/avatars/boy.png";
                 case girl:
-                    return "girl.png";
+                    return "img/avatars/girl.png";
                 case unset:
                     return null;
                 default:
