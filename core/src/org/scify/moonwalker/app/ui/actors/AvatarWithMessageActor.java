@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Scaling;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.renderables.SingleConversationLine;
@@ -30,8 +31,7 @@ public class AvatarWithMessageActor extends TableActor {
     protected Image background;
     protected Button button;
     protected SingleConversationLine renderable;
-    protected Sprite avatarSprite;
-    protected Image avatarImg;
+    protected Image avatarImage;
 
     public AvatarWithMessageActor(Skin skin, SingleConversationLine renderable) {
         super(skin);
@@ -41,8 +41,6 @@ public class AvatarWithMessageActor extends TableActor {
     }
 
     public void init() {
-        //setFillParent(true);
-        float screenHeight = appInfo.getScreenHeight();
         float screenWidth = appInfo.getScreenWidth();
         Stack stack = new Stack();
         Texture chatBox = new Texture(resourceLocator.getFilePath("img/conversations/bg.png"));
@@ -59,8 +57,10 @@ public class AvatarWithMessageActor extends TableActor {
 
         //avatar
         Texture avatar = imgUrlToTexture(renderable.getRelativeAvatarPath());
-        Image avatarImage = new Image(new TextureRegionDrawable(new TextureRegion(avatar)));
-        table.add(avatarImage).left().width(convertWidth(avatar.getWidth())).height(convertHeight(avatar.getHeight()));
+        avatarImage = new Image(new TextureRegionDrawable(new TextureRegion(avatar)));
+        avatarImage.setWidth(convertWidth(200));
+        avatarImage.setScaling(Scaling.fillX);
+        table.add(avatarImage).left().width(avatarImage.getWidth()).height(avatarImage.getHeight());
 
         table.add().width(0.05f *width).height(height * 0.9f);
 
