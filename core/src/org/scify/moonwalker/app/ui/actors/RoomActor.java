@@ -21,7 +21,7 @@ public class RoomActor extends TableActor implements Updateable {
         timestamp = this.renderable.getRenderableLastUpdated();
         setWidth(renderable.getWidth());
         setHeight(renderable.getHeight());
-        //addBackground(renderable.getImgPath());
+        addBackground(renderable.getImgPath());
     }
 
     public void init() {
@@ -30,12 +30,19 @@ public class RoomActor extends TableActor implements Updateable {
         Texture texture = imgUrlToTexture(renderable.PHONE_OFF_IMG_PATH);
         Image image = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
         image.setAlign(Align.center);
-        add(image).width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight()));
+        phone = add(image).width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight()));
     }
 
     @Override
     public void update(Renderable renderable) {
-
+        if(this.renderable.getRenderableLastUpdated() > timestamp){
+            this.renderable = (RoomRenderable) renderable;
+            this.timestamp = this.renderable.getRenderableLastUpdated();
+            Texture texture = imgUrlToTexture(this.renderable.getPhoneImagePath());
+            Image image = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
+            image.setAlign(Align.center);
+            phone.setActor(image);
+        }
     }
 
     protected float convertHeight(float initialHeight) {

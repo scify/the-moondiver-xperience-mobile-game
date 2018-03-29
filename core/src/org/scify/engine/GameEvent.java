@@ -33,6 +33,14 @@ public class GameEvent {
      */
     public Object owner;
 
+    public GameEvent(String type, Object parameters, long delay, boolean blocking, Object owner) {
+        this.type = type;
+        this.parameters = parameters;
+        this.delay = delay;
+        this.blocking = blocking;
+        this.owner =  owner;
+    }
+
     public GameEvent(String type, Object parameters, long delay, boolean blocking) {
         this.type = type;
         this.parameters = parameters;

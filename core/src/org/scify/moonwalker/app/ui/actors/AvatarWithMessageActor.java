@@ -32,6 +32,7 @@ public class AvatarWithMessageActor extends TableActor {
     protected Button button;
     protected SingleConversationLine renderable;
     protected Image avatarImage;
+    protected Image avatarBG;
 
     public AvatarWithMessageActor(Skin skin, SingleConversationLine renderable) {
         super(skin);
@@ -56,11 +57,18 @@ public class AvatarWithMessageActor extends TableActor {
         table.center();
 
         //avatar
+        Stack avatarStack = new Stack();
+        Texture avatarBGTexture = new Texture(resourceLocator.getFilePath("img/avatars/bg.png"));
+        avatarBG = new Image(new TextureRegionDrawable(new TextureRegion(avatarBGTexture)));
+        avatarBG.setWidth(convertWidth(200));
+        avatarBG.setScaling(Scaling.fillX);
+        avatarStack.add(avatarBG);
         Texture avatar = imgUrlToTexture(renderable.getRelativeAvatarPath());
         avatarImage = new Image(new TextureRegionDrawable(new TextureRegion(avatar)));
         avatarImage.setWidth(convertWidth(200));
         avatarImage.setScaling(Scaling.fillX);
-        table.add(avatarImage).left().width(avatarImage.getWidth()).height(avatarImage.getHeight());
+        avatarStack.add(avatarImage);
+        table.add(avatarStack).left().width(avatarImage.getWidth()).height(avatarImage.getHeight());
 
         table.add().width(0.05f *width).height(height * 0.9f);
 

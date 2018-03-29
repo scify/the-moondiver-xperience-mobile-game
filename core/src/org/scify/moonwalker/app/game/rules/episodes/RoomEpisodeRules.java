@@ -2,7 +2,10 @@ package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
 import org.scify.engine.conversation.ConversationLine;
+import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.ui.renderables.RoomRenderable;
+
+import java.util.Date;
 
 public class RoomEpisodeRules extends BaseEpisodeRules {
     protected RoomRenderable room;
@@ -17,21 +20,26 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
     public void episodeStartedEvents(GameState currentState) {
         if (!isEpisodeStarted(currentState)) {
             super.episodeStartedEvents(currentState);
-            addEpisodeBackgroundImage(currentState, "img/episode_0/bg.png");
+            //addEpisodeBackgroundImage(currentState, "img/episode_0/bg.png");
             initialize(currentState);
+            if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
+                currentState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", "audio/room_episode/boy/music.mp3"));
+                currentState.addGameEvent(new GameEvent("AUDIO_STOP_UI", "audio/room_episode/boy/music.mp3", new Date().getTime() + 3000, false));
+            }
+            else {
+                currentState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", "audio/room_episode/girl/music.mp3"));
+                currentState.addGameEvent(new GameEvent("AUDIO_STOP_UI", "audio/room_episode/girl/music.mp3", new Date().getTime() + 3000, false));
+            }
 
-
-            //messagesLabel = new Renderable(appInfo.getScreenWidth() - labelWidth - 20, appInfo.getScreenHeight() / 2f - 100, labelWidth, labelHeight, "label", "messagesLabel");
-            //gsCurrent.addRenderable(messagesLabel);
-           // gsCurrent.addGameEvent(new GameEvent("UPDATE_LABEL_TEXT_UI", new HashMap.SimpleEntry<>(messagesLabel, mainLabelText)));
-            //addPlayerAvatar(gsCurrent);
+            currentState.addGameEvent(new GameEvent("AUDIO_START_UI", "audio/room_episode/mobile.mp3", new Date().getTime() + 3000, false));
+            currentState.addGameEvent(new GameEvent("ALTER_ROOM_IMAGE_UI", room, new Date().getTime() + 3000, false));
         }
     }
 
     protected void initialize(GameState currentState) {
         room = new RoomRenderable(0,0, appInfo.getScreenWidth(),
                 appInfo.getScreenHeight(), "room", "room");
-        room.setImgPath("img/episode_0/bg.png");
+        room.setImgPath("img/episode_room/bg.png");
         currentState.addRenderable(room);
     }
 
@@ -42,7 +50,7 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
         // TODO add conversation id in case we have multiple conversations in an episode
         if(conversationHasNotStartedAndNotFinished(gsCurrent)) {
             // call base class create method, passing the resource file for this specific conversation
-            createConversation(gsCurrent, "conversations/episode_0.json");
+            createConversation(gsCurrent, "conversations/episode_room.json");
         }
         if (isConversationOngoing(gsCurrent)) {
             // ask the conversation rules to alter the current game state accordingly

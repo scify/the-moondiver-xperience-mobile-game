@@ -20,6 +20,7 @@ import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
+import org.scify.moonwalker.app.ui.renderables.RoomRenderable;
 import org.scify.moonwalker.app.ui.sound.GdxAudioEngine;
 
 import java.util.*;
@@ -97,7 +98,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     @Override
     public void setGameState(MoonWalkerGameState gameState) {
         this.currentGameState = gameState;
-        if(this.world == null)
+        if (this.world == null)
             this.world = gameState.world;
     }
 
@@ -122,7 +123,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
 
     protected void drawRenderable(org.scify.engine.renderables.Renderable renderable) {
         if (!bDisposalOngoing) {
-            if(renderableManager.renderableExists(renderable)) {
+            if (renderableManager.renderableExists(renderable)) {
                 renderableManager.drawRenderable(renderable);
             } else {
                 renderableManager.createAndAddRenderable(renderable);
@@ -146,7 +147,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     }
 
     private void handleCurrentGameEvent(GameEvent gameEvent, ListIterator<GameEvent> listIterator) {
-        String eventType = currentGameEvent.type;
+        String eventType = gameEvent.type;
         switch (eventType) {
             case "BACKGROUND_IMG_UI":
                 String imgPath = (String) gameEvent.parameters;
@@ -160,6 +161,38 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             case "EPISODE_SUCCESS_UI":
                 audioEngine.playSound("audio/success.wav");
                 listIterator.remove();
+                break;
+            case "AUDIO_LOAD_UI":
+                audioEngine.loadSound((String) gameEvent.parameters);
+                listIterator.remove();
+                break;
+            case "AUDIO_DISPOSE_UI":
+                audioEngine.disposeSound((String) gameEvent.parameters);
+                listIterator.remove();
+                break;
+            case "AUDIO_START_UI":
+                if (new Date().getTime() > gameEvent.delay) {
+                    audioEngine.playSound((String) gameEvent.parameters);
+                    listIterator.remove();
+                }
+                break;
+            case "AUDIO_START_LOOP_UI":
+                if (new Date().getTime() > gameEvent.delay) {
+                    audioEngine.playSoundLoop((String) gameEvent.parameters);
+                    listIterator.remove();
+                }
+                break;
+            case "AUDIO_STOP_UI":
+                if (new Date().getTime() > gameEvent.delay) {
+                    audioEngine.stopSound((String) gameEvent.parameters);
+                    listIterator.remove();
+                }
+                break;
+            case "ALTER_ROOM_IMAGE_UI":
+                if (new Date().getTime() > gameEvent.delay) {
+                    ((RoomRenderable) gameEvent.parameters).turnOnPhone();
+                    listIterator.remove();
+                }
                 break;
             case "UPDATE_LABEL_TEXT_UI":
                 updateLabelText((HashMap.SimpleEntry<org.scify.engine.renderables.Renderable, String>) currentGameEvent.parameters);

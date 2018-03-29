@@ -8,7 +8,7 @@ import org.scify.moonwalker.app.helpers.ResourceLocator;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GdxAudioEngine implements AudioEngine{
+public class GdxAudioEngine implements AudioEngine {
 
     protected Map<String, Sound> stringAudiosMap;
     protected ResourceLocator resourceLocator;
@@ -19,10 +19,25 @@ public class GdxAudioEngine implements AudioEngine{
     }
 
     @Override
+    public void loadSound(String filePath) {
+        Sound sound = Gdx.audio.newSound(Gdx.files.internal(resourceLocator.getFilePath(filePath)));
+        stringAudiosMap.put(filePath, sound);
+    }
+
+    @Override
+    public void disposeSound(String filePath) {
+        if (stringAudiosMap.containsKey(filePath)) {
+            Sound sound = stringAudiosMap.get(filePath);
+            stringAudiosMap.remove(filePath);
+            sound.dispose();
+        }
+    }
+
+    @Override
     public void pauseCurrentlyPlayingAudios() {
-        for(Map.Entry<String, Sound> stringAudio : stringAudiosMap.entrySet()) {
+        for (Map.Entry<String, Sound> stringAudio : stringAudiosMap.entrySet()) {
             Sound currSound = stringAudio.getValue();
-            if(currSound != null)
+            if (currSound != null)
                 currSound.stop();
         }
     }
@@ -30,35 +45,53 @@ public class GdxAudioEngine implements AudioEngine{
     @Override
     public void pauseSound(String filePath) {
         Sound sound = stringAudiosMap.get(filePath);
-        if(sound != null)
+        if (sound != null)
             sound.pause();
+    }
+
+    @Override
+    public void stopSound(String filePath) {
+        Sound sound = stringAudiosMap.get(filePath);
+        if (sound != null)
+            sound.stop();
     }
 
     @Override
     public void resumeSound(String filePath) {
         Sound sound = stringAudiosMap.get(filePath);
-        if(sound != null)
+        if (sound != null)
             sound.resume();
     }
 
     @Override
     public void playSound(String filePath) {
-        Sound sound = Gdx.audio.newSound(Gdx.files.internal(resourceLocator.getFilePath(filePath)));
-        if(sound != null) {
-            if(stringAudiosMap.get(filePath) == null)
-                stringAudiosMap.put(filePath, sound);
+        if (stringAudiosMap.containsKey(filePath)) {
+            Sound sound = stringAudiosMap.get(filePath);
             sound.play();
+        }else {
+            Sound sound = Gdx.audio.newSound(Gdx.files.internal(resourceLocator.getFilePath(filePath)));
+            if (sound != null) {
+                if (stringAudiosMap.get(filePath) == null)
+                    stringAudiosMap.put(filePath, sound);
+                sound.play();
+            }
         }
     }
 
     @Override
     public void playSoundLoop(String filePath) {
-        Sound sound = Gdx.audio.newSound(Gdx.files.internal(resourceLocator.getFilePath(filePath)));
-        if(sound != null) {
-            if(stringAudiosMap.get(filePath) == null)
-                stringAudiosMap.put(filePath, sound);
+        if (stringAudiosMap.containsKey(filePath)) {
+            Sound sound = stringAudiosMap.get(filePath);
             long soundId = sound.play();
             sound.setLooping(soundId, true);
+        }else {
+            Sound sound = Gdx.audio.newSound(Gdx.files.internal(resourceLocator.getFilePath(filePath)));
+            if (sound != null) {
+                if (stringAudiosMap.get(filePath) == null)
+                    stringAudiosMap.put(filePath, sound);
+                long soundId = sound.play();
+                sound.setLooping(soundId, true);
+            }
         }
     }
 
@@ -70,9 +103,9 @@ public class GdxAudioEngine implements AudioEngine{
 
     @Override
     public void disposeResources() {
-        for(Map.Entry<String, Sound> stringAudio : stringAudiosMap.entrySet()) {
+        for (Map.Entry<String, Sound> stringAudio : stringAudiosMap.entrySet()) {
             Sound currSound = stringAudio.getValue();
-            if(currSound != null)
+            if (currSound != null)
                 currSound.dispose();
         }
     }

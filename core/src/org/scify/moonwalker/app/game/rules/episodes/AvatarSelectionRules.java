@@ -11,20 +11,46 @@ public class AvatarSelectionRules extends BaseEpisodeRules {
     protected AvatarSelectionRenderable renderable;
 
     @Override
-    protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
+    public void episodeStartedEvents(GameState currentState) {
+        if (!isEpisodeStarted(currentState)) {
+            super.episodeStartedEvents(currentState);
+            addEpisodeBackgroundImage(currentState, "img/Andromeda-galaxy.jpg");
+            createAvatarSelectionRenderable(currentState);
+            try {
+                Thread.sleep(1000);
+            }catch (Exception e) {
+
+            }
+
+            ActionButton escape = createEscapeButton();
+            escape.setUserAction(new UserAction(UserActionCode.BACK));
+            currentState.addRenderable(escape);
+            addRenderableEntry("back_button", escape);
+        }
+    }
+
+    @Override
+    protected void handleUserAction(GameState gameState, UserAction userAction) {
         switch (userAction.getActionCode()) {
             case BOY_SELECTED:
-                removePreviousAvatarSelectionAndAddNew(gsCurrent, "boy");
+                removePreviousAvatarSelectionAndAddNew(gameState, "boy");
                 renderable.setSelectedAvatar(renderable.getBoySelection());
                 gameInfo.setSelectedPlayer(SelectedPlayer.boy);
+                gameState.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", "audio/room_episode/girl/music.mp3"));
+                gameState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/boy/music.mp3"));
+                gameState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/mobile.mp3"));
                 break;
             case GIRL_SELECTED:
-                removePreviousAvatarSelectionAndAddNew(gsCurrent, "girl");
+                removePreviousAvatarSelectionAndAddNew(gameState, "girl");
                 renderable.setSelectedAvatar(renderable.getGirlSelection());
                 gameInfo.setSelectedPlayer(SelectedPlayer.girl);
+                gameState.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", "audio/room_episode/boy/music.mp3"));
+                gameState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/girl/music.mp3"));
+                gameState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/mobile.mp3"));
                 break;
+
         }
-        super.handleUserAction(gsCurrent, userAction);
+        super.handleUserAction(gameState, userAction);
     }
 
     @Override
@@ -36,20 +62,6 @@ public class AvatarSelectionRules extends BaseEpisodeRules {
             endState = new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS, currentState);
         cleanUpGameState(currentState);
         return endState;
-    }
-
-    @Override
-    public void episodeStartedEvents(GameState currentState) {
-        if (!isEpisodeStarted(currentState)) {
-            super.episodeStartedEvents(currentState);
-            addEpisodeBackgroundImage(currentState, "img/Andromeda-galaxy.jpg");
-            createAvatarSelectionRenderable(currentState);
-
-            ActionButton escape = createEscapeButton();
-            escape.setUserAction(new UserAction(UserActionCode.BACK));
-            currentState.addRenderable(escape);
-            addRenderableEntry("back_button", escape);
-        }
     }
 
     protected void removePreviousAvatarSelectionAndAddNew(GameState currentState, String newSelection) {
