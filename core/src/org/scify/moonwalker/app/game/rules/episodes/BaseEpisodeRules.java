@@ -5,6 +5,10 @@ import org.scify.moonwalker.app.game.rules.SinglePlayerRules;
 
 public class BaseEpisodeRules extends SinglePlayerRules {
 
+    public BaseEpisodeRules () {
+        super();
+    }
+
     @Override
     public GameState getNextState(GameState gsCurrent, UserAction userAction) {
         gsCurrent = super.getNextState(gsCurrent, userAction);

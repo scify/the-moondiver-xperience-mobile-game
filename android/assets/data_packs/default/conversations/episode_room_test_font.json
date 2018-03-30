@@ -1,0 +1,7 @@
+[
+  {"id": "1", "order":"1", "speakerId":"player", "text":"ABCDEFGHIJKLMNOPQRSTUVWXYZ", "prerequisites":"", "triggerEvent":""},
+  {"id": "2", "order":"2", "speakerId":"player", "text":"abcdefghijklmnopqrstuvwxyz", "prerequisites":"", "triggerEvent":""},
+  {"id": "3", "order":"3", "speakerId":"player", "text":"ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤYΦΧΨΩ", "prerequisites":"", "triggerEvent":""},
+  {"id": "4", "order":"4", "speakerId":"player", "text":"αβγδεζηθικλμνξοπρστυφχψως", "prerequisites":"", "triggerEvent":""},
+  {"id": "5", "order":"5", "speakerId":"player", "text":"1234567890!@#$%^&*", "prerequisites":"", "triggerEvent":"end"}
+]

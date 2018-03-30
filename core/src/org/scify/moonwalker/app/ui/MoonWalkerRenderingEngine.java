@@ -17,6 +17,7 @@ import org.scify.engine.*;
 import org.scify.engine.audio.AudioEngine;
 import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.MoonWalkerGameState;
+import org.scify.moonwalker.app.game.rules.episodes.RoomEpisodeRules;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
@@ -117,6 +118,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 for (Renderable renderable : currentState.getRenderableList()) {
                     drawRenderable(renderable);
                 }
+                //renderableManager.printActors();
             }
         }
     }
@@ -188,9 +190,19 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                     listIterator.remove();
                 }
                 break;
-            case "ALTER_ROOM_IMAGE_UI":
+            case "ENABLE_ROOM_DIALOG_UI":
                 if (new Date().getTime() > gameEvent.delay) {
-                    ((RoomRenderable) gameEvent.parameters).turnOnPhone();
+                    ((RoomEpisodeRules) gameEvent.owner).initiateConversation();
+                    listIterator.remove();
+                }
+                break;
+            case "ALTER_ROOM_MOBILE_ON_UI":
+                ((RoomRenderable) gameEvent.parameters).turnOnPhone();
+                listIterator.remove();
+                break;
+            case "ALTER_ROOM_MOBILE_TOGLE_UI":
+                if (new Date().getTime() > gameEvent.delay) {
+                    ((RoomRenderable) gameEvent.parameters).togglePhone();
                     listIterator.remove();
                 }
                 break;
@@ -241,12 +253,10 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     @Override
     public synchronized void disposeResources() {
         bDisposalOngoing = true;
-
         System.out.println("disposing rendering engine resources...");
         themeController.dispose();
         cameraController.disposeResources();
         audioEngine.disposeResources();
-
         bDisposalOngoing = false;
     }
 

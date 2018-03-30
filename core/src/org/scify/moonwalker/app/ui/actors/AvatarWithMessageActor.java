@@ -41,6 +41,14 @@ public class AvatarWithMessageActor extends TableActor {
         resourceLocator = new ResourceLocator();
     }
 
+    public void enableButton () {
+        button.setVisible(true);
+    }
+
+    public void disableButton() {
+        button.setVisible(false);
+    }
+
     public void init() {
         float screenWidth = appInfo.getScreenWidth();
         Stack stack = new Stack();
@@ -79,10 +87,9 @@ public class AvatarWithMessageActor extends TableActor {
         table.add(lineLabel).center().width(0.60f * width);
         //button
         table.add(button).right().width(0.2f * width).height(0.4f * height);
+        button.setVisible(false);
 
         table.add().width(0.02f * width);
-
-        //table.debug();
         stack.add(table);
 
         add(stack).height(height).width(width).center();

@@ -6,27 +6,34 @@ import org.scify.engine.audio.AudioEngine;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class GdxAudioEngine implements AudioEngine {
 
     protected Map<String, Sound> stringAudiosMap;
+    protected Set<String> persistentAudios;
     protected ResourceLocator resourceLocator;
 
     public GdxAudioEngine() {
         stringAudiosMap = new HashMap<>();
         resourceLocator = new ResourceLocator();
+        persistentAudios = new HashSet<>();
     }
 
     @Override
     public void loadSound(String filePath) {
+        persistentAudios.add(filePath);
         Sound sound = Gdx.audio.newSound(Gdx.files.internal(resourceLocator.getFilePath(filePath)));
         stringAudiosMap.put(filePath, sound);
+
     }
 
     @Override
     public void disposeSound(String filePath) {
         if (stringAudiosMap.containsKey(filePath)) {
+            persistentAudios.remove(filePath);
             Sound sound = stringAudiosMap.get(filePath);
             stringAudiosMap.remove(filePath);
             sound.dispose();
@@ -105,7 +112,7 @@ public class GdxAudioEngine implements AudioEngine {
     public void disposeResources() {
         for (Map.Entry<String, Sound> stringAudio : stringAudiosMap.entrySet()) {
             Sound currSound = stringAudio.getValue();
-            if (currSound != null)
+            if (currSound != null && persistentAudios.contains(stringAudio.getKey()) == false)
                 currSound.dispose();
         }
     }

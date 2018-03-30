@@ -30,6 +30,7 @@ public class RoomActor extends TableActor implements Updateable {
         Texture texture = imgUrlToTexture(renderable.PHONE_OFF_IMG_PATH);
         Image image = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
         image.setAlign(Align.center);
+        image.setZIndex(1);
         phone = add(image).width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight()));
     }
 
@@ -41,6 +42,7 @@ public class RoomActor extends TableActor implements Updateable {
             Texture texture = imgUrlToTexture(this.renderable.getPhoneImagePath());
             Image image = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
             image.setAlign(Align.center);
+            image.setZIndex(1);
             phone.setActor(image);
         }
     }

@@ -93,7 +93,7 @@ public class ConversationRules extends MoonWalkerRules {
     }
 
     /**
-     * Removind all past conversation lines so that the screen is cleared
+     * Removing all past conversation lines so that the screen is cleared
      *
      * @param gameState the current game state
      */
@@ -129,7 +129,8 @@ public class ConversationRules extends MoonWalkerRules {
     }
 
     protected void addSingleConversationLine(ConversationLine conversationLine, GameState gameState) {
-        org.scify.engine.renderables.SingleConversationLine singleConversationLine = new SingleConversationLine("new_single_conversation");
+        SingleConversationLine singleConversationLine = new SingleConversationLine("new_single_conversation_" + conversationLine.getId());
+        singleConversationLine.setZIndex(1);
         singleConversationLine.setConversationLine(conversationLine);
         singleConversationLine.setRelativeAvatarPath(getAvatar(conversationLine.getSpeakerId()));
         gameState.addRenderable(singleConversationLine);
@@ -147,19 +148,20 @@ public class ConversationRules extends MoonWalkerRules {
     }
 
     protected String getAvatar(String speakerId) {
+        String avatarsPath = "img/avatars/";
         if (speakerId.equals("player")) {
             switch (gameInfo.getSelectedPlayer()) {
                 case boy:
-                    return "img/avatars/boy.png";
+                    return avatarsPath + "boy.png";
                 case girl:
-                    return "img/avatars/girl.png";
+                    return avatarsPath + "girl.png";
                 case unset:
                     return null;
                 default:
                     return null;
             }
         } else {
-            return speakerId + ".jpg";
+            return avatarsPath + speakerId + ".png";
         }
     }
 

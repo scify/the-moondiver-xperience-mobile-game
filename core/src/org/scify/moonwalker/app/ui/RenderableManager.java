@@ -57,7 +57,10 @@ public class RenderableManager {
         } else {
             Actor aToDraw = renderableActorMap.get(renderable);
             drawActorFromRenderable(renderable, aToDraw);
-            update(renderable, aToDraw);
+            if (aToDraw.isVisible())
+                update(renderable, aToDraw);
+            else
+                aToDraw.remove();
         }
     }
 
@@ -76,18 +79,23 @@ public class RenderableManager {
 
     protected void drawActorFromRenderable(Renderable renderable, Actor aToDraw) {
         aToDraw.setPosition(renderable.getxPos(), renderable.getyPos());
-        // update the z index of the actor, according to the renderable's z index
-        if(renderable.getZIndex() >= 0)
-            aToDraw.setZIndex(renderable.getZIndex());
-        else
-            aToDraw.setVisible(false);
+
         // if actor does not have a stage, it means that
         // it is the first time that is added to the stage.
         if(aToDraw.getStage() == null) {
             //System.out.println("new actor with name: " + renderable.getId());
             aToDraw.setName(renderable.getId());
             stage.addActor(aToDraw);
+        }else {// update the z index of the actor, according to the renderable's z index
+            if(renderable.getZIndex() >= 0)
+                aToDraw.setZIndex(renderable.getZIndex());
+            else {
+                aToDraw.setVisible(false);
+            }
         }
+
+
+
     }
 
     protected Sprite createSpriteResourceFor(Renderable toDraw) {
@@ -166,10 +174,10 @@ public class RenderableManager {
         return toReturn;
     }
 
-    private void printActors() {
-        //System.out.println("printActors");
+    public void printActors() {
+        System.out.println("printActors");
         for(Actor stageActor : stage.getActors()) {
-            //System.out.println("Actor " + stageActor.getClass() + " " + stageActor.getName() + " " + stageActor.getZIndex());
+            System.out.println("Actor " + stageActor.getClass() + " " + stageActor.getName() + " " + stageActor.getZIndex());
         }
     }
 }

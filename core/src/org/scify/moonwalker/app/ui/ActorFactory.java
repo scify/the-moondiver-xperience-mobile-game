@@ -158,6 +158,7 @@ public class ActorFactory extends ComponentFactory {
 
     private Actor createAvatarSelectionActor(final AvatarSelectionRenderable renderable) {
         AvatarSelectionActor actor = new AvatarSelectionActor(skin);
+        actor.setZIndex(0);
         Button boyBtn = createButton(renderable.getBoySelection());
         Button girlBtn = createButton(renderable.getGirlSelection());
         Button selectionBtn = createButton(renderable.getSelectBtn());
@@ -201,7 +202,7 @@ public class ActorFactory extends ComponentFactory {
 
     private Actor createMultipleSelectionActor(MultipleConversationLines multipleConversationLines) {
         MultipleSelectionActor actor = new MultipleSelectionActor(skin, multipleConversationLines);
-        actor.setZIndex(1);
+        //actor.setZIndex(1);
         int btnIndex = 1;
         for (ActionButton button : multipleConversationLines.getButtons()) {
             actor.addButton(createButton(button), btnIndex);
