@@ -1,18 +1,17 @@
-package org.scify.moonwalker.app.ui.actors;
+package org.scify.moonwalker.app.ui.actors.conversation;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.conversation.ConversationLine;
-import org.scify.engine.renderables.SingleConversationLine;
+import org.scify.engine.renderables.NextConversationRenderable;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
-import org.scify.moonwalker.app.ui.ThemeController;
+import org.scify.moonwalker.app.ui.actors.TableActor;
+import org.scify.moonwalker.app.ui.actors.Updateable;
 
 /**
  * This class describes the conversation component that is drawn
@@ -23,38 +22,54 @@ import org.scify.moonwalker.app.ui.ThemeController;
  * and an image path that represents the conversation participant who is saying
  * the line.
  */
-public class AvatarWithMessageActor extends TableActor {
+public class NextConversationActor extends TableActor implements Updateable {
 
     protected Label lineLabel;
     protected ResourceLocator resourceLocator;
     protected AppInfo appInfo;
     protected Image background;
     protected Button button;
-    protected SingleConversationLine renderable;
+    protected NextConversationRenderable renderable;
     protected Image avatarImage;
     protected Image avatarBG;
 
-    public AvatarWithMessageActor(Skin skin, SingleConversationLine renderable) {
+    @Override
+    public void update(Renderable renderable) {
+        if (this.renderable.getRenderableLastUpdated() > timestamp) {
+            System.out.println("setting renderable: " + renderable.getRenderableLastUpdated() + " over: " + this.renderable.getRenderableLastUpdated());
+            this.renderable = (NextConversationRenderable) renderable;
+            this.timestamp = this.renderable.getRenderableLastUpdated();
+            if (this.renderable.getButtonNextStatus()) {
+                enableButton();
+            } else {
+                disableButton();
+            }
+        }
+    }
+
+    public NextConversationActor(Skin skin, NextConversationRenderable renderable) {
         super(skin);
         this.renderable = renderable;
         appInfo = AppInfo.getInstance();
         resourceLocator = new ResourceLocator();
     }
 
-    public void enableButton () {
+    protected void enableButton() {
         button.setVisible(true);
     }
 
-    public void disableButton() {
+    protected void disableButton() {
         button.setVisible(false);
     }
 
-    public void init() {
+    public void init(boolean nextButtonVisibility) {
         float screenWidth = appInfo.getScreenWidth();
+        float screenHeight = appInfo.getScreenHeight();
         Stack stack = new Stack();
         Texture chatBox = new Texture(resourceLocator.getFilePath("img/conversations/bg.png"));
         float width = convertWidth(chatBox.getWidth());
         float height = convertHeight(chatBox.getHeight());
+
         setWidth(screenWidth);
         setHeight(height * 1.3f);
         background = new Image(new TextureRegionDrawable(new TextureRegion(chatBox)));
@@ -66,6 +81,7 @@ public class AvatarWithMessageActor extends TableActor {
 
         //avatar
         Stack avatarStack = new Stack();
+
         Texture avatarBGTexture = new Texture(resourceLocator.getFilePath("img/avatars/bg.png"));
         avatarBG = new Image(new TextureRegionDrawable(new TextureRegion(avatarBGTexture)));
         avatarBG.setWidth(convertWidth(200));
@@ -76,23 +92,28 @@ public class AvatarWithMessageActor extends TableActor {
         avatarImage.setWidth(convertWidth(200));
         avatarImage.setScaling(Scaling.fillX);
         avatarStack.add(avatarImage);
-        table.add(avatarStack).left().width(avatarImage.getWidth()).height(avatarImage.getHeight());
+        table.add(avatarStack).left().width(avatarImage.getWidth());
 
-        table.add().width(0.05f *width).height(height * 0.9f);
+
+        table.add().width(0.02f * width).height(height * 0.9f);
 
         //Text
         lineLabel = new Label(renderable.getConversationLine().getText(), getSkin());
         lineLabel.setWrap(true);
-        //lineLabel.setWidth(screenWidth * 0.6f);
-        table.add(lineLabel).center().width(0.60f * width);
+        lineLabel.setWidth(width * 0.6f);
+        table.add(lineLabel).center().width(lineLabel.getWidth());
+        table.add().width(0.02f * width);
         //button
-        table.add(button).right().width(0.2f * width).height(0.4f * height);
-        button.setVisible(false);
-
+        table.add(button).right().width(0.2f * width);
+        if (nextButtonVisibility)
+            enableButton();
+        else
+            disableButton();
         table.add().width(0.02f * width);
         stack.add(table);
 
         add(stack).height(height).width(width).center();
+
     }
 
     public void setButton(Button button) {

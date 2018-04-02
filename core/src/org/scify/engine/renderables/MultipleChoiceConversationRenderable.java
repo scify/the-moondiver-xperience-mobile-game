@@ -8,7 +8,7 @@ import org.scify.moonwalker.app.ui.actors.ActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MultipleConversationLines extends Renderable{
+public class MultipleChoiceConversationRenderable extends Renderable{
 
     protected String relativeAvatarImgPath;
     protected String title;
@@ -16,8 +16,8 @@ public class MultipleConversationLines extends Renderable{
     protected List<ActionButton> buttons;
 
 
-    public MultipleConversationLines(String id) {
-        super("multiple_conversation_lines", id);
+    public MultipleChoiceConversationRenderable(String id) {
+        super("multiple_choice_conversation", id);
         xPos = 0;
         yPos = 0;
         width = appInfo.getScreenWidth();

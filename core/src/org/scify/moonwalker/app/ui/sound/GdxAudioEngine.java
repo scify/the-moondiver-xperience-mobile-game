@@ -89,15 +89,13 @@ public class GdxAudioEngine implements AudioEngine {
     public void playSoundLoop(String filePath) {
         if (stringAudiosMap.containsKey(filePath)) {
             Sound sound = stringAudiosMap.get(filePath);
-            long soundId = sound.play();
-            sound.setLooping(soundId, true);
+            sound.loop();
         }else {
             Sound sound = Gdx.audio.newSound(Gdx.files.internal(resourceLocator.getFilePath(filePath)));
             if (sound != null) {
                 if (stringAudiosMap.get(filePath) == null)
                     stringAudiosMap.put(filePath, sound);
-                long soundId = sound.play();
-                sound.setLooping(soundId, true);
+                sound.loop();
             }
         }
     }

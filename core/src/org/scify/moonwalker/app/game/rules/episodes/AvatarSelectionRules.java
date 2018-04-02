@@ -13,15 +13,12 @@ public class AvatarSelectionRules extends BaseEpisodeRules {
     @Override
     public void episodeStartedEvents(GameState currentState) {
         if (!isEpisodeStarted(currentState)) {
+            currentState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/boy/music.mp3"));
+            currentState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/girl/music.mp3"));
+            currentState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/mobile.mp3"));
             super.episodeStartedEvents(currentState);
             addEpisodeBackgroundImage(currentState, "img/Andromeda-galaxy.jpg");
             createAvatarSelectionRenderable(currentState);
-            try {
-                Thread.sleep(1000);
-            }catch (Exception e) {
-
-            }
-
             ActionButton escape = createEscapeButton();
             escape.setUserAction(new UserAction(UserActionCode.BACK));
             currentState.addRenderable(escape);
@@ -36,17 +33,11 @@ public class AvatarSelectionRules extends BaseEpisodeRules {
                 removePreviousAvatarSelectionAndAddNew(gameState, "boy");
                 renderable.setSelectedAvatar(renderable.getBoySelection());
                 gameInfo.setSelectedPlayer(SelectedPlayer.boy);
-                gameState.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", "audio/room_episode/girl/music.mp3"));
-                gameState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/boy/music.mp3"));
-                gameState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/mobile.mp3"));
                 break;
             case GIRL_SELECTED:
                 removePreviousAvatarSelectionAndAddNew(gameState, "girl");
                 renderable.setSelectedAvatar(renderable.getGirlSelection());
                 gameInfo.setSelectedPlayer(SelectedPlayer.girl);
-                gameState.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", "audio/room_episode/boy/music.mp3"));
-                gameState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/girl/music.mp3"));
-                gameState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/mobile.mp3"));
                 break;
 
         }

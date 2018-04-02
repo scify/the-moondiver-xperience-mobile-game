@@ -5,10 +5,9 @@ import com.badlogic.gdx.utils.Json;
 import org.scify.engine.*;
 import org.scify.engine.EpisodeEndState;
 import org.scify.engine.conversation.ConversationLine;
-import org.scify.engine.renderables.MultipleConversationLines;
+import org.scify.engine.renderables.MultipleChoiceConversationRenderable;
 import org.scify.engine.renderables.Renderable;
-import org.scify.engine.renderables.SingleConversationLine;
-import org.scify.moonwalker.app.game.rules.MoonWalkerRules;
+import org.scify.engine.renderables.NextConversationRenderable;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.engine.UserActionCode;
@@ -25,6 +24,7 @@ public class ConversationRules extends MoonWalkerRules {
     protected List<ConversationLine> conversationLines;
     private Json json;
     protected ResourceLocator resourceLocator;
+    protected Renderable lastConversationRenderable;
     private AppInfo appInfo;
     /**
      * This id is used as a key when storing the current conversation line
@@ -46,7 +46,10 @@ public class ConversationRules extends MoonWalkerRules {
         conversationLines = json.fromJson(ArrayList.class, ConversationLine.class, Gdx.files.internal(resourceLocator.getFilePath(conversationJSONFilePath)));
         ID = UUID.randomUUID().toString();
         oldConversationLines = new ArrayList<>();
+        lastConversationRenderable = null;
     }
+
+    public Renderable getLastConversationRenderable() { return lastConversationRenderable; }
 
     @Override
     public GameState getInitialState() {
@@ -118,28 +121,31 @@ public class ConversationRules extends MoonWalkerRules {
         // If one line returned
         if (nextLines.size() == 1) {
             // render it
-            addSingleConversationLine(nextLines.get(0), gameState);
+            addNextConversationLine(nextLines.get(0), gameState);
             // await next event
             pauseConversation(gameState);
         } else if (nextLines.size() > 1) {
             // render dialog
-            addMultipleConversationLines(nextLines, gameState);
+            addMultipleChoiceConversationLines(nextLines, gameState);
             pauseConversation(gameState);
         }
     }
 
-    protected void addSingleConversationLine(ConversationLine conversationLine, GameState gameState) {
-        SingleConversationLine singleConversationLine = new SingleConversationLine("new_single_conversation_" + conversationLine.getId());
-        singleConversationLine.setZIndex(1);
-        singleConversationLine.setConversationLine(conversationLine);
-        singleConversationLine.setRelativeAvatarPath(getAvatar(conversationLine.getSpeakerId()));
-        gameState.addRenderable(singleConversationLine);
+    protected void addNextConversationLine(ConversationLine conversationLine, GameState gameState) {
+        NextConversationRenderable nextConversationRenderable = new NextConversationRenderable("next_conversation_" + conversationLine.getId());
+        lastConversationRenderable = nextConversationRenderable;
+        nextConversationRenderable.setZIndex(1);
+        nextConversationRenderable.setConversationLine(conversationLine);
+        nextConversationRenderable.setRelativeAvatarPath(getAvatar(conversationLine.getSpeakerId()));
+        gameState.addRenderable(nextConversationRenderable);
         setCurrentConversationLine(gameState, conversationLine);
-        oldConversationLines.add(singleConversationLine);
+        oldConversationLines.add(nextConversationRenderable);
     }
 
-    protected void addMultipleConversationLines(List<ConversationLine> nextLines, GameState gameState) {
-        org.scify.engine.renderables.MultipleConversationLines conversationLines = new MultipleConversationLines("multiple_lines");
+    protected void addMultipleChoiceConversationLines(List<ConversationLine> nextLines, GameState gameState) {
+
+        //edit as above method
+        MultipleChoiceConversationRenderable conversationLines = new MultipleChoiceConversationRenderable("multiple_choice_conversation");
         conversationLines.setTitle(getCurrentConversationLine(gameState).getText());
         conversationLines.setConversationLines(nextLines);
         conversationLines.setRelativeAvatarImgPath(getAvatar(getCurrentConversationLine(gameState).getSpeakerId()));

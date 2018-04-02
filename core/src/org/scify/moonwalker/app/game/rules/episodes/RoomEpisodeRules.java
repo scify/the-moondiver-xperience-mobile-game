@@ -1,16 +1,17 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
+import com.badlogic.gdx.utils.Timer;
 import org.scify.engine.*;
 import org.scify.engine.conversation.ConversationLine;
+import org.scify.engine.renderables.NextConversationRenderable;
 import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.ui.renderables.RoomRenderable;
-
-import java.util.Date;
 
 public class RoomEpisodeRules extends BaseEpisodeRules {
     protected RoomRenderable room;
     protected boolean conversationStarted;
     protected boolean ringStarted;
+    protected boolean nextButtonActivated;
     protected long lastRingDate;
     protected boolean ringStopped;
 
@@ -20,6 +21,7 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
         conversationStarted = false;
         ringStarted = false;
         ringStopped = false;
+        nextButtonActivated = false;
         lastRingDate = 0;
     }
 
@@ -41,13 +43,19 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
             //addEpisodeBackgroundImage(currentState, "img/episode_0/bg.png");
             initialize(currentState);
             if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
-                currentState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", "audio/room_episode/boy/music.mp3"));
+                //currentState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", "audio/room_episode/boy/music.mp3"));
+                currentState.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", "audio/room_episode/girl/music.mp3"));
             } else {
-                currentState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", "audio/room_episode/girl/music.mp3"));
+                //currentState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", "audio/room_episode/girl/music.mp3"));
+                currentState.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", "audio/room_episode/boy/music.mp3"));
 
             }
-            long timestamp = new Date().getTime();
-            currentState.addGameEvent(new GameEvent("ENABLE_ROOM_DIALOG_UI", "", timestamp + 2000, false, this));
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    initiateConversation();
+                }
+            }, 2, 1, 1);
         }
     }
 
@@ -66,11 +74,12 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
         if (conversationHasNotStartedAndNotFinished(gsCurrent)) {
             // call base class create method, passing the resource file for this specific conversation
             createConversation(gsCurrent, "conversations/episode_room.json");
-            //createConversation(gsCurrent, "conversations/episode_0.json");
+            //createConversation(gsCurrent, "conversations/episode_room_test_font.json");
         }
         if (isConversationOngoing(gsCurrent)) {
             // ask the conversation rules to alter the current game state accordingly
             gsCurrent = conversationRules.getNextState(gsCurrent, userAction);
+
         }
         if (isConversationFinished(gsCurrent))
             gsCurrent.addGameEvent(new GameEvent("CALCULATOR_STARTED", null, this));
@@ -83,33 +92,42 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
         ConversationLine currLine = conversationRules.getCurrentConversationLine(gameState);
         switch (currLine.getTriggerEvent()) {
             case "ring_start":
-                long timestamp = new Date().getTime();
                 if (ringStarted == false) {
-                    long ringTimestamp = timestamp + 3000;
-                    gameState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", "audio/room_episode/mobile.mp3", ringTimestamp, false));
-                    lastRingDate = ringTimestamp;
-                    gameState.addGameEvent(new GameEvent("ALTER_ROOM_MOBILE_TOGLE_UI", room, ringTimestamp, false, this));
                     ringStarted = true;
-                }else {
-                    if (timestamp > lastRingDate + 600) {
+                    ((NextConversationRenderable)conversationRules.getLastConversationRenderable()).setButtonNextInActive();
 
-                        lastRingDate = timestamp;
-                        gameState.addGameEvent(new GameEvent("ALTER_ROOM_MOBILE_TOGLE_UI", room, this));
-                    }
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+                            room.togglePhone();
+                            if (!nextButtonActivated) {
+                                nextButtonActivated = true;
+                                ((NextConversationRenderable) conversationRules.getLastConversationRenderable()).setButtonNextActive();
+                            }
+                        }
+                    }, 3, 1);
+
+                    //gameState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", "audio/room_episode/mobile.mp3", new Date().getTime() + 3000, false));
                 }
                 break;
             case "ring_stop":
                 if (ringStopped == false) {
-                    gameState.addGameEvent(new GameEvent("AUDIO_STOP_UI", "audio/room_episode/mobile.mp3"));
-                    gameState.addGameEvent(new GameEvent("ALTER_ROOM_MOBILE_ON_UI", room, this));
                     ringStopped = true;
+                    Timer.instance().clear();
+                    gameState.addGameEvent(new GameEvent("AUDIO_STOP_UI", "audio/room_episode/mobile.mp3"));
+                    gameState.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", "audio/room_episode/mobile.mp3"));
+                    room.turnOnPhone();
                 }
                 break;
             case "end":
-                if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy)
+                if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
                     gameState.addGameEvent(new GameEvent("AUDIO_STOP_UI", "audio/room_episode/boy/music.mp3"));
-                else
+                    gameState.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", "audio/room_episode/boy/music.mp3"));
+                }
+                else {
                     gameState.addGameEvent(new GameEvent("AUDIO_STOP_UI", "audio/room_episode/girl/music.mp3"));
+                    gameState.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", "audio/room_episode/girl/music.mp3"));
+                }
                 break;
             default:
                 break;

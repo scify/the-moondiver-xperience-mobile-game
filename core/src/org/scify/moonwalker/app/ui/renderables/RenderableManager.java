@@ -1,4 +1,4 @@
-package org.scify.moonwalker.app.ui;
+package org.scify.moonwalker.app.ui.renderables;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -7,7 +7,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.UserInputHandler;
+import org.scify.moonwalker.app.ui.ComponentFactory;
+import org.scify.moonwalker.app.ui.SpriteFactory;
+import org.scify.moonwalker.app.ui.ThemeController;
+import org.scify.moonwalker.app.ui.UnsupportedRenderableTypeException;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
+import org.scify.moonwalker.app.ui.actors.ActorFactory;
 import org.scify.moonwalker.app.ui.actors.Updateable;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 

@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.ui.renderables.AvatarSelectionRenderable;
 
-public class AvatarSelectionActor extends ButtonList implements Updateable{
+public class AvatarSelectionActor extends ButtonList implements Updateable {
 
     protected Label label;
     public AvatarSelectionRenderable avatarSelectionRenderable;

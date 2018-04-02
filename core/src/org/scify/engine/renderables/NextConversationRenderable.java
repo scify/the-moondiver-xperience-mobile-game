@@ -6,15 +6,16 @@ import org.scify.engine.UserAction;
 import org.scify.engine.UserActionCode;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 
-public class SingleConversationLine extends Renderable {
+public class NextConversationRenderable extends Renderable {
 
     protected ConversationLine conversationLine;
     protected String relativeAvatarPath;
     protected Renderable renderableReferenced;
     protected ActionButton buttonNext;
+    protected boolean buttonNextActive;
 
-    public SingleConversationLine(String id) {
-        super("single_conversation_line", id);
+    public NextConversationRenderable(String id) {
+        super("next_conversation", id);
         xPos = 0;
         yPos = 0;
         width = appInfo.getScreenWidth();
@@ -22,6 +23,25 @@ public class SingleConversationLine extends Renderable {
         buttonNext = new ActionButton("text_button", "button_next");
         buttonNext.setTitle("Επόμενο");
         buttonNext.setUserAction(new UserAction(UserActionCode.NEXT_CONVERSATION_LINE));
+        buttonNextActive = true;
+    }
+
+    public void setButtonNextActive() {
+        if (buttonNextActive == false) {
+            buttonNextActive = true;
+            renderableWasUpdated();
+        }
+    }
+
+    public void setButtonNextInActive() {
+        if (buttonNextActive) {
+            buttonNextActive = false;
+            renderableWasUpdated();
+        }
+    }
+
+    public boolean getButtonNextStatus() {
+        return buttonNextActive;
     }
 
     public void setConversationLine(ConversationLine conversationLine) {

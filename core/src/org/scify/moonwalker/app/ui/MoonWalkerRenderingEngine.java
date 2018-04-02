@@ -21,6 +21,7 @@ import org.scify.moonwalker.app.game.rules.episodes.RoomEpisodeRules;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
+import org.scify.moonwalker.app.ui.renderables.RenderableManager;
 import org.scify.moonwalker.app.ui.renderables.RoomRenderable;
 import org.scify.moonwalker.app.ui.sound.GdxAudioEngine;
 
@@ -187,22 +188,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             case "AUDIO_STOP_UI":
                 if (new Date().getTime() > gameEvent.delay) {
                     audioEngine.stopSound((String) gameEvent.parameters);
-                    listIterator.remove();
-                }
-                break;
-            case "ENABLE_ROOM_DIALOG_UI":
-                if (new Date().getTime() > gameEvent.delay) {
-                    ((RoomEpisodeRules) gameEvent.owner).initiateConversation();
-                    listIterator.remove();
-                }
-                break;
-            case "ALTER_ROOM_MOBILE_ON_UI":
-                ((RoomRenderable) gameEvent.parameters).turnOnPhone();
-                listIterator.remove();
-                break;
-            case "ALTER_ROOM_MOBILE_TOGLE_UI":
-                if (new Date().getTime() > gameEvent.delay) {
-                    ((RoomRenderable) gameEvent.parameters).togglePhone();
                     listIterator.remove();
                 }
                 break;

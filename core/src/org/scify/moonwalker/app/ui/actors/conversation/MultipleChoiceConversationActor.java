@@ -1,4 +1,4 @@
-package org.scify.moonwalker.app.ui.actors;
+package org.scify.moonwalker.app.ui.actors.conversation;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -7,12 +7,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
-import org.scify.engine.renderables.MultipleConversationLines;
+import org.scify.engine.renderables.MultipleChoiceConversationRenderable;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
+import org.scify.moonwalker.app.ui.actors.TableActor;
 
 
-public class MultipleSelectionActor extends TableActor {
+public class MultipleChoiceConversationActor extends TableActor {
 
     protected String relativeAvatarPath;
     protected Image avatarImg;
@@ -21,9 +22,9 @@ public class MultipleSelectionActor extends TableActor {
     protected ResourceLocator resourceLocator;
     protected AppInfo appInfo;
     protected Image background;
-    MultipleConversationLines renderable;
+    MultipleChoiceConversationRenderable renderable;
 
-    public MultipleSelectionActor(Skin skin, MultipleConversationLines renderable) {
+    public MultipleChoiceConversationActor(Skin skin, MultipleChoiceConversationRenderable renderable) {
         super(skin);
         this.resourceLocator = new ResourceLocator();
         this.relativeAvatarPath = renderable.getRelativeAvatarImgPath();

@@ -1,4 +1,4 @@
-package org.scify.moonwalker.app.ui;
+package org.scify.moonwalker.app.ui.actors;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -9,11 +9,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import org.scify.engine.renderables.MultipleConversationLines;
-import org.scify.engine.renderables.SingleConversationLine;
-import org.scify.moonwalker.app.ui.actors.*;
+import org.scify.engine.renderables.MultipleChoiceConversationRenderable;
+import org.scify.engine.renderables.NextConversationRenderable;
+import org.scify.moonwalker.app.ui.ComponentFactory;
+import org.scify.moonwalker.app.ui.UnsupportedRenderableTypeException;
 import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.ui.actors.calculator.CalculatorComponent;
+import org.scify.moonwalker.app.ui.actors.conversation.MultipleChoiceConversationActor;
+import org.scify.moonwalker.app.ui.actors.conversation.NextConversationActor;
 import org.scify.moonwalker.app.ui.renderables.*;
 
 public class ActorFactory extends ComponentFactory {
@@ -31,18 +34,6 @@ public class ActorFactory extends ComponentFactory {
                 label.setHeight(renderable.getHeight());
                 label.setWrap(true);
                 toReturn = label;
-                break;
-            case "yoda":
-                toReturn = createImage("img/yoda.png", renderable);
-                break;
-            case "player":
-                toReturn = createImage("img/player.png", renderable);
-                break;
-            case "boy":
-                toReturn = createImage("img/boy.png", renderable);
-                break;
-            case "girl":
-                toReturn = createImage("img/girl.png", renderable);
                 break;
             case "image":
                 toReturn = createImage(renderable.getImgPath(), renderable);
@@ -71,11 +62,11 @@ public class ActorFactory extends ComponentFactory {
             case "map_location":
                 toReturn = createMapLocationActor((MapLocationRenderable) renderable);
                 break;
-            case "single_conversation_line":
-                toReturn = createSingleConversationLineActor((SingleConversationLine) renderable);
+            case "next_conversation":
+                toReturn = createNextConversationActor((NextConversationRenderable) renderable);
                 break;
-            case "multiple_conversation_lines":
-                toReturn = createMultipleSelectionActor((MultipleConversationLines) renderable);
+            case "multiple_choice_conversation":
+                toReturn = createMultipleChoiceConversationActor((MultipleChoiceConversationRenderable) renderable);
                 break;
             case "room":
                 toReturn = createRoomActor((RoomRenderable) renderable);
@@ -192,19 +183,19 @@ public class ActorFactory extends ComponentFactory {
         return mapLocationActor;
     }
 
-    private Actor createSingleConversationLineActor(SingleConversationLine conversationLine) {
-        AvatarWithMessageActor actor = new AvatarWithMessageActor(skin, conversationLine);
+    private Actor createNextConversationActor(NextConversationRenderable nextConversationRenderable) {
+        NextConversationActor actor = new NextConversationActor(skin, nextConversationRenderable);
         actor.setZIndex(1);
-        actor.setButton(createButton(conversationLine.getButtonNext()));
-        actor.init();
+        actor.setButton(createButton(nextConversationRenderable.getButtonNext()));
+        actor.init(nextConversationRenderable.getButtonNextStatus());
         return actor;
     }
 
-    private Actor createMultipleSelectionActor(MultipleConversationLines multipleConversationLines) {
-        MultipleSelectionActor actor = new MultipleSelectionActor(skin, multipleConversationLines);
+    private Actor createMultipleChoiceConversationActor(MultipleChoiceConversationRenderable multipleChoiceConversationRenderable) {
+        MultipleChoiceConversationActor actor = new MultipleChoiceConversationActor(skin, multipleChoiceConversationRenderable);
         //actor.setZIndex(1);
         int btnIndex = 1;
-        for (ActionButton button : multipleConversationLines.getButtons()) {
+        for (ActionButton button : multipleChoiceConversationRenderable.getButtons()) {
             actor.addButton(createButton(button), btnIndex);
             btnIndex++;
         }
