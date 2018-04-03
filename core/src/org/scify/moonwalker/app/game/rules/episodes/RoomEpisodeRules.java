@@ -7,6 +7,8 @@ import org.scify.engine.renderables.NextConversationRenderable;
 import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.ui.renderables.RoomRenderable;
 
+import java.util.Date;
+
 public class RoomEpisodeRules extends BaseEpisodeRules {
     protected RoomRenderable room;
     protected boolean conversationStarted;
@@ -43,10 +45,10 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
             //addEpisodeBackgroundImage(currentState, "img/episode_0/bg.png");
             initialize(currentState);
             if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
-                //currentState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", "audio/room_episode/boy/music.mp3"));
+                currentState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", "audio/room_episode/boy/music.mp3"));
                 currentState.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", "audio/room_episode/girl/music.mp3"));
             } else {
-                //currentState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", "audio/room_episode/girl/music.mp3"));
+                currentState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", "audio/room_episode/girl/music.mp3"));
                 currentState.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", "audio/room_episode/boy/music.mp3"));
 
             }
@@ -107,7 +109,7 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
                         }
                     }, 3, 1);
 
-                    //gameState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", "audio/room_episode/mobile.mp3", new Date().getTime() + 3000, false));
+                    gameState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", "audio/room_episode/mobile.mp3", new Date().getTime() + 3000, false));
                 }
                 break;
             case "ring_stop":

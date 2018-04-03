@@ -8,6 +8,7 @@ import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.renderables.MultipleChoiceConversationRenderable;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.NextConversationRenderable;
+import org.scify.engine.renderables.TwoChoiceConversationRenderable;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.engine.UserActionCode;
@@ -72,7 +73,7 @@ public class ConversationRules extends MoonWalkerRules {
             // return the current game state
             return gameState;
         // Get next alternatives
-        List<ConversationLine> nextLines = getPossibleNextLines(gameState, userAction);
+        List<ConversationLine> nextLines = extractNextLines(gameState, userAction);
         handleNextConversationState(nextLines, gameState, userAction);
         handleTriggerEventForCurrentConversationLine(gameState);
         return gameState;
@@ -118,13 +119,18 @@ public class ConversationRules extends MoonWalkerRules {
     }
 
     protected void handleNextConversationState(List<ConversationLine> nextLines, GameState gameState, UserAction userAction) {
-        // If one line returned
-        if (nextLines.size() == 1) {
+        // NextType
+        int nextLinesSize = nextLines.size();
+        if (nextLinesSize == 1) {
             // render it
             addNextConversationLine(nextLines.get(0), gameState);
             // await next event
             pauseConversation(gameState);
-        } else if (nextLines.size() > 1) {
+        }else if (nextLinesSize == 2) {
+            addTwoChoiceConversationLines (nextLines, gameState);
+            pauseConversation(gameState);
+        }
+        else if (nextLines.size() > 1) {
             // render dialog
             addMultipleChoiceConversationLines(nextLines, gameState);
             pauseConversation(gameState);
@@ -134,7 +140,7 @@ public class ConversationRules extends MoonWalkerRules {
     protected void addNextConversationLine(ConversationLine conversationLine, GameState gameState) {
         NextConversationRenderable nextConversationRenderable = new NextConversationRenderable("next_conversation_" + conversationLine.getId());
         lastConversationRenderable = nextConversationRenderable;
-        nextConversationRenderable.setZIndex(1);
+        lastConversationRenderable.setZIndex(1);
         nextConversationRenderable.setConversationLine(conversationLine);
         nextConversationRenderable.setRelativeAvatarPath(getAvatar(conversationLine.getSpeakerId()));
         gameState.addRenderable(nextConversationRenderable);
@@ -145,12 +151,24 @@ public class ConversationRules extends MoonWalkerRules {
     protected void addMultipleChoiceConversationLines(List<ConversationLine> nextLines, GameState gameState) {
 
         //edit as above method
-        MultipleChoiceConversationRenderable conversationLines = new MultipleChoiceConversationRenderable("multiple_choice_conversation");
-        conversationLines.setTitle(getCurrentConversationLine(gameState).getText());
-        conversationLines.setConversationLines(nextLines);
-        conversationLines.setRelativeAvatarImgPath(getAvatar(getCurrentConversationLine(gameState).getSpeakerId()));
-        gameState.addRenderable(conversationLines);
-        oldConversationLines.add(conversationLines);
+        MultipleChoiceConversationRenderable multipleChoiceConversationRenderable = new MultipleChoiceConversationRenderable("multiple_choice_conversation");
+        lastConversationRenderable = multipleChoiceConversationRenderable;
+        lastConversationRenderable.setZIndex(1);
+        multipleChoiceConversationRenderable.setTitle(getCurrentConversationLine(gameState).getText());
+        multipleChoiceConversationRenderable.setConversationLines(nextLines);
+        multipleChoiceConversationRenderable.setRelativeAvatarImgPath(getAvatar(getCurrentConversationLine(gameState).getSpeakerId()));
+        gameState.addRenderable(multipleChoiceConversationRenderable);
+        oldConversationLines.add(multipleChoiceConversationRenderable);
+    }
+
+    protected void addTwoChoiceConversationLines(List<ConversationLine> nextLines, GameState gameState) {
+        TwoChoiceConversationRenderable twoChoiceConversationRenderable = new TwoChoiceConversationRenderable("two_choice_conversation");
+        lastConversationRenderable = twoChoiceConversationRenderable;
+        lastConversationRenderable.setZIndex(1);
+        twoChoiceConversationRenderable.setConversationLines(nextLines);
+        twoChoiceConversationRenderable.setRelativeAvatarImgPath(getAvatar(getCurrentConversationLine(gameState).getSpeakerId()));
+        gameState.addRenderable(twoChoiceConversationRenderable);
+        oldConversationLines.add(twoChoiceConversationRenderable);
     }
 
     protected String getAvatar(String speakerId) {
@@ -213,7 +231,7 @@ public class ConversationRules extends MoonWalkerRules {
         }
     }
 
-    public List<ConversationLine> getPossibleNextLines(GameState currentGameState, UserAction userAction) {
+    protected List<ConversationLine> extractNextLines(GameState currentGameState, UserAction userAction) {
         List<ConversationLine> lines = new ArrayList<>();
         ConversationLine currentLine = getCurrentConversationLine(currentGameState);
         if (currentLine == null) {

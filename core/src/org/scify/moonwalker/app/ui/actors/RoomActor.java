@@ -2,6 +2,7 @@ package org.scify.moonwalker.app.ui.actors;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -14,8 +15,10 @@ public class RoomActor extends TableActor implements Updateable {
 
     protected RoomRenderable renderable;
     protected Cell phone;
+    protected Image phoneImage;
+    protected Texture phoneTexture;
 
-    public RoomActor (Skin skin, RoomRenderable renderable) {
+    public RoomActor(Skin skin, RoomRenderable renderable) {
         super(skin);
         this.renderable = renderable;
         timestamp = this.renderable.getRenderableLastUpdated();
@@ -27,23 +30,21 @@ public class RoomActor extends TableActor implements Updateable {
     public void init() {
         float screenHeight = getHeight();
         float screenWidth = getWidth();
-        Texture texture = imgUrlToTexture(renderable.PHONE_OFF_IMG_PATH);
-        Image image = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
-        image.setAlign(Align.center);
-        image.setZIndex(1);
-        phone = add(image).width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight()));
+        phoneTexture = imgUrlToTexture(renderable.PHONE_OFF_IMG_PATH);
+        phoneImage = new Image(new TextureRegionDrawable(new TextureRegion(phoneTexture)));
+        phoneImage.setAlign(Align.center);
+        phoneImage.setZIndex(1);
+        phone = add(phoneImage).width(convertWidth(phoneTexture.getWidth())).height(convertHeight(phoneTexture.getHeight()));
     }
 
     @Override
     public void update(Renderable renderable) {
-        if(this.renderable.getRenderableLastUpdated() > timestamp){
+        if (this.renderable.getRenderableLastUpdated() > timestamp) {
             this.renderable = (RoomRenderable) renderable;
             this.timestamp = this.renderable.getRenderableLastUpdated();
-            Texture texture = imgUrlToTexture(this.renderable.getPhoneImagePath());
-            Image image = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
-            image.setAlign(Align.center);
-            image.setZIndex(1);
-            phone.setActor(image);
+            phoneTexture.dispose();
+            phoneTexture = imgUrlToTexture(this.renderable.getPhoneImagePath());
+            phoneImage.setDrawable(new TextureRegionDrawable(new TextureRegion(phoneTexture)));
         }
     }
 

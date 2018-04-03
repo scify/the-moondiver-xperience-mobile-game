@@ -10,7 +10,6 @@ public class NextConversationRenderable extends Renderable {
 
     protected ConversationLine conversationLine;
     protected String relativeAvatarPath;
-    protected Renderable renderableReferenced;
     protected ActionButton buttonNext;
     protected boolean buttonNextActive;
 
@@ -58,10 +57,6 @@ public class NextConversationRenderable extends Renderable {
 
     public String getRelativeAvatarPath() {
         return relativeAvatarPath;
-    }
-
-    public Renderable getRenderableReferenced() {
-        return renderableReferenced;
     }
 
     public ActionButton getButtonNext() {

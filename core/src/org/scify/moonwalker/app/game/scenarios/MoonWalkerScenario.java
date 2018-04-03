@@ -12,14 +12,15 @@ public class MoonWalkerScenario extends Scenario {
         //setFirstEpisode(new CockpitEpisode());
         setFirstEpisode(firstEpisode);
 
-        Episode secondEpisode = new AvatarSelectionEpisode();
-        addEpisodeAfterCurrent(secondEpisode);
         Episode roomEpisode = new RoomEpisode();
-        addEpisodeAfter(secondEpisode, roomEpisode);
-        Episode forestLoadingEpisode = new ForestLoadingEpisode();
-        addEpisodeAfter(roomEpisode, forestLoadingEpisode);
+        addEpisodeAfterCurrent(roomEpisode);
+
+        /*Episode forestLoadingEpisode = new ForestLoadingEpisode();
+        addEpisodeAfter(roomEpisode, forestLoadingEpisode);*/
+
         Episode forestEpisode = new ForestEpisode();
-        addEpisodeAfter(forestLoadingEpisode, forestEpisode);
+        addEpisodeAfter(roomEpisode, forestEpisode);
+
         Episode cockpitEpisode = new CockpitEpisode();
         addEpisodeAfter(forestEpisode, cockpitEpisode);
     }

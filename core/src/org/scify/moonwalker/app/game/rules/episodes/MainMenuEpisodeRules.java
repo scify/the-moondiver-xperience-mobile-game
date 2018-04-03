@@ -1,71 +1,99 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
+import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
-import org.scify.moonwalker.app.ui.renderables.ButtonsListRenderable;
+import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
 
 import java.util.*;
 
 public class MainMenuEpisodeRules extends BaseEpisodeRules {
 
     protected float BUTTON_WIDTH;
+    protected float BUTTON_HEIGHT;
     protected Map<String, UserActionCode> buttonTitlesAndActionCodes;
-    protected ButtonsListRenderable mainMenuButtons;
+    protected MainMenuRenderable renderable;
 
     public MainMenuEpisodeRules() {
-        this.BUTTON_WIDTH = appInfo.getScreenWidth() / 2f;
+        super();
+        this.BUTTON_WIDTH = appInfo.getScreenWidth() * 0.2f ;
+        this.BUTTON_HEIGHT = appInfo.getScreenHeight() * 0.2f;
     }
 
     @Override
-    protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
+    protected void handleUserAction(GameState gameState, UserAction userAction) {
         switch (userAction.getActionCode()) {
             case NEW_GAME:
-                endGameAndAddEventWithType(gsCurrent,"NEW_GAME");
+                endGameAndAddEventWithType(gameState, "NEW_GAME");
                 break;
             case QUIT:
-                endGameAndAddEventWithType(gsCurrent,"APP_QUIT");
+                endGameAndAddEventWithType(gameState, "APP_QUIT");
+                break;
+            case BOY_SELECTED:
+                removePreviousAvatarSelectionAndAddNew(gameState, "boy");
+                renderable.setSelectedAvatar(renderable.getBoySelectionButton());
+                gameInfo.setSelectedPlayer(SelectedPlayer.boy);
+                break;
+            case GIRL_SELECTED:
+                removePreviousAvatarSelectionAndAddNew(gameState, "girl");
+                renderable.setSelectedAvatar(renderable.getGirlSelectionButton());
+                gameInfo.setSelectedPlayer(SelectedPlayer.girl);
                 break;
         }
-        super.handleUserAction(gsCurrent, userAction);
+        super.handleUserAction(gameState, userAction);
     }
 
     @Override
-    public void episodeStartedEvents(GameState gsCurrent) {
-        if (!isEpisodeStarted(gsCurrent)) {
-            super.episodeStartedEvents(gsCurrent);
-            addEpisodeBackgroundImage(gsCurrent, "img/Andromeda-galaxy.jpg");
-            createAndAddMainMenuButtons(gsCurrent);
+    public void episodeStartedEvents(GameState currentState) {
+        if (!isEpisodeStarted(currentState)) {
+            currentState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/boy/music.mp3"));
+            currentState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/girl/music.mp3"));
+            currentState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/mobile.mp3"));
+            super.episodeStartedEvents(currentState);
+
+            addEpisodeBackgroundImage(currentState, "img/mainMenu/bg.png");
+            renderable = new MainMenuRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), "main_menu");
+            //renderable.setImgPath("img/mainMenu/bg.png");
+            createAndAddMainMenuButtons();
+            //createAvatarSelectionRenderable();
+
+            currentState.addRenderable(renderable);
         }
     }
 
-    protected void createAndAddMainMenuButtons(GameState gsCurrent) {
-        initializeButtons();
-        mainMenuButtons = new ButtonsListRenderable(0,0, BUTTON_WIDTH, appInfo.pixelsWithDensity(50), "buttons_list_vertical", "main_menu_buttons");
-        for(Map.Entry<String, UserActionCode> buttonTitleAndActionCode : buttonTitlesAndActionCodes.entrySet()) {
-            ActionButton newGameBtn = new ActionButton(0,0, BUTTON_WIDTH, appInfo.pixelsWithDensity(50), "text_button", buttonTitleAndActionCode.getKey());
-            newGameBtn.setTitle(buttonTitleAndActionCode.getKey());
-            newGameBtn.setUserAction(new UserAction(buttonTitleAndActionCode.getValue()));
-            mainMenuButtons.addButton(newGameBtn);
-        }
-        mainMenuButtons.setZIndex(2);
-        gsCurrent.addRenderable(mainMenuButtons);
-    }
-
-    protected void initializeButtons() {
-        // using a LinkedHashMap to preserve the insertion order
+    protected void createAndAddMainMenuButtons() {
         buttonTitlesAndActionCodes = new LinkedHashMap<>();
-        buttonTitlesAndActionCodes.put("New Game", UserActionCode.NEW_GAME);
-        buttonTitlesAndActionCodes.put("Preferences", UserActionCode.PREFERENCES);
-        buttonTitlesAndActionCodes.put("About", UserActionCode.ABOUT);
-        buttonTitlesAndActionCodes.put("Quit", UserActionCode.QUIT);
+
+        ActionButton start = createActionButton("ΝΕΟ ΠΑΙΧΝΙΔΙ", UserActionCode.NEW_GAME);
+        renderable.setStartGameButton(start);
+
+        ActionButton cont = createActionButton("ΣΥΝΕΧΙΣΕ", UserActionCode.CONTINUE);
+        renderable.setContinueGameButton(cont);
+
+        ActionButton toggle = createActionButton("ΗΧΟΣ ON/OFF", UserActionCode.TOGGLE_AUDIO);
+        renderable.setToggleAudioButton(toggle);
+
+        ActionButton about = createActionButton("ABOUT", UserActionCode.ABOUT);
+        renderable.setAboutButton(about);
+
+        ActionButton quit = createActionButton("ΕΞΟΔΟΣ", UserActionCode.QUIT);
+        renderable.setQuitButton(quit);
+    }
+
+    protected ActionButton createActionButton(String text, UserActionCode code) {
+        ActionButton ret = new ActionButton(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, "text_button", text);
+        buttonTitlesAndActionCodes.put(text, code);
+        ret.setTitle(text);
+        ret.setUserAction(new UserAction(code));
+        return ret;
     }
 
     @Override
     public EpisodeEndState determineEndState(GameState currentState) {
         EpisodeEndState endState = null;
-        if(currentState.eventsQueueContainsEvent("APP_QUIT"))
+        if (currentState.eventsQueueContainsEvent("APP_QUIT"))
             endState = new EpisodeEndState(EpisodeEndStateCode.APP_QUIT, currentState);
-        else if(currentState.eventsQueueContainsEvent("NEW_GAME"))
+        else if (currentState.eventsQueueContainsEvent("NEW_GAME"))
             endState = new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS, currentState);
         cleanUpGameState(currentState);
         return endState;
@@ -74,5 +102,27 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
     @Override
     public void episodeEndedEvents(GameState currentState) {
         currentState.addGameEvent(new GameEvent("EPISODE_FINISHED", null, this));
+    }
+
+    protected void createAvatarSelectionRenderable() {
+        ActionButton boyBtn = new ActionButton("image_button", "boy");
+        boyBtn.setImgPath("img/boy.png");
+        boyBtn.setUserAction(new UserAction(UserActionCode.BOY_SELECTED));
+        ActionButton girlBtn = new ActionButton("image_button", "girl");
+        girlBtn.setImgPath("img/girl.png");
+        girlBtn.setUserAction(new UserAction(UserActionCode.GIRL_SELECTED));
+
+        renderable.setBoySelectionButton(boyBtn);
+        renderable.setGirlSelectionButton(girlBtn);
+        renderable.setSelectedAvatar(boyBtn);
+
+        //removePreviousAvatarSelectionAndAddNew(currentState, "boy");
+        gameInfo.setSelectedPlayer(SelectedPlayer.boy);
+        //currentState.addRenderable(renderable);
+    }
+
+    protected void removePreviousAvatarSelectionAndAddNew(GameState currentState, String newSelection) {
+        currentState.removeGameEventsWithType("AVATAR_SELECTED");
+        currentState.addGameEvent(new GameEvent("AVATAR_SELECTED", newSelection));
     }
 }

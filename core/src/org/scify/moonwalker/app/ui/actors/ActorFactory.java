@@ -11,12 +11,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.scify.engine.renderables.MultipleChoiceConversationRenderable;
 import org.scify.engine.renderables.NextConversationRenderable;
+import org.scify.engine.renderables.TwoChoiceConversationRenderable;
 import org.scify.moonwalker.app.ui.ComponentFactory;
 import org.scify.moonwalker.app.ui.UnsupportedRenderableTypeException;
 import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.ui.actors.calculator.CalculatorComponent;
 import org.scify.moonwalker.app.ui.actors.conversation.MultipleChoiceConversationActor;
 import org.scify.moonwalker.app.ui.actors.conversation.NextConversationActor;
+import org.scify.moonwalker.app.ui.actors.conversation.TwoChoiceConversationActor;
 import org.scify.moonwalker.app.ui.renderables.*;
 
 public class ActorFactory extends ComponentFactory {
@@ -41,11 +43,8 @@ public class ActorFactory extends ComponentFactory {
             case "cockpit":
                 toReturn = createCockpitActor((CockpitRenderable) renderable);
                 break;
-            case "avatar_selection":
-                toReturn = createAvatarSelectionActor((AvatarSelectionRenderable) renderable);
-                break;
-            case "buttons_list_vertical":
-                toReturn = createVerticalButtonList((ButtonsListRenderable) renderable);
+            case "main_menu":
+                toReturn = createMainMenuActor((MainMenuRenderable) renderable);
                 break;
             case "text_button":
                 toReturn = createTextButton((ActionButton) renderable);
@@ -67,6 +66,9 @@ public class ActorFactory extends ComponentFactory {
                 break;
             case "multiple_choice_conversation":
                 toReturn = createMultipleChoiceConversationActor((MultipleChoiceConversationRenderable) renderable);
+                break;
+            case "two_choice_conversation":
+                toReturn = createTwoChoiceConversationActor((TwoChoiceConversationRenderable) renderable);
                 break;
             case "room":
                 toReturn = createRoomActor((RoomRenderable) renderable);
@@ -119,15 +121,31 @@ public class ActorFactory extends ComponentFactory {
         btn.pad(actionButton.getPadding());
     }
 
+    private MainMenuActor createMainMenuActor(MainMenuRenderable renderable) {
+        MainMenuActor actor = new MainMenuActor(skin, renderable);
+        actor.setZIndex(0);
+        /*Button boyBtn = createButton(renderable.getBoySelectionButton());
+        actor.set(boyBtn);
+        Button girlBtn = createButton(renderable.getGirlSelectionButton());
+        actor.addButton(girlBtn);*/
+
+        actor.setStartButton(createButton(renderable.getStartGameButton()));
+        actor.setContinueButton(createButton(renderable.getContinueGameButton()));
+        actor.setToggleAudioButton(createButton(renderable.getToggleAudioButton()));
+        actor.setAboutButton(createButton(renderable.getAboutButton()));
+        actor.setQuitButton(createButton(renderable.getQuitButton()));
+        actor.init();
+        return actor;
+    }
+
     private Actor createRoomActor(final RoomRenderable renderable) {
         RoomActor actor = new RoomActor(skin, renderable);
-
         actor.init();
         return actor;
     }
 
     private Actor createCockpitActor(final CockpitRenderable renderable) {
-        CockpitActor2 actor = new CockpitActor2(skin, renderable);
+        CockpitActor actor = new CockpitActor(skin, renderable);
 
         Button navigateBtn = createButton(renderable.getNavigateButton());
         addButtonListener(navigateBtn, renderable.getNavigateButton());
@@ -147,28 +165,6 @@ public class ActorFactory extends ComponentFactory {
         return actor;
     }
 
-    private Actor createAvatarSelectionActor(final AvatarSelectionRenderable renderable) {
-        AvatarSelectionActor actor = new AvatarSelectionActor(skin);
-        actor.setZIndex(0);
-        Button boyBtn = createButton(renderable.getBoySelection());
-        Button girlBtn = createButton(renderable.getGirlSelection());
-        Button selectionBtn = createButton(renderable.getSelectBtn());
-
-        actor.addButton(boyBtn);
-        actor.addButton(selectionBtn);
-        actor.addButton(girlBtn);
-        return actor;
-    }
-
-    private ButtonList createVerticalButtonList(ButtonsListRenderable buttons) {
-        ButtonList list = new ButtonList(skin, true);
-        list.addMainLabel("Select an Action");
-        for (final ActionButton button : buttons.getButtonList()) {
-            list.addButton(createResourceForType(button));
-        }
-        return list;
-    }
-
     protected Actor createSpaceshipControllerActor(final SpaceshipChargerRenderable renderable) {
         SpaceshipChargerActor spaceshipControllerActor = new SpaceshipChargerActor(skin, renderable);
         spaceshipControllerActor.setCalculatorButton(createButton(renderable.getCalculatorButton()));
@@ -183,22 +179,30 @@ public class ActorFactory extends ComponentFactory {
         return mapLocationActor;
     }
 
-    private Actor createNextConversationActor(NextConversationRenderable nextConversationRenderable) {
-        NextConversationActor actor = new NextConversationActor(skin, nextConversationRenderable);
+    private Actor createNextConversationActor(NextConversationRenderable renderable) {
+        NextConversationActor actor = new NextConversationActor(skin, renderable);
         actor.setZIndex(1);
-        actor.setButton(createButton(nextConversationRenderable.getButtonNext()));
-        actor.init(nextConversationRenderable.getButtonNextStatus());
+        actor.setButton(createButton(renderable.getButtonNext()));
+        actor.init(renderable.getButtonNextStatus());
         return actor;
     }
 
-    private Actor createMultipleChoiceConversationActor(MultipleChoiceConversationRenderable multipleChoiceConversationRenderable) {
-        MultipleChoiceConversationActor actor = new MultipleChoiceConversationActor(skin, multipleChoiceConversationRenderable);
+    private Actor createMultipleChoiceConversationActor(MultipleChoiceConversationRenderable renderable) {
+        MultipleChoiceConversationActor actor = new MultipleChoiceConversationActor(skin, renderable);
         //actor.setZIndex(1);
         int btnIndex = 1;
-        for (ActionButton button : multipleChoiceConversationRenderable.getButtons()) {
+        for (ActionButton button : renderable.getButtons()) {
             actor.addButton(createButton(button), btnIndex);
             btnIndex++;
         }
+        return actor;
+    }
+
+    private Actor createTwoChoiceConversationActor(TwoChoiceConversationRenderable renderable) {
+        TwoChoiceConversationActor actor = new TwoChoiceConversationActor(skin, renderable);
+        actor.setZIndex(1);
+        java.util.List<ActionButton> buttons = renderable.getButtons();
+        actor.init(createButton(buttons.get(0)), createButton(buttons.get(1)));
         return actor;
     }
 
