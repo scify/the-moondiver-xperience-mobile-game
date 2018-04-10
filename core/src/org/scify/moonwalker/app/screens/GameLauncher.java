@@ -57,7 +57,6 @@ public class GameLauncher implements Screen {
     private void startNewGame() {
         final UserInputHandler userInputHandler = new UserInputHandlerImpl();
         final RenderingEngine renderingEngine = new MoonWalkerRenderingEngine(userInputHandler, batch, stage);
-
         final Scenario mainGameScenario = new MoonWalkerScenario();
 
         app.setScreen(new GamePlayScreen(renderingEngine));
@@ -68,6 +67,12 @@ public class GameLauncher implements Screen {
                 Gdx.app.exit();
             }
         });
+        try {
+            Thread.sleep(1000);
+        }catch (Exception e) {
+
+        }
+
         thread.start();
     }
 

@@ -24,17 +24,22 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
     protected void handleUserAction(GameState gameState, UserAction userAction) {
         switch (userAction.getActionCode()) {
             case NEW_GAME:
-                endGameAndAddEventWithType(gameState, "NEW_GAME");
+                //endGameAndAddEventWithType(gameState, "NEW_GAME");
+                gameState.addGameEvent(new GameEvent("AUDIO_START_UI", "audio/button1.mp3"));
+                renderable.initiatePlayerSelection();
                 break;
             case QUIT:
+                gameState.addGameEvent(new GameEvent("AUDIO_START_UI", "audio/button1.mp3"));
                 endGameAndAddEventWithType(gameState, "APP_QUIT");
                 break;
             case BOY_SELECTED:
+                gameState.addGameEvent(new GameEvent("AUDIO_START_UI", "audio/button1.mp3"));
                 removePreviousAvatarSelectionAndAddNew(gameState, "boy");
                 renderable.setSelectedAvatar(renderable.getBoySelectionButton());
                 gameInfo.setSelectedPlayer(SelectedPlayer.boy);
                 break;
             case GIRL_SELECTED:
+                gameState.addGameEvent(new GameEvent("AUDIO_START_UI", "audio/button1.mp3"));
                 removePreviousAvatarSelectionAndAddNew(gameState, "girl");
                 renderable.setSelectedAvatar(renderable.getGirlSelectionButton());
                 gameInfo.setSelectedPlayer(SelectedPlayer.girl);
@@ -46,6 +51,7 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
     @Override
     public void episodeStartedEvents(GameState currentState) {
         if (!isEpisodeStarted(currentState)) {
+            currentState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", "audio/mainMenu/menu.mp3"));
             currentState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/boy/music.mp3"));
             currentState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/girl/music.mp3"));
             currentState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/mobile.mp3"));
@@ -55,8 +61,7 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
             renderable = new MainMenuRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), "main_menu");
             //renderable.setImgPath("img/mainMenu/bg.png");
             createAndAddMainMenuButtons();
-            //createAvatarSelectionRenderable();
-
+            createAvatarSelectionRenderable();
             currentState.addRenderable(renderable);
         }
     }
@@ -64,28 +69,32 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
     protected void createAndAddMainMenuButtons() {
         buttonTitlesAndActionCodes = new LinkedHashMap<>();
 
-        ActionButton start = createActionButton("ΝΕΟ ΠΑΙΧΝΙΔΙ", UserActionCode.NEW_GAME);
+        ActionButton start = createActionButton("ΝΕΟ ΠΑΙΧΝΙΔΙ","img/mainMenu/start.png" , UserActionCode.NEW_GAME);
         renderable.setStartGameButton(start);
 
-        ActionButton cont = createActionButton("ΣΥΝΕΧΙΣΕ", UserActionCode.CONTINUE);
+        ActionButton cont = createActionButton("ΣΥΝΕΧΙΣΕ","img/mainMenu/continue.png", UserActionCode.CONTINUE);
         renderable.setContinueGameButton(cont);
 
-        ActionButton toggle = createActionButton("ΗΧΟΣ ON/OFF", UserActionCode.TOGGLE_AUDIO);
+        ActionButton toggle = createActionButton("ΗΧΟΣ ON/OFF","img/mainMenu/toggleAudio.png", UserActionCode.TOGGLE_AUDIO);
         renderable.setToggleAudioButton(toggle);
 
-        ActionButton about = createActionButton("ABOUT", UserActionCode.ABOUT);
+        ActionButton about = createActionButton("ABOUT","img/mainMenu/about.png", UserActionCode.ABOUT);
         renderable.setAboutButton(about);
 
-        ActionButton quit = createActionButton("ΕΞΟΔΟΣ", UserActionCode.QUIT);
+        ActionButton quit = createActionButton("ΕΞΟΔΟΣ","img/mainMenu/quit.png", UserActionCode.QUIT);
         renderable.setQuitButton(quit);
     }
 
-    protected ActionButton createActionButton(String text, UserActionCode code) {
-        ActionButton ret = new ActionButton(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, "text_button", text);
-        buttonTitlesAndActionCodes.put(text, code);
-        ret.setTitle(text);
-        ret.setUserAction(new UserAction(code));
-        return ret;
+    protected void createAvatarSelectionRenderable() {
+        ActionButton boy = createActionButton("boy","img/mainMenu/boyButton.png" , UserActionCode.BOY_SELECTED);
+        renderable.setBoySelectionButton(boy);
+
+        ActionButton girl = createActionButton("girl","img/mainMenu/girlButton.png" , UserActionCode.GIRL_SELECTED);
+        renderable.setGirlSelectionButton(girl);
+
+        //renderable.setSelectedAvatar(boy);
+        gameInfo.setSelectedPlayer(SelectedPlayer.unset);
+        //currentState.addRenderable(renderable);
     }
 
     @Override
@@ -104,25 +113,12 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
         currentState.addGameEvent(new GameEvent("EPISODE_FINISHED", null, this));
     }
 
-    protected void createAvatarSelectionRenderable() {
-        ActionButton boyBtn = new ActionButton("image_button", "boy");
-        boyBtn.setImgPath("img/boy.png");
-        boyBtn.setUserAction(new UserAction(UserActionCode.BOY_SELECTED));
-        ActionButton girlBtn = new ActionButton("image_button", "girl");
-        girlBtn.setImgPath("img/girl.png");
-        girlBtn.setUserAction(new UserAction(UserActionCode.GIRL_SELECTED));
-
-        renderable.setBoySelectionButton(boyBtn);
-        renderable.setGirlSelectionButton(girlBtn);
-        renderable.setSelectedAvatar(boyBtn);
-
-        //removePreviousAvatarSelectionAndAddNew(currentState, "boy");
-        gameInfo.setSelectedPlayer(SelectedPlayer.boy);
-        //currentState.addRenderable(renderable);
-    }
-
     protected void removePreviousAvatarSelectionAndAddNew(GameState currentState, String newSelection) {
         currentState.removeGameEventsWithType("AVATAR_SELECTED");
         currentState.addGameEvent(new GameEvent("AVATAR_SELECTED", newSelection));
+    }
+
+    protected ActionButton createActionButton(String id, String imgPath, UserActionCode code) {
+        return createImageButton(id, imgPath, new UserAction(code), 0, 0);
     }
 }

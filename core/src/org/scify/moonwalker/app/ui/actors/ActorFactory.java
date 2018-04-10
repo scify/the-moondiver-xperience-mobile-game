@@ -134,6 +134,8 @@ public class ActorFactory extends ComponentFactory {
         actor.setToggleAudioButton(createButton(renderable.getToggleAudioButton()));
         actor.setAboutButton(createButton(renderable.getAboutButton()));
         actor.setQuitButton(createButton(renderable.getQuitButton()));
+        actor.setBoyButton(createButton(renderable.getBoySelectionButton()));
+        actor.setGirlButton(createButton(renderable.getGirlSelectionButton()));
         actor.init();
         return actor;
     }

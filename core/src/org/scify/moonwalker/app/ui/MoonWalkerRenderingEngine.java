@@ -68,6 +68,8 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         createBackgroundDefaultImg();
         initFPSLabel();
         audioEngine.pauseCurrentlyPlayingAudios();
+        audioEngine.loadSound("audio/mainMenu/menu.mp3");
+        audioEngine.loadSound("audio/button1.mp3");
         // TODO music should be added from episode rules
         //audioEngine.playSoundLoop("audio/episode_1/music.wav");
         printDebugInfo();
