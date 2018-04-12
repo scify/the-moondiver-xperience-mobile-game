@@ -16,6 +16,7 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
     protected boolean nextButtonActivated;
     protected long lastRingDate;
     protected boolean ringStopped;
+    protected boolean readyToEndEpisode;
 
 
     public RoomEpisodeRules() {
@@ -24,6 +25,7 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
         ringStarted = false;
         ringStopped = false;
         nextButtonActivated = false;
+        readyToEndEpisode = false;
         lastRingDate = 0;
     }
 
@@ -92,7 +94,7 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
                 gsCurrent.addGameEvent(new GameEvent("AUDIO_STOP_UI", "audio/room_episode/girl/music.mp3"));
                 gsCurrent.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", "audio/room_episode/girl/music.mp3"));
             }
-            gsCurrent.addGameEvent(new GameEvent("CALCULATOR_STARTED", null, this));
+            readyToEndEpisode = true;
         }
 
         handleTriggerEventForCurrentConversationLine(gsCurrent);
@@ -137,7 +139,7 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
 
     @Override
     public boolean isGameFinished(GameState gsCurrent) {
-        return gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED");
+        return readyToEndEpisode;
     }
 
     @Override

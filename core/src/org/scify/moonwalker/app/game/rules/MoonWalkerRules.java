@@ -161,11 +161,11 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
     }
 
     protected boolean isConversationStarted(GameState gsCurrent) {
-        return gsCurrent.eventsQueueContainsEventOwnedBy("CONVERSATION_STARTED", this);
+        return gsCurrent.eventsQueueContainsEvent("CONVERSATION_STARTED");
     }
 
     protected boolean isConversationFinished(GameState gsCurrent) {
-        return gsCurrent.eventsQueueContainsEventOwnedBy("CONVERSATION_FINISHED", this);
+        return gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED");
     }
 
     protected void setFieldsForTimedEpisode(GameState gsCurrent, String imgPath, int millisecondsToLast) {
