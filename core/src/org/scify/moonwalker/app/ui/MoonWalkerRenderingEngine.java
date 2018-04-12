@@ -17,10 +17,12 @@ import org.scify.engine.*;
 import org.scify.engine.audio.AudioEngine;
 import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.MoonWalkerGameState;
+import org.scify.moonwalker.app.game.rules.episodes.MainMenuEpisodeRules;
 import org.scify.moonwalker.app.game.rules.episodes.RoomEpisodeRules;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
+import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
 import org.scify.moonwalker.app.ui.renderables.RenderableManager;
 import org.scify.moonwalker.app.ui.renderables.RoomRenderable;
 import org.scify.moonwalker.app.ui.sound.GdxAudioEngine;
@@ -50,6 +52,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     protected Viewport gameViewport;
     protected ResourceLocator resourceLocator;
     protected boolean bDisposalOngoing;
+    protected boolean audioEnabled;
 
     public MoonWalkerRenderingEngine(UserInputHandler userInputHandler, SpriteBatch batch, Stage stage) {
         this.resourceLocator = new ResourceLocator();
@@ -70,6 +73,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         audioEngine.pauseCurrentlyPlayingAudios();
         audioEngine.loadSound("audio/mainMenu/menu.mp3");
         audioEngine.loadSound("audio/button1.mp3");
+        audioEnabled = true;
         // TODO music should be added from episode rules
         //audioEngine.playSoundLoop("audio/episode_1/music.wav");
         printDebugInfo();
@@ -167,6 +171,16 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 audioEngine.playSound("audio/success.wav");
                 listIterator.remove();
                 break;
+            case "AUDIO_TOGGLE_UI":
+                if (audioEnabled) {
+                    audioEnabled = false;
+                    audioEngine.stopSound("audio/mainMenu/menu.mp3");
+                }else {
+                    audioEnabled = true;
+                    audioEngine.playSoundLoop("audio/mainMenu/menu.mp3");
+                }
+                listIterator.remove();
+                break;
             case "AUDIO_LOAD_UI":
                 audioEngine.loadSound((String) gameEvent.parameters);
                 listIterator.remove();
@@ -177,19 +191,22 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 break;
             case "AUDIO_START_UI":
                 if (new Date().getTime() > gameEvent.delay) {
-                    audioEngine.playSound((String) gameEvent.parameters);
+                    if (audioEnabled)
+                        audioEngine.playSound((String) gameEvent.parameters);
                     listIterator.remove();
                 }
                 break;
             case "AUDIO_START_LOOP_UI":
                 if (new Date().getTime() > gameEvent.delay) {
-                    audioEngine.playSoundLoop((String) gameEvent.parameters);
+                    if (audioEnabled)
+                        audioEngine.playSoundLoop((String) gameEvent.parameters);
                     listIterator.remove();
                 }
                 break;
             case "AUDIO_STOP_UI":
                 if (new Date().getTime() > gameEvent.delay) {
-                    audioEngine.stopSound((String) gameEvent.parameters);
+                    if (audioEnabled)
+                        audioEngine.stopSound((String) gameEvent.parameters);
                     listIterator.remove();
                 }
                 break;

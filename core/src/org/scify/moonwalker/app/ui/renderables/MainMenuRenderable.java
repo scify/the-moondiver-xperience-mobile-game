@@ -18,12 +18,28 @@ public class MainMenuRenderable extends Renderable {
     protected ActionButton aboutButton;
     protected ActionButton quitButton;
 
+    protected int countDownValue;
+
     protected boolean playerSelectionStatus;
 
     public MainMenuRenderable(float xPos, float yPos, float width, float height, String id) {
         super(xPos, yPos, width, height, "main_menu", id);
         playerSelectionStatus = false;
+        countDownValue = 5;
     }
+
+    public void resetCountDown () {
+        countDownValue = 5;
+        renderableWasUpdated();
+    }
+
+    public void decreaseCountDown () {
+        countDownValue --;
+        if (countDownValue >= 0)
+            renderableWasUpdated();
+    }
+
+    public int getCountDownValue () { return countDownValue;}
 
     public boolean isPlayerSelectionInitiated() {
         return playerSelectionStatus;

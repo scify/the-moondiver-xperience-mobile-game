@@ -83,8 +83,17 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
             gsCurrent = conversationRules.getNextState(gsCurrent, userAction);
 
         }
-        if (isConversationFinished(gsCurrent))
+        if (isConversationFinished(gsCurrent)) {
+            if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
+                gsCurrent.addGameEvent(new GameEvent("AUDIO_STOP_UI", "audio/room_episode/boy/music.mp3"));
+                gsCurrent.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", "audio/room_episode/boy/music.mp3"));
+            }
+            else {
+                gsCurrent.addGameEvent(new GameEvent("AUDIO_STOP_UI", "audio/room_episode/girl/music.mp3"));
+                gsCurrent.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", "audio/room_episode/girl/music.mp3"));
+            }
             gsCurrent.addGameEvent(new GameEvent("CALCULATOR_STARTED", null, this));
+        }
 
         handleTriggerEventForCurrentConversationLine(gsCurrent);
         return gsCurrent;
@@ -119,16 +128,6 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
                     gameState.addGameEvent(new GameEvent("AUDIO_STOP_UI", "audio/room_episode/mobile.mp3"));
                     gameState.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", "audio/room_episode/mobile.mp3"));
                     room.turnOnPhone();
-                }
-                break;
-            case "end":
-                if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
-                    gameState.addGameEvent(new GameEvent("AUDIO_STOP_UI", "audio/room_episode/boy/music.mp3"));
-                    gameState.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", "audio/room_episode/boy/music.mp3"));
-                }
-                else {
-                    gameState.addGameEvent(new GameEvent("AUDIO_STOP_UI", "audio/room_episode/girl/music.mp3"));
-                    gameState.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", "audio/room_episode/girl/music.mp3"));
                 }
                 break;
             default:
