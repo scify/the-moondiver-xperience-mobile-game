@@ -166,7 +166,7 @@ public class ConversationRules extends MoonWalkerRules {
         lastConversationRenderable = twoChoiceConversationRenderable;
         lastConversationRenderable.setZIndex(1);
         twoChoiceConversationRenderable.setConversationLines(nextLines);
-        twoChoiceConversationRenderable.setRelativeAvatarImgPath(getAvatar(getCurrentConversationLine(gameState).getSpeakerId()));
+        twoChoiceConversationRenderable.setRelativeAvatarImgPath(getAvatar(twoChoiceConversationRenderable.getConversationLines().get(0).getSpeakerId()));
         gameState.addRenderable(twoChoiceConversationRenderable);
         oldConversationLines.add(twoChoiceConversationRenderable);
     }
