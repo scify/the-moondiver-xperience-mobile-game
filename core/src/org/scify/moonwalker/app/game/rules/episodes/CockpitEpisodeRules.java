@@ -5,9 +5,11 @@ import org.scify.moonwalker.app.game.LocationController;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 
+import java.util.Date;
+
 public class CockpitEpisodeRules extends BaseEpisodeRules {
 
-    protected CockpitRenderable cockpit;
+    protected CockpitRenderable renderable;
     protected LocationController locationController;
 
     @Override
@@ -15,36 +17,46 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
         if (!isEpisodeStarted(currentState)) {
             locationController = new LocationController();
             super.episodeStartedEvents(currentState);
-            addEpisodeBackgroundImage(currentState, "img/cockpit/generic_background.png");
-            initializeAndAddCockpit(currentState);
+            //addEpisodeBackgroundImage(currentState, "img/renderable/generic_background.png");
+            init(currentState);
         } else {
 
         }
     }
 
-    protected void initializeAndAddCockpit(GameState currentState) {
-        cockpit = new CockpitRenderable(0,0, appInfo.getScreenWidth(),
+    protected void init(GameState gameState) {
+        renderable = new CockpitRenderable(0,0, appInfo.getScreenWidth(),
                 appInfo.getScreenHeight(), "cockpit", "cockpit");
         setCockpitFieldValues();
         setCockpitButtons();
-        cockpit.setImgPath("img/cockpit/cockpit_background.png");
-        currentState.addRenderable(cockpit);
+        if (gameInfo.getContactRequestFlag()) {
+            gameState.addGameEvent(new GameEvent("TOOGLE_CONTACT_BUTTON", new Date().getTime() + 500, false, this));
+            //renderable.toogleContactButton();
+        }
+        gameState.addRenderable(renderable);
     }
 
     @Override
     protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
-        switch (userAction.getActionCode()) {
-            case MAP_EPISODE:
-                gsCurrent.addGameEvent(new GameEvent("MAP_EPISODE_STARTED", null, this));
+        if (gameInfo.getContactRequestFlag()) {
+            if (userAction.getActionCode().equals(UserActionCode.CONTACT_SCREEN_EPISODE)) {
+                gsCurrent.addGameEvent(new GameEvent("CONTACT_SCREEN_EPISODE_STARTED", null, this));
                 episodeEndedEvents(gsCurrent);
-                break;
-            case CHARGE_SPACESHIP_EPISODE:
-                gsCurrent.addGameEvent(new GameEvent("SPACESHIP_CHARGER_EPISODE_STARTED", null, this));
-                episodeEndedEvents(gsCurrent);
-                break;
-            default:
-                super.handleUserAction(gsCurrent, userAction);
-                break;
+            }
+        }else {
+            switch (userAction.getActionCode()) {
+                case MAP_EPISODE:
+                    gsCurrent.addGameEvent(new GameEvent("MAP_EPISODE_STARTED", null, this));
+                    episodeEndedEvents(gsCurrent);
+                    break;
+                case CHARGE_SPACESHIP_EPISODE:
+                    gsCurrent.addGameEvent(new GameEvent("SPACESHIP_CHARGER_EPISODE_STARTED", null, this));
+                    episodeEndedEvents(gsCurrent);
+                    break;
+                default:
+                    super.handleUserAction(gsCurrent, userAction);
+                    break;
+            }
         }
     }
 
@@ -53,6 +65,8 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
         EpisodeEndState endStateFromParent = super.determineEndState(currentState);
         if(endStateFromParent != null)
             return endStateFromParent;
+        else if(currentState.eventsQueueContainsEventOwnedBy("CONTACT_SCREEN_EPISODE_STARTED", this))
+            return new EpisodeEndState(EpisodeEndStateCode.CONTACT_SCREEN_EPISODE_STARTED, cleanUpState(currentState));
         else if(currentState.eventsQueueContainsEventOwnedBy("MAP_EPISODE_STARTED", this))
             return new EpisodeEndState(EpisodeEndStateCode.MAP_EPISODE_STARTED, cleanUpState(currentState));
         else if(currentState.eventsQueueContainsEventOwnedBy("SPACESHIP_CHARGER_EPISODE_STARTED", this))
@@ -62,12 +76,12 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
 
     protected void setCockpitFieldValues() {
         if(gameInfo.getCurrentLocation() != null)
-            cockpit.setPositionValue(gameInfo.getCurrentLocationName());
-        cockpit.setRemainingEnergyValue(String.valueOf(gameInfo.getRemainingEnergy()));
-        cockpit.setMotorEfficiencyValue(String.valueOf(gameInfo.getMotorEfficiency()));
-        cockpit.setPositionValue(String.valueOf(gameInfo.getCurrentLocation().getName()));
-        cockpit.setDaysLeftValue("99");
-        cockpit.setDestinationDistanceValue(1000);
+            renderable.setPositionValue(gameInfo.getCurrentLocationName());
+        renderable.setRemainingEnergyValue(String.valueOf(gameInfo.getRemainingEnergy()));
+        renderable.setMotorEfficiencyValue(String.valueOf(gameInfo.getMotorEfficiency()));
+        renderable.setPositionValue(String.valueOf(gameInfo.getCurrentLocation().getName()));
+        renderable.setDaysLeftValue("99");
+        renderable.setDestinationDistanceValue(1000);
     }
 
     protected void setCockpitButtons() {
@@ -75,19 +89,32 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
         ActionButton launchBtn = createCockpitButton("launch_button", "img/cockpit/launch.png", UserActionCode.FINISH_EPISODE);
         ActionButton spaceshipPartsButton = createCockpitButton("spaceship_parts_button", "img/cockpit/spaceship.png", UserActionCode.SPACESHIP_PARTS_EPISODE);
         ActionButton mapBtn = createCockpitButton("map_button", "img/cockpit/map.png", UserActionCode.MAP_EPISODE);
-        ActionButton contactBtn = createCockpitButton("contact_button", "img/cockpit/contact.png", UserActionCode.FINISH_EPISODE);
         ActionButton chargeBtn = createCockpitButton("charge_button", "img/cockpit/charge.png", UserActionCode.CHARGE_SPACESHIP_EPISODE);
+        ActionButton contactBtnSimple = createCockpitButton("contact_button_simple", "img/cockpit/contact.png", UserActionCode.CONTACT_SCREEN_EPISODE);
+        ActionButton contactBtnLighted = createCockpitButton("contact_button_lighted", "img/cockpit/contact_lighted.png", UserActionCode.CONTACT_SCREEN_EPISODE);
 
 
-        cockpit.setNavigateButton(navigateBtn);
-        cockpit.setLaunchButton(launchBtn);
-        cockpit.setSpaceshipPartsButton(spaceshipPartsButton);
-        cockpit.setMapButton(mapBtn);
-        cockpit.setContactButton(contactBtn);
-        cockpit.setChargeButton(chargeBtn);
+        renderable.setNavigateButton(navigateBtn);
+        renderable.setLaunchButton(launchBtn);
+        renderable.setSpaceshipPartsButton(spaceshipPartsButton);
+        renderable.setMapButton(mapBtn);
+        renderable.setContactButtons(contactBtnSimple, contactBtnLighted);
+        renderable.setChargeButton(chargeBtn);
     }
 
     protected ActionButton createCockpitButton(String id, String imgPath, UserActionCode code) {
         return createImageButton(id, imgPath, new UserAction(code), 0, 0);
+    }
+
+    @Override
+    public GameState getNextState(GameState gameState, UserAction userAction) {
+        long timestamp = new Date().getTime();
+        GameEvent contactToggleEvent = gameState.getGameEventsWithType("TOOGLE_CONTACT_BUTTON");
+        if (contactToggleEvent != null && timestamp > contactToggleEvent.delay) {
+            gameState.removeGameEventsWithType("TOOGLE_CONTACT_BUTTON");
+            renderable.toogleContactButton();
+            gameState.addGameEvent(new GameEvent("TOOGLE_CONTACT_BUTTON", new Date().getTime() + 500, false, this));
+        }
+        return super.getNextState(gameState, userAction);
     }
 }

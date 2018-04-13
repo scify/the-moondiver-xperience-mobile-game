@@ -34,7 +34,7 @@ public abstract class SinglePlayerRules extends MoonWalkerRules {
      * So we need to search for the appropriate {@link GameEvent} in the previous GameState
      * and set the avatar according to the game event's value (boy or girl).
      */
-    protected void addPlayerAvatar(GameState gsCurrent) {
+    /*protected void addPlayerAvatar(GameState gsCurrent) {
         if(initialGameState != null) {
             GameEvent avatarSelectionEvent = initialGameState.getGameEventsWithType("AVATAR_SELECTED");
             if (avatarSelectionEvent != null) {
@@ -46,13 +46,13 @@ public abstract class SinglePlayerRules extends MoonWalkerRules {
                 gsCurrent.addGameEvent(new GameEvent("AVATAR_SELECTED", avatarIdentifier));
             }
         }
-    }
+    }*/
 
-    private void createPlayerAvatar(String avatarIdentifier, GameState gsCurrent) {
+    /*private void createPlayerAvatar(String avatarIdentifier, GameState gsCurrent) {
         pPlayer = new Player(appInfo.getScreenWidth() / 2f,
                 appInfo.getScreenHeight() / 2f - 80,  appInfo.getScreenWidth() * 0.3f, appInfo.getScreenWidth() * 0.3f,
                 avatarIdentifier, "player");
         gsCurrent.addRenderable(pPlayer);
-    }
+    }*/
 
 }

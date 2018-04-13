@@ -22,10 +22,16 @@ public class CockpitRenderable extends Renderable {
     protected ActionButton chargeButton;
     protected ActionButton spaceshipPartsButton;
     protected ActionButton mapButton;
-    protected ActionButton contactButton;
+
+    protected boolean contactButtonIsLighted;
+    protected ActionButton contactButtonSimple;
+    protected ActionButton contactButtonLighted;
+
 
     public CockpitRenderable(float xPos, float yPos, float width, float height, String type, String id) {
         super(xPos, yPos, width, height, type, id);
+        setImgPath("img/cockpit/bg.png");
+        contactButtonIsLighted = false;
     }
 
     public String getMotorEfficiencyValue() {
@@ -96,12 +102,30 @@ public class CockpitRenderable extends Renderable {
         this.mapButton = mapButton;
     }
 
-    public ActionButton getContactButton() {
-        return contactButton;
+    public boolean isContactButtonLighted() {
+        return contactButtonIsLighted;
     }
 
-    public void setContactButton(ActionButton contactButton) {
-        this.contactButton = contactButton;
+    public ActionButton getContactButtonSimple() {
+        return contactButtonSimple;
+    }
+
+    public ActionButton getContactButtonLighted() {
+        return contactButtonLighted;
+    }
+
+    public void setContactButtons(ActionButton contactButtonSimple, ActionButton contactButtonLighted) {
+        this.contactButtonSimple = contactButtonSimple;
+        this.contactButtonLighted = contactButtonLighted;
+    }
+
+    public void toogleContactButton() {
+        if (contactButtonIsLighted) {
+            contactButtonIsLighted = false;
+        }else {
+            contactButtonIsLighted = true;
+        }
+        renderableWasUpdated();
     }
 
     public String getDaysLeftValue() {

@@ -20,7 +20,7 @@ public class ForestEpisodeRules extends BaseEpisodeRules{
             super.episodeStartedEvents(currentState);
             addEpisodeBackgroundImage(currentState, "img/forest.jpg");
             createAndAddRocket(currentState);
-            addPlayerAvatar(currentState);
+            //addPlayerAvatar(currentState);
         }
     }
 

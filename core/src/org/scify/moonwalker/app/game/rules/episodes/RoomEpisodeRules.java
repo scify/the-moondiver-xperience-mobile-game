@@ -8,6 +8,7 @@ import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.ui.renderables.RoomRenderable;
 
 import java.util.Date;
+import java.util.Iterator;
 
 public class RoomEpisodeRules extends BaseEpisodeRules {
     protected RoomRenderable room;
@@ -66,7 +67,6 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
     protected void initialize(GameState currentState) {
         room = new RoomRenderable(0, 0, appInfo.getScreenWidth(),
                 appInfo.getScreenHeight(), "room", "room");
-        room.setImgPath("img/episode_room/bg.png");
         currentState.addRenderable(room);
     }
 
@@ -155,6 +155,11 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
         currentState.removeGameEventsWithType("CONVERSATION_READY_TO_FINISH");
         currentState.removeGameEventsWithType("CONVERSATION_FINISHED");
         currentState.removeGameEventsWithType("CONVERSATION_STARTED");
+        Iterator iter = currentState.getEventQueue().iterator();
+        System.out.println("GameEvents:");
+        while (iter.hasNext()) {
+            System.out.println("\t" + ((GameEvent)iter.next()).type);
+        }
         return currentState;
     }
 }

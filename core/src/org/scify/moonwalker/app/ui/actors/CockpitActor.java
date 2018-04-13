@@ -3,7 +3,6 @@ package org.scify.moonwalker.app.ui.actors;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
@@ -21,7 +20,8 @@ public class CockpitActor extends TableActor implements Updateable {
     protected Button launchButton;
     protected Button spaceshipPartsButton;
     protected Button mapButton;
-    protected Button contactButton;
+    protected Button contactButtonSimple;
+    protected Button contactButtonLighted;
     protected Button chargeEpisodeButton;
 
 
@@ -29,12 +29,11 @@ public class CockpitActor extends TableActor implements Updateable {
      * When adding values to the table, store the created cells
      * into Cell instances, so that they can easily be updated later.
      */
-    protected Cell motorEfficiencyValueCell;
-    protected Cell remainingEnergyValueCell;
-    protected Cell remainingDestinationValueCell;
-    protected Cell positionValueCell;
-    protected Cell daysLeftCell;
-    protected Cell currentLocationCell;
+    protected Label motorEfficiencyLabel;
+    protected Label remainingEnergyLabel;
+    protected Label remainingDestinationLabel;
+    protected Label daysLeftLabel;
+    protected Label currentLocationLabel;
 
     public CockpitActor(Skin skin, CockpitRenderable renderable) {
         super(skin);
@@ -60,11 +59,11 @@ public class CockpitActor extends TableActor implements Updateable {
         top();
 
         //Top Left Pad Location
-        currentLocationCell = drawTopLeftPad(screenWidth, screenHeight);
+        drawTopLeftPad(screenWidth, screenHeight);
         //Mid empty cell
         add().width(0.55f * screenWidth).height(0.57f * screenHeight);
         //Top Right Pad DaysToGo
-        remainingDestinationValueCell = drawTopRightPad(screenWidth, screenHeight);
+        drawTopRightPad(screenWidth, screenHeight);
 
         row();
 
@@ -74,51 +73,48 @@ public class CockpitActor extends TableActor implements Updateable {
         drawBottom(screenWidth, screenHeight);
     }
 
-    protected Cell drawTopLeftPad(float screenWidth, float screenHeight) {
+    protected void drawTopLeftPad(float screenWidth, float screenHeight) {
         Stack stack = new Stack();
         stack.setTransform(true);
         Texture texture = imgUrlToTexture(renderable.POSITION_LABEL_IMG_PATH);
         Image image = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
         image.setAlign(Align.center);
         stack.addActor(image);
-        //Label label = new Label(renderable.getPositionValue(), getSkin());
-        //Label label = new Label("ΛΟΝΔΙΝΟ", getSkin());
-        Label label = new Label(renderable.getPositionValue(), getSkin());
+        currentLocationLabel = new Label(renderable.getPositionValue(), getSkin());
         Label.LabelStyle ls = new Label.LabelStyle();
         ThemeController themeController = new ThemeController(20, "controls");
         ls.font = themeController.getFont();
         //ls.font.getData().setScale(2, 2);
         ls.fontColor = Color.valueOf("2f312c");
-        label.setStyle(ls);
-        Container container = new Container(label);
+        currentLocationLabel.setStyle(ls);
+        Container container = new Container(currentLocationLabel);
         container.center();
         container.padBottom(screenHeight * 0.1f);
         container.padLeft(screenWidth * 0.05f);
         stack.add(container);
         stack.rotateBy(4);
-        return add(stack).top().left().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight()));
+        add(stack).top().left().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight()));
     }
 
-    protected Cell drawTopRightPad(float screenWidth, float screenHeight) {
+    protected void drawTopRightPad(float screenWidth, float screenHeight) {
         Stack stack = new Stack();
         stack.setTransform(true);
         Texture texture = imgUrlToTexture(renderable.DAYS_LEFT_IMG_PATH);
         Image image = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
         stack.add(image);
-        Label label = new Label(renderable.getDaysLeftValue(), getSkin());
+        daysLeftLabel = new Label(renderable.getDaysLeftValue(), getSkin());
         Label.LabelStyle ls = new Label.LabelStyle();
         ThemeController themeController = new ThemeController(25, "controls");
         ls.font = themeController.getFont();
         ls.fontColor = Color.valueOf("912d25");
-        label.setStyle(ls);
-        Container container = new Container(label);
+        daysLeftLabel.setStyle(ls);
+        Container container = new Container(daysLeftLabel);
         container.center();
         container.padRight(0.02f * screenWidth);
         container.padTop(0.1f * screenHeight);
 
         stack.add(container);
-        Cell ret = add(stack).top().right().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight()));
-        return ret;
+        add(stack).top().right().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight()));
     }
 
     protected void drawCentral(float screenWidth, float screenHeight) {
@@ -127,10 +123,15 @@ public class CockpitActor extends TableActor implements Updateable {
         Table centralTable = new Table();
         centralTable.defaults();
         centralTable.align(Align.top);
-        centralTable.add(contactButton).width(convertWidth(contactButton.getWidth())).height(convertHeight(contactButton.getHeight())).padRight(0.02f * screenWidth);
+
+        Stack contactButtons = new Stack();
+        contactButtons.add(contactButtonSimple);
+        contactButtons.add(contactButtonLighted);
+        contactButtonLighted.setVisible(false);
+        centralTable.add(contactButtons).width(convertWidth(contactButtonSimple.getWidth())).height(convertHeight(contactButtonSimple.getHeight())).padRight(0.02f * screenWidth);
         centralTable.add(spaceshipPartsButton).width(convertWidth(spaceshipPartsButton.getWidth())).height(convertHeight(spaceshipPartsButton.getHeight()));
         centralTable.row();
-        float distanceBetweenRows = convertHeight(contactButton.getHeight()* 0.8f);
+        float distanceBetweenRows = convertHeight(contactButtonSimple.getHeight()* 0.8f);
         centralTable.add().height(distanceBetweenRows);
         centralTable.row();
         centralTable.add(chargeEpisodeButton).width(convertWidth(chargeEpisodeButton.getWidth())).height(convertHeight(chargeEpisodeButton.getHeight())).padRight(0.02f * screenWidth);
@@ -153,26 +154,26 @@ public class CockpitActor extends TableActor implements Updateable {
 
 
 
-        Label labelMotorEfficiency = new Label(renderable.getMotorEfficiencyValue(), getSkin());
-        labelMotorEfficiency.setStyle(labelStyle);
-        labelMotorEfficiency.setAlignment(Align.center);
+        motorEfficiencyLabel = new Label(renderable.getMotorEfficiencyValue(), getSkin());
+        motorEfficiencyLabel.setStyle(labelStyle);
+        motorEfficiencyLabel.setAlignment(Align.center);
 
-        motorEfficiencyValueCell = bottomTable.add(labelMotorEfficiency).width(0.06f *screenWidth);
+        bottomTable.add(motorEfficiencyLabel).width(0.06f *screenWidth);
 
         bottomTable.add().width(0.265f * screenWidth);
 
 
-        Label labelEnergy = new Label(renderable.getRemainingEnergyValue(), getSkin());
-        labelEnergy.setStyle(labelStyle);
-        labelEnergy.setAlignment(Align.center);
-        remainingEnergyValueCell = bottomTable.add(labelEnergy).width(0.06f *screenWidth);
+        remainingEnergyLabel = new Label(renderable.getRemainingEnergyValue(), getSkin());
+        remainingEnergyLabel.setStyle(labelStyle);
+        remainingEnergyLabel.setAlignment(Align.center);
+        bottomTable.add(remainingEnergyLabel).width(0.06f *screenWidth);
 
         bottomTable.add().width(0.27f * screenWidth);
 
-        Label labelDistance = new Label(renderable.getDestinationDistanceValue() + "", getSkin());
-        labelDistance.setStyle(labelStyle);
-        labelDistance.setAlignment(Align.center);
-        remainingDestinationValueCell = bottomTable.add(labelDistance).width(0.06f *screenWidth);
+        remainingDestinationLabel = new Label(renderable.getDestinationDistanceValue() + "", getSkin());
+        remainingDestinationLabel.setStyle(labelStyle);
+        remainingDestinationLabel.setAlignment(Align.center);
+        bottomTable.add(remainingDestinationLabel).width(0.06f *screenWidth);
         add(bottomTable).colspan(3).left();
     }
 
@@ -186,47 +187,45 @@ public class CockpitActor extends TableActor implements Updateable {
             setMotorEfficiency(this.renderable.getMotorEfficiencyValue());
             setRemainingEnergy(this.renderable.getRemainingEnergyValue());
             setRemainingDestination(this.renderable.getDestinationDistanceValue() + "");
-            setPosition(this.renderable.getPositionValue());
+            setLocation(this.renderable.getPositionValue());
             setDaysLeft(this.renderable.getDaysLeftValue());
+            if (this.renderable.isContactButtonLighted()) {
+                contactButtonLighted.setVisible(true);
+                contactButtonSimple.setVisible(false);
+            }else {
+                contactButtonLighted.setVisible(false);
+                contactButtonSimple.setVisible(true);
+            }
         }
     }
 
-
-    protected float convertHeight(float initialHeight) {
-        int initialBackgroundHeight = 1080;
-        float ret = getHeight() * initialHeight;
-        ret = ret / initialBackgroundHeight;
-        return ret;
-    }
-
-    protected float convertWidth(float initialWidth) {
-        int initialBackgroundWidth = 1920;
-        float ret = getWidth() * initialWidth;
-        ret = ret / initialBackgroundWidth;
-        return ret;
-    }
-
     protected void setMotorEfficiency(String newValue) {
-        updateInfoValueCell(motorEfficiencyValueCell, newValue);
+        //updateInfoValueCell(motorEfficiencyValueCell, newValue);
+        motorEfficiencyLabel.setText(newValue);
     }
 
     protected void setRemainingEnergy(String newValue) {
-        updateInfoValueCell(remainingEnergyValueCell, newValue);
+        //updateInfoValueCell(remainingEnergyValueCell, newValue);
+        remainingEnergyLabel.setText(newValue);
     }
 
     protected void setRemainingDestination(String newValue) {
-        updateInfoValueCell(remainingDestinationValueCell, newValue);
+        //updateInfoValueCell(remainingDestinationValueCell, newValue);
+        remainingDestinationLabel.setText(newValue);
     }
 
-    protected void setPosition(String newValue) {
-        updateInfoValueCell(positionValueCell, newValue);
+    protected void setLocation(String newValue) {
+        //updateInfoValueCell(positionValueCell, newValue);
+        currentLocationLabel.setText(newValue);
     }
+
 
     protected void setDaysLeft(String newValue) {
-        updateInfoValueCell(daysLeftCell, newValue);
+        //updateInfoValueCell(daysLeftCell, newValue);
+        daysLeftLabel.setText(newValue);
     }
 
-    protected void updateInfoValueCell(Cell cell, String newValue) {
+    /*protected void updateInfoValueCell(Cell cell, String newValue) {
         // we need to search for the Label type actor in the group we have stored in the cell
         Group group = (Group) cell.getActor();
         for (Actor actor : group.getChildren()) {
@@ -235,7 +234,7 @@ public class CockpitActor extends TableActor implements Updateable {
                 label.setText(newValue);
             }
         }
-    }
+    }*/
 
     public void setNavigateButton(Button navigateButton) {
         this.navigateButton = navigateButton;
@@ -253,8 +252,9 @@ public class CockpitActor extends TableActor implements Updateable {
         this.mapButton = mapButton;
     }
 
-    public void setContactButton(Button contactButton) {
-        this.contactButton = contactButton;
+    public void setContactButtons(Button contactButtonSimple, Button contactButtonLighted) {
+        this.contactButtonSimple = contactButtonSimple;
+        this.contactButtonLighted = contactButtonLighted;
     }
 
     public void setChargeEpisodeButton(Button chargeEpisodeButton) {

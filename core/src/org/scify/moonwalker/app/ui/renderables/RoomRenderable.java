@@ -14,6 +14,7 @@ public class RoomRenderable extends Renderable {
         super(xPos, yPos, width, height, type, id);
         permanentlyOn = false;
         phoneImagePath = PHONE_OFF_IMG_PATH;
+        setImgPath("img/episode_room/bg.png");
     }
 
     public String getPhoneImagePath() {

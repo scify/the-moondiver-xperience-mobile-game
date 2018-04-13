@@ -38,7 +38,7 @@ public class MapEpisodeRules extends TemporaryEpisodeRules {
             gameInfo = GameInfo.getInstance();
             super.episodeStartedEvents(currentState);
             addEpisodeBackgroundImage(currentState, "img/map_europe.png");
-            addPlayerAvatar(currentState);
+            //addPlayerAvatar(currentState);
             ActionButton escape = createEscapeButton();
             escape.setUserAction(new UserAction(UserActionCode.BACK));
             currentState.addRenderable(escape);

@@ -73,6 +73,9 @@ public class ActorFactory extends ComponentFactory {
             case "room":
                 toReturn = createRoomActor((RoomRenderable) renderable);
                 break;
+            case "contact_screen":
+                toReturn = createContactScreenActor((ContactScreenRenderable) renderable);
+                break;
             default:
                 throw new UnsupportedRenderableTypeException("renderable with type " + renderable.getType() + " is unsupported.");
         }
@@ -162,7 +165,15 @@ public class ActorFactory extends ComponentFactory {
         actor.setChargeEpisodeButton(chargeEpisodeBtn);
         actor.setMapButton(createButton(renderable.getMapButton()));
         actor.setSpaceshipPartsButton(createButton(renderable.getSpaceshipPartsButton()));
-        actor.setContactButton(createButton(renderable.getContactButton()));
+        actor.setContactButtons(createButton(renderable.getContactButtonSimple()), createButton(renderable.getContactButtonLighted()));
+        actor.init();
+        return actor;
+    }
+
+    private Actor createContactScreenActor(final ContactScreenRenderable renderable) {
+        ContactScreenActor actor = new ContactScreenActor(skin, renderable);
+
+        actor.setPosition(renderable.getxPos(), renderable.getyPos());
         actor.init();
         return actor;
     }

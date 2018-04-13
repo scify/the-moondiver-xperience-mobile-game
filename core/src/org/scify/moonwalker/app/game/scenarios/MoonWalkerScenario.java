@@ -7,22 +7,27 @@ import org.scify.moonwalker.app.game.episodes.*;
 public class MoonWalkerScenario extends Scenario {
 
     public MoonWalkerScenario() {
-        Episode firstEpisode = new MainMenuEpisode();
+        Episode mainMenuEpisode = new MainMenuEpisode();
+        Episode roomEpisode = new RoomEpisode();
+        Episode cockpitEpisode = new CockpitEpisode();
 
         //setFirstEpisode(new CockpitEpisode());
-        setFirstEpisode(firstEpisode);
+        setFirstEpisode(mainMenuEpisode);
 
-        Episode roomEpisode = new RoomEpisode();
-        addEpisodeAfterCurrent(roomEpisode);
+        //addEpisodeAfterCurrent(roomEpisode);
+        addEpisodeAfterCurrent(cockpitEpisode);
+
 
         /*Episode forestLoadingEpisode = new ForestLoadingEpisode();
-        addEpisodeAfter(roomEpisode, forestLoadingEpisode);*/
+        addEpisodeAfter(roomEpisode, forestLoadingEpisode);
 
         Episode forestEpisode = new ForestEpisode();
         addEpisodeAfter(roomEpisode, forestEpisode);
 
         Episode cockpitEpisode = new CockpitEpisode();
         addEpisodeAfter(forestEpisode, cockpitEpisode);
+        */
+
     }
 
     @Override
@@ -31,6 +36,9 @@ public class MoonWalkerScenario extends Scenario {
         switch (endStateCode) {
             case CALCULATOR_STARTED:
                 addTemporaryEpisode(new CalculatorEpisode());
+                break;
+            case CONTACT_SCREEN_EPISODE_STARTED:
+                addTemporaryEpisode(new ContactScreenEpisode());
                 break;
             case MAP_EPISODE_STARTED:
                 addTemporaryEpisode(new MapEpisode());

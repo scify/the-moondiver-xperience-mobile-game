@@ -258,17 +258,4 @@ public class MainMenuActor extends TableActor implements Updateable {
         girlButton = button;
     }
 
-    protected float convertHeight(float initialHeight) {
-        int initialBackgroundHeight = 1080;
-        float ret = getHeight() * initialHeight;
-        ret = ret / initialBackgroundHeight;
-        return ret;
-    }
-
-    protected float convertWidth(float initialWidth) {
-        int initialBackgroundWidth = 1920;
-        float ret = getWidth() * initialWidth;
-        ret = ret / initialBackgroundWidth;
-        return ret;
-    }
 }

@@ -33,7 +33,7 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
                 endGameAndAddEventWithType(gameState, "NEW_GAME");
             }else {
                 gameState.addGameEvent(new GameEvent("AUDIO_START_UI", "audio/button1.mp3"));
-                gameState.addGameEvent(new GameEvent("COOLDOWN", timestamp + 1000, false));
+                gameState.addGameEvent(new GameEvent("COOLDOWN", timestamp + 1000, false, this));
             }
         }
 
@@ -60,9 +60,8 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
                 if (coolDownEvent != null)
                     gameState.removeGameEventsWithType("COOLDOWN");
                 renderable.resetCountDown();
-                gameState.addGameEvent(new GameEvent("GAME_EVENT"));
                 gameState.addGameEvent(new GameEvent("AUDIO_START_UI", "audio/button1.mp3"));
-                gameState.addGameEvent(new GameEvent("COOLDOWN", new Date().getTime() + 1000, false));
+                gameState.addGameEvent(new GameEvent("COOLDOWN", new Date().getTime() + 1000, false, this));
                 removePreviousAvatarSelectionAndAddNew(gameState, "boy");
                 renderable.setSelectedAvatar(renderable.getBoySelectionButton());
                 gameInfo.setSelectedPlayer(SelectedPlayer.boy);
@@ -72,9 +71,8 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
                 if (coolDownEvent != null)
                     gameState.removeGameEventsWithType("COOLDOWN");
                 renderable.resetCountDown();
-                gameState.addGameEvent(new GameEvent("GAME_EVENT"));
                 gameState.addGameEvent(new GameEvent("AUDIO_START_UI", "audio/button1.mp3"));
-                gameState.addGameEvent(new GameEvent("COOLDOWN", new Date().getTime() + 1000, false));
+                gameState.addGameEvent(new GameEvent("COOLDOWN", new Date().getTime() + 1000, false, this));
                 removePreviousAvatarSelectionAndAddNew(gameState, "girl");
                 renderable.setSelectedAvatar(renderable.getGirlSelectionButton());
                 gameInfo.setSelectedPlayer(SelectedPlayer.girl);
@@ -127,9 +125,7 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
         ActionButton girl = createActionButton("girl", "img/mainMenu/girlButton.png", UserActionCode.GIRL_SELECTED);
         renderable.setGirlSelectionButton(girl);
 
-        //renderable.setSelectedAvatar(boy);
         gameInfo.setSelectedPlayer(SelectedPlayer.unset);
-        //currentState.addRenderable(renderable);
     }
 
     @Override
@@ -140,6 +136,11 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
         else if (currentState.eventsQueueContainsEvent("NEW_GAME"))
             endState = new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS, currentState);
         cleanUpGameState(currentState);
+        /*Iterator iter = currentState.getEventQueue().iterator();
+        System.out.println("GameEvents:");
+        while (iter.hasNext()) {
+            System.out.println("\t" + ((GameEvent)iter.next()).type);
+        }*/
         return endState;
     }
 
@@ -150,7 +151,7 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
 
     protected void removePreviousAvatarSelectionAndAddNew(GameState currentState, String newSelection) {
         currentState.removeGameEventsWithType("AVATAR_SELECTED");
-        currentState.addGameEvent(new GameEvent("AVATAR_SELECTED", newSelection));
+        currentState.addGameEvent(new GameEvent("AVATAR_SELECTED", newSelection, this));
     }
 
     protected ActionButton createActionButton(String id, String imgPath, UserActionCode code) {

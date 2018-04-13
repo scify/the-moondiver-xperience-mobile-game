@@ -13,6 +13,7 @@ public class GameInfo {
     protected MoonPhase postNextMoonPhase;
     protected MoonPhasesController moonPhasesController;
     protected SelectedPlayer selectedPlayer;
+    protected boolean contactRequestFlag;
 
     private static GameInfo instance;
 
@@ -32,7 +33,12 @@ public class GameInfo {
         currentLocation = lc.getLocations().get(0);
         setMoonPhases();
         selectedPlayer = SelectedPlayer.unset;
+        contactRequestFlag = true;
     }
+
+    public boolean getContactRequestFlag () { return contactRequestFlag; }
+
+    public void setContactRequestFlag (Boolean contactRequestFlag) { this.contactRequestFlag = contactRequestFlag; }
 
     public int getCurrentDay() {
         return currentDay;

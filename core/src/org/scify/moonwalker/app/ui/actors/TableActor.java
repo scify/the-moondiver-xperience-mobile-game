@@ -66,4 +66,18 @@ public abstract class TableActor extends Table {
     protected void setCellDimensions(Cell cell, Table table, float widthPercentage, int numOfRows) {
         cell.width(table.getWidth() * widthPercentage - getDefaultCellPadding() * 2).height((table.getHeight() / numOfRows) - getDefaultCellPadding() * 2);
     }
+
+    protected float convertHeight(float initialHeight) {
+        int initialBackgroundHeight = 1080;
+        float ret = getHeight() * initialHeight;
+        ret = ret / initialBackgroundHeight;
+        return ret;
+    }
+
+    protected float convertWidth(float initialWidth) {
+        int initialBackgroundWidth = 1920;
+        float ret = getWidth() * initialWidth;
+        ret = ret / initialBackgroundWidth;
+        return ret;
+    }
 }
