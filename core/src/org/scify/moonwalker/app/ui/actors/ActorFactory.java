@@ -37,6 +37,16 @@ public class ActorFactory extends ComponentFactory {
                 label.setWrap(true);
                 toReturn = label;
                 break;
+            case "rotatable_label":
+                Stack gParent = new Stack();
+                gParent.setTransform(true);
+                label = new Label("", skin);
+                label.setWidth(renderable.getWidth());
+                label.setHeight(renderable.getHeight());
+                label.setWrap(true);
+                gParent.add(label);
+                toReturn = gParent;
+                break;
             case "image":
                 toReturn = createImage(renderable.getImgPath(), renderable);
                 break;
@@ -45,6 +55,12 @@ public class ActorFactory extends ComponentFactory {
                 break;
             case "main_menu":
                 toReturn = createMainMenuActor((MainMenuRenderable) renderable);
+                break;
+            case "rotatable_text_button":
+                gParent = new Stack();
+                gParent.setTransform(true);
+                gParent.add(createTextButton((ActionButton) renderable));
+                toReturn = gParent;
                 break;
             case "text_button":
                 toReturn = createTextButton((ActionButton) renderable);

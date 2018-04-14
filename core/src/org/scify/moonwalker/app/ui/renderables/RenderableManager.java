@@ -5,8 +5,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import org.scify.engine.renderables.Renderable;
 import org.scify.engine.UserInputHandler;
+import org.scify.engine.renderables.Renderable;
+import org.scify.engine.renderables.effects.Effect;
+import org.scify.engine.renderables.effects.libgdx.LGDXEffect;
 import org.scify.moonwalker.app.ui.ComponentFactory;
 import org.scify.moonwalker.app.ui.SpriteFactory;
 import org.scify.moonwalker.app.ui.ThemeController;
@@ -16,8 +18,7 @@ import org.scify.moonwalker.app.ui.actors.ActorFactory;
 import org.scify.moonwalker.app.ui.actors.Updateable;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class RenderableManager {
 
@@ -58,15 +59,66 @@ public class RenderableManager {
 
         if(renderableExistsAsSprite(renderable)) {
             Sprite sToDraw = renderableSpriteMap.get(renderable);
+            applySpriteEffects(sToDraw, renderable); // Deal with effects
             drawSpriteFromRenderable(renderable, sToDraw);
         } else {
             Actor aToDraw = renderableActorMap.get(renderable);
+            applyActorEffects(aToDraw, renderable); // Deal with effects
             drawActorFromRenderable(renderable, aToDraw);
             if (aToDraw.isVisible())
                 update(renderable, aToDraw);
             else
                 aToDraw.remove();
         }
+    }
+
+    protected synchronized void applyActorEffects(Actor aToDraw, Renderable renderable) {
+        List<Effect> toRemove = new ArrayList<>();
+        LinkedList<Effect> lEffects = new LinkedList<>(renderable.getEffects());
+
+        // For each effect
+        for (Effect e: lEffects) {
+            // If a LibGDX effect
+            if (e instanceof LGDXEffect) {
+                LGDXEffect leEffect = (LGDXEffect)e;
+                // apply it
+                leEffect.applyToActor(aToDraw, renderable);
+
+                // Mark effect for removal, if complete
+                if (leEffect.complete())
+                    toRemove.add(leEffect);
+            }
+        }
+
+        // Remove appropriate effects
+        for (Effect e : toRemove) {
+            // DEBUG LINES
+            System.err.println("Removing effect " + e.toString());
+            //////////////
+            renderable.removeEffect(e);
+        }
+    }
+
+    protected synchronized void applySpriteEffects(Sprite sToDraw, Renderable renderable) {
+        List<Effect> toRemove = new ArrayList<>();
+
+        // For each effect
+        for (Effect e: renderable.getEffects()) {
+            // If a LibGDX effect
+            if (e instanceof LGDXEffect) {
+                LGDXEffect leEffect = (LGDXEffect)e;
+                // apply it
+                leEffect.applyToSprite(sToDraw, renderable);
+
+                // Remove effect, if complete
+                if (leEffect.complete())
+                    toRemove.add(leEffect);
+            }
+        }
+
+        // Remove appropriate effects
+        for (Effect e : toRemove)
+            renderable.removeEffect(e);
     }
 
     protected void update(Renderable renderable, Actor actor) {

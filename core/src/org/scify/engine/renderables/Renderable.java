@@ -2,14 +2,16 @@ package org.scify.engine.renderables;
 
 import org.scify.engine.Positionable;
 import org.scify.engine.UserInputHandler;
+import org.scify.engine.renderables.effects.Effect;
+import org.scify.engine.renderables.effects.EffectTarget;
 import org.scify.moonwalker.app.helpers.AppInfo;
 
-import java.util.Date;
+import java.util.*;
 
 /**
  * Describes an object that is used in game and has substance in terms of game logic.
  */
-public class Renderable extends Positionable {
+public class Renderable extends Positionable implements EffectTarget {
 
     protected String type;
     /**
@@ -24,6 +26,16 @@ public class Renderable extends Positionable {
      * timestamp describing when the component was last updated
      */
     protected long renderableLastUpdated = new Date().getTime();
+
+    /**
+     * A map holding current effect state info.
+     */
+    protected Map<Effect, Map<String,String>> effectInfo = new HashMap<>();
+
+    /**
+     * Holds the last effect that was added.
+     */
+    protected Effect lastEffectAdded;
 
     public Renderable(float xPos, float yPos, float width, float height, String type, String id) {
         super(xPos, yPos, width, height);
@@ -49,7 +61,7 @@ public class Renderable extends Positionable {
 
     /**
      * Set the class that will handle all user actions regarding this renderable.
-     * @param userInputHandler
+     * @param userInputHandler The handler that deals with the renderable actions.
      */
     public void setUserInputHandler(UserInputHandler userInputHandler) {
         this.userInputHandler = userInputHandler;
@@ -74,5 +86,30 @@ public class Renderable extends Positionable {
     
     protected void renderableWasUpdated() {
         this.renderableLastUpdated = new Date().getTime();
+    }
+
+    @Override
+    public EffectTarget apply(Effect toApply) {
+        return toApply.applyTo(this);
+    }
+
+    @Override
+    public Set<Effect> getEffects() {
+        return effectInfo.keySet();
+    }
+
+    @Override
+    public Map<String, String> getEffectInfo(Effect effectOfInterest) {
+        return effectInfo.get(effectOfInterest);
+    }
+
+    @Override
+    public void setEffectInfo(Effect effectOfInterest, Map<String, String> updatedInfo) {
+        effectInfo.put(effectOfInterest, updatedInfo);
+    }
+
+    @Override
+    public void removeEffect(Effect eToRemove) {
+        effectInfo.remove(eToRemove);
     }
 }
