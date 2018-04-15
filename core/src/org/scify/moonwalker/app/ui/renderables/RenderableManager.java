@@ -59,11 +59,9 @@ public class RenderableManager {
 
         if(renderableExistsAsSprite(renderable)) {
             Sprite sToDraw = renderableSpriteMap.get(renderable);
-            applySpriteEffects(sToDraw, renderable); // Deal with effects
             drawSpriteFromRenderable(renderable, sToDraw);
         } else {
             Actor aToDraw = renderableActorMap.get(renderable);
-            applyActorEffects(aToDraw, renderable); // Deal with effects
             drawActorFromRenderable(renderable, aToDraw);
             if (aToDraw.isVisible())
                 update(renderable, aToDraw);
@@ -93,7 +91,7 @@ public class RenderableManager {
         // Remove appropriate effects
         for (Effect e : toRemove) {
             // DEBUG LINES
-            System.err.println("Removing effect " + e.toString());
+            System.err.println("Removing actor effect " + e.toString());
             //////////////
             renderable.removeEffect(e);
         }
@@ -101,9 +99,10 @@ public class RenderableManager {
 
     protected synchronized void applySpriteEffects(Sprite sToDraw, Renderable renderable) {
         List<Effect> toRemove = new ArrayList<>();
+        LinkedList<Effect> lEffects = new LinkedList<>(renderable.getEffects());
 
         // For each effect
-        for (Effect e: renderable.getEffects()) {
+        for (Effect e: lEffects) {
             // If a LibGDX effect
             if (e instanceof LGDXEffect) {
                 LGDXEffect leEffect = (LGDXEffect)e;
@@ -117,8 +116,12 @@ public class RenderableManager {
         }
 
         // Remove appropriate effects
-        for (Effect e : toRemove)
+        for (Effect e : toRemove){
+            // DEBUG LINES
+            System.err.println("Removing sprite effect " + e.toString());
+            //////////////
             renderable.removeEffect(e);
+        }
     }
 
     protected void update(Renderable renderable, Actor actor) {
@@ -130,12 +133,21 @@ public class RenderableManager {
     }
 
     protected void drawSpriteFromRenderable(Renderable renderable, Sprite sToDraw) {
+        // TODO: Check if we should use
         sToDraw.setPosition(renderable.getxPos(), renderable.getyPos());
-        batch.draw(sToDraw, sToDraw.getX(), sToDraw.getY(), sToDraw.getWidth(), sToDraw.getHeight());
+        applySpriteEffects(sToDraw, renderable); // Deal with effects
+
+        // OBSOLETE:
+//        batch.draw(sToDraw, sToDraw.getX(), sToDraw.getY(), sToDraw.getWidth(), sToDraw.getHeight());
+
+        // TODO: Examine if all is fine now
+        sToDraw.draw(batch); // Follow this approach, to use sprite all traits (including color, alpha, etc)
     }
+
 
     protected void drawActorFromRenderable(Renderable renderable, Actor aToDraw) {
         aToDraw.setPosition(renderable.getxPos(), renderable.getyPos());
+        applyActorEffects(aToDraw, renderable); // Deal with effects
 
         // if actor does not have a stage, it means that
         // it is the first time that is added to the stage.
@@ -150,9 +162,6 @@ public class RenderableManager {
                 aToDraw.setVisible(false);
             }
         }
-
-
-
     }
 
     protected Sprite createSpriteResourceFor(Renderable toDraw) {

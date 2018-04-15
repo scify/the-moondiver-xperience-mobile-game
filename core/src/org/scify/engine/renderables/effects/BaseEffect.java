@@ -17,6 +17,11 @@ public class BaseEffect implements Effect {
         // params.put(PARAM_DURATION, "0.0");
     }
 
+    public BaseEffect(double dDurationMSec) {
+        params = new TreeMap<>();
+        params.put(PARAM_DURATION, String.valueOf(dDurationMSec));
+    }
+
     /**
      * This method should be overriden by the actual effects in the subclasses.
      * Currently, it only updates the effect info based on the internal parameters object.

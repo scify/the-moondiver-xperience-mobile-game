@@ -22,12 +22,12 @@ public class SpriteFactory extends ComponentFactory{
                 sprite.setSize(renderable.getWidth(), renderable.getHeight());
                 sToReturn = sprite;
                 break;
-//            case "player":
-//                Texture playerImg = new Texture(resourceLocator.getFilePath("img/player.png"));
-//                Sprite playerSprite = new Sprite(playerImg);
-//                playerSprite.setSize(renderable.getWidth(), renderable.getHeight());
-//                sToReturn = playerSprite;
-//                break;
+            case "player":
+                Texture playerImg = new Texture(resourceLocator.getFilePath("img/player.png"));
+                Sprite playerSprite = new Sprite(playerImg);
+                playerSprite.setSize(renderable.getWidth(), renderable.getHeight());
+                sToReturn = playerSprite;
+                break;
         }
         return sToReturn;
     }

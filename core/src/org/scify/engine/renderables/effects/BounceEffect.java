@@ -42,7 +42,6 @@ public class BounceEffect extends BaseEffect {
         params.put(PARAM_BOUNCE_WIDTH, String.valueOf(dBounceWidth));
         params.put(PARAM_BOUNCE_HEIGHT, String.valueOf(dBounceHeight));
         params.put(PARAM_DURATION, String.valueOf(dDurationMSec));
-        params.put(INFO_DURATION_REMAINING_MSEC, String.valueOf(dDurationMSec));
     }
 
     @Override
@@ -51,9 +50,6 @@ public class BounceEffect extends BaseEffect {
 
         calculateOffsets();
 
-        if (!params.containsKey(INFO_START_TIME))
-            // Set initial effect time
-            params.put(INFO_START_TIME, String.valueOf(new Date().getTime()));
         // Update target effect info
         target.setEffectInfo(this, params);
 

@@ -19,11 +19,10 @@ public class FadeEffect extends BaseEffect {
      * Creates a fade-in effect, from alpha 0.0 to 1.0, taking place within 1 second progressively.
      */
     public FadeEffect() {
-        super();
+        super(1000);
 
         params.put(PARAM_FROM_ALPHA, "0.0");
         params.put(PARAM_TO_ALPHA, "1.0");
-        params.put(PARAM_DURATION, "1000.0");
     }
 
     /**
@@ -34,11 +33,10 @@ public class FadeEffect extends BaseEffect {
      * @param dDurationMSec The time taken for the full transition.
      */
     public FadeEffect(double dFromAlpha, double dToAlpha, double dDurationMSec) {
-        super();
+        super(dDurationMSec);
 
         params.put(PARAM_FROM_ALPHA, String.valueOf(dFromAlpha));
         params.put(PARAM_TO_ALPHA, String.valueOf(dToAlpha));
-        params.put(PARAM_DURATION, String.valueOf(dDurationMSec));
     }
 
     @Override

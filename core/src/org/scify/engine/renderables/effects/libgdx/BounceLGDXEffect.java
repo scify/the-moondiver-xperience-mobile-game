@@ -32,6 +32,7 @@ public class BounceLGDXEffect extends BounceEffect implements LGDXEffect {
         super.applyTo(rRenderable);
 
         // Update target alpha
-        sTarget.setPosition((float)(sTarget.getX() + dTargetXOffset), (float)(sTarget.getY() + dTargetYOffset));
+        sTarget.setX((float)(sTarget.getX() + dTargetXOffset));
+        sTarget.setY((float)(sTarget.getY() + dTargetYOffset));
 
     }}

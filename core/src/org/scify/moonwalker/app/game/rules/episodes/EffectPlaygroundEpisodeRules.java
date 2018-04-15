@@ -1,6 +1,7 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.GameState;
+import org.scify.engine.Player;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.effects.Effect;
 import org.scify.engine.renderables.effects.EffectList;
@@ -54,7 +55,7 @@ public class EffectPlaygroundEpisodeRules extends SimpleTimedImageEpisodeRules {
             ParallelEffectList pelList = new LGDXParallelEffectList();
             pelList.addEffect(new FadeLGDXEffect(1.0, 0.5, 2000.0));
             pelList.addEffect(new RotateLGDXEffect(0.0, 180.0, 2000.0));
-//            pelList.addEffect(new BounceLGDXEffect(50,50,1000.0));
+            pelList.addEffect(new BounceLGDXEffect(50,0,5000.0));
 
             Effect eDelay = new DelayLGDXEffect(1000);
 
@@ -67,10 +68,13 @@ public class EffectPlaygroundEpisodeRules extends SimpleTimedImageEpisodeRules {
             elConPar.addEffect(eDelay);
             elConPar.addEffect(pelList2);
 
-            aTest3.apply(elConPar);
+//            aTest3.apply(elConPar);
+//            currentState.addRenderable(aTest3);
 
+            Renderable rPl = new Player(10,10,100,100,"player", "pl");
+            rPl.apply(elConPar);
+            currentState.addRenderable(rPl);
 
-            currentState.addRenderable(aTest3);
         }
 
         super.episodeStartedEvents(currentState);

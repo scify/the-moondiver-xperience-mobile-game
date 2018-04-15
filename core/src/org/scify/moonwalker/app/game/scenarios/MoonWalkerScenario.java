@@ -10,26 +10,25 @@ public class MoonWalkerScenario extends Scenario {
         Episode mainMenuEpisode = new MainMenuEpisode();
         Episode roomEpisode = new RoomEpisode();
         Episode cockpitEpisode = new CockpitEpisode();
+
         Episode effectPlaygroundEpisode = new EffectPlaygroundEpisode();
+        setFirstEpisode(effectPlaygroundEpisode);
 
         //setFirstEpisode(new CockpitEpisode());
 //        setFirstEpisode(mainMenuEpisode);
 
-        setFirstEpisode(effectPlaygroundEpisode);
 
-        //addEpisodeAfterCurrent(roomEpisode);
-        //addEpisodeAfterCurrent(cockpitEpisode);
+//        addEpisodeAfterCurrent(roomEpisode);
+//        addEpisodeAfterCurrent(cockpitEpisode);
 
-
-        /*Episode forestLoadingEpisode = new ForestLoadingEpisode();
-        addEpisodeAfter(roomEpisode, forestLoadingEpisode);
-
-        Episode forestEpisode = new ForestEpisode();
-        addEpisodeAfter(roomEpisode, forestEpisode);
-
-        Episode cockpitEpisode = new CockpitEpisode();
-        addEpisodeAfter(forestEpisode, cockpitEpisode);
-        */
+//        Episode forestLoadingEpisode = new ForestLoadingEpisode();
+//        addEpisodeAfter(roomEpisode, forestLoadingEpisode);
+//
+//        Episode forestEpisode = new ForestEpisode();
+//        addEpisodeAfter(forestLoadingEpisode, forestEpisode);
+//
+//        Episode cockpitEpisode = new CockpitEpisode();
+//        addEpisodeAfter(forestEpisode, cockpitEpisode);
 
     }
 

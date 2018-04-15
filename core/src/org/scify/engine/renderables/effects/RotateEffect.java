@@ -5,9 +5,6 @@ import java.util.Date;
 public class RotateEffect extends BaseEffect {
     public static String PARAM_FROM_ANGLE = "fromAngle";
     public static String PARAM_TO_ANGLE = "toAngle";
-    public static String PARAM_DURATION = "duration";
-    //    public static String INFO_CURRENT_ALPHA = "currentAlpha";
-    public static String INFO_START_TIME = "startTime";
 
     protected double dStartAngle;
     protected double dEndAngle;
@@ -18,14 +15,14 @@ public class RotateEffect extends BaseEffect {
     protected double dTargetAngle;
 
     /**
-     * Creates a fade-in effect, from alpha 0.0 to 1.0, taking place within 1 second progressively.
+     * Creates a fade-in effect, from 0.0 to 360.0 degrees, taking place within 1 second progressively.
      */
     public RotateEffect() {
-        super();
+        super(1000);
 
         params.put(PARAM_FROM_ANGLE, "0.0");
         params.put(PARAM_TO_ANGLE, "360.0");
-        params.put(PARAM_DURATION, "1000.0");
+
     }
 
     /**
@@ -36,11 +33,10 @@ public class RotateEffect extends BaseEffect {
      * @param dDurationMSec The time taken for the full transition.
      */
     public RotateEffect(double dFromAngle, double dToAngle, double dDurationMSec) {
-        super();
+        super(dDurationMSec);
 
         params.put(PARAM_FROM_ANGLE, String.valueOf(dFromAngle));
         params.put(PARAM_TO_ANGLE, String.valueOf(dToAngle));
-        params.put(PARAM_DURATION, String.valueOf(dDurationMSec));
     }
 
     @Override
@@ -48,9 +44,6 @@ public class RotateEffect extends BaseEffect {
         super.applyTo(target);
 
         calculateAngle();
-
-        // Update target effect info
-        target.setEffectInfo(this, params);
 
         return target;
     }
