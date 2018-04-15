@@ -20,6 +20,7 @@ public class BaseEffect implements Effect {
     /**
      * This method should be overriden by the actual effects in the subclasses.
      * Currently, it only updates the effect info based on the internal parameters object.
+     * <b>Make sure you always call this from subclasses - using <i>super.applyTo</i> - to update the start time correctly.</b>
      * @param target The target of the effect.
      * @return The affected EffectTarget.
      */

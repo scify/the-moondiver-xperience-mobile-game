@@ -8,40 +8,29 @@ public class EffectList extends BaseEffect {
     protected List<Effect> seriesOfEffects;
     protected ListIterator<Effect> ieCurrent;
     protected Effect eCurrent;
+    double dDuration;
 
     public EffectList() {
         // Initialize list
         seriesOfEffects = new LinkedList<>();
         resetCurrent();
-        getDuration();
+        updateDuration();
     }
 
     public EffectList(List<Effect> oneAfterTheOther) {
         // Initialize list
         seriesOfEffects = new LinkedList<>(oneAfterTheOther);
         resetCurrent();
-        getDuration();
+        updateDuration();
     }
 
     @Override
     public synchronized double getDuration() {
-        double dDuration;
-
-        if (!params.containsKey(PARAM_DURATION)) {
-            updateDuration();
-        }
-
-        dDuration = Double.valueOf(params.get(PARAM_DURATION));
-
-        // DEBUG LINES
-        // System.err.println("Total list duration: " + String.valueOf(dDuration));
-        //////////////
 
         return dDuration;
     }
 
     private double updateDuration() {
-        double dDuration = 0;
 
         for (Effect e : seriesOfEffects) {
             dDuration += e.getDuration();

@@ -44,6 +44,7 @@ public class FadeEffect extends BaseEffect {
     @Override
     public EffectTarget applyTo(EffectTarget target) {
         super.applyTo(target);
+
         calculateAlpha();
 
         return target;

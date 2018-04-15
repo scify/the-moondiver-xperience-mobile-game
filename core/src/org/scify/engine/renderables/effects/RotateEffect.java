@@ -49,9 +49,6 @@ public class RotateEffect extends BaseEffect {
 
         calculateAngle();
 
-        if (!params.containsKey(INFO_START_TIME))
-            // Set initial effect time
-            params.put(INFO_START_TIME, String.valueOf(new Date().getTime()));
         // Update target effect info
         target.setEffectInfo(this, params);
 
