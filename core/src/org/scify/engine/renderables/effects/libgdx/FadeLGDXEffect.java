@@ -20,8 +20,9 @@ public class FadeLGDXEffect extends FadeEffect implements LGDXEffect {
         super.applyTo(rRenderable);
 
         // DEBUG LINES
-        System.err.println("Target alpha: " + String.valueOf(dTargetAlpha));
+//        System.err.println("Target alpha: " + String.valueOf(dTargetAlpha));
         //////////////
+
         aTarget.setColor(aTarget.getColor().r, aTarget.getColor().g, aTarget.getColor().b,
                 (float) dTargetAlpha);
 
@@ -29,6 +30,8 @@ public class FadeLGDXEffect extends FadeEffect implements LGDXEffect {
 
     @Override
     public synchronized void applyToSprite(Sprite sTarget, Renderable rRenderable) {
+        super.applyTo(rRenderable);
+
         // Update target alpha
         sTarget.setColor(sTarget.getColor().r, sTarget.getColor().g, sTarget.getColor().b,
                 (float) dTargetAlpha);

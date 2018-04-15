@@ -20,7 +20,7 @@ public class RotateLGDXEffect extends RotateEffect implements LGDXEffect {
         super.applyTo(rRenderable);
 
         // DEBUG LINES
-        System.err.println("Target alpha: " + String.valueOf(dTargetAngle));
+//        System.err.println("Target alpha: " + String.valueOf(dTargetAngle));
         //////////////
         aTarget.setRotation((float)dTargetAngle);
     }

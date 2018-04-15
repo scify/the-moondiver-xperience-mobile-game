@@ -1,15 +1,18 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.GameState;
+import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.effects.EffectList;
+import org.scify.engine.renderables.effects.libgdx.BounceLGDXEffect;
 import org.scify.engine.renderables.effects.libgdx.FadeLGDXEffect;
 import org.scify.engine.renderables.effects.libgdx.LGDXEffectList;
+import org.scify.engine.renderables.effects.libgdx.RotateLGDXEffect;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
+import org.scify.moonwalker.app.ui.actors.TextLabel;
 
 public class EffectPlaygroundEpisodeRules extends SimpleTimedImageEpisodeRules {
     protected final int MILLISECONDS_FOR_EPISODE = 20000;
-    ActionButton aTest;
-    ActionButton aTest2;
+    Renderable aTest;
 
     @Override
     public void episodeStartedEvents(GameState currentState) {
@@ -18,24 +21,27 @@ public class EffectPlaygroundEpisodeRules extends SimpleTimedImageEpisodeRules {
         }
 
         if (aTest == null) {
-//            aTest = new ActionButton("rotatable_text_button", "ID_OK");
-//            aTest.setxPos(250);
-//            aTest.setyPos(250);
-//            aTest.setTitle("Effects now active! :)");
-//            aTest.apply(new FadeLGDXEffect(1.0, 0.3, 5000.0)).apply(new
-//                    RotateLGDXEffect(0.0, 360.0, 8000.0));
-//
-//            currentState.addRenderable(aTest);
+            aTest = new ActionButton("rotatable_text_button", "ID_OK");
+            aTest.setxPos(250);
+            aTest.setyPos(250);
+            aTest.apply(new FadeLGDXEffect(1.0, 0.3, 5000.0)).apply(new
+                    RotateLGDXEffect(0.0, 360.0, 8000.0));
+            ((ActionButton)aTest).setTitle("Parallel effects...");
+            currentState.addRenderable(aTest);
 
-            aTest = new ActionButton("rotatable_text_button", "ID_ANOTHER");
-            aTest.setxPos(100);
+            aTest = new TextLabel("rotatable_label", "ID_ANOTHER");
+            aTest.setxPos(500);
             aTest.setyPos(100);
-            aTest.setTitle("And list here!");
+            ((TextLabel)aTest).setLabel("And consequtive here!");
 
             EffectList elList = new LGDXEffectList();
-            elList.addEffect(new FadeLGDXEffect(1.0, 0.5, 2000.0));
-            elList.addEffect(new FadeLGDXEffect(0.5, 1.0, 2000.0));
+            elList.addEffect(new FadeLGDXEffect(1.0, 0.3, 2000.0));
+            elList.addEffect(new RotateLGDXEffect(0.0, 720.0, 2000.0));
+            elList.addEffect(new FadeLGDXEffect(0.3, 1.0, 2000.0));
+            elList.addEffect(new RotateLGDXEffect(100.0, 0.0, 1000.0));
+            elList.addEffect((new BounceLGDXEffect(0.0, 100.0, 3000.0)));
             aTest.apply(elList);
+
 
             currentState.addRenderable(aTest);
         }

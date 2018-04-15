@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.scify.engine.renderables.MultipleChoiceConversationRenderable;
 import org.scify.engine.renderables.NextConversationRenderable;
 import org.scify.engine.renderables.TwoChoiceConversationRenderable;
+import org.scify.engine.renderables.effects.libgdx.LGDXContainerStack;
 import org.scify.moonwalker.app.ui.ComponentFactory;
 import org.scify.moonwalker.app.ui.UnsupportedRenderableTypeException;
 import org.scify.engine.renderables.Renderable;
@@ -38,11 +39,11 @@ public class ActorFactory extends ComponentFactory {
                 toReturn = label;
                 break;
             case "rotatable_label":
-                Stack gParent = new Stack();
+                Stack gParent = new LGDXContainerStack();
                 gParent.setTransform(true);
-                label = new Label("", skin);
-                label.setWidth(renderable.getWidth());
-                label.setHeight(renderable.getHeight());
+                label = new Label(((TextLabel)renderable).getLabel(), skin);
+                gParent.setWidth(renderable.getWidth());
+                gParent.setHeight(renderable.getHeight());
                 label.setWrap(true);
                 gParent.add(label);
                 toReturn = gParent;
@@ -57,9 +58,12 @@ public class ActorFactory extends ComponentFactory {
                 toReturn = createMainMenuActor((MainMenuRenderable) renderable);
                 break;
             case "rotatable_text_button":
-                gParent = new Stack();
+                gParent = new LGDXContainerStack();
                 gParent.setTransform(true);
-                gParent.add(createTextButton((ActionButton) renderable));
+                TextButton tbBtn =  createTextButton((ActionButton) renderable);
+                tbBtn.setWidth(renderable.getWidth());
+                tbBtn.setHeight(renderable.getHeight());
+                gParent.add(tbBtn);
                 toReturn = gParent;
                 break;
             case "text_button":

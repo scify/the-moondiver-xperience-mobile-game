@@ -7,7 +7,6 @@ public class RotateEffect extends BaseEffect {
     public static String PARAM_TO_ANGLE = "toAngle";
     public static String PARAM_DURATION = "duration";
     //    public static String INFO_CURRENT_ALPHA = "currentAlpha";
-    public static String INFO_DURATION_REMAINING_MSEC = "durationRemaining";
     public static String INFO_START_TIME = "startTime";
 
     protected double dStartAngle;
@@ -27,7 +26,6 @@ public class RotateEffect extends BaseEffect {
         params.put(PARAM_FROM_ANGLE, "0.0");
         params.put(PARAM_TO_ANGLE, "360.0");
         params.put(PARAM_DURATION, "1000.0");
-        params.put(INFO_DURATION_REMAINING_MSEC, "1000.0");
     }
 
     /**
@@ -43,7 +41,6 @@ public class RotateEffect extends BaseEffect {
         params.put(PARAM_FROM_ANGLE, String.valueOf(dFromAngle));
         params.put(PARAM_TO_ANGLE, String.valueOf(dToAngle));
         params.put(PARAM_DURATION, String.valueOf(dDurationMSec));
-        params.put(INFO_DURATION_REMAINING_MSEC, String.valueOf(dDurationMSec));
     }
 
     @Override
