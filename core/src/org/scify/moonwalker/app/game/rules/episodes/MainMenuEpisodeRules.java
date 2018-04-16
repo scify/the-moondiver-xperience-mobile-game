@@ -1,6 +1,10 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
+import org.scify.engine.renderables.effects.FunctionEffect;
+import org.scify.engine.renderables.effects.libgdx.FadeLGDXEffect;
+import org.scify.engine.renderables.effects.libgdx.LGDXEffectList;
+import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
@@ -13,15 +17,17 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
     protected float BUTTON_HEIGHT;
     protected Map<String, UserActionCode> buttonTitlesAndActionCodes;
     protected MainMenuRenderable renderable;
+    protected boolean mainMenuButtonsEnabled;
 
     public MainMenuEpisodeRules() {
         super();
         this.BUTTON_WIDTH = appInfo.getScreenWidth() * 0.2f;
         this.BUTTON_HEIGHT = appInfo.getScreenHeight() * 0.2f;
+        mainMenuButtonsEnabled = true;
     }
 
     @Override
-    public GameState getNextState(GameState gameState, UserAction userAction) {
+    public GameState getNextState(final GameState gameState, UserAction userAction) {
         long timestamp = new Date().getTime();
         GameEvent coolDownEvent = gameState.getGameEventsWithType("COOLDOWN");
         if (coolDownEvent != null && timestamp > coolDownEvent.delay) {
@@ -30,8 +36,16 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
             if (renderable.getCountDownValue() < 0) {
                 gameState.addGameEvent(new GameEvent("AUDIO_STOP_UI", "audio/mainMenu/menu.mp3"));
                 gameState.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", "audio/mainMenu/menu.mp3"));
-                endGameAndAddEventWithType(gameState, "NEW_GAME");
-            }else {
+                LGDXEffectList fadeOutEffect = new LGDXEffectList();
+                fadeOutEffect.addEffect(new FadeLGDXEffect(1.0, 0.0, 2000));
+                fadeOutEffect.addEffect(new FunctionEffect(new Runnable() {
+                    @Override
+                    public void run() {
+                        endGameAndAddEventWithType(new MoonWalkerGameState((MoonWalkerGameState)gameState), "NEW_GAME");
+                    }
+                }));
+                renderable.apply(fadeOutEffect);
+            } else {
                 gameState.addGameEvent(new GameEvent("AUDIO_START_UI", "audio/button1.mp3"));
                 gameState.addGameEvent(new GameEvent("COOLDOWN", timestamp + 1000, false, this));
             }
@@ -45,37 +59,48 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
         GameEvent coolDownEvent;
         switch (userAction.getActionCode()) {
             case NEW_GAME:
-                gameState.addGameEvent(new GameEvent("AUDIO_START_UI", "audio/button1.mp3"));
-                renderable.initiatePlayerSelection();
+                if (mainMenuButtonsEnabled) {
+                    gameState.addGameEvent(new GameEvent("AUDIO_START_UI", "audio/button1.mp3"));
+                    renderable.initiatePlayerSelection();
+                    mainMenuButtonsEnabled = false;
+                }
                 break;
             case TOGGLE_AUDIO:
-                gameState.addGameEvent(new GameEvent("AUDIO_TOGGLE_UI"));
+                if (mainMenuButtonsEnabled) {
+                    gameState.addGameEvent(new GameEvent("AUDIO_TOGGLE_UI"));
+                }
                 break;
             case QUIT:
-                gameState.addGameEvent(new GameEvent("AUDIO_START_UI", "audio/button1.mp3"));
-                endGameAndAddEventWithType(gameState, "APP_QUIT");
+                if (mainMenuButtonsEnabled) {
+                    gameState.addGameEvent(new GameEvent("AUDIO_START_UI", "audio/button1.mp3"));
+                    endGameAndAddEventWithType(gameState, "APP_QUIT");
+                }
                 break;
             case BOY_SELECTED:
-                coolDownEvent = gameState.getGameEventsWithType("COOLDOWN");
-                if (coolDownEvent != null)
-                    gameState.removeGameEventsWithType("COOLDOWN");
-                renderable.resetCountDown();
-                gameState.addGameEvent(new GameEvent("AUDIO_START_UI", "audio/button1.mp3"));
-                gameState.addGameEvent(new GameEvent("COOLDOWN", new Date().getTime() + 1000, false, this));
-                removePreviousAvatarSelectionAndAddNew(gameState, "boy");
-                renderable.setSelectedAvatar(renderable.getBoySelectionButton());
-                gameInfo.setSelectedPlayer(SelectedPlayer.boy);
+                if (!mainMenuButtonsEnabled) {
+                    coolDownEvent = gameState.getGameEventsWithType("COOLDOWN");
+                    if (coolDownEvent != null)
+                        gameState.removeGameEventsWithType("COOLDOWN");
+                    renderable.resetCountDown();
+                    gameState.addGameEvent(new GameEvent("AUDIO_START_UI", "audio/button1.mp3"));
+                    gameState.addGameEvent(new GameEvent("COOLDOWN", new Date().getTime() + 1000, false, this));
+                    removePreviousAvatarSelectionAndAddNew(gameState, "boy");
+                    renderable.setSelectedAvatarButton(renderable.getBoyButton());
+                    gameInfo.setSelectedPlayer(SelectedPlayer.boy);
+                }
                 break;
             case GIRL_SELECTED:
-                coolDownEvent = gameState.getGameEventsWithType("COOLDOWN");
-                if (coolDownEvent != null)
-                    gameState.removeGameEventsWithType("COOLDOWN");
-                renderable.resetCountDown();
-                gameState.addGameEvent(new GameEvent("AUDIO_START_UI", "audio/button1.mp3"));
-                gameState.addGameEvent(new GameEvent("COOLDOWN", new Date().getTime() + 1000, false, this));
-                removePreviousAvatarSelectionAndAddNew(gameState, "girl");
-                renderable.setSelectedAvatar(renderable.getGirlSelectionButton());
-                gameInfo.setSelectedPlayer(SelectedPlayer.girl);
+                if (!mainMenuButtonsEnabled) {
+                    coolDownEvent = gameState.getGameEventsWithType("COOLDOWN");
+                    if (coolDownEvent != null)
+                        gameState.removeGameEventsWithType("COOLDOWN");
+                    renderable.resetCountDown();
+                    gameState.addGameEvent(new GameEvent("AUDIO_START_UI", "audio/button1.mp3"));
+                    gameState.addGameEvent(new GameEvent("COOLDOWN", new Date().getTime() + 1000, false, this));
+                    removePreviousAvatarSelectionAndAddNew(gameState, "girl");
+                    renderable.setSelectedAvatarButton(renderable.getGirlButton());
+                    gameInfo.setSelectedPlayer(SelectedPlayer.girl);
+                }
                 break;
         }
         super.handleUserAction(gameState, userAction);
@@ -119,11 +144,15 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
     }
 
     protected void createAvatarSelectionRenderable() {
-        ActionButton boy = createActionButton("boy", "img/mainMenu/boyButton.png", UserActionCode.BOY_SELECTED);
-        renderable.setBoySelectionButton(boy);
+        ActionButton boyButton = createActionButton("boyButton", renderable.BOY_BUTTON_IMG_PATH, UserActionCode.BOY_SELECTED);
+        ActionButton boyAvatarButton = createActionButton("boyAvatarButton", renderable.BOY_IMG_PATH, UserActionCode.BOY_SELECTED);
+        renderable.setBoyButton(boyButton);
+        renderable.setBoyAvatarButton(boyAvatarButton);
 
-        ActionButton girl = createActionButton("girl", "img/mainMenu/girlButton.png", UserActionCode.GIRL_SELECTED);
-        renderable.setGirlSelectionButton(girl);
+        ActionButton girlButton = createActionButton("girlButton", renderable.GIRL_BUTTON_IMG_PATH, UserActionCode.GIRL_SELECTED);
+        ActionButton girlAvatarButton = createActionButton("girlAvatarButton", renderable.GIRL_IMG_PATH, UserActionCode.GIRL_SELECTED);
+        renderable.setGirlButton(girlButton);
+        renderable.setGirlAvatarButton(girlAvatarButton);
 
         gameInfo.setSelectedPlayer(SelectedPlayer.unset);
     }

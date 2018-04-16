@@ -24,4 +24,9 @@ public class MoonWalkerGameState extends GameState {
         if(player != null)
             addRenderable(player);
     }
+
+    public MoonWalkerGameState(MoonWalkerGameState moonWalkerGameState) {
+        super(moonWalkerGameState);
+        world = moonWalkerGameState.world;
+    }
 }

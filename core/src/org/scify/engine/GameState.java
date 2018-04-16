@@ -31,6 +31,13 @@ public abstract class GameState {
         additionalDataMap = new HashMap<>();
     }
 
+    public GameState(GameState gameState) {
+        eventQueue = gameState.eventQueue;
+        additionalDataMap = gameState.additionalDataMap;
+        renderableList = gameState.renderableList;
+        player = gameState.player;
+    }
+
     public void clearRendereablesList() {
         renderableList = Collections.synchronizedList(new LinkedList<Renderable>());
     }

@@ -1,14 +1,11 @@
 package org.scify.moonwalker.app.ui.actors;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Timer;
 import org.scify.engine.renderables.Renderable;
+import org.scify.engine.renderables.effects.libgdx.FadeLGDXEffect;
+import org.scify.engine.renderables.effects.libgdx.LGDXEffect;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.ui.ThemeController;
 import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
@@ -28,42 +25,31 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
     protected Label countDownLabel;
 
     protected Button boyButton;
+    protected Button boyAvatarButton;
     protected Button girlButton;
+    protected Button girlAvatarButton;
 
-    protected Cell topBannerCell;
-    protected Cell boyCell;
-    protected Cell girlCell;
-
-    protected Image boyImage;
-    protected Image girlImage;
-
-    protected float alphaSelectPLayer;
-    protected float alphaMainMenu;
+    protected Image topBannerImage;
 
     protected boolean actorInitiated;
-
     protected ActorFactory factory;
 
 
     public MainMenuActor(Skin skin, MainMenuRenderable renderable) {
         super(skin, renderable);
-
         setWidth(renderable.getWidth());
         setHeight(renderable.getHeight());
         appInfo = AppInfo.getInstance();
-        alphaSelectPLayer = 0.0f;
-        alphaMainMenu = 1.0f;
         actorInitiated = false;
-
         init();
     }
 
-    public void init() {
+    protected void init() {
         // Get actor factory
         factory = ActorFactory.getInstance();
 
         float screenWidth = getWidth();
-        float screenHeight= getHeight();
+        float screenHeight = getHeight();
         top();
         float heightOfTopRow = 0.05f * screenHeight;
         add().colspan(3).height(heightOfTopRow).width(screenWidth);
@@ -71,20 +57,20 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
         float heightLeft = createTopBanner(heightOfTopRow);
         row().height(heightLeft).width(screenWidth);
 
-
         // create actors
         setStartButton(factory.createButton(renderable.getStartGameButton()));
         setContinueButton(factory.createButton(renderable.getContinueGameButton()));
         setToggleAudioButton(factory.createButton(renderable.getToggleAudioButton()));
         setAboutButton(factory.createButton(renderable.getAboutButton()));
         setQuitButton(factory.createButton(renderable.getQuitButton()));
-        setBoyButton(factory.createButton(renderable.getBoySelectionButton()));
-        setGirlButton(factory.createButton(renderable.getGirlSelectionButton()));
+        setBoyButton(factory.createButton(renderable.getBoyButton()));
+        setBoyAvatarButton(factory.createButton(renderable.getBoyAvatarButton()));
+        setGirlButton(factory.createButton(renderable.getGirlButton()));
+        setGirlAvatarButton(factory.createButton(renderable.getGirlAvatarButton()));
 
         createBoySelection();
         createMenuButtons();
         createGirlSelection();
-
 
         actorInitiated = true;
         //debugAll();
@@ -92,14 +78,12 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
 
     //returns heightLeftForBottom
     protected float createTopBanner(float heightOfTopRow) {
-        Texture texture = imgUrlToTexture(renderable.TOP_BANNER_IMG_PATH);
-        Image image = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
-        float width = convertWidth(image.getWidth());
-        float height = convertHeight(image.getHeight());
+        topBannerImage = (Image) factory.createResourceForType(renderable.getTopBannerRenderable());
+        float width = convertWidth(topBannerImage.getWidth());
+        float height = convertHeight(topBannerImage.getHeight());
         row().height(height).width(width);
-        topBannerCell = add(image).maxHeight(height).maxWidth(width).colspan(3).top();
-        Actor topBannerActor = topBannerCell.getActor();
-        topBannerActor.setColor(1.0f, 1.0f, 1.0f, alphaSelectPLayer);
+        Actor topBannerActor = add(topBannerImage).maxHeight(height).maxWidth(width).colspan(3).top().getActor();
+        getChildrenActorsAndRenderables().put(topBannerActor, renderable.getTopBannerRenderable());
         return getHeight() - (height + heightOfTopRow);
     }
 
@@ -107,14 +91,13 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
         Stack stack = new Stack();
 
         // Add image
-//        Texture texture = imgUrlToTexture(renderable.getBoyImage().getImgPath());
-//        boyImage = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
-        boyImage = (Image) factory.createResourceForType(renderable.getBoyImage());
-        boyImage.setColor(Color.DARK_GRAY);
+        /*boyImage = (Image) factory.createResourceForType(renderable.getGirlAvatarButton());
+        boyImage.setColor(Color.DARK_GRAY);*/
 
-        float width = convertWidth(boyImage.getWidth());
+        float width = convertWidth(boyAvatarButton.getWidth());
         //float height = convertHeight(boyImage.getHeight());
-        stack.addActor(boyImage);
+        //boyAvatarButton.setColor(Color.DARK_GRAY);
+        stack.addActor(boyAvatarButton);
 
         // Add button
         Table buttonTable = new Table();
@@ -124,14 +107,15 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
         float buttonHeight = convertHeight(boyButton.getHeight());
         buttonTable.add(boyButton).height(buttonHeight).width(buttonWidth).center();
         stack.addActor(buttonTable);
-        buttonTable.row().height(buttonHeight/2);
+        buttonTable.row().height(buttonHeight / 2);
         buttonTable.add();
-        boyCell = add(stack).width(width);//.height(height);
-        Actor boyActor = boyCell.getActor();
-        boyActor.setColor(1.0f, 1.0f, 1.0f, alphaSelectPLayer);
+        add(stack).width(width);
+        //Actor boyActor = add(stack).width(width).getActor();
+
 
         // Add to important children
-        getChildrenActorsAndRenderables().put(boyActor, renderable.getBoyImage());
+        getChildrenActorsAndRenderables().put(boyButton, renderable.getBoyButton());
+        getChildrenActorsAndRenderables().put(boyAvatarButton, renderable.getBoyAvatarButton());
     }
 
     protected void createMenuButtons() {
@@ -180,16 +164,16 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
 
     protected void createGirlSelection() {
         Stack stack = new Stack();
-//        Texture texture = imgUrlToTexture(renderable.GIRL_IMG_PATH);
-//        girlImage = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
 
-        girlImage = (Image) factory.createResourceForType(renderable.getGirlImage());
-        girlImage.setColor(Color.DARK_GRAY);
+        //Add Image
+        /*girlImage = (Image) factory.createResourceForType(renderable.getBoyAvatarButton());
+        girlImage.setColor(Color.DARK_GRAY);*/
 
-        girlImage.setColor(Color.DARK_GRAY);
-        float width = convertWidth(girlImage.getWidth());
+        float width = convertWidth(girlAvatarButton.getWidth());
         //float height = convertHeight(girlImage.getHeight());
-        stack.addActor(girlImage);
+
+        //girlAvatarButton.setColor(Color.DARK_GRAY);
+        stack.addActor(girlAvatarButton);
         Table buttonTable = new Table();
         buttonTable.defaults();
         buttonTable.bottom();
@@ -197,69 +181,50 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
         float buttonHeight = convertHeight(girlButton.getHeight());
         buttonTable.add(girlButton).height(buttonHeight).width(buttonWidth).center();
         stack.addActor(buttonTable);
-        buttonTable.row().height(buttonHeight/2);
+        buttonTable.row().height(buttonHeight / 2);
         buttonTable.add();
-        girlCell = add(stack).width(width);//.height(height);
-        Actor girlActor = girlCell.getActor();
-        girlActor.setColor(1.0f, 1.0f, 1.0f, alphaSelectPLayer);
+        add(stack).width(width);
+        //Actor girlActor = add(stack).width(width).getActor();
 
         // Add to important children
-        getChildrenActorsAndRenderables().put(girlActor, renderable.getGirlImage());
-
+        getChildrenActorsAndRenderables().put(girlButton, renderable.getGirlButton());
+        getChildrenActorsAndRenderables().put(girlAvatarButton, renderable.getGirlAvatarButton());
     }
 
-    public void setImageButtonsGreyedOutExcept(String selectedButtonId) {
-        if (selectedButtonId.equals("boy")) {
-            boyImage.setColor(Color.WHITE);
-            girlImage.setColor(Color.DARK_GRAY);
-        }else if (selectedButtonId.equals("girl")) {
-            girlImage.setColor(Color.WHITE);
-            boyImage.setColor(Color.DARK_GRAY);
+    public void updateSelectedAvatar(String selectedButtonId) {
+        if (selectedButtonId.equals("boyButton") || selectedButtonId.equals("boyAvatarButton")) {
+            LGDXEffect fadeIn = new FadeLGDXEffect(boyAvatarButton.getColor().a, 1.0, 500);
+            LGDXEffect fadeOut = new FadeLGDXEffect(girlAvatarButton.getColor().a, 0.5, 500);
+
+            renderable.getBoyAvatarButton().apply(fadeIn);
+            renderable.getGirlAvatarButton().apply(fadeOut);
+        } else if (selectedButtonId.equals("girlButton") || selectedButtonId.equals("girlAvatarButton")) {
+            LGDXEffect fadeIn = new FadeLGDXEffect(girlAvatarButton.getColor().a, 1.0, 500);
+            LGDXEffect fadeOut = new FadeLGDXEffect(boyAvatarButton.getColor().a, 0.5, 500);
+
+            renderable.getBoyAvatarButton().apply(fadeOut);
+            renderable.getGirlAvatarButton().apply(fadeIn);
         }
     }
 
+    protected Renderable lastSelectedAvatarButton = null;
+
     @Override
-    public void update(Renderable renderable) {
+    public void update(Renderable rRenderable) {
         if (actorInitiated && this.renderable.getRenderableLastUpdated() > timestamp) {
-            this.renderable = (MainMenuRenderable) renderable;
+            this.renderable = (MainMenuRenderable) rRenderable;
             this.timestamp = this.renderable.getRenderableLastUpdated();
-
-//            if (((MainMenuRenderable) renderable).isPlayerSelectionInitiated() && alphaSelectPLayer == 0f) {
-//
-//            }
-//                Timer.schedule(new Timer.Task() {
-//                    @Override
-//                    public void run() {
-//                        alphaSelectPLayer += 0.10f;
-//                        topBannerCell.getActor().setColor(1.0f, 1.0f, 1.0f, alphaSelectPLayer);
-//                        boyCell.getActor().setColor(1.0f, 1.0f, 1.0f, alphaSelectPLayer);
-//                        girlCell.getActor().setColor(1.0f, 1.0f, 1.0f, alphaSelectPLayer);
-//                        if (alphaMainMenu > 0f) {
-//                            topBannerCell.getActor().setVisible(true);
-//                            boyCell.getActor().setVisible(true);
-//                            girlCell.getActor().setVisible(true);
-//                        }
-//
-//                    }
-//                }, 0, 0.1f, 9);
-
-//                Timer.schedule(new Timer.Task() {
-//                    @Override
-//                    public void run() {
-//                        alphaMainMenu -= 0.10f;
-//                        menuTable.setColor(1.0f, 1.0f, 1.0f, alphaMainMenu);
-//                        if (alphaMainMenu <= 0f) {
-//                            menuTable.setVisible(false);
-//                        }
-//                    }
-//                }, 0, 0.1f, 9);
-//            }
-            if (this.renderable.getSelectedAvatar() != null) {
+            if (this.renderable.getSelectedAvatarButton() != null) {
                 countDownTable.setVisible(true);
                 int countDown = this.renderable.getCountDownValue();
                 if (countDown >= 0)
                     countDownLabel.setText(countDown + "");
-                setImageButtonsGreyedOutExcept(this.renderable.getSelectedAvatar().getId());
+                if (lastSelectedAvatarButton != this.renderable.getSelectedAvatarButton()) {
+                    // Update the selected avatar
+                    lastSelectedAvatarButton = this.renderable.getSelectedAvatarButton();
+                    // Apply effects
+                    updateSelectedAvatar(lastSelectedAvatarButton.getId());
+                }
             }
         }
     }
@@ -291,12 +256,22 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
 
     public void setBoyButton(Button button) {
         boyButton = button;
-        getChildrenActorsAndRenderables().put(boyButton, renderable.getBoySelectionButton());
+        getChildrenActorsAndRenderables().put(boyButton, renderable.getBoyButton());
+    }
+
+    public void setBoyAvatarButton(Button button) {
+        boyAvatarButton = button;
+        getChildrenActorsAndRenderables().put(boyAvatarButton, renderable.getBoyAvatarButton());
     }
 
     public void setGirlButton(Button button) {
         girlButton = button;
-        getChildrenActorsAndRenderables().put(girlButton, renderable.getGirlSelectionButton());
+        getChildrenActorsAndRenderables().put(girlButton, renderable.getGirlButton());
+    }
+
+    public void setGirlAvatarButton(Button button) {
+        girlAvatarButton = button;
+        getChildrenActorsAndRenderables().put(girlAvatarButton, renderable.getGirlAvatarButton());
     }
 
 }

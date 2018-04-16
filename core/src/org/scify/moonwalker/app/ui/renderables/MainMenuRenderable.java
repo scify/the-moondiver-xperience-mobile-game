@@ -2,9 +2,7 @@ package org.scify.moonwalker.app.ui.renderables;
 
 import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.Renderable;
-import org.scify.engine.renderables.effects.BaseEffect;
 import org.scify.engine.renderables.effects.Effect;
-import org.scify.engine.renderables.effects.EffectList;
 import org.scify.engine.renderables.effects.FunctionEffect;
 import org.scify.engine.renderables.effects.libgdx.FadeLGDXEffect;
 import org.scify.engine.renderables.effects.libgdx.LGDXEffectList;
@@ -15,15 +13,16 @@ public class MainMenuRenderable extends Renderable {
     public final String TOP_BANNER_IMG_PATH = "img/mainMenu/top.png";
     public final String BOY_IMG_PATH = "img/mainMenu/boy.png";
     public final String GIRL_IMG_PATH = "img/mainMenu/girl.png";
+    public final String BOY_BUTTON_IMG_PATH = "img/mainMenu/boyButton.png";
+    public final String GIRL_BUTTON_IMG_PATH = "img/mainMenu/girlButton.png";
 
-    protected ActionButton boySelectionButton;
-    protected ActionButton girlSelectionButton;
+    protected ImageRenderable topBannerRenderable;
 
-    protected ImageRenderable BoyImage;
-    protected ImageRenderable GirlImage;
-    protected ImageRenderable TopBanner;
-
-    protected ActionButton selectedAvatar;
+    protected ActionButton boyAvatarButton;
+    protected ActionButton girlAvatarButton;
+    protected ActionButton boyButton;
+    protected ActionButton girlButton;
+    protected ActionButton selectedAvatarButton;
     protected ActionButton startGameButton;
     protected ActionButton continueGameButton;
     protected ActionButton toggleAudioButton;
@@ -34,16 +33,27 @@ public class MainMenuRenderable extends Renderable {
 
     protected boolean playerSelectionStatus;
 
-    public ImageRenderable getBoyImage() {
-        return BoyImage;
+
+    public void setBoyAvatarButton(ActionButton boyAvatarButton) {
+        this.boyAvatarButton = boyAvatarButton;
+        this.boyAvatarButton.setVisible(false);
     }
 
-    public ImageRenderable getGirlImage() {
-        return GirlImage;
+    public ActionButton getBoyAvatarButton() {
+        return boyAvatarButton;
     }
 
-    public ImageRenderable getTopBanner() {
-        return TopBanner;
+    public void setGirlAvatarButton(ActionButton girlAvatarButton) {
+        this.girlAvatarButton = girlAvatarButton;
+        this.girlAvatarButton.setVisible(false);
+    }
+
+    public ActionButton getGirlAvatarButton() {
+        return girlAvatarButton;
+    }
+
+    public ImageRenderable getTopBannerRenderable() {
+        return topBannerRenderable;
     }
 
     public MainMenuRenderable(float xPos, float yPos, float width, float height, String id) {
@@ -51,27 +61,24 @@ public class MainMenuRenderable extends Renderable {
         playerSelectionStatus = false;
         countDownValue = 5;
 
-        BoyImage = new ImageRenderable("boyImg", BOY_IMG_PATH);
-//        BoyImage.setVisible(false);
-
-        GirlImage = new ImageRenderable("girlImg", GIRL_IMG_PATH);
-//        GirlImage.setVisible(false);
-
-        TopBanner = new ImageRenderable("topbannerImg", TOP_BANNER_IMG_PATH);
+        topBannerRenderable = new ImageRenderable("topbannerImg", TOP_BANNER_IMG_PATH);
+        topBannerRenderable.setVisible(false);
     }
 
-    public void resetCountDown () {
+    public void resetCountDown() {
         countDownValue = 5;
         renderableWasUpdated();
     }
 
-    public void decreaseCountDown () {
-        countDownValue --;
+    public void decreaseCountDown() {
+        countDownValue--;
         if (countDownValue >= 0)
             renderableWasUpdated();
     }
 
-    public int getCountDownValue () { return countDownValue;}
+    public int getCountDownValue() {
+        return countDownValue;
+    }
 
     public boolean isPlayerSelectionInitiated() {
         return playerSelectionStatus;
@@ -80,54 +87,66 @@ public class MainMenuRenderable extends Renderable {
     public void initiatePlayerSelection() {
         if (playerSelectionStatus == false) {
             playerSelectionStatus = true;
-            selectedAvatar = null;
-            // ggianna
+            selectedAvatarButton = null;
+            boyAvatarButton.setVisible(true);
+            girlAvatarButton.setVisible(true);
+            boyButton.setVisible(true);
+            girlButton.setVisible(true);
+            topBannerRenderable.setVisible(true);
+            double fadingEffectsDuration = 2500;
+
             LGDXEffectList imgEffect = new LGDXEffectList();
-            imgEffect.addEffect(new FadeLGDXEffect(0.0, 1.0, 2000));
-            imgEffect.addEffect(new FunctionEffect(new Runnable() {
+            imgEffect.addEffect(new FadeLGDXEffect(0.0, 0.5, fadingEffectsDuration));
+            /*imgEffect.addEffect(new FunctionEffect(new Runnable() {
                 @Override
                 public void run() {
-                    BoyImage.setVisible(false);
+                    boyRenderable.setVisible(false);
                     System.err.println("Visibility off!");
                 }
-            }));
-            BoyImage.apply(imgEffect);
-            GirlImage.apply(imgEffect);
+            }));*/
+            boyAvatarButton.apply(imgEffect);
+            girlAvatarButton.apply(imgEffect);
 
-            Effect effect = new FadeLGDXEffect(1.0, 0.0, 2000);
-            getStartGameButton().apply(effect);
-            getContinueGameButton().apply(effect);
-            getToggleAudioButton().apply(effect);
-            getAboutButton().apply(effect);
-            getQuitButton().apply(effect);
-            //////////
+            FadeLGDXEffect fadeInFullEffect = new FadeLGDXEffect(0.0, 1.0, fadingEffectsDuration);
+            topBannerRenderable.apply(fadeInFullEffect);
+            boyButton.apply(fadeInFullEffect);
+            girlButton.apply(fadeInFullEffect);
+
+            Effect fadeOutEffect = new FadeLGDXEffect(1.0, 0.0, fadingEffectsDuration);
+            getStartGameButton().apply(fadeOutEffect);
+            getContinueGameButton().apply(fadeOutEffect);
+            getToggleAudioButton().apply(fadeOutEffect);
+            getAboutButton().apply(fadeOutEffect);
+            getQuitButton().apply(fadeOutEffect);
 
             renderableWasUpdated();
         }
     }
 
-    public ActionButton getBoySelectionButton() {
-        return boySelectionButton;
+    public ActionButton getBoyButton() {
+        return boyButton;
     }
 
-    public void setBoySelectionButton(ActionButton button) {
-        this.boySelectionButton = button;
+    public void setBoyButton(ActionButton button) {
+        this.boyButton = button;
+        this.boyButton.setVisible(false);
     }
 
-    public ActionButton getGirlSelectionButton() {
-        return girlSelectionButton;
+    public ActionButton getGirlButton() {
+        return girlButton;
     }
 
-    public void setGirlSelectionButton(ActionButton button) {
-        this.girlSelectionButton = button;
+    public void setGirlButton(ActionButton button) {
+        this.girlButton = button;
+        this.girlButton.setVisible(false);
     }
 
-    public ActionButton getSelectedAvatar() {
-        return selectedAvatar;
+    public ActionButton getSelectedAvatarButton() {
+        return selectedAvatarButton;
     }
 
-    public void setSelectedAvatar(ActionButton selectedAvatar) {
-        this.selectedAvatar = selectedAvatar;
+    public void setSelectedAvatarButton(ActionButton selectedAvatarButton) {
+        this.selectedAvatarButton = selectedAvatarButton;
         renderableWasUpdated();
     }
 
