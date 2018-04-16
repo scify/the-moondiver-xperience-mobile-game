@@ -170,6 +170,10 @@ public abstract class GameState {
         renderableList.addAll(renderables);
     }
 
+    public void removeRenderable(Renderable r) {
+        renderableList.remove(r);
+    }
+
     public org.scify.engine.renderables.Renderable getRenderable(org.scify.engine.renderables.Renderable renderable){
         synchronized (renderableList) {
             ListIterator<org.scify.engine.renderables.Renderable> listIterator = renderableList.listIterator();
