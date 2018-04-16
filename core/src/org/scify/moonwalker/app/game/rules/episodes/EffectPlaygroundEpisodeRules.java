@@ -18,7 +18,9 @@ public class EffectPlaygroundEpisodeRules extends SimpleTimedImageEpisodeRules {
     @Override
     public void episodeStartedEvents(GameState currentState) {
         if (!isEpisodeStarted(currentState)) {
-            setFieldsForTimedEpisode(initialGameState, "img/shady-forest.jpg", MILLISECONDS_FOR_EPISODE);
+            setFieldsForTimedEpisode(initialGameState, null, MILLISECONDS_FOR_EPISODE);
+//"img/shady-forest.jpg"
+            addEpisodeBackgroundImage(currentState,"img/charge.png");
         }
 
         if (aTest == null) {

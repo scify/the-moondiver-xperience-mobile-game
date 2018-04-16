@@ -97,6 +97,8 @@ public class RenderableManager {
                 if (leEffect.complete())
                     toRemove.add(leEffect);
             }
+            else
+                System.err.println("Ignoring non-LGDX actor Effect " + e.toString());
         }
 
         // Remove appropriate effects
@@ -124,6 +126,9 @@ public class RenderableManager {
                 if (leEffect.complete())
                     toRemove.add(leEffect);
             }
+            else
+                System.err.println("Ignoring non-LGDX sprite Effect " + e.toString());
+
         }
 
         // Remove appropriate effects

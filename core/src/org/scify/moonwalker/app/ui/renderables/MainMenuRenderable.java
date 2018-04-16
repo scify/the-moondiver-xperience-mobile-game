@@ -3,12 +3,14 @@ package org.scify.moonwalker.app.ui.renderables;
 import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.effects.Effect;
-import org.scify.engine.renderables.effects.FunctionEffect;
 import org.scify.engine.renderables.effects.libgdx.FadeLGDXEffect;
 import org.scify.engine.renderables.effects.libgdx.LGDXEffectList;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 
 public class MainMenuRenderable extends Renderable {
+
+    protected ImageRenderable tableBGRenderable;
+    public final String BG_IMG_PATH = "img/Andromeda-galaxy.jpg";
 
     public final String TOP_BANNER_IMG_PATH = "img/mainMenu/top.png";
     public final String BOY_IMG_PATH = "img/mainMenu/boy.png";
@@ -56,6 +58,11 @@ public class MainMenuRenderable extends Renderable {
         return topBannerRenderable;
     }
 
+    public ImageRenderable getTableBGRenderable() {
+        return tableBGRenderable;
+    }
+
+
     public MainMenuRenderable(float xPos, float yPos, float width, float height, String id) {
         super(xPos, yPos, width, height, "main_menu", id);
         playerSelectionStatus = false;
@@ -63,6 +70,8 @@ public class MainMenuRenderable extends Renderable {
 
         topBannerRenderable = new ImageRenderable("topbannerImg", TOP_BANNER_IMG_PATH);
         topBannerRenderable.setVisible(false);
+
+        tableBGRenderable = new ImageRenderable("bg", BG_IMG_PATH);
     }
 
     public void resetCountDown() {

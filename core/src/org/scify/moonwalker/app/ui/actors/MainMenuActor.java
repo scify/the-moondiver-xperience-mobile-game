@@ -1,6 +1,5 @@
 package org.scify.moonwalker.app.ui.actors;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import org.scify.engine.renderables.Renderable;
@@ -30,9 +29,11 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
     protected Button girlAvatarButton;
 
     protected Image topBannerImage;
+    protected Image tableBG;
 
     protected boolean actorInitiated;
     protected ActorFactory factory;
+
 
 
     public MainMenuActor(Skin skin, MainMenuRenderable renderable) {
@@ -68,12 +69,27 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
         setGirlButton(factory.createButton(renderable.getGirlButton()));
         setGirlAvatarButton(factory.createButton(renderable.getGirlAvatarButton()));
 
+        // Create episode-specific background
+        createTableBG();
+
         createBoySelection();
         createMenuButtons();
         createGirlSelection();
 
         actorInitiated = true;
+
+        // Fade-in everything
+        renderable.apply(new FadeLGDXEffect(0.0, 1.0, 2000));
+
         //debugAll();
+    }
+
+    protected void createTableBG() {
+        tableBG = new Image();
+        tableBG.setDrawable(ActorFactory.getInstance().createImage(renderable.getTableBGRenderable().getImgPath(),
+                renderable.getTableBGRenderable()).getDrawable());
+        this.setTableBG(tableBG);
+        getChildrenActorsAndRenderables().put(tableBG, renderable.getTableBGRenderable());
     }
 
     //returns heightLeftForBottom
@@ -227,6 +243,11 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
                 }
             }
         }
+    }
+
+    protected void setTableBG(Image iTableBG) {
+        this.tableBG = tableBG;
+        this.setBackground(tableBG.getDrawable());
     }
 
     protected void setStartButton(Button button) {

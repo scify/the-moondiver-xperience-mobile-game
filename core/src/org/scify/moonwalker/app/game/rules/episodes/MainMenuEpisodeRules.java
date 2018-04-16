@@ -109,19 +109,25 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
     @Override
     public void episodeStartedEvents(GameState currentState) {
         if (!isEpisodeStarted(currentState)) {
-            currentState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", "audio/mainMenu/menu.mp3"));
-            currentState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/boy/music.mp3"));
-            currentState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/girl/music.mp3"));
-            currentState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/mobile.mp3"));
+            loadAudio(currentState);
             super.episodeStartedEvents(currentState);
 
             addEpisodeBackgroundImage(currentState, "img/mainMenu/bg.png");
+
             renderable = new MainMenuRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), "main_menu");
+
             //renderable.setImgPath("img/mainMenu/bg.png");
             createAndAddMainMenuButtons();
             createAvatarSelectionRenderable();
             currentState.addRenderable(renderable);
         }
+    }
+
+    private void loadAudio(GameState currentState) {
+        currentState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", "audio/mainMenu/menu.mp3"));
+        currentState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/boy/music.mp3"));
+        currentState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/girl/music.mp3"));
+        currentState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/mobile.mp3"));
     }
 
     protected void createAndAddMainMenuButtons() {

@@ -169,7 +169,9 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
     }
 
     protected void setFieldsForTimedEpisode(GameState gsCurrent, String imgPath, int millisecondsToLast) {
-        gsCurrent.storeAdditionalDataEntry("timed_episode_img_path", imgPath);
+        if (imgPath != null) {
+            gsCurrent.storeAdditionalDataEntry("timed_episode_img_path", imgPath);
+        }
         gsCurrent.storeAdditionalDataEntry("timed_episode_milliseconds", millisecondsToLast);
     }
 }

@@ -3,6 +3,7 @@ package org.scify.moonwalker.app.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,21 +14,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import org.scify.engine.*;
+import org.scify.engine.GameEvent;
+import org.scify.engine.RenderingEngine;
+import org.scify.engine.UserInputHandler;
 import org.scify.engine.audio.AudioEngine;
 import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.MoonWalkerGameState;
-import org.scify.moonwalker.app.game.rules.episodes.MainMenuEpisodeRules;
-import org.scify.moonwalker.app.game.rules.episodes.RoomEpisodeRules;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
-import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
 import org.scify.moonwalker.app.ui.renderables.RenderableManager;
-import org.scify.moonwalker.app.ui.renderables.RoomRenderable;
 import org.scify.moonwalker.app.ui.sound.GdxAudioEngine;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ListIterator;
 
 public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGameState> {
     /**
@@ -98,7 +100,9 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     }
 
     protected void createBackgroundDefaultImg() {
-        worldImg = new Image(new Texture(resourceLocator.getFilePath("img/theworld.png")));
+        // Init empty pixmap
+        Pixmap pTmp = new Pixmap(appInfo.getScreenWidth(), appInfo.getScreenHeight(), Pixmap.Format.RGB565);
+        worldImg = new Image(new Texture(pTmp));
         worldImg.setWidth(appInfo.getScreenWidth());
         worldImg.setHeight(appInfo.getScreenHeight());
     }
