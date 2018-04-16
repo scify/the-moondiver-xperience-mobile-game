@@ -36,7 +36,7 @@ public class CockpitActor extends TableActor implements Updateable {
     protected Label currentLocationLabel;
 
     public CockpitActor(Skin skin, CockpitRenderable renderable) {
-        super(skin);
+        super(skin, renderable);
         appInfo = AppInfo.getInstance();
         resourceLocator = new ResourceLocator();
         this.renderable = renderable;

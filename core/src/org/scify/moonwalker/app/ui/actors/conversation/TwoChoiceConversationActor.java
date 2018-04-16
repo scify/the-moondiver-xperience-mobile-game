@@ -33,7 +33,7 @@ public class TwoChoiceConversationActor extends TableActor {
     protected Image avatarBG;
 
     public TwoChoiceConversationActor(Skin skin, TwoChoiceConversationRenderable renderable) {
-        super(skin);
+        super(skin, renderable);
         this.renderable = renderable;
         appInfo = AppInfo.getInstance();
         resourceLocator = new ResourceLocator();

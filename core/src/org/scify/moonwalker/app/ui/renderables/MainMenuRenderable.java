@@ -1,6 +1,13 @@
 package org.scify.moonwalker.app.ui.renderables;
 
+import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.Renderable;
+import org.scify.engine.renderables.effects.BaseEffect;
+import org.scify.engine.renderables.effects.Effect;
+import org.scify.engine.renderables.effects.EffectList;
+import org.scify.engine.renderables.effects.FunctionEffect;
+import org.scify.engine.renderables.effects.libgdx.FadeLGDXEffect;
+import org.scify.engine.renderables.effects.libgdx.LGDXEffectList;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 
 public class MainMenuRenderable extends Renderable {
@@ -11,6 +18,11 @@ public class MainMenuRenderable extends Renderable {
 
     protected ActionButton boySelectionButton;
     protected ActionButton girlSelectionButton;
+
+    protected ImageRenderable BoyImage;
+    protected ImageRenderable GirlImage;
+    protected ImageRenderable TopBanner;
+
     protected ActionButton selectedAvatar;
     protected ActionButton startGameButton;
     protected ActionButton continueGameButton;
@@ -22,10 +34,30 @@ public class MainMenuRenderable extends Renderable {
 
     protected boolean playerSelectionStatus;
 
+    public ImageRenderable getBoyImage() {
+        return BoyImage;
+    }
+
+    public ImageRenderable getGirlImage() {
+        return GirlImage;
+    }
+
+    public ImageRenderable getTopBanner() {
+        return TopBanner;
+    }
+
     public MainMenuRenderable(float xPos, float yPos, float width, float height, String id) {
         super(xPos, yPos, width, height, "main_menu", id);
         playerSelectionStatus = false;
         countDownValue = 5;
+
+        BoyImage = new ImageRenderable("boyImg", BOY_IMG_PATH);
+//        BoyImage.setVisible(false);
+
+        GirlImage = new ImageRenderable("girlImg", GIRL_IMG_PATH);
+//        GirlImage.setVisible(false);
+
+        TopBanner = new ImageRenderable("topbannerImg", TOP_BANNER_IMG_PATH);
     }
 
     public void resetCountDown () {
@@ -49,6 +81,27 @@ public class MainMenuRenderable extends Renderable {
         if (playerSelectionStatus == false) {
             playerSelectionStatus = true;
             selectedAvatar = null;
+            // ggianna
+            LGDXEffectList imgEffect = new LGDXEffectList();
+            imgEffect.addEffect(new FadeLGDXEffect(0.0, 1.0, 2000));
+            imgEffect.addEffect(new FunctionEffect(new Runnable() {
+                @Override
+                public void run() {
+                    BoyImage.setVisible(false);
+                    System.err.println("Visibility off!");
+                }
+            }));
+            BoyImage.apply(imgEffect);
+            GirlImage.apply(imgEffect);
+
+            Effect effect = new FadeLGDXEffect(1.0, 0.0, 2000);
+            getStartGameButton().apply(effect);
+            getContinueGameButton().apply(effect);
+            getToggleAudioButton().apply(effect);
+            getAboutButton().apply(effect);
+            getQuitButton().apply(effect);
+            //////////
+
             renderableWasUpdated();
         }
     }

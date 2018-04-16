@@ -27,7 +27,7 @@ public class SpaceshipChargerActor extends TableActor implements Updateable {
     protected Cell destinationDistanceValueCell;
 
     public SpaceshipChargerActor(Skin skin, SpaceshipChargerRenderable renderable) {
-        super(skin);
+        super(skin, renderable);
 
         this.renderable = renderable;
         timestamp = this.renderable.getRenderableLastUpdated();

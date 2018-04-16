@@ -23,6 +23,18 @@ import org.scify.moonwalker.app.ui.actors.conversation.TwoChoiceConversationActo
 import org.scify.moonwalker.app.ui.renderables.*;
 
 public class ActorFactory extends ComponentFactory {
+    // USE AS SINGLETON
+    protected static ActorFactory factory = null;
+
+    public static ActorFactory getInstance() {
+        return factory;
+    }
+
+    public static ActorFactory getInstance(Skin skin) {
+        factory = new ActorFactory(skin);
+        return factory;
+    }
+    // USE AS SINGLETON - END
 
     public ActorFactory(Skin skin) {
         super(skin);
@@ -104,6 +116,12 @@ public class ActorFactory extends ComponentFactory {
 
     protected Image createImage(String imgFileRelevantPath, Renderable renderable) {
         Image img = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath(imgFileRelevantPath)))));
+
+        if (renderable.getWidth() == 0 && renderable.getHeight() == 0) {
+            // Delegate image size to renderable
+            renderable.setWidth(img.getWidth());
+            renderable.setHeight(img.getHeight());
+        }
         img.setSize(renderable.getWidth(), renderable.getHeight());
         return img;
     }
@@ -152,6 +170,7 @@ public class ActorFactory extends ComponentFactory {
         Button girlBtn = createButton(renderable.getGirlSelectionButton());
         actor.addButton(girlBtn);*/
 
+/*
         actor.setStartButton(createButton(renderable.getStartGameButton()));
         actor.setContinueButton(createButton(renderable.getContinueGameButton()));
         actor.setToggleAudioButton(createButton(renderable.getToggleAudioButton()));
@@ -160,6 +179,7 @@ public class ActorFactory extends ComponentFactory {
         actor.setBoyButton(createButton(renderable.getBoySelectionButton()));
         actor.setGirlButton(createButton(renderable.getGirlSelectionButton()));
         actor.init();
+*/
         return actor;
     }
 
@@ -247,4 +267,5 @@ public class ActorFactory extends ComponentFactory {
             }
         });
     }
+
 }

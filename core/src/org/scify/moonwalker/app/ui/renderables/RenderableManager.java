@@ -15,6 +15,7 @@ import org.scify.moonwalker.app.ui.ThemeController;
 import org.scify.moonwalker.app.ui.UnsupportedRenderableTypeException;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 import org.scify.moonwalker.app.ui.actors.ActorFactory;
+import org.scify.moonwalker.app.ui.actors.IContainerActor;
 import org.scify.moonwalker.app.ui.actors.Updateable;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 
@@ -32,8 +33,7 @@ public class RenderableManager {
 
     public RenderableManager(ThemeController themeController, UserInputHandler userInputHandler) {
         this.userInputHandler = (UserInputHandlerImpl) userInputHandler;
-        this.actorFactory = new ActorFactory(themeController.getSkin());
-
+        actorFactory = ActorFactory.getInstance(themeController.getSkin());
         actorFactory.setUserInputHandler(userInputHandler);
         this.spriteFactory = new SpriteFactory(themeController.getSkin());
     }
@@ -71,6 +71,17 @@ public class RenderableManager {
     }
 
     protected synchronized void applyActorEffects(Actor aToDraw, Renderable renderable) {
+        // If a container
+        if (aToDraw instanceof IContainerActor) {
+            IContainerActor<Renderable> caToDraw = (IContainerActor)aToDraw;
+            // For every child
+            for (Actor aCur: caToDraw.getChildrenActorsAndRenderables().keySet()) {
+                // Apply effect to child
+                applyActorEffects(aCur, caToDraw.getChildrenActorsAndRenderables().get(aCur));
+            }
+
+        }
+
         List<Effect> toRemove = new ArrayList<>();
         LinkedList<Effect> lEffects = new LinkedList<>(renderable.getEffects());
 
@@ -139,29 +150,50 @@ public class RenderableManager {
 
         // OBSOLETE:
 //        batch.draw(sToDraw, sToDraw.getX(), sToDraw.getY(), sToDraw.getWidth(), sToDraw.getHeight());
-
-        // TODO: Examine if all is fine now
-        sToDraw.draw(batch); // Follow this approach, to use sprite all traits (including color, alpha, etc)
+        if (renderable.isVisible()) {
+            // TODO: Examine if all is fine now
+            sToDraw.draw(batch); // Follow this approach, to use sprite all traits (including color, alpha, etc)
+        }
     }
 
 
     protected void drawActorFromRenderable(Renderable renderable, Actor aToDraw) {
         aToDraw.setPosition(renderable.getxPos(), renderable.getyPos());
         applyActorEffects(aToDraw, renderable); // Deal with effects
+        applyActorVisibility(aToDraw, renderable); // Apply visibility
+
 
         // if actor does not have a stage, it means that
-        // it is the first time that is added to the stage.
+        // it is the first time that it is added to the stage.
         if(aToDraw.getStage() == null) {
             //System.out.println("new actor with name: " + renderable.getId());
             aToDraw.setName(renderable.getId());
             stage.addActor(aToDraw);
         }else {// update the z index of the actor, according to the renderable's z index
+            // Take into account also the z-index rule (<0 means invisible)
             if(renderable.getZIndex() >= 0)
                 aToDraw.setZIndex(renderable.getZIndex());
             else {
                 aToDraw.setVisible(false);
             }
         }
+    }
+
+    private void applyActorVisibility(Actor aToDraw, Renderable renderable) {
+        // If a container
+        if (aToDraw instanceof IContainerActor) {
+            IContainerActor<Renderable> caToDraw = (IContainerActor)aToDraw;
+            // For every child
+            for (Actor aCur: caToDraw.getChildrenActorsAndRenderables().keySet()) {
+                // Apply effect to child
+                applyActorVisibility(aCur, caToDraw.getChildrenActorsAndRenderables().get(aCur));
+            }
+
+        }
+
+        // Update visibility
+        aToDraw.setVisible(renderable.isVisible());
+
     }
 
     protected Sprite createSpriteResourceFor(Renderable toDraw) {

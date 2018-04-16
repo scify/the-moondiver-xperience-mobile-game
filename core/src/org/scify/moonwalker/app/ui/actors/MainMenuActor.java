@@ -13,10 +13,9 @@ import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.ui.ThemeController;
 import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
 
-public class MainMenuActor extends TableActor implements Updateable {
+public class MainMenuActor extends TableActor<MainMenuRenderable> implements Updateable {
 
     protected AppInfo appInfo;
-    protected MainMenuRenderable renderable;
 
     protected Button startButton;
     protected Button continueButton;
@@ -43,20 +42,26 @@ public class MainMenuActor extends TableActor implements Updateable {
 
     protected boolean actorInitiated;
 
+    protected ActorFactory factory;
+
 
     public MainMenuActor(Skin skin, MainMenuRenderable renderable) {
-        super(skin);
-        this.renderable = renderable;
+        super(skin, renderable);
+
         setWidth(renderable.getWidth());
         setHeight(renderable.getHeight());
         appInfo = AppInfo.getInstance();
-        alphaSelectPLayer = 0f;
+        alphaSelectPLayer = 0.0f;
         alphaMainMenu = 1.0f;
         actorInitiated = false;
-        //addBackground(renderable.getImgPath());
+
+        init();
     }
 
     public void init() {
+        // Get actor factory
+        factory = ActorFactory.getInstance();
+
         float screenWidth = getWidth();
         float screenHeight= getHeight();
         top();
@@ -67,9 +72,20 @@ public class MainMenuActor extends TableActor implements Updateable {
         row().height(heightLeft).width(screenWidth);
 
 
+        // create actors
+        setStartButton(factory.createButton(renderable.getStartGameButton()));
+        setContinueButton(factory.createButton(renderable.getContinueGameButton()));
+        setToggleAudioButton(factory.createButton(renderable.getToggleAudioButton()));
+        setAboutButton(factory.createButton(renderable.getAboutButton()));
+        setQuitButton(factory.createButton(renderable.getQuitButton()));
+        setBoyButton(factory.createButton(renderable.getBoySelectionButton()));
+        setGirlButton(factory.createButton(renderable.getGirlSelectionButton()));
+
         createBoySelection();
         createMenuButtons();
         createGirlSelection();
+
+
         actorInitiated = true;
         //debugAll();
     }
@@ -84,18 +100,23 @@ public class MainMenuActor extends TableActor implements Updateable {
         topBannerCell = add(image).maxHeight(height).maxWidth(width).colspan(3).top();
         Actor topBannerActor = topBannerCell.getActor();
         topBannerActor.setColor(1.0f, 1.0f, 1.0f, alphaSelectPLayer);
-        topBannerActor.setVisible(false);
         return getHeight() - (height + heightOfTopRow);
     }
 
     protected void createBoySelection() {
         Stack stack = new Stack();
-        Texture texture = imgUrlToTexture(renderable.BOY_IMG_PATH);
-        boyImage = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
+
+        // Add image
+//        Texture texture = imgUrlToTexture(renderable.getBoyImage().getImgPath());
+//        boyImage = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
+        boyImage = (Image) factory.createResourceForType(renderable.getBoyImage());
         boyImage.setColor(Color.DARK_GRAY);
+
         float width = convertWidth(boyImage.getWidth());
         //float height = convertHeight(boyImage.getHeight());
         stack.addActor(boyImage);
+
+        // Add button
         Table buttonTable = new Table();
         buttonTable.defaults();
         buttonTable.bottom();
@@ -108,7 +129,9 @@ public class MainMenuActor extends TableActor implements Updateable {
         boyCell = add(stack).width(width);//.height(height);
         Actor boyActor = boyCell.getActor();
         boyActor.setColor(1.0f, 1.0f, 1.0f, alphaSelectPLayer);
-        boyActor.setVisible(false);
+
+        // Add to important children
+        getChildrenActorsAndRenderables().put(boyActor, renderable.getBoyImage());
     }
 
     protected void createMenuButtons() {
@@ -157,8 +180,12 @@ public class MainMenuActor extends TableActor implements Updateable {
 
     protected void createGirlSelection() {
         Stack stack = new Stack();
-        Texture texture = imgUrlToTexture(renderable.GIRL_IMG_PATH);
-        girlImage = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
+//        Texture texture = imgUrlToTexture(renderable.GIRL_IMG_PATH);
+//        girlImage = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
+
+        girlImage = (Image) factory.createResourceForType(renderable.getGirlImage());
+        girlImage.setColor(Color.DARK_GRAY);
+
         girlImage.setColor(Color.DARK_GRAY);
         float width = convertWidth(girlImage.getWidth());
         //float height = convertHeight(girlImage.getHeight());
@@ -175,7 +202,10 @@ public class MainMenuActor extends TableActor implements Updateable {
         girlCell = add(stack).width(width);//.height(height);
         Actor girlActor = girlCell.getActor();
         girlActor.setColor(1.0f, 1.0f, 1.0f, alphaSelectPLayer);
-        girlActor.setVisible(false);
+
+        // Add to important children
+        getChildrenActorsAndRenderables().put(girlActor, renderable.getGirlImage());
+
     }
 
     public void setImageButtonsGreyedOutExcept(String selectedButtonId) {
@@ -193,33 +223,37 @@ public class MainMenuActor extends TableActor implements Updateable {
         if (actorInitiated && this.renderable.getRenderableLastUpdated() > timestamp) {
             this.renderable = (MainMenuRenderable) renderable;
             this.timestamp = this.renderable.getRenderableLastUpdated();
-            if (((MainMenuRenderable) renderable).isPlayerSelectionInitiated() && alphaSelectPLayer == 0f) {
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                        alphaSelectPLayer += 0.10f;
-                        topBannerCell.getActor().setColor(1.0f, 1.0f, 1.0f, alphaSelectPLayer);
-                        boyCell.getActor().setColor(1.0f, 1.0f, 1.0f, alphaSelectPLayer);
-                        girlCell.getActor().setColor(1.0f, 1.0f, 1.0f, alphaSelectPLayer);
-                        if (alphaMainMenu > 0f) {
-                            topBannerCell.getActor().setVisible(true);
-                            boyCell.getActor().setVisible(true);
-                            girlCell.getActor().setVisible(true);
-                        }
 
-                    }
-                }, 0, 0.1f, 9);
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                        alphaMainMenu -= 0.10f;
-                        menuTable.setColor(1.0f, 1.0f, 1.0f, alphaMainMenu);
-                        if (alphaMainMenu <= 0f) {
-                            menuTable.setVisible(false);
-                        }
-                    }
-                }, 0, 0.1f, 9);
-            }
+//            if (((MainMenuRenderable) renderable).isPlayerSelectionInitiated() && alphaSelectPLayer == 0f) {
+//
+//            }
+//                Timer.schedule(new Timer.Task() {
+//                    @Override
+//                    public void run() {
+//                        alphaSelectPLayer += 0.10f;
+//                        topBannerCell.getActor().setColor(1.0f, 1.0f, 1.0f, alphaSelectPLayer);
+//                        boyCell.getActor().setColor(1.0f, 1.0f, 1.0f, alphaSelectPLayer);
+//                        girlCell.getActor().setColor(1.0f, 1.0f, 1.0f, alphaSelectPLayer);
+//                        if (alphaMainMenu > 0f) {
+//                            topBannerCell.getActor().setVisible(true);
+//                            boyCell.getActor().setVisible(true);
+//                            girlCell.getActor().setVisible(true);
+//                        }
+//
+//                    }
+//                }, 0, 0.1f, 9);
+
+//                Timer.schedule(new Timer.Task() {
+//                    @Override
+//                    public void run() {
+//                        alphaMainMenu -= 0.10f;
+//                        menuTable.setColor(1.0f, 1.0f, 1.0f, alphaMainMenu);
+//                        if (alphaMainMenu <= 0f) {
+//                            menuTable.setVisible(false);
+//                        }
+//                    }
+//                }, 0, 0.1f, 9);
+//            }
             if (this.renderable.getSelectedAvatar() != null) {
                 countDownTable.setVisible(true);
                 int countDown = this.renderable.getCountDownValue();
@@ -230,32 +264,39 @@ public class MainMenuActor extends TableActor implements Updateable {
         }
     }
 
-    public void setStartButton(Button button) {
+    protected void setStartButton(Button button) {
         startButton = button;
+        getChildrenActorsAndRenderables().put(startButton, renderable.getStartGameButton());
     }
 
     public void setContinueButton(Button button) {
         continueButton = button;
+        getChildrenActorsAndRenderables().put(continueButton, renderable.getContinueGameButton());
     }
 
     public void setToggleAudioButton(Button button) {
         toggleAudioButton = button;
+        getChildrenActorsAndRenderables().put(toggleAudioButton, renderable.getToggleAudioButton());
     }
 
     public void setAboutButton(Button button) {
         aboutButton = button;
+        getChildrenActorsAndRenderables().put(aboutButton, renderable.getAboutButton());
     }
 
     public void setQuitButton(Button button) {
         quitButton = button;
+        getChildrenActorsAndRenderables().put(quitButton, renderable.getQuitButton());
     }
 
     public void setBoyButton(Button button) {
         boyButton = button;
+        getChildrenActorsAndRenderables().put(boyButton, renderable.getBoySelectionButton());
     }
 
     public void setGirlButton(Button button) {
         girlButton = button;
+        getChildrenActorsAndRenderables().put(girlButton, renderable.getGirlSelectionButton());
     }
 
 }

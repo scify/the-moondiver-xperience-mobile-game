@@ -25,7 +25,7 @@ public class MultipleChoiceConversationActor extends TableActor {
     MultipleChoiceConversationRenderable renderable;
 
     public MultipleChoiceConversationActor(Skin skin, MultipleChoiceConversationRenderable renderable) {
-        super(skin);
+        super(skin, renderable);
         this.resourceLocator = new ResourceLocator();
         this.relativeAvatarPath = renderable.getRelativeAvatarImgPath();
         this.questionText = renderable.getTitle();

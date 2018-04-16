@@ -33,15 +33,21 @@ public class Renderable extends Positionable implements EffectTarget {
     protected Map<Effect, Map<String,String>> effectInfo = new HashMap<>();
 
     /**
-     * Holds the last effect that was added.
+     * Describes the visibility of the renderable. A non-visible renderable is also disabled, i.e. cannot
+     * accept events, and does not take up any space (TODO: Check if the statement about space stands).
      */
-    protected Effect lastEffectAdded;
+    protected boolean visible;
+
+    public boolean isVisible() {
+        return visible;
+    }
 
     public Renderable(float xPos, float yPos, float width, float height, String type, String id) {
         super(xPos, yPos, width, height);
         this.type = type;
         this.id = id;
         appInfo = AppInfo.getInstance();
+        visible = true;
     }
 
     public Renderable(String type, String id) {
@@ -49,6 +55,7 @@ public class Renderable extends Positionable implements EffectTarget {
         this.type = type;
         this.id = id;
         appInfo = AppInfo.getInstance();
+        visible = true;
     }
 
     public String getType() {
@@ -111,5 +118,9 @@ public class Renderable extends Positionable implements EffectTarget {
     @Override
     public void removeEffect(Effect eToRemove) {
         effectInfo.remove(eToRemove);
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 }

@@ -9,7 +9,7 @@ public class ContactScreenActor extends TableActor implements Updateable {
     protected ContactScreenRenderable renderable;
 
     public ContactScreenActor (Skin skin, ContactScreenRenderable renderable) {
-        super(skin);
+        super(skin, renderable);
         this.renderable = renderable;
         timestamp = this.renderable.getRenderableLastUpdated();
         addBackground(renderable.getImgPath());

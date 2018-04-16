@@ -48,7 +48,7 @@ public class NextConversationActor extends TableActor implements Updateable {
     }
 
     public NextConversationActor(Skin skin, NextConversationRenderable renderable) {
-        super(skin);
+        super(skin, renderable);
         this.renderable = renderable;
         appInfo = AppInfo.getInstance();
         resourceLocator = new ResourceLocator();

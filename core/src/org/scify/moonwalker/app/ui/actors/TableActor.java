@@ -2,12 +2,18 @@ package org.scify.moonwalker.app.ui.actors;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
+import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
 
-public abstract class TableActor extends Table {
+import java.util.HashMap;
+import java.util.Map;
+
+public abstract class TableActor<T extends Renderable> extends Table implements IContainerActor<T> {
 
     protected ResourceLocator resourceLocator;
     protected AppInfo appInfo;
@@ -15,10 +21,15 @@ public abstract class TableActor extends Table {
     protected final float TABLES_PADDING_PIXELS = 7;
     protected long timestamp;
 
-    public TableActor(Skin skin) {
+    protected T renderable;
+    protected Map<Actor,Renderable> childrenActorsToRenderables;
+
+    public TableActor(Skin skin, T rRenderable) {
         super(skin);
         appInfo = AppInfo.getInstance();
         resourceLocator = new ResourceLocator();
+        childrenActorsToRenderables = new HashMap<>();
+        renderable = rRenderable;
     }
 
     public Cell addTextCell(Table table, String labelTxt) {
@@ -79,5 +90,15 @@ public abstract class TableActor extends Table {
         float ret = getWidth() * initialWidth;
         ret = ret / initialBackgroundWidth;
         return ret;
+    }
+
+    @Override
+    public Map<Actor, Renderable> getChildrenActorsAndRenderables() {
+        return childrenActorsToRenderables;
+    }
+
+    @Override
+    public T getRenderable() {
+        return renderable;
     }
 }

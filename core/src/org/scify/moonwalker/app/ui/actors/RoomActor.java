@@ -19,7 +19,7 @@ public class RoomActor extends TableActor implements Updateable {
     protected Texture phoneTexture;
 
     public RoomActor(Skin skin, RoomRenderable renderable) {
-        super(skin);
+        super(skin, renderable);
         this.renderable = renderable;
         timestamp = this.renderable.getRenderableLastUpdated();
         setWidth(renderable.getWidth());
