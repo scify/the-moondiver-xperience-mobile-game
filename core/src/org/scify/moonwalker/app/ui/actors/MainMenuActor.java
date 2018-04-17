@@ -3,8 +3,11 @@ package org.scify.moonwalker.app.ui.actors;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import org.scify.engine.renderables.Renderable;
+import org.scify.engine.renderables.effects.FunctionEffect;
 import org.scify.engine.renderables.effects.libgdx.FadeLGDXEffect;
 import org.scify.engine.renderables.effects.libgdx.LGDXEffect;
+import org.scify.engine.renderables.effects.libgdx.LGDXEffectList;
+import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.ui.ThemeController;
 import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
@@ -79,7 +82,15 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
         actorInitiated = true;
 
         // Fade-in everything
-        renderable.apply(new FadeLGDXEffect(0.0, 1.0, 2000));
+        LGDXEffectList fadeInEffects = new LGDXEffectList();
+        fadeInEffects.addEffect(new FadeLGDXEffect(0.0, 1.0, 2000));
+        fadeInEffects.addEffect(new FunctionEffect(new Runnable() {
+            @Override
+            public void run() {
+                renderable.enableInput();
+            }
+        }));
+        renderable.apply(fadeInEffects);
 
         //debugAll();
     }
@@ -88,7 +99,7 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
         tableBG = new Image();
         tableBG.setDrawable(ActorFactory.getInstance().createImage(renderable.getTableBGRenderable().getImgPath(),
                 renderable.getTableBGRenderable()).getDrawable());
-        this.setTableBG(tableBG);
+        setBackground(tableBG.getDrawable());
         getChildrenActorsAndRenderables().put(tableBG, renderable.getTableBGRenderable());
     }
 
@@ -231,11 +242,6 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
                 }
             }
         }
-    }
-
-    protected void setTableBG(Image iTableBG) {
-        this.tableBG = tableBG;
-        this.setBackground(tableBG.getDrawable());
     }
 
     protected void setStartButton(Button button) {

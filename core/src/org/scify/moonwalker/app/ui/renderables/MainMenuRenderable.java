@@ -3,6 +3,7 @@ package org.scify.moonwalker.app.ui.renderables;
 import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.effects.Effect;
+import org.scify.engine.renderables.effects.FunctionEffect;
 import org.scify.engine.renderables.effects.libgdx.FadeLGDXEffect;
 import org.scify.engine.renderables.effects.libgdx.LGDXEffectList;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
@@ -10,13 +11,21 @@ import org.scify.moonwalker.app.ui.actors.ActionButton;
 public class MainMenuRenderable extends Renderable {
 
     protected ImageRenderable tableBGRenderable;
-    public final String BG_IMG_PATH = "img/mainMenu/bg.png";
 
+    public final String BG_IMG_PATH = "img/mainMenu/bg.png";
     public final String TOP_BANNER_IMG_PATH = "img/mainMenu/top.png";
     public final String BOY_IMG_PATH = "img/mainMenu/boy.png";
     public final String GIRL_IMG_PATH = "img/mainMenu/girl.png";
     public final String BOY_BUTTON_IMG_PATH = "img/mainMenu/boyButton.png";
     public final String GIRL_BUTTON_IMG_PATH = "img/mainMenu/girlButton.png";
+    public final String START_BUTTON_IMG_PATH = "img/mainMenu/start.png";
+    public final String CONTINUE_BUTTON_IMG_PATH = "img/mainMenu/continue.png";
+    public final String TOGGLE_AUDIO_BUTTON_IMG_PATH = "img/mainMenu/toggleAudio.png";
+    public final String ABOUT_BUTTON_IMG_PATH = "img/mainMenu/about.png";
+    public final String QUIT_BUTTON_IMG_PATH = "img/mainMenu/quit.png";
+
+    public final String BG_AUDIO_PATH = "audio/mainMenu/menu.mp3";
+    public final String CLICK_AUDIO_PATH = "audio/button1.mp3";
 
     protected ImageRenderable topBannerRenderable;
 
@@ -35,6 +44,23 @@ public class MainMenuRenderable extends Renderable {
 
     protected boolean playerSelectionStatus;
 
+    protected boolean inputEnabled;
+
+    public MainMenuRenderable(float xPos, float yPos, float width, float height, String id) {
+        super(xPos, yPos, width, height, "main_menu", id);
+        inputEnabled = false;
+        playerSelectionStatus = false;
+        countDownValue = 5;
+        topBannerRenderable = new ImageRenderable("topbannerImg", TOP_BANNER_IMG_PATH);
+        topBannerRenderable.setVisible(false);
+        tableBGRenderable = new ImageRenderable("bg", BG_IMG_PATH);
+    }
+
+    public void enableInput() { inputEnabled = true; }
+
+    public void disableInput() { inputEnabled = false; }
+
+    public boolean isReadyForInput() { return inputEnabled; }
 
     public void setBoyAvatarButton(ActionButton boyAvatarButton) {
         this.boyAvatarButton = boyAvatarButton;
@@ -62,18 +88,6 @@ public class MainMenuRenderable extends Renderable {
         return tableBGRenderable;
     }
 
-
-    public MainMenuRenderable(float xPos, float yPos, float width, float height, String id) {
-        super(xPos, yPos, width, height, "main_menu", id);
-        playerSelectionStatus = false;
-        countDownValue = 5;
-
-        topBannerRenderable = new ImageRenderable("topbannerImg", TOP_BANNER_IMG_PATH);
-        topBannerRenderable.setVisible(false);
-
-        tableBGRenderable = new ImageRenderable("bg", BG_IMG_PATH);
-    }
-
     public void resetCountDown() {
         countDownValue = 5;
         renderableWasUpdated();
@@ -98,11 +112,16 @@ public class MainMenuRenderable extends Renderable {
             boyButton.setVisible(true);
             girlButton.setVisible(true);
             topBannerRenderable.setVisible(true);
-            double fadingEffectsDuration = 2500;
+            double fadingEffectsDuration = 1500;
 
             LGDXEffectList imgEffect = new LGDXEffectList();
             imgEffect.addEffect(new FadeLGDXEffect(0.0, 0.5, fadingEffectsDuration));
-
+            imgEffect.addEffect(new FunctionEffect(new Runnable() {
+                @Override
+                public void run() {
+                    inputEnabled = true;
+                }
+            }));
             boyAvatarButton.apply(imgEffect);
             girlAvatarButton.apply(imgEffect);
 
