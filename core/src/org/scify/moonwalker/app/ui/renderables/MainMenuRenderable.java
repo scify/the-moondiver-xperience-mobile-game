@@ -10,7 +10,7 @@ import org.scify.moonwalker.app.ui.actors.ActionButton;
 public class MainMenuRenderable extends Renderable {
 
     protected ImageRenderable tableBGRenderable;
-    public final String BG_IMG_PATH = "img/Andromeda-galaxy.jpg";
+    public final String BG_IMG_PATH = "img/mainMenu/bg.png";
 
     public final String TOP_BANNER_IMG_PATH = "img/mainMenu/top.png";
     public final String BOY_IMG_PATH = "img/mainMenu/boy.png";
@@ -89,10 +89,6 @@ public class MainMenuRenderable extends Renderable {
         return countDownValue;
     }
 
-    public boolean isPlayerSelectionInitiated() {
-        return playerSelectionStatus;
-    }
-
     public void initiatePlayerSelection() {
         if (playerSelectionStatus == false) {
             playerSelectionStatus = true;
@@ -106,13 +102,7 @@ public class MainMenuRenderable extends Renderable {
 
             LGDXEffectList imgEffect = new LGDXEffectList();
             imgEffect.addEffect(new FadeLGDXEffect(0.0, 0.5, fadingEffectsDuration));
-            /*imgEffect.addEffect(new FunctionEffect(new Runnable() {
-                @Override
-                public void run() {
-                    boyRenderable.setVisible(false);
-                    System.err.println("Visibility off!");
-                }
-            }));*/
+
             boyAvatarButton.apply(imgEffect);
             girlAvatarButton.apply(imgEffect);
 

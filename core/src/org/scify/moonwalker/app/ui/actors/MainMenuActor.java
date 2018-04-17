@@ -106,13 +106,8 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
     protected void createBoySelection() {
         Stack stack = new Stack();
 
-        // Add image
-        /*boyImage = (Image) factory.createResourceForType(renderable.getGirlAvatarButton());
-        boyImage.setColor(Color.DARK_GRAY);*/
-
+        //Add Image
         float width = convertWidth(boyAvatarButton.getWidth());
-        //float height = convertHeight(boyImage.getHeight());
-        //boyAvatarButton.setColor(Color.DARK_GRAY);
         stack.addActor(boyAvatarButton);
 
         // Add button
@@ -126,8 +121,6 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
         buttonTable.row().height(buttonHeight / 2);
         buttonTable.add();
         add(stack).width(width);
-        //Actor boyActor = add(stack).width(width).getActor();
-
 
         // Add to important children
         getChildrenActorsAndRenderables().put(boyButton, renderable.getBoyButton());
@@ -182,14 +175,10 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
         Stack stack = new Stack();
 
         //Add Image
-        /*girlImage = (Image) factory.createResourceForType(renderable.getBoyAvatarButton());
-        girlImage.setColor(Color.DARK_GRAY);*/
-
         float width = convertWidth(girlAvatarButton.getWidth());
-        //float height = convertHeight(girlImage.getHeight());
-
-        //girlAvatarButton.setColor(Color.DARK_GRAY);
         stack.addActor(girlAvatarButton);
+
+        // Add button
         Table buttonTable = new Table();
         buttonTable.defaults();
         buttonTable.bottom();
@@ -200,7 +189,6 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
         buttonTable.row().height(buttonHeight / 2);
         buttonTable.add();
         add(stack).width(width);
-        //Actor girlActor = add(stack).width(width).getActor();
 
         // Add to important children
         getChildrenActorsAndRenderables().put(girlButton, renderable.getGirlButton());

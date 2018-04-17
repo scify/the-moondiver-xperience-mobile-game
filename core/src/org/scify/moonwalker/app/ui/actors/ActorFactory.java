@@ -165,21 +165,6 @@ public class ActorFactory extends ComponentFactory {
     private MainMenuActor createMainMenuActor(MainMenuRenderable renderable) {
         MainMenuActor actor = new MainMenuActor(skin, renderable);
         actor.setZIndex(0);
-        /*Button boyButton = createButton(renderable.getBoyButton());
-        actor.set(boyButton);
-        Button girlButton = createButton(renderable.getGirlButton());
-        actor.addButton(girlButton);*/
-
-/*
-        actor.setStartButton(createButton(renderable.getStartGameButton()));
-        actor.setContinueButton(createButton(renderable.getContinueGameButton()));
-        actor.setToggleAudioButton(createButton(renderable.getToggleAudioButton()));
-        actor.setAboutButton(createButton(renderable.getAboutButton()));
-        actor.setQuitButton(createButton(renderable.getQuitButton()));
-        actor.setBoyButton(createButton(renderable.getBoyButton()));
-        actor.setGirlButton(createButton(renderable.getGirlButton()));
-        actor.init();
-*/
         return actor;
     }
 

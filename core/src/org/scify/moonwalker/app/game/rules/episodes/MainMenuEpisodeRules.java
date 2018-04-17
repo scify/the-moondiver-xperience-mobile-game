@@ -112,7 +112,7 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
             loadAudio(currentState);
             super.episodeStartedEvents(currentState);
 
-            addEpisodeBackgroundImage(currentState, "img/mainMenu/bg.png");
+            //addEpisodeBackgroundImage(currentState, "img/mainMenu/bg.png");
 
             renderable = new MainMenuRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), "main_menu");
 
