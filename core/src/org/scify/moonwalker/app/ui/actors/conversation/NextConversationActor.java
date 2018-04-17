@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.conversation.ConversationLine;
@@ -22,30 +23,15 @@ import org.scify.moonwalker.app.ui.actors.Updateable;
  * and an image path that represents the conversation participant who is saying
  * the line.
  */
-public class NextConversationActor extends TableActor implements Updateable {
+public class NextConversationActor extends TableActor<NextConversationRenderable> implements Updateable {
 
     protected Label lineLabel;
     protected ResourceLocator resourceLocator;
     protected AppInfo appInfo;
-    protected Image background;
     protected Button button;
     protected NextConversationRenderable renderable;
     protected Image avatarImage;
     protected Image avatarBG;
-
-    @Override
-    public void update(Renderable renderable) {
-        if (this.renderable.getRenderableLastUpdated() > timestamp) {
-            System.out.println("setting renderable: " + renderable.getRenderableLastUpdated() + " over: " + this.renderable.getRenderableLastUpdated());
-            this.renderable = (NextConversationRenderable) renderable;
-            this.timestamp = this.renderable.getRenderableLastUpdated();
-            if (this.renderable.getButtonNextStatus()) {
-                enableButton();
-            } else {
-                disableButton();
-            }
-        }
-    }
 
     public NextConversationActor(Skin skin, NextConversationRenderable renderable) {
         super(skin, renderable);
@@ -54,28 +40,23 @@ public class NextConversationActor extends TableActor implements Updateable {
         resourceLocator = new ResourceLocator();
     }
 
-    protected void enableButton() {
-        button.setVisible(true);
-    }
-
-    protected void disableButton() {
-        button.setVisible(false);
-    }
-
     public void init(boolean nextButtonVisibility) {
         float screenWidth = appInfo.getScreenWidth();
         float screenHeight = appInfo.getScreenHeight();
-        Stack stack = new Stack();
-        Texture chatBox = new Texture(resourceLocator.getFilePath("img/conversations/bg.png"));
-        float width = convertWidth(chatBox.getWidth());
-        float height = convertHeight(chatBox.getHeight());
+        //Stack stack = new Stack();
 
-        setWidth(screenWidth);
-        setHeight(height * 1.3f);
-        background = new Image(new TextureRegionDrawable(new TextureRegion(chatBox)));
-        stack.add(background);
+        float width = screenWidth * 0.9f;
+        float height = screenHeight * 0.4f;
 
-        Table table = new Table();
+        setWidth(width);
+        setHeight(height);
+        setPosition(screenWidth * 0.1f, screenHeight * 0.1f);
+        addBackground(renderable.getTableBGRenderable(), width, height);
+
+
+
+
+        /*Table table = new Table();
         table.defaults();
         table.center();
 
@@ -110,27 +91,35 @@ public class NextConversationActor extends TableActor implements Updateable {
         else
             disableButton();
         table.add().width(0.02f * width);
-        stack.add(table);
+        stack.add(table);*/
 
-        add(stack).height(height).width(width).center();
+        //add(stack).height(height).width(width).center();
+        debugAll();
+    }
 
+    @Override
+    public void update(Renderable renderable) {
+        if (this.renderable.getRenderableLastUpdated() > timestamp) {
+            System.out.println("setting renderable: " + renderable.getRenderableLastUpdated() + " over: " + this.renderable.getRenderableLastUpdated());
+            this.renderable = (NextConversationRenderable) renderable;
+            this.timestamp = this.renderable.getRenderableLastUpdated();
+            if (this.renderable.getButtonNextStatus()) {
+                enableButton();
+            } else {
+                disableButton();
+            }
+        }
+    }
+
+    protected void enableButton() {
+        button.setVisible(true);
+    }
+
+    protected void disableButton() {
+        button.setVisible(false);
     }
 
     public void setButton(Button button) {
         this.button = button;
-    }
-
-    protected float convertHeight(float initialHeight) {
-        int initialBackgroundHeight = 1080;
-        float ret = appInfo.getScreenHeight() * initialHeight;
-        ret = ret / initialBackgroundHeight;
-        return ret;
-    }
-
-    protected float convertWidth(float initialWidth) {
-        int initialBackgroundWidth = 1920;
-        float ret = appInfo.getScreenWidth() * initialWidth;
-        ret = ret / initialBackgroundWidth;
-        return ret;
     }
 }

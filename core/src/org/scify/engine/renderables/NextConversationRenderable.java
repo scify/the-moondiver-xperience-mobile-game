@@ -8,6 +8,9 @@ import org.scify.moonwalker.app.ui.actors.ActionButton;
 
 public class NextConversationRenderable extends Renderable {
 
+    protected ImageRenderable tableBGRenderable;
+    public final String BG_IMG_PATH = "img/conversations/bg.png";
+
     protected ConversationLine conversationLine;
     protected String relativeAvatarPath;
     protected ActionButton buttonNext;
@@ -23,6 +26,11 @@ public class NextConversationRenderable extends Renderable {
         buttonNext.setTitle("Επόμενο");
         buttonNext.setUserAction(new UserAction(UserActionCode.NEXT_CONVERSATION_LINE));
         buttonNextActive = true;
+        tableBGRenderable = new ImageRenderable("chat_bg", BG_IMG_PATH);
+    }
+
+    public ImageRenderable getTableBGRenderable() {
+        return tableBGRenderable;
     }
 
     public void setButtonNextActive() {

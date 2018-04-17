@@ -2,7 +2,6 @@ package org.scify.moonwalker.app.ui.actors;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.effects.FunctionEffect;
 import org.scify.engine.renderables.effects.libgdx.FadeLGDXEffect;

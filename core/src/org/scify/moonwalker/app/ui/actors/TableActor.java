@@ -55,13 +55,16 @@ public abstract class TableActor<T extends Renderable> extends Table implements 
         return table.add(button).bottom().center().width(appInfo.pixelsWithDensity(button.getWidth())).height(appInfo.pixelsWithDensity(button.getHeight()));
     }
 
-    public void addBackground(ImageRenderable imageRenderable) {
+    public void addBackground(ImageRenderable imageRenderable, float width, float height) {
         background = new Image();
         background.setDrawable(ActorFactory.getInstance().createImage(imageRenderable.getImgPath(), imageRenderable).getDrawable());
-        //background = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath(imgPath)))));
-        background.setSize(getWidth(), getHeight());
+        background.setSize(width, height);
         getChildrenActorsAndRenderables().put(background, imageRenderable);
         addActor(background);
+    }
+
+    public void addBackground(ImageRenderable imageRenderable) {
+        addBackground(imageRenderable, getWidth(), getHeight());
     }
 
     protected void updateLabelCell(Cell cell, String newValue) {
