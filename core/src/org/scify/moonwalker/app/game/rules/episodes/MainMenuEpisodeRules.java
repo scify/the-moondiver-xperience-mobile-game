@@ -4,7 +4,6 @@ import org.scify.engine.*;
 import org.scify.engine.renderables.effects.FunctionEffect;
 import org.scify.engine.renderables.effects.libgdx.FadeLGDXEffect;
 import org.scify.engine.renderables.effects.libgdx.LGDXEffectList;
-import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
@@ -36,7 +35,7 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
                 gameState.addGameEvent(new GameEvent("AUDIO_STOP_UI", renderable.BG_AUDIO_PATH));
                 gameState.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", renderable.BG_AUDIO_PATH));
                 LGDXEffectList fadeOutEffects = new LGDXEffectList();
-                fadeOutEffects.addEffect(new FadeLGDXEffect(1.0, 0.0, 2000));
+                fadeOutEffects.addEffect(new FadeLGDXEffect(1.0, 0.0, 1000));
                 fadeOutEffects.addEffect(new FunctionEffect(new Runnable() {
                     @Override
                     public void run() {
@@ -51,7 +50,6 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
         }
         if (fadeInEffectsCompleted == false && renderable != null && renderable.isReadyForInput()) {
             fadeInEffectsCompleted = true;
-            gameState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", renderable.BG_AUDIO_PATH));
         }
 
         return super.getNextState(gameState, userAction);
@@ -66,6 +64,7 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
                     if (mainMenuButtonsEnabled) {
                         renderable.disableInput();
                         gameState.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.CLICK_AUDIO_PATH));
+                        prepareNextEpisodeAudio(gameState);
                         renderable.initiatePlayerSelection();
                         mainMenuButtonsEnabled = false;
                     }
@@ -118,7 +117,7 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
     public void episodeStartedEvents(GameState currentState) {
         if (!isEpisodeStarted(currentState)) {
             renderable = new MainMenuRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), "main_menu");
-            loadAudio(currentState);
+            currentState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", renderable.BG_AUDIO_PATH));
             super.episodeStartedEvents(currentState);
             createAndAddMainMenuButtons();
             createAvatarSelectionRenderable();
@@ -127,12 +126,10 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
         }
     }
 
-    private void loadAudio(GameState currentState) {
-        currentState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", renderable.BG_AUDIO_PATH));
-        //currentState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", renderable.BG_AUDIO_PATH));
-        /*currentState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/boy/music.mp3"));
-        currentState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/girl/music.mp3"));
-        currentState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", "audio/room_episode/mobile.mp3"));*/
+    private void prepareNextEpisodeAudio(GameState currentState) {
+        currentState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", renderable.BOY_MUSIC_AUDIO_PATH));
+        currentState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", renderable.GIRL_MUSIC_AUDIO_PATH));
+        currentState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", renderable.MOBILE_AUDIO_PATH));
     }
 
     protected void createAndAddMainMenuButtons() {

@@ -13,7 +13,7 @@ public class MapLocationActor extends TableActor {
         timestamp = renderable.getRenderableLastUpdated();
         setWidth(renderable.getWidth());
         setHeight(renderable.getHeight());
-        addBackground(renderable.getImgPath());
+        //addBackground(renderable.getImgPath());
         initSubTable(this);
         addTextCell(this, renderable.getDestinationName()).top();
         row();

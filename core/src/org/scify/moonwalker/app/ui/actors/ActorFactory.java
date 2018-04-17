@@ -63,11 +63,14 @@ public class ActorFactory extends ComponentFactory {
             case "image":
                 toReturn = createImage(renderable.getImgPath(), renderable);
                 break;
-            case "cockpit":
-                toReturn = createCockpitActor((CockpitRenderable) renderable);
-                break;
             case "main_menu":
                 toReturn = createMainMenuActor((MainMenuRenderable) renderable);
+                break;
+            case "room":
+                toReturn = createRoomActor((RoomRenderable) renderable);
+                break;
+            case "cockpit":
+                toReturn = createCockpitActor((CockpitRenderable) renderable);
                 break;
             case "rotatable_text_button":
                 gParent = new LGDXContainerStack();
@@ -101,9 +104,6 @@ public class ActorFactory extends ComponentFactory {
                 break;
             case "two_choice_conversation":
                 toReturn = createTwoChoiceConversationActor((TwoChoiceConversationRenderable) renderable);
-                break;
-            case "room":
-                toReturn = createRoomActor((RoomRenderable) renderable);
                 break;
             case "contact_screen":
                 toReturn = createContactScreenActor((ContactScreenRenderable) renderable);
@@ -170,7 +170,7 @@ public class ActorFactory extends ComponentFactory {
 
     private Actor createRoomActor(final RoomRenderable renderable) {
         RoomActor actor = new RoomActor(skin, renderable);
-        actor.init();
+        actor.setZIndex(0);
         return actor;
     }
 

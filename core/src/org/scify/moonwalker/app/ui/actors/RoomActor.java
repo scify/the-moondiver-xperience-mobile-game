@@ -6,17 +6,23 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import org.scify.engine.renderables.Renderable;
+import org.scify.engine.renderables.effects.FunctionEffect;
+import org.scify.engine.renderables.effects.libgdx.FadeLGDXEffect;
+import org.scify.engine.renderables.effects.libgdx.LGDXEffectList;
 import org.scify.moonwalker.app.ui.renderables.RoomRenderable;
 
-public class RoomActor extends TableActor implements Updateable {
+public class RoomActor extends TableActor<RoomRenderable> implements Updateable {
 
     protected RoomRenderable renderable;
-    protected Cell phone;
-    protected Image phoneImage;
-    protected Texture phoneTexture;
+
+    protected Image phoneOffImage;
+    protected Image phoneOnImage;
+
+    protected ActorFactory factory;
 
     public RoomActor(Skin skin, RoomRenderable renderable) {
         super(skin, renderable);
@@ -24,17 +30,32 @@ public class RoomActor extends TableActor implements Updateable {
         timestamp = this.renderable.getRenderableLastUpdated();
         setWidth(renderable.getWidth());
         setHeight(renderable.getHeight());
-        addBackground(renderable.getImgPath());
+        addBackground(renderable.getTableBGRenderable());
+        init();
     }
 
     public void init() {
+        // Get actor factory
+        factory = ActorFactory.getInstance();
         float screenHeight = getHeight();
         float screenWidth = getWidth();
-        phoneTexture = imgUrlToTexture(renderable.PHONE_OFF_IMG_PATH);
-        phoneImage = new Image(new TextureRegionDrawable(new TextureRegion(phoneTexture)));
-        phoneImage.setAlign(Align.center);
-        phoneImage.setZIndex(1);
-        phone = add(phoneImage).width(convertWidth(phoneTexture.getWidth())).height(convertHeight(phoneTexture.getHeight()));
+        phoneOffImage = (Image) factory.createResourceForType(renderable.getPhoneOffRenderable());
+        phoneOnImage = (Image) factory.createResourceForType(renderable.getPhoneOnRenderable());
+        Stack phonesStack = new Stack();
+        phonesStack.add(phoneOffImage);
+        phonesStack.add(phoneOnImage);
+        add(phonesStack).width(convertWidth(phoneOffImage.getWidth())).height(convertHeight(phoneOffImage.getHeight()));
+        getChildrenActorsAndRenderables().put(phoneOffImage,renderable.getPhoneOffRenderable());
+        getChildrenActorsAndRenderables().put(phoneOnImage,renderable.getPhoneOnRenderable());
+        LGDXEffectList fadeInEffects = new LGDXEffectList();
+        fadeInEffects.addEffect(new FadeLGDXEffect(0.0, 1.0, 2000));
+        fadeInEffects.addEffect(new FunctionEffect(new Runnable() {
+            @Override
+            public void run() {
+                renderable.enablePhoneRinging();
+            }
+        }));
+        renderable.apply(fadeInEffects);
     }
 
     @Override
@@ -42,9 +63,6 @@ public class RoomActor extends TableActor implements Updateable {
         if (this.renderable.getRenderableLastUpdated() > timestamp) {
             this.renderable = (RoomRenderable) renderable;
             this.timestamp = this.renderable.getRenderableLastUpdated();
-            phoneTexture.dispose();
-            phoneTexture = imgUrlToTexture(this.renderable.getPhoneImagePath());
-            phoneImage.setDrawable(new TextureRegionDrawable(new TextureRegion(phoneTexture)));
         }
     }
 }

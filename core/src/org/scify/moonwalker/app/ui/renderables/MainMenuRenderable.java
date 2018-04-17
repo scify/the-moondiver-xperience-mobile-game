@@ -11,6 +11,7 @@ import org.scify.moonwalker.app.ui.actors.ActionButton;
 public class MainMenuRenderable extends Renderable {
 
     protected ImageRenderable tableBGRenderable;
+    protected ImageRenderable topBannerRenderable;
 
     public final String BG_IMG_PATH = "img/mainMenu/bg.png";
     public final String TOP_BANNER_IMG_PATH = "img/mainMenu/top.png";
@@ -24,10 +25,13 @@ public class MainMenuRenderable extends Renderable {
     public final String ABOUT_BUTTON_IMG_PATH = "img/mainMenu/about.png";
     public final String QUIT_BUTTON_IMG_PATH = "img/mainMenu/quit.png";
 
+    //AUDIO
     public final String BG_AUDIO_PATH = "audio/mainMenu/menu.mp3";
     public final String CLICK_AUDIO_PATH = "audio/button1.mp3";
-
-    protected ImageRenderable topBannerRenderable;
+    //AUDIO BUFFERING FOR NEXT EPISODE
+    public final String BOY_MUSIC_AUDIO_PATH = "audio/room_episode/boy/music.mp3";
+    public final String GIRL_MUSIC_AUDIO_PATH = "audio/room_episode/girl/music.mp3";
+    public final String MOBILE_AUDIO_PATH = "audio/room_episode/mobile.mp3";
 
     protected ActionButton boyAvatarButton;
     protected ActionButton girlAvatarButton;
@@ -41,9 +45,7 @@ public class MainMenuRenderable extends Renderable {
     protected ActionButton quitButton;
 
     protected int countDownValue;
-
     protected boolean playerSelectionStatus;
-
     protected boolean inputEnabled;
 
     public MainMenuRenderable(float xPos, float yPos, float width, float height, String id) {
@@ -51,9 +53,9 @@ public class MainMenuRenderable extends Renderable {
         inputEnabled = false;
         playerSelectionStatus = false;
         countDownValue = 5;
+        tableBGRenderable = new ImageRenderable("bg", BG_IMG_PATH);
         topBannerRenderable = new ImageRenderable("topbannerImg", TOP_BANNER_IMG_PATH);
         topBannerRenderable.setVisible(false);
-        tableBGRenderable = new ImageRenderable("bg", BG_IMG_PATH);
     }
 
     public void enableInput() { inputEnabled = true; }
@@ -107,11 +109,11 @@ public class MainMenuRenderable extends Renderable {
         if (playerSelectionStatus == false) {
             playerSelectionStatus = true;
             selectedAvatarButton = null;
+            topBannerRenderable.setVisible(true);
             boyAvatarButton.setVisible(true);
             girlAvatarButton.setVisible(true);
             boyButton.setVisible(true);
             girlButton.setVisible(true);
-            topBannerRenderable.setVisible(true);
             double fadingEffectsDuration = 1500;
 
             LGDXEffectList imgEffect = new LGDXEffectList();

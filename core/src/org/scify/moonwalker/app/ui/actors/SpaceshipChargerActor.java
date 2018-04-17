@@ -33,7 +33,7 @@ public class SpaceshipChargerActor extends TableActor implements Updateable {
         timestamp = this.renderable.getRenderableLastUpdated();
         setWidth(renderable.getWidth());
         setHeight(renderable.getHeight());
-        addBackground(renderable.getImgPath());
+        //addBackground(renderable.getImgPath());
         debug();
     }
 

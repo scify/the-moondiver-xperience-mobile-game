@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
@@ -22,7 +23,7 @@ public abstract class TableActor<T extends Renderable> extends Table implements 
     protected long timestamp;
 
     protected T renderable;
-    protected Map<Actor,Renderable> childrenActorsToRenderables;
+    protected Map<Actor, Renderable> childrenActorsToRenderables;
 
     public TableActor(Skin skin, T rRenderable) {
         super(skin);
@@ -54,9 +55,12 @@ public abstract class TableActor<T extends Renderable> extends Table implements 
         return table.add(button).bottom().center().width(appInfo.pixelsWithDensity(button.getWidth())).height(appInfo.pixelsWithDensity(button.getHeight()));
     }
 
-    public void addBackground(String imgPath) {
-        background = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath(imgPath)))));
+    public void addBackground(ImageRenderable imageRenderable) {
+        background = new Image();
+        background.setDrawable(ActorFactory.getInstance().createImage(imageRenderable.getImgPath(), imageRenderable).getDrawable());
+        //background = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath(imgPath)))));
         background.setSize(getWidth(), getHeight());
+        getChildrenActorsAndRenderables().put(background, imageRenderable);
         addActor(background);
     }
 
