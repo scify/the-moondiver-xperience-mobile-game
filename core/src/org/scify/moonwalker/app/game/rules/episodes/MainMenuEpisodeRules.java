@@ -58,6 +58,7 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
     @Override
     protected void handleUserAction(GameState gameState, UserAction userAction) {
         GameEvent coolDownEvent;
+        GameEvent avatarSelected;
         if (renderable.isReadyForInput()) {
             switch (userAction.getActionCode()) {
                 case NEW_GAME:
@@ -81,36 +82,47 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
                     }
                     break;
                 case BOY_SELECTED:
-                    if (!mainMenuButtonsEnabled) {
-                        coolDownEvent = gameState.getGameEventsWithType("COOLDOWN");
-                        if (coolDownEvent != null)
-                            gameState.removeGameEventsWithType("COOLDOWN");
-                        renderable.resetCountDown();
-                        gameState.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.CLICK_AUDIO_PATH));
-                        gameState.addGameEvent(new GameEvent("COOLDOWN", new Date().getTime() + 1000, false, this));
+                    gameInfo.setSelectedPlayer(SelectedPlayer.boy);
+                    coolDownEvent = gameState.getGameEventsWithType("COOLDOWN");
+                    avatarSelected = gameState.getGameEventsWithType("AVATAR_SELECTED");
+                    gameState.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.CLICK_AUDIO_PATH));
+                    if (coolDownEvent != null) {
+                        gameState.removeGameEventsWithType("COOLDOWN");
+                    }
+                    if (avatarSelected != null && avatarSelected.parameters.equals("boy")) {
+                        renderable.setSelectedAvatarButton(renderable.getBoyButton());
+                        renderable.forceCountDownToZero();
+                        gameState.addGameEvent(new GameEvent("COOLDOWN", new Date().getTime(), false, this));
+                    } else {
                         removePreviousAvatarSelectionAndAddNew(gameState, "boy");
                         renderable.setSelectedAvatarButton(renderable.getBoyButton());
-                        gameInfo.setSelectedPlayer(SelectedPlayer.boy);
-
+                        renderable.resetCountDown();
+                        gameState.addGameEvent(new GameEvent("COOLDOWN", new Date().getTime() + 1000, false, this));
                     }
                     break;
                 case GIRL_SELECTED:
-                    if (!mainMenuButtonsEnabled) {
-                        coolDownEvent = gameState.getGameEventsWithType("COOLDOWN");
-                        if (coolDownEvent != null)
-                            gameState.removeGameEventsWithType("COOLDOWN");
-                        renderable.resetCountDown();
-                        gameState.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.CLICK_AUDIO_PATH));
-                        gameState.addGameEvent(new GameEvent("COOLDOWN", new Date().getTime() + 1000, false, this));
+                    gameInfo.setSelectedPlayer(SelectedPlayer.girl);
+                    coolDownEvent = gameState.getGameEventsWithType("COOLDOWN");
+                    avatarSelected = gameState.getGameEventsWithType("AVATAR_SELECTED");
+                    gameState.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.CLICK_AUDIO_PATH));
+                    if (coolDownEvent != null) {
+                        gameState.removeGameEventsWithType("COOLDOWN");
+                    }
+                    if (avatarSelected != null && avatarSelected.parameters.equals("girl")) {
+                        renderable.setSelectedAvatarButton(renderable.getGirlButton());
+                        renderable.forceCountDownToZero();
+                        gameState.addGameEvent(new GameEvent("COOLDOWN", new Date().getTime(), false, this));
+                    } else {
                         removePreviousAvatarSelectionAndAddNew(gameState, "girl");
                         renderable.setSelectedAvatarButton(renderable.getGirlButton());
-                        gameInfo.setSelectedPlayer(SelectedPlayer.girl);
-
+                        renderable.resetCountDown();
+                        gameState.addGameEvent(new GameEvent("COOLDOWN", new Date().getTime() + 1000, false, this));
                     }
                     break;
             }
-            super.handleUserAction(gameState, userAction);
         }
+        super.handleUserAction(gameState, userAction);
+
     }
 
     @Override
@@ -129,7 +141,6 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
     private void prepareNextEpisodeAudio(GameState currentState) {
         currentState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", renderable.BOY_MUSIC_AUDIO_PATH));
         currentState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", renderable.GIRL_MUSIC_AUDIO_PATH));
-        currentState.addGameEvent(new GameEvent("AUDIO_LOAD_UI", renderable.MOBILE_AUDIO_PATH));
     }
 
     protected void createAndAddMainMenuButtons() {

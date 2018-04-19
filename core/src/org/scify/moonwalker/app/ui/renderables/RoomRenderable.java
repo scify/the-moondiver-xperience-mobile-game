@@ -17,21 +17,28 @@ public class RoomRenderable extends Renderable {
     //AUDIO
     public final String BOY_MUSIC_AUDIO_PATH = "audio/room_episode/boy/music.mp3";
     public final String GIRL_MUSIC_AUDIO_PATH = "audio/room_episode/girl/music.mp3";
-    public final String MOBILE_AUDIO_PATH = "audio/room_episode/mobile.mp3";
+    public final String MOBILE_AUDIO_PATH = "audio/message.mp3";
 
-    protected String phoneImagePath;
     protected boolean permanentlyOn;
-    protected boolean readyForPhoneRinging;
+    protected boolean chatEnabled;
+
 
     public RoomRenderable(float xPos, float yPos, float width, float height, String id) {
         super(xPos, yPos, width, height, "room", id);
         permanentlyOn = false;
-        readyForPhoneRinging = false;
-        phoneImagePath = PHONE_OFF_IMG_PATH;
+        chatEnabled = false;
         tableBGRenderable = new ImageRenderable("bg", BG_IMG_PATH);
         phoneOnRenderable = new ImageRenderable("phone_on", PHONE_ON_IMG_PATH);
         phoneOnRenderable.setVisible(false);
         phoneOffRenderable = new ImageRenderable("phone_off", PHONE_OFF_IMG_PATH);
+    }
+
+    public void enableChat() {
+        chatEnabled = true;
+    }
+
+    public boolean isChatEnabled() {
+        return chatEnabled;
     }
 
     public void togglePhone() {
@@ -57,14 +64,6 @@ public class RoomRenderable extends Renderable {
 
     public ImageRenderable getTableBGRenderable() {
         return tableBGRenderable;
-    }
-
-    public boolean isReadyForPhoneRinging() {
-        return readyForPhoneRinging;
-    }
-
-    public void enablePhoneRinging() {
-        readyForPhoneRinging = true;
     }
 
     public ImageRenderable getPhoneOffRenderable() {

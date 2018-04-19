@@ -41,60 +41,48 @@ public class NextConversationActor extends TableActor<NextConversationRenderable
     }
 
     public void init(boolean nextButtonVisibility) {
-        float screenWidth = appInfo.getScreenWidth();
-        float screenHeight = appInfo.getScreenHeight();
-        //Stack stack = new Stack();
-
-        float width = screenWidth * 0.9f;
-        float height = screenHeight * 0.4f;
-
+        float width = renderable.getWidth();
+        float height = renderable.getHeight();
+        defaults();
+        center();
         setWidth(width);
         setHeight(height);
-        setPosition(screenWidth * 0.1f, screenHeight * 0.1f);
         addBackground(renderable.getTableBGRenderable(), width, height);
 
 
-
-
-        /*Table table = new Table();
-        table.defaults();
-        table.center();
-
         //avatar
+        add().height(height).width(0.01f * width);
         Stack avatarStack = new Stack();
-
         Texture avatarBGTexture = new Texture(resourceLocator.getFilePath("img/avatars/bg.png"));
         avatarBG = new Image(new TextureRegionDrawable(new TextureRegion(avatarBGTexture)));
-        avatarBG.setWidth(convertWidth(200));
+        avatarBG.setWidth(0.12f * width);
         avatarBG.setScaling(Scaling.fillX);
         avatarStack.add(avatarBG);
         Texture avatar = imgUrlToTexture(renderable.getRelativeAvatarPath());
         avatarImage = new Image(new TextureRegionDrawable(new TextureRegion(avatar)));
-        avatarImage.setWidth(convertWidth(200));
+        avatarImage.setWidth(0.12f * width);
         avatarImage.setScaling(Scaling.fillX);
         avatarStack.add(avatarImage);
-        table.add(avatarStack).left().width(avatarImage.getWidth());
+        add(avatarStack).width(avatarBG.getWidth());
 
-
-        table.add().width(0.02f * width).height(height * 0.9f);
+        add().height(height).width(0.01f * width);
 
         //Text
         lineLabel = new Label(renderable.getConversationLine().getText(), getSkin());
         lineLabel.setWrap(true);
-        lineLabel.setWidth(width * 0.6f);
-        table.add(lineLabel).center().width(lineLabel.getWidth());
-        table.add().width(0.02f * width);
+        add(lineLabel).center().width(width * 0.64f);
+
+        add().height(height).width(0.01f * width);
         //button
-        table.add(button).right().width(0.2f * width);
+        add(button).right().width(0.2f * width);
         if (nextButtonVisibility)
             enableButton();
         else
             disableButton();
-        table.add().width(0.02f * width);
-        stack.add(table);*/
 
-        //add(stack).height(height).width(width).center();
-        debugAll();
+        add().height(height).width(0.01f * width);
+
+        //debugAll();
     }
 
     @Override

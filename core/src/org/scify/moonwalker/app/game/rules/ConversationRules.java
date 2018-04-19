@@ -9,6 +9,9 @@ import org.scify.engine.renderables.MultipleChoiceConversationRenderable;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.NextConversationRenderable;
 import org.scify.engine.renderables.TwoChoiceConversationRenderable;
+import org.scify.engine.renderables.effects.FunctionEffect;
+import org.scify.engine.renderables.effects.libgdx.FadeLGDXEffect;
+import org.scify.engine.renderables.effects.libgdx.LGDXEffectList;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.engine.UserActionCode;
@@ -50,7 +53,9 @@ public class ConversationRules extends MoonWalkerRules {
         lastConversationRenderable = null;
     }
 
-    public Renderable getLastConversationRenderable() { return lastConversationRenderable; }
+    public Renderable getLastConversationRenderable() {
+        return lastConversationRenderable;
+    }
 
     @Override
     public GameState getInitialState() {
@@ -128,23 +133,26 @@ public class ConversationRules extends MoonWalkerRules {
             addNextConversationLine(nextLines.get(0), gameState);
             // await next event
             pauseConversation(gameState);
-        }else if (nextLinesSize == 2) {
-            addTwoChoiceConversationLines (nextLines, gameState);
+        } else if (nextLinesSize == 2) {
+            addTwoChoiceConversationLines(nextLines, gameState);
             pauseConversation(gameState);
-        }
-        else if (nextLinesSize > 1) {
+        } else if (nextLinesSize > 1) {
             // render dialog
             addMultipleChoiceConversationLines(nextLines, gameState);
             pauseConversation(gameState);
         }
     }
 
-    protected void addNextConversationLine(ConversationLine conversationLine, GameState gameState) {
+    protected void addNextConversationLine(final ConversationLine conversationLine, final GameState gameState) {
         NextConversationRenderable nextConversationRenderable = new NextConversationRenderable("next_conversation_" + conversationLine.getId());
+        if (lastConversationRenderable != null) {
+            lastConversationRenderable.apply(new FadeLGDXEffect(1.0, 0.0, 1000));
+        }
         lastConversationRenderable = nextConversationRenderable;
         lastConversationRenderable.setZIndex(100);
         nextConversationRenderable.setConversationLine(conversationLine);
         nextConversationRenderable.setRelativeAvatarPath(getAvatar(conversationLine.getSpeakerId()));
+        nextConversationRenderable.apply(new FadeLGDXEffect(0.0, 1.0, 1000));
         gameState.addRenderable(nextConversationRenderable);
         setCurrentConversationLine(gameState, conversationLine);
         oldConversationLines.add(nextConversationRenderable);
@@ -165,10 +173,14 @@ public class ConversationRules extends MoonWalkerRules {
 
     protected void addTwoChoiceConversationLines(List<ConversationLine> nextLines, GameState gameState) {
         TwoChoiceConversationRenderable twoChoiceConversationRenderable = new TwoChoiceConversationRenderable("two_choice_conversation");
+        if (lastConversationRenderable != null) {
+            lastConversationRenderable.apply(new FadeLGDXEffect(1.0, 0.0, 200));
+        }
         lastConversationRenderable = twoChoiceConversationRenderable;
         lastConversationRenderable.setZIndex(100);
         twoChoiceConversationRenderable.setConversationLines(nextLines);
         twoChoiceConversationRenderable.setRelativeAvatarImgPath(getAvatar(twoChoiceConversationRenderable.getConversationLines().get(0).getSpeakerId()));
+        twoChoiceConversationRenderable.apply(new FadeLGDXEffect(0.0, 1.0, 1000));
         gameState.addRenderable(twoChoiceConversationRenderable);
         oldConversationLines.add(twoChoiceConversationRenderable);
     }
@@ -219,18 +231,6 @@ public class ConversationRules extends MoonWalkerRules {
         gameState.storeAdditionalDataEntry(ID, currentLine);
         // TODO
         //addSpeakersAsNeeded(gameState, currentLine);
-    }
-
-    protected void addSpeakersAsNeeded(GameState state, ConversationLine currentLine) {
-        // If the speaker does not exist
-        if (!renderableExist(currentLine.getSpeakerId())) {
-            // add the renderable character
-            org.scify.engine.renderables.Renderable newSpeaker = new Renderable(50, 70, appInfo.getScreenWidth() * 0.3f, appInfo.getScreenWidth() * 0.4f, currentLine.getSpeakerId(), currentLine.getSpeakerId());
-            // update my lookup map
-            addRenderableEntry(currentLine.getSpeakerId(), newSpeaker);
-            // update state
-            state.addRenderable(newSpeaker);
-        }
     }
 
     protected List<ConversationLine> extractNextLines(GameState currentGameState, UserAction userAction) {

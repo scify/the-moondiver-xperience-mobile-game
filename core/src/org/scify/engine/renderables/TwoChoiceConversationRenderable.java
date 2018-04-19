@@ -10,18 +10,26 @@ import java.util.List;
 
 public class TwoChoiceConversationRenderable extends Renderable{
 
+    protected ImageRenderable tableBGRenderable;
+    public final String BG_IMG_PATH = "img/conversations/bg.png";
     protected String relativeAvatarImgPath;
     protected List<ConversationLine> conversationLines;
     protected List<ActionButton> buttons;
 
-
     public TwoChoiceConversationRenderable(String id) {
         super("two_choice_conversation", id);
-        xPos = 0;
-        yPos = 0;
-        width = appInfo.getScreenWidth();
-        height = 300;
+        float screenWidth = appInfo.getScreenWidth();
+        float screenHeight = appInfo.getScreenHeight();
+        this.xPos = 0.02f * screenWidth;
+        this.yPos = 0.03f *  screenHeight;
+        width = 0.96f * screenWidth;
+        height = 0.3f * screenHeight;
         buttons = new ArrayList<>();
+        tableBGRenderable = new ImageRenderable("chat_bg", BG_IMG_PATH);
+    }
+
+    public ImageRenderable getTableBGRenderable() {
+        return tableBGRenderable;
     }
 
     public void setConversationLines(List<ConversationLine> conversationLines) {

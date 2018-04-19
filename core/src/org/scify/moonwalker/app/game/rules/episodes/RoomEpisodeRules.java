@@ -1,37 +1,27 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
-import com.badlogic.gdx.utils.Timer;
+
 import org.scify.engine.*;
 import org.scify.engine.conversation.ConversationLine;
-import org.scify.engine.renderables.NextConversationRenderable;
 import org.scify.engine.renderables.effects.FunctionEffect;
 import org.scify.engine.renderables.effects.libgdx.FadeLGDXEffect;
 import org.scify.engine.renderables.effects.libgdx.LGDXEffectList;
 import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.ui.renderables.RoomRenderable;
 
-import java.util.Date;
-import java.util.Iterator;
-
 public class RoomEpisodeRules extends BaseEpisodeRules {
     protected RoomRenderable renderable;
-    protected boolean ringStarted;
-    protected boolean nextButtonActivated;
-    protected long lastRingDate;
-    protected boolean ringStopped;
     protected boolean readyToEndEpisode;
     protected boolean outroInitiated;
+    protected boolean messageReceived;
 
 
     public RoomEpisodeRules() {
         super();
         renderable = null;
-        ringStarted = false;
-        ringStopped = false;
-        nextButtonActivated = false;
         readyToEndEpisode = false;
         outroInitiated = false;
-        lastRingDate = 0;
+        messageReceived = false;
     }
 
     @Override
@@ -50,7 +40,7 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
                 }
             }));
             renderable.apply(fadeOutEffects);
-        }else if (renderable != null && renderable.isReadyForPhoneRinging() && outroInitiated == false) {
+        } else if (renderable != null && renderable.isChatEnabled() && outroInitiated == false) {
             gsCurrent = handleConversationRules(gsCurrent, userAction);
         }
         return super.getNextState(gsCurrent, userAction);
@@ -77,7 +67,6 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
         if (conversationHasNotStartedAndNotFinished(gsCurrent)) {
             // call base class create method, passing the resource file for this specific conversation
             createConversation(gsCurrent, "conversations/episode_room.json");
-            //createConversation(gsCurrent, "conversations/episode_room_test_font.json");
         }
         if (isConversationOngoing(gsCurrent)) {
             // ask the conversation rules to alter the current game state accordingly
@@ -102,31 +91,10 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
         ConversationLine currLine = conversationRules.getCurrentConversationLine(gameState);
         switch (currLine.getTriggerEvent()) {
             case "ring_start":
-                if (ringStarted == false) {
-                    ringStarted = true;
-                    ((NextConversationRenderable) conversationRules.getLastConversationRenderable()).setButtonNextInActive();
-
-                    Timer.schedule(new Timer.Task() {
-                        @Override
-                        public void run() {
-                            renderable.togglePhone();
-                            if (!nextButtonActivated) {
-                                nextButtonActivated = true;
-                                ((NextConversationRenderable) conversationRules.getLastConversationRenderable()).setButtonNextActive();
-                            }
-                        }
-                    }, 3, 1);
-
-                    gameState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", renderable.MOBILE_AUDIO_PATH, new Date().getTime() + 3000, false));
-                }
-                break;
-            case "ring_stop":
-                if (ringStopped == false) {
-                    ringStopped = true;
-                    Timer.instance().clear();
-                    gameState.addGameEvent(new GameEvent("AUDIO_STOP_UI", renderable.MOBILE_AUDIO_PATH));
-                    gameState.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", renderable.MOBILE_AUDIO_PATH));
-                    renderable.turnOnPhone();
+                if (!messageReceived) {
+                    gameState.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.MOBILE_AUDIO_PATH));
+                    renderable.togglePhone();
+                    messageReceived = true;
                 }
                 break;
             default:

@@ -26,9 +26,6 @@ public class TwoChoiceConversationActor extends TableActor<TwoChoiceConversation
 
     protected ResourceLocator resourceLocator;
     protected AppInfo appInfo;
-    protected Image background;
-    protected Button topAnswerButton;
-    protected Button botAnswerButton;
     protected TwoChoiceConversationRenderable renderable;
     protected Image avatarImage;
     protected Image avatarBG;
@@ -41,57 +38,46 @@ public class TwoChoiceConversationActor extends TableActor<TwoChoiceConversation
     }
 
     public void init(Button topAnswerButton, Button botAnswerButton) {
-        float screenWidth = appInfo.getScreenWidth();
-        float screenHeight = appInfo.getScreenHeight();
-        Stack stack = new Stack();
-        Texture chatBox = new Texture(resourceLocator.getFilePath("img/conversations/bg.png"));
-        float width = convertWidth(chatBox.getWidth());
-        float height = convertHeight(chatBox.getHeight());
+        float width = renderable.getWidth();
+        float height = renderable.getHeight();
+        defaults();
+        center();
+        setWidth(width);
+        setHeight(height);
+        addBackground(renderable.getTableBGRenderable(), width, height);
 
-        setWidth(screenWidth);
-        setHeight(height * 1.3f);
-        background = new Image(new TextureRegionDrawable(new TextureRegion(chatBox)));
-        stack.add(background);
-
-        Table table = new Table();
-        table.defaults();
-        table.center();
+        add().height(height).width(0.01f * width);
 
         //avatar
         Stack avatarStack = new Stack();
-
         Texture avatarBGTexture = new Texture(resourceLocator.getFilePath("img/avatars/bg.png"));
         avatarBG = new Image(new TextureRegionDrawable(new TextureRegion(avatarBGTexture)));
-        avatarBG.setWidth(convertWidth(200));
+        avatarBG.setWidth(0.12f * width);
         avatarBG.setScaling(Scaling.fillX);
         avatarStack.add(avatarBG);
         Texture avatar = imgUrlToTexture(renderable.getRelativeAvatarPath());
         avatarImage = new Image(new TextureRegionDrawable(new TextureRegion(avatar)));
-        avatarImage.setWidth(convertWidth(200));
+        avatarImage.setWidth(0.12f * width);
         avatarImage.setScaling(Scaling.fillX);
         avatarStack.add(avatarImage);
-        table.add(avatarStack).left().width(avatarImage.getWidth());
-        float widthLeftForButtons = width - avatarImage.getWidth() - (0.05f * width);
+        add(avatarStack).width(avatarBG.getWidth());
 
-
-        table.add().width(0.02f * width).height(height * 0.9f);
+        add().height(height).width(0.01f * width);
 
         //button
         Table buttonsTable = new Table();
         buttonsTable.defaults();
         buttonsTable.center();
-
-        buttonsTable.add(topAnswerButton).right().width(widthLeftForButtons);
+        float buttonWidth = 0.85f * width;
+        float buttonHeight = 0.3f * height;
+        buttonsTable.add(topAnswerButton).width(buttonWidth).height(buttonHeight);
         buttonsTable.row();
-        buttonsTable.add().height(height * 0.2f);
+        buttonsTable.add().height(buttonHeight/2);
         buttonsTable.row();
-        buttonsTable.add(botAnswerButton).right().width(widthLeftForButtons);
-        table.add(buttonsTable).width(widthLeftForButtons);
-        table.add().width(0.02f * width);
+        buttonsTable.add(botAnswerButton).width(buttonWidth).height(buttonHeight);
+        add(buttonsTable).width(buttonWidth);
 
-        stack.add(table);
-        add(stack).height(height).width(width).center();
-
+        add().height(height).width(0.01f * width);
     }
 
     protected float convertHeight(float initialHeight) {

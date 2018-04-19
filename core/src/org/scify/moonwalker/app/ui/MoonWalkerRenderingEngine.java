@@ -74,6 +74,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         initFPSLabel();
         audioEngine.pauseCurrentlyPlayingAudios();
         audioEngine.loadSound("audio/mainMenu/menu.mp3");
+        audioEngine.loadSound("audio/message.mp3");
         audioEngine.loadSound("audio/button1.mp3");
         audioEnabled = true;
         printDebugInfo();

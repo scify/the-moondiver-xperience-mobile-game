@@ -18,10 +18,12 @@ public class NextConversationRenderable extends Renderable {
 
     public NextConversationRenderable(String id) {
         super("next_conversation", id);
-        xPos = 0;
-        yPos = 0;
-        width = appInfo.getScreenWidth();
-        height = 300;
+        float screenWidth = appInfo.getScreenWidth();
+        float screenHeight = appInfo.getScreenHeight();
+        this.xPos = 0.02f * screenWidth;
+        this.yPos = 0.03f *  screenHeight;
+        width = 0.96f * screenWidth;
+        height = 0.3f * screenHeight;
         buttonNext = new ActionButton("text_button", "button_next");
         buttonNext.setTitle("Επόμενο");
         buttonNext.setUserAction(new UserAction(UserActionCode.NEXT_CONVERSATION_LINE));
@@ -40,7 +42,7 @@ public class NextConversationRenderable extends Renderable {
         }
     }
 
-    public void setButtonNextInActive() {
+    public void setButtonNextInactive() {
         if (buttonNextActive) {
             buttonNextActive = false;
             renderableWasUpdated();

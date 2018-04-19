@@ -31,7 +31,6 @@ public class MainMenuRenderable extends Renderable {
     //AUDIO BUFFERING FOR NEXT EPISODE
     public final String BOY_MUSIC_AUDIO_PATH = "audio/room_episode/boy/music.mp3";
     public final String GIRL_MUSIC_AUDIO_PATH = "audio/room_episode/girl/music.mp3";
-    public final String MOBILE_AUDIO_PATH = "audio/room_episode/mobile.mp3";
 
     protected ActionButton boyAvatarButton;
     protected ActionButton girlAvatarButton;
@@ -92,6 +91,11 @@ public class MainMenuRenderable extends Renderable {
 
     public void resetCountDown() {
         countDownValue = 5;
+        renderableWasUpdated();
+    }
+
+    public void forceCountDownToZero() {
+        countDownValue = 0;
         renderableWasUpdated();
     }
 

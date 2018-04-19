@@ -46,7 +46,7 @@ public class RoomActor extends TableActor<RoomRenderable> implements Updateable 
         fadeInEffects.addEffect(new FunctionEffect(new Runnable() {
             @Override
             public void run() {
-                renderable.enablePhoneRinging();
+                renderable.enableChat();
             }
         }));
         renderable.apply(fadeInEffects);
