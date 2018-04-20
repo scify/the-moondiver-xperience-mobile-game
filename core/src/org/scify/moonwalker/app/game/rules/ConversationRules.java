@@ -9,18 +9,28 @@ import org.scify.engine.renderables.MultipleChoiceConversationRenderable;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.NextConversationRenderable;
 import org.scify.engine.renderables.TwoChoiceConversationRenderable;
-import org.scify.engine.renderables.effects.FunctionEffect;
+import org.scify.engine.renderables.effects.Effect;
+import org.scify.engine.renderables.effects.MoveEffect;
 import org.scify.engine.renderables.effects.libgdx.FadeLGDXEffect;
+import org.scify.engine.renderables.effects.libgdx.LGDXEffect;
 import org.scify.engine.renderables.effects.libgdx.LGDXEffectList;
+import org.scify.engine.renderables.effects.libgdx.MoveLGDXEffect;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.engine.UserActionCode;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class ConversationRules extends MoonWalkerRules {
+    /**
+     * Constant event types
+     */
+    public static final String ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT = "ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT";
+    public static final String ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT = "ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT";
+    public static final String CONVERSATION_READY_TO_FINISH = "CONVERSATION_READY_TO_FINISH";
+    public static final String CONVERSATION_FINISHED = "CONVERSATION_FINISHED";
+    public static final String CONVERSATION_PAUSED = "CONVERSATION_PAUSED";
+
     /**
      * All conversation lines that are read from the json file for
      * this conversation.
@@ -36,11 +46,16 @@ public class ConversationRules extends MoonWalkerRules {
      */
     protected String ID;
 
+    protected int currentConversationOrderId;
+
+    protected List<ConversationLine> nextLines;
+
     /**
      * Every conversation line that is added to the game state
      * is added to this list as well.
      */
     protected List<Renderable> oldConversationLines;
+    protected String sPrvSpeakerID;
 
     public ConversationRules(String conversationJSONFilePath) {
         appInfo = AppInfo.getInstance();
@@ -51,6 +66,7 @@ public class ConversationRules extends MoonWalkerRules {
         ID = UUID.randomUUID().toString();
         oldConversationLines = new ArrayList<>();
         lastConversationRenderable = null;
+        this.currentConversationOrderId = 0;
     }
 
     public Renderable getLastConversationRenderable() {
@@ -64,33 +80,87 @@ public class ConversationRules extends MoonWalkerRules {
 
     @Override
     public GameState getNextState(GameState gameState, UserAction userAction) {
-        // If got an answer (TEXT, BUTTON, ...)
+        // If got an answer (NEXT, TEXT, BUTTON, ...)
         if (gotAnswer(userAction)) {
             // Clear paused conversation flag
             resumeConversation(gameState);
             removeActiveConversationComponents(gameState);
-            handleAnswerToMultipleQuestion(gameState, userAction);
-            if (gameState.eventsQueueContainsEvent("CONVERSATION_READY_TO_FINISH"))
-                gameState.addGameEvent(new GameEvent("CONVERSATION_FINISHED"));
+
+            // Get if something was selected
+            ConversationLine selected = getSelectedConversationLine(gameState, userAction);
+
+            if(selected != null) {
+                // Update what line was selected
+                setCurrentConversationLine(gameState, selected);
+                handleOnExitEventForCurrentConversationOrder(gameState, selected);
+            }
+
+            if (gameState.eventsQueueContainsEvent(CONVERSATION_READY_TO_FINISH))
+                gameState.addGameEvent(new GameEvent(CONVERSATION_FINISHED, null, this));
+
         }
+
         // If conversation is paused
         if (isConversationPaused(gameState))
             // return the current game state
             return gameState;
-        // Get next alternatives
-        List<ConversationLine> nextLines = extractNextLines(gameState, userAction);
-        handleNextConversationState(nextLines, gameState, userAction);
-        handleTriggerEventForCurrentConversationLine(gameState);
+
+        // Move to appropriate next order
+        // If we just started
+        if (currentConversationOrderId == 0) {
+            // Get next alternatives
+            nextLines = extractNextLines(gameState, userAction);
+            // Update current order to initialize
+            currentConversationOrderId = nextLines.get(0).getOrder();
+        }
+        // else, if we have gone beyond initialization
+        else {
+            // If no explicit next order has been requested
+            if (getSelectedConversationLine(gameState, userAction).getNextOrder() == 0) {
+                currentConversationOrderId++; // Move to next normally
+            } else {
+                // else update order based on request from current conversation line
+                currentConversationOrderId = getSelectedConversationLine(gameState, userAction).getNextOrder();
+            }
+
+            // Actually retrieve the next lines
+            nextLines = extractNextLines(gameState, userAction);
+        }
+
+        // Call event that handles conversation order change
+        handleNextConversationState(gameState, userAction);
+        // Call event that signifies conversation order change
+        handleOnEnterEventForCurrentConversationOrder(gameState);
+
+
+
         return gameState;
     }
 
-    protected void handleTriggerEventForCurrentConversationLine(GameState gameState) {
-        ConversationLine currLine = getCurrentConversationLine(gameState);
-        switch (currLine.getTriggerEvent()) {
-            case "end":
-                gameState.addGameEvent(new GameEvent("CONVERSATION_READY_TO_FINISH"));
-                break;
+    protected void handleOnEnterEventForCurrentConversationOrder(GameState gameState) {
+        if (nextLines == null)
+            return;
+
+        // For every possible next line
+        Set<String> sAllEvents = new HashSet<>();
+        for (ConversationLine currLine : nextLines) {
+            sAllEvents.addAll(currLine.getOnEnterCurrentOrderTrigger());
         }
+
+        // Send event indicating we entered a new order
+        gameState.addGameEvent(new GameEvent(ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT, sAllEvents, this));
+    }
+
+    protected void handleOnExitEventForCurrentConversationOrder(GameState gameState, ConversationLine selectedLine) {
+        Set<String> sAllEvents = selectedLine.getOnExitCurrentOrderTrigger();
+
+        // Examine what the trigger is and handle it
+        if (sAllEvents.contains("end")) {
+                gameState.addGameEvent(new GameEvent(CONVERSATION_READY_TO_FINISH, null, this));
+        }
+
+        // Throw a "Conversation on exit order event"
+        gameState.addGameEvent(new GameEvent(ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT, sAllEvents, this));
     }
 
     protected boolean gotAnswer(UserAction userAction) {
@@ -99,7 +169,7 @@ public class ConversationRules extends MoonWalkerRules {
     }
 
     protected void resumeConversation(GameState gameState) {
-        gameState.removeGameEventsWithType("CONVERSATION_PAUSED");
+        gameState.removeGameEventsWithType(CONVERSATION_PAUSED);
     }
 
     /**
@@ -117,70 +187,106 @@ public class ConversationRules extends MoonWalkerRules {
         }
     }
 
-    protected void handleAnswerToMultipleQuestion(GameState gameState, UserAction userAction) {
-        if (userAction.getActionCode().equals(UserActionCode.MULTIPLE_SELECTION_ANSWER)) {
-            ConversationLine answered = getLineById((Integer) userAction.getActionPayload());
-            if (answered != null)
-                setCurrentConversationLine(gameState, answered);
+    protected ConversationLine getSelectedConversationLine(GameState gameState, UserAction userAction) {
+        ConversationLine answered = null;
+        if (userAction.getActionCode().equals(UserActionCode.MULTIPLE_SELECTION_ANSWER) ||
+                userAction.getActionCode().equals(UserActionCode.NEXT_CONVERSATION_LINE)) {
+            answered = getLineById((Integer) userAction.getActionPayload());
         }
+
+        return answered;
     }
 
-    protected void handleNextConversationState(List<ConversationLine> nextLines, GameState gameState, UserAction userAction) {
+    protected void handleNextConversationState(GameState gameState, UserAction userAction) {
+        if (nextLines == null)
+            return;
+
         // NextType
         int nextLinesSize = nextLines.size();
-        if (nextLinesSize == 1) {
-            // render it
-            addNextConversationLine(nextLines.get(0), gameState);
-            // await next event
-            pauseConversation(gameState);
-        } else if (nextLinesSize == 2) {
-            addTwoChoiceConversationLines(nextLines, gameState);
-            pauseConversation(gameState);
-        } else if (nextLinesSize > 1) {
-            // render dialog
-            addMultipleChoiceConversationLines(nextLines, gameState);
-            pauseConversation(gameState);
+        // Determine whether there is a new speaker
+
+        // If we just started, then consider that we have a new speaker
+        boolean newSpeaker = sPrvSpeakerID == null;
+        if (sPrvSpeakerID != null) {
+            if (nextLinesSize > 0) {
+                newSpeaker = !sPrvSpeakerID.equals(nextLines.get(0).getSpeakerId());
+            }
         }
+
+        // render dialog appropriately
+        if (nextLinesSize == 1) {
+            addNextConversationLine(nextLines.get(0), gameState, newSpeaker);
+        } else if (nextLinesSize == 2) {
+            addTwoChoiceConversationLines(nextLines, gameState, newSpeaker);
+        } else if (nextLinesSize > 1) {
+            addMultipleChoiceConversationLines(nextLines, gameState, newSpeaker);
+        }
+        // await next event
+        pauseConversation(gameState);
+
     }
 
-    protected void addNextConversationLine(final ConversationLine conversationLine, final GameState gameState) {
+    protected void addNextConversationLine(final ConversationLine conversationLine, final GameState gameState, boolean newSpeaker) {
         NextConversationRenderable nextConversationRenderable = new NextConversationRenderable("next_conversation_" + conversationLine.getId());
         if (lastConversationRenderable != null) {
-            lastConversationRenderable.apply(new FadeLGDXEffect(1.0, 0.0, 1000));
+            lastConversationRenderable.apply(getOutroEffect(lastConversationRenderable, conversationLine, gameState, newSpeaker));
         }
         lastConversationRenderable = nextConversationRenderable;
         lastConversationRenderable.setZIndex(100);
         nextConversationRenderable.setConversationLine(conversationLine);
+        // Update previous speaker
+        sPrvSpeakerID = conversationLine.getSpeakerId();
         nextConversationRenderable.setRelativeAvatarPath(getAvatar(conversationLine.getSpeakerId()));
-        nextConversationRenderable.apply(new FadeLGDXEffect(0.0, 1.0, 1000));
+//        nextConversationRenderable.apply(new FadeLGDXEffect(0.0, 1.0, 1000));
+        nextConversationRenderable.apply(getIntroEffect(nextConversationRenderable, conversationLine, gameState, newSpeaker));
+
         gameState.addRenderable(nextConversationRenderable);
-        setCurrentConversationLine(gameState, conversationLine);
         oldConversationLines.add(nextConversationRenderable);
     }
 
-    protected void addMultipleChoiceConversationLines(List<ConversationLine> nextLines, GameState gameState) {
+    protected LGDXEffect getIntroEffect(Renderable target, ConversationLine conversationLine, GameState gameState, boolean newSpeaker) {
+        if (!newSpeaker)
+            return new FadeLGDXEffect(0.0, 1.0, 1000);
+        else {
+            return new MoveLGDXEffect((float) -target.getWidth(), (float) target.getyPos(), target.getxPos(),
+                    target.getyPos(), 1000);
+        }
+    }
 
+    private LGDXEffect getOutroEffect(Renderable target, ConversationLine conversationLine, GameState gameState, boolean newSpeaker) {
+        if (!newSpeaker)
+            return new FadeLGDXEffect(1.0, 0.0, 200);
+        else
+            return new MoveLGDXEffect((float)-target.getWidth(), (float)target.getyPos(), 1000);
+    }
+
+
+    protected void addMultipleChoiceConversationLines(List<ConversationLine> nextLines, GameState gameState, boolean newSpeaker) {
+        // TODO: Fix later and include effects
         //edit as above method
         MultipleChoiceConversationRenderable multipleChoiceConversationRenderable = new MultipleChoiceConversationRenderable("multiple_choice_conversation");
         lastConversationRenderable = multipleChoiceConversationRenderable;
         lastConversationRenderable.setZIndex(100);
-        multipleChoiceConversationRenderable.setTitle(getCurrentConversationLine(gameState).getText());
+        //multipleChoiceConversationRenderable.setTitle(getCurrentConversationLine(gameState).getText());
         multipleChoiceConversationRenderable.setConversationLines(nextLines);
-        multipleChoiceConversationRenderable.setRelativeAvatarImgPath(getAvatar(getCurrentConversationLine(gameState).getSpeakerId()));
+        //multipleChoiceConversationRenderable.setRelativeAvatarImgPath(getAvatar(getCurrentConversationLine(gameState).getSpeakerId()));
         gameState.addRenderable(multipleChoiceConversationRenderable);
         oldConversationLines.add(multipleChoiceConversationRenderable);
     }
 
-    protected void addTwoChoiceConversationLines(List<ConversationLine> nextLines, GameState gameState) {
+    protected void addTwoChoiceConversationLines(List<ConversationLine> nextLines, GameState gameState, boolean newSpeaker) {
         TwoChoiceConversationRenderable twoChoiceConversationRenderable = new TwoChoiceConversationRenderable("two_choice_conversation");
         if (lastConversationRenderable != null) {
-            lastConversationRenderable.apply(new FadeLGDXEffect(1.0, 0.0, 200));
+            lastConversationRenderable.apply(getOutroEffect(lastConversationRenderable, nextLines.get(0), gameState, newSpeaker));
         }
         lastConversationRenderable = twoChoiceConversationRenderable;
         lastConversationRenderable.setZIndex(100);
         twoChoiceConversationRenderable.setConversationLines(nextLines);
+        // Update previous speaker
+        sPrvSpeakerID = conversationLines.get(0).getSpeakerId();
         twoChoiceConversationRenderable.setRelativeAvatarImgPath(getAvatar(twoChoiceConversationRenderable.getConversationLines().get(0).getSpeakerId()));
-        twoChoiceConversationRenderable.apply(new FadeLGDXEffect(0.0, 1.0, 1000));
+        twoChoiceConversationRenderable.apply(getIntroEffect(twoChoiceConversationRenderable, nextLines.get(0), gameState, newSpeaker));
+
         gameState.addRenderable(twoChoiceConversationRenderable);
         oldConversationLines.add(twoChoiceConversationRenderable);
     }
@@ -235,15 +341,10 @@ public class ConversationRules extends MoonWalkerRules {
 
     protected List<ConversationLine> extractNextLines(GameState currentGameState, UserAction userAction) {
         List<ConversationLine> lines = new ArrayList<>();
-        ConversationLine currentLine = getCurrentConversationLine(currentGameState);
-        if (currentLine == null) {
+        if (this.currentConversationOrderId == 0)
             lines.add(conversationLines.get(0));
-            return lines;
-        }
-        if (currentLine.getNextOrder() != 0)
-            lines = getLinesWithOrder(currentLine.getNextOrder());
         else
-            lines = getLinesWithOrder(currentLine.getOrder() + 1);
+            lines = getLinesWithOrder(this.currentConversationOrderId);
         return lines;
     }
 
@@ -264,10 +365,16 @@ public class ConversationRules extends MoonWalkerRules {
     }
 
     protected boolean isConversationPaused(GameState gameState) {
-        return gameState.eventsQueueContainsEvent("CONVERSATION_PAUSED");
+        return gameState.eventsQueueContainsEvent(CONVERSATION_PAUSED);
     }
 
     protected void pauseConversation(GameState gameState) {
-        gameState.addGameEvent(new GameEvent("CONVERSATION_PAUSED"));
+        gameState.addGameEvent(new GameEvent(CONVERSATION_PAUSED, null, this));
+    }
+
+    public GameState cleanUpState(GameState currentState) {
+        currentState.removeAllGameEventsOwnedBy(this);
+
+        return currentState;
     }
 }

@@ -26,9 +26,19 @@ public class NextConversationRenderable extends Renderable {
         height = 0.3f * screenHeight;
         buttonNext = new ActionButton("text_button", "button_next");
         buttonNext.setTitle("Επόμενο");
-        buttonNext.setUserAction(new UserAction(UserActionCode.NEXT_CONVERSATION_LINE));
         buttonNextActive = true;
         tableBGRenderable = new ImageRenderable("chat_bg", BG_IMG_PATH);
+    }
+
+    public void setConversationLine(ConversationLine conversationLine) {
+
+        this.conversationLine = conversationLine;
+        String buttonText = conversationLine.getButtonText();
+        if (buttonText != null) {
+            buttonNext.setTitle(buttonText);
+        }
+
+        buttonNext.setUserAction(new UserAction(UserActionCode.NEXT_CONVERSATION_LINE, conversationLine.getId()));
     }
 
     public ImageRenderable getTableBGRenderable() {
@@ -51,10 +61,6 @@ public class NextConversationRenderable extends Renderable {
 
     public boolean getButtonNextStatus() {
         return buttonNextActive;
-    }
-
-    public void setConversationLine(ConversationLine conversationLine) {
-        this.conversationLine = conversationLine;
     }
 
     public void setRelativeAvatarPath(String relativeAvatarPath) {

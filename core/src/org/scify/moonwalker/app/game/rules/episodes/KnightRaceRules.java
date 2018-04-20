@@ -70,9 +70,6 @@ public class KnightRaceRules extends SinglePlayerRules {
 
     protected void handleTriggerEventForCurrentConversationLine(GameState gameState) {
         ConversationLine currLine = conversationRules.getCurrentConversationLine(gameState);
-        switch (currLine.getTriggerEvent()) {
-
-        }
     }
 
     /**

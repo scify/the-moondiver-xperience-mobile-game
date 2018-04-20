@@ -7,13 +7,15 @@ import org.scify.engine.renderables.effects.FunctionEffect;
 import org.scify.engine.renderables.effects.libgdx.FadeLGDXEffect;
 import org.scify.engine.renderables.effects.libgdx.LGDXEffectList;
 import org.scify.moonwalker.app.game.SelectedPlayer;
+import org.scify.moonwalker.app.game.rules.ConversationRules;
 import org.scify.moonwalker.app.ui.renderables.RoomRenderable;
+
+import java.util.Set;
 
 public class RoomEpisodeRules extends BaseEpisodeRules {
     protected RoomRenderable renderable;
     protected boolean readyToEndEpisode;
     protected boolean outroInitiated;
-    protected boolean messageReceived;
 
 
     public RoomEpisodeRules() {
@@ -21,7 +23,6 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
         renderable = null;
         readyToEndEpisode = false;
         outroInitiated = false;
-        messageReceived = false;
     }
 
     @Override
@@ -88,18 +89,43 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
     }
 
     protected void handleTriggerEventForCurrentConversationLine(GameState gameState) {
-        ConversationLine currLine = conversationRules.getCurrentConversationLine(gameState);
-        switch (currLine.getTriggerEvent()) {
-            case "ring_start":
-                if (!messageReceived) {
+        Set<String> eventTrigger;
+        if(gameState.eventsQueueContainsEvent(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT)) {
+            eventTrigger = (Set<String>) gameState.getGameEventsWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
+            if (eventTrigger.contains("ring_phone")) {
+                gameState.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.MOBILE_AUDIO_PATH));
+                renderable.togglePhone();
+            }
+            if (eventTrigger.contains("toggle")) {
+                renderable.togglePhone();
+            }
+
+            gameState.removeGameEventsWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT);
+        }
+        /*if(gameState.eventsQueueContainsEvent("ON_EXIT_CONVERSATION_TRIGGER_EVENT")) {
+            eventTrigger = (String) gameState.getGameEventsWithType("ON_EXIT_CONVERSATION_TRIGGER_EVENT").parameters;
+            switch (eventTrigger) {
+                case "ring_phone":
+
                     gameState.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.MOBILE_AUDIO_PATH));
                     renderable.togglePhone();
-                    messageReceived = true;
-                }
-                break;
-            default:
-                break;
-        }
+
+                    break;
+                case "end":
+                    gameState.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.MOBILE_AUDIO_PATH));
+                    renderable.togglePhone();
+
+                    break;
+                case "toggle":
+
+                    renderable.togglePhone();
+
+                    break;
+                default:
+                    break;
+            }
+            gameState.removeGameEventsWithType("ON_ENTER_CONVERSATION_TRIGGER_EVENT");
+        }*/
     }
 
     @Override
@@ -110,8 +136,11 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
     @Override
     public EpisodeEndState determineEndState(GameState gsCurrent) {
         EpisodeEndStateCode code = EpisodeEndStateCode.EPISODE_FINISHED_FAILURE;
-        if (gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED"))
+        if (gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED")) {
             code = EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS;
+            conversationRules.cleanUpState(gsCurrent);
+        }
+
         return new EpisodeEndState(code, cleanUpState(gsCurrent));
     }
 

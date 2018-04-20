@@ -4,10 +4,8 @@ import java.awt.geom.Point2D;
 import java.util.Date;
 
 public class BounceEffect extends BaseEffect {
-    public static String PARAM_BOUNCE_WIDTH = "bounceWidth";
-    public static String PARAM_BOUNCE_HEIGHT = "bounceHeight";
-    public static String PARAM_DURATION = "duration";
-    public static String INFO_DURATION_REMAINING_MSEC = "durationRemaining";
+    public static final String PARAM_BOUNCE_WIDTH = "bounceWidth";
+    public static final String PARAM_BOUNCE_HEIGHT = "bounceHeight";
 
     protected double dMaxXOffset;
     protected double dMaxYOffset;
@@ -22,11 +20,10 @@ public class BounceEffect extends BaseEffect {
      * Creates a fade-in effect, from alpha 0.0 to 1.0, taking place within 1 second progressively.
      */
     public BounceEffect() {
-        super();
+        super(1000);
 
         params.put(PARAM_BOUNCE_WIDTH, "100.0");
         params.put(PARAM_BOUNCE_HEIGHT, "100.0");
-        params.put(PARAM_DURATION, "1000.0");
     }
 
     /**
@@ -37,11 +34,10 @@ public class BounceEffect extends BaseEffect {
      * @param dDurationMSec The time taken for the full transition.
      */
     public BounceEffect(double dBounceWidth, double dBounceHeight, double dDurationMSec) {
-        super();
+        super(dDurationMSec);
 
         params.put(PARAM_BOUNCE_WIDTH, String.valueOf(dBounceWidth));
         params.put(PARAM_BOUNCE_HEIGHT, String.valueOf(dBounceHeight));
-        params.put(PARAM_DURATION, String.valueOf(dDurationMSec));
     }
 
     @Override
