@@ -1,5 +1,6 @@
 package org.scify.engine.renderables.effects;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -74,5 +75,7 @@ public class ParallelEffectList extends BaseEffect {
         return target;
     }
 
-
+    public List<Effect> getSeriesOfEffects() {
+        return new ArrayList<>(seriesOfEffects);
+    }
 }

@@ -4,26 +4,24 @@ import java.awt.geom.Point2D;
 import java.util.Date;
 
 public class BounceEffect extends BaseEffect {
-    public static final String PARAM_BOUNCE_WIDTH = "bounceWidth";
-    public static final String PARAM_BOUNCE_HEIGHT = "bounceHeight";
+    // Parameters
+    public static final String PARAM_BOUNCE_WIDTH = "PARAM_BOUNCE_WIDTH";
+    public static final String PARAM_BOUNCE_HEIGHT = "PARAM_BOUNCE_HEIGHT";
+    public static final String INFO_TARGET_X_OFFSET = "INFO_TARGET_X_OFFSET";
+    public static final String INFO_TARGET_Y_OFFSET = "INFO_TARGET_Y_OFFSET";
 
-    protected double dMaxXOffset;
-    protected double dMaxYOffset;
-    protected double dCurTime;
-    protected double dStartTime;
-    protected double dDuration;
-    protected double dTimeRemaining;
-    protected double dTargetXOffset;
-    protected double dTargetYOffset;
+//    protected double dMaxXOffset;
+//    protected double dMaxYOffset;
+//    protected double dCurTime;
+//    protected double dStartTime;
+//    protected double dDuration;
+//    protected double dTimeRemaining;
+//    protected double dTargetXOffset;
+//    protected double dTargetYOffset;
 
-    /**
-     * Creates a fade-in effect, from alpha 0.0 to 1.0, taking place within 1 second progressively.
-     */
-    public BounceEffect() {
-        super(1000);
 
-        params.put(PARAM_BOUNCE_WIDTH, "100.0");
-        params.put(PARAM_BOUNCE_HEIGHT, "100.0");
+    public BounceEffect(Effect eSource) {
+        super(eSource);
     }
 
     /**
@@ -36,8 +34,8 @@ public class BounceEffect extends BaseEffect {
     public BounceEffect(double dBounceWidth, double dBounceHeight, double dDurationMSec) {
         super(dDurationMSec);
 
-        params.put(PARAM_BOUNCE_WIDTH, String.valueOf(dBounceWidth));
-        params.put(PARAM_BOUNCE_HEIGHT, String.valueOf(dBounceHeight));
+        setNumericParameter(PARAM_BOUNCE_WIDTH, dBounceWidth);
+        setNumericParameter(PARAM_BOUNCE_HEIGHT, dBounceHeight);
     }
 
     @Override
@@ -53,23 +51,27 @@ public class BounceEffect extends BaseEffect {
     }
 
     protected Point2D.Double calculateOffsets() {
-        dMaxXOffset = Double.valueOf(params.get(PARAM_BOUNCE_WIDTH));
-        dMaxYOffset = Double.valueOf(params.get(PARAM_BOUNCE_HEIGHT));
+        double dMaxXOffset = getNumericParameter(PARAM_BOUNCE_WIDTH);
+        double dMaxYOffset = getNumericParameter(PARAM_BOUNCE_HEIGHT);
 
-        dCurTime = new Date().getTime();
-        dStartTime = Long.valueOf(params.get(INFO_START_TIME));
-        dDuration = Double.valueOf(params.get(PARAM_DURATION));
+        double dCurTime = new Date().getTime();
+        double dStartTime = getNumericParameter(INFO_START_TIME);
+        double dDuration = getNumericParameter(PARAM_DURATION);
 
-        dTimeRemaining = dCurTime - dStartTime;
+        double dTimeRemaining = dCurTime - dStartTime;
         double dPercentage = dTimeRemaining / dDuration;
 
         // Apply a function (sinusoid in this case) to determine current X and Y offsets.
-        dTargetXOffset = projectionFunction(dMaxXOffset, dPercentage);
-        dTargetYOffset = projectionFunction(dMaxYOffset, dPercentage);
+        double dTargetXOffset = projectionFunction(dMaxXOffset, dPercentage);
+        double dTargetYOffset = projectionFunction(dMaxYOffset, dPercentage);
 
 
         Point2D.Double pRes = new Point2D.Double();
         pRes.setLocation(dTargetXOffset, dTargetYOffset);
+
+        // Update target values
+        setNumericParameter(INFO_TARGET_X_OFFSET, dTargetXOffset);
+        setNumericParameter(INFO_TARGET_Y_OFFSET, dTargetYOffset);
 
         // DEBUG LINES
 //        System.err.println("Offset: " + pRes.toString());
@@ -77,6 +79,14 @@ public class BounceEffect extends BaseEffect {
         return pRes;
     }
 
+    /**
+     * This function returns the target offset (for any dimension), given the maximum offset
+     * and the percentage of the change completion. It actually applies a sin function to the
+     * offset, completing the circle when completion reaches 100%.
+     * @param dMaxOffset The max offset.
+     * @param dPercentageOfChange The percentage of the bounce period at the current timepoint.
+     * @return The target offset.
+     */
     protected double projectionFunction(double dMaxOffset, double dPercentageOfChange) {
         return dMaxOffset * Math.sin(2 * Math.PI * dPercentageOfChange);
     }

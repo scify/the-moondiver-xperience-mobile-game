@@ -3,16 +3,9 @@ package org.scify.engine.renderables.effects;
 import java.util.Date;
 
 public class RotateEffect extends BaseEffect {
-    public static String PARAM_FROM_ANGLE = "fromAngle";
-    public static String PARAM_TO_ANGLE = "toAngle";
-
-    protected double dStartAngle;
-    protected double dEndAngle;
-    protected double dCurTime;
-    protected double dStartTime;
-    protected double dDuration;
-    protected double dTimeRemaining;
-    protected double dTargetAngle;
+    public static final String PARAM_FROM_ANGLE = "PARAM_FROM_ANGLE";
+    public static final String PARAM_TO_ANGLE = "PARAM_TO_ANGLE";
+    public static final String INFO_CURRENT_ANGLE = "INFO_CURRENT_ANGLE";
 
     /**
      * Creates a fade-in effect, from 0.0 to 360.0 degrees, taking place within 1 second progressively.
@@ -20,9 +13,12 @@ public class RotateEffect extends BaseEffect {
     public RotateEffect() {
         super(1000);
 
-        params.put(PARAM_FROM_ANGLE, "0.0");
-        params.put(PARAM_TO_ANGLE, "360.0");
+        setNumericParameter(PARAM_FROM_ANGLE, 0.0);
+        setNumericParameter(PARAM_TO_ANGLE, 360.0);
+    }
 
+    public RotateEffect(Effect eSource) {
+        super(eSource);
     }
 
     /**
@@ -35,8 +31,8 @@ public class RotateEffect extends BaseEffect {
     public RotateEffect(double dFromAngle, double dToAngle, double dDurationMSec) {
         super(dDurationMSec);
 
-        params.put(PARAM_FROM_ANGLE, String.valueOf(dFromAngle));
-        params.put(PARAM_TO_ANGLE, String.valueOf(dToAngle));
+        setNumericParameter(PARAM_FROM_ANGLE, dFromAngle);
+        setNumericParameter(PARAM_TO_ANGLE, dToAngle);
     }
 
     @Override
@@ -49,26 +45,22 @@ public class RotateEffect extends BaseEffect {
     }
 
     protected double calculateAngle() {
-        dStartAngle = Double.valueOf(params.get(PARAM_FROM_ANGLE));
-        dEndAngle = Double.valueOf(params.get(PARAM_TO_ANGLE));
+        double dStartAngle = getNumericParameter(PARAM_FROM_ANGLE);
+        double dEndAngle = getNumericParameter(PARAM_TO_ANGLE);
 
-        dCurTime = new Date().getTime();
-        dStartTime = Long.valueOf(params.get(INFO_START_TIME));
-        dDuration = Double.valueOf(params.get(PARAM_DURATION));
+        double dCurTime = new Date().getTime();
+        double dTimeRemaining = dCurTime - getNumericParameter(INFO_START_TIME);
+        double dPercentage = dTimeRemaining / getDuration();
 
-        dTimeRemaining = dCurTime - dStartTime;
-        double dPercentage = dTimeRemaining / dDuration;
-
-        // Pose limits to alpha values
-        if (dEndAngle > dStartAngle)
-            dTargetAngle = Math.min(dStartAngle + dPercentage * (dEndAngle - dStartAngle),
-                    dEndAngle);
-        else
-            dTargetAngle = Math.max(dStartAngle + dPercentage * (dEndAngle - dStartAngle),
-                    dEndAngle);
+        // Pose limits to alpha value
+        double dTargetAngle = projectionFunction(dStartAngle, dEndAngle, dPercentage);
+        // Update info
+        setNumericParameter(INFO_CURRENT_ANGLE, dTargetAngle);
 
         return dTargetAngle;
     }
 
-
+    protected double projectionFunction(double dStart, double dEnd, double dPercentage) {
+        return dStart + (dEnd - dStart) * dPercentage;
+    }
 }

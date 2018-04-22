@@ -3,9 +3,9 @@ package org.scify.moonwalker.app.ui.renderables;
 import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.effects.Effect;
+import org.scify.engine.renderables.effects.EffectSequence;
+import org.scify.engine.renderables.effects.FadeEffect;
 import org.scify.engine.renderables.effects.FunctionEffect;
-import org.scify.engine.renderables.effects.libgdx.FadeLGDXEffect;
-import org.scify.engine.renderables.effects.libgdx.LGDXEffectList;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 
 public class MainMenuRenderable extends Renderable {
@@ -120,8 +120,8 @@ public class MainMenuRenderable extends Renderable {
             girlButton.setVisible(true);
             double fadingEffectsDuration = 1500;
 
-            LGDXEffectList imgEffect = new LGDXEffectList();
-            imgEffect.addEffect(new FadeLGDXEffect(0.0, 0.5, fadingEffectsDuration));
+            EffectSequence imgEffect = new EffectSequence();
+            imgEffect.addEffect(new FadeEffect(0.0, 0.5, fadingEffectsDuration));
             imgEffect.addEffect(new FunctionEffect(new Runnable() {
                 @Override
                 public void run() {
@@ -131,12 +131,12 @@ public class MainMenuRenderable extends Renderable {
             boyAvatarButton.apply(imgEffect);
             girlAvatarButton.apply(imgEffect);
 
-            FadeLGDXEffect fadeInFullEffect = new FadeLGDXEffect(0.0, 1.0, fadingEffectsDuration);
+            FadeEffect fadeInFullEffect = new FadeEffect(0.0, 1.0, fadingEffectsDuration);
             topBannerRenderable.apply(fadeInFullEffect);
             boyButton.apply(fadeInFullEffect);
             girlButton.apply(fadeInFullEffect);
 
-            Effect fadeOutEffect = new FadeLGDXEffect(1.0, 0.0, fadingEffectsDuration);
+            Effect fadeOutEffect = new FadeEffect(1.0, 0.0, fadingEffectsDuration);
             getStartGameButton().apply(fadeOutEffect);
             getContinueGameButton().apply(fadeOutEffect);
             getToggleAudioButton().apply(fadeOutEffect);

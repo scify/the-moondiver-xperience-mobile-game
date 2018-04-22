@@ -3,22 +3,19 @@ package org.scify.moonwalker.app.game.rules;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Json;
 import org.scify.engine.*;
-import org.scify.engine.EpisodeEndState;
 import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.renderables.MultipleChoiceConversationRenderable;
-import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.NextConversationRenderable;
+import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.TwoChoiceConversationRenderable;
 import org.scify.engine.renderables.effects.Effect;
+import org.scify.engine.renderables.effects.FadeEffect;
 import org.scify.engine.renderables.effects.MoveEffect;
-import org.scify.engine.renderables.effects.libgdx.FadeLGDXEffect;
-import org.scify.engine.renderables.effects.libgdx.LGDXEffect;
-import org.scify.engine.renderables.effects.libgdx.LGDXEffectList;
-import org.scify.engine.renderables.effects.libgdx.MoveLGDXEffect;
+import org.scify.engine.renderables.effects.ParallelEffectList;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
-import org.scify.engine.UserActionCode;
 
+import java.awt.geom.Point2D;
 import java.util.*;
 
 public class ConversationRules extends MoonWalkerRules {
@@ -244,20 +241,48 @@ public class ConversationRules extends MoonWalkerRules {
         oldConversationLines.add(nextConversationRenderable);
     }
 
-    protected LGDXEffect getIntroEffect(Renderable target, ConversationLine conversationLine, GameState gameState, boolean newSpeaker) {
-        if (!newSpeaker)
-            return new FadeLGDXEffect(0.0, 1.0, 1000);
-        else {
-            return new MoveLGDXEffect((float) -target.getWidth(), (float) target.getyPos(), target.getxPos(),
-                    target.getyPos(), 1000);
+    protected Effect getIntroEffect(Renderable target, ConversationLine conversationLine, GameState gameState, boolean newSpeaker) {
+        ParallelEffectList lRes = new ParallelEffectList();
+        lRes.addEffect(new FadeEffect(0.0, 1.0, 1000));
+        final boolean bOther = !conversationLine.getSpeakerId().contains("player");
+
+        if (newSpeaker) {
+            lRes.addEffect(new MoveEffect((float) -target.getWidth(), (float) target.getyPos(), target.getxPos(),
+                    target.getyPos(), 1000) {
+                @Override
+                protected Point2D.Double calculateTargetPosition() {
+                    Point2D.Double dRes = super.calculateTargetPosition();
+                    if (bOther) {
+                        dRes.x = 1000 - dRes.getX();
+                    }
+
+                    return dRes;
+                }
+
+                @Override
+                protected double projectionFunction(double dStart, double dEnd, double dPercentageOfChange) {
+                    return dStart + (1.0 - Math.exp(- 5 * dPercentageOfChange)) * (dEnd - dStart);
+                }
+            });
         }
+
+        return lRes;
     }
 
-    private LGDXEffect getOutroEffect(Renderable target, ConversationLine conversationLine, GameState gameState, boolean newSpeaker) {
-        if (!newSpeaker)
-            return new FadeLGDXEffect(1.0, 0.0, 200);
-        else
-            return new MoveLGDXEffect((float)-target.getWidth(), (float)target.getyPos(), 1000);
+    private Effect getOutroEffect(Renderable target, ConversationLine conversationLine, GameState gameState, boolean newSpeaker) {
+        ParallelEffectList lRes = new ParallelEffectList();
+        lRes.addEffect(new FadeEffect(1.0, 0.0, 200));
+        if (newSpeaker) {
+            lRes.addEffect(new MoveEffect((float)-target.getWidth(), (float)target.getyPos(), 1000) {
+                @Override
+                protected double projectionFunction(double dStart, double dEnd, double dPercentageOfChange) {
+                    return dStart + (1.0 - Math.exp(- 5 * dPercentageOfChange)) * (dEnd - dStart);
+                }
+
+            });
+        }
+
+        return lRes;
     }
 
 

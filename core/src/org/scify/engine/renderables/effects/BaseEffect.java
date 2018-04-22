@@ -1,25 +1,50 @@
 package org.scify.engine.renderables.effects;
 
-import java.util.Date;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 public class BaseEffect implements Effect {
     protected Map<String,String> params;
+    protected Map<String,Object> objectParams;
 
-    public static final String PARAM_DURATION = "duration";
-    public static final String INFO_START_TIME = "startTime";
+    public static final String PARAM_DURATION = "PARAM_DURATION";
+    public static final String INFO_START_TIME = "INFO_START_TIME";
+
+    protected boolean bStopped = false;
 
     public BaseEffect() {
-        params = new TreeMap<>();
+        initMaps();
         // Default duration is zero
         // params.put(PARAM_DURATION, "0.0");
     }
 
-    public BaseEffect(double dDurationMSec) {
+    protected void initMaps() {
         params = new TreeMap<>();
-        params.put(PARAM_DURATION, String.valueOf(dDurationMSec));
+        objectParams = new TreeMap<>();
+    }
+
+    public BaseEffect(double dDurationMSec) {
+        initMaps();
+        setNumericParameter(PARAM_DURATION, dDurationMSec);
+    }
+
+    /**
+     * Creates a new effect, simply copying the parameters from a source effect.
+     * @param eSource The source effect which provides the parameters.
+     */
+    public BaseEffect(Effect eSource) {
+        initMaps();
+
+        // For each string/numeric parameter
+        for (String sStringParam : eSource.getParameters()) {
+            // Copy the parameter to the new instance
+            setParameter(sStringParam, eSource.getParameter(sStringParam));
+        }
+
+        // For each object parameter
+        for (String sObjParamName : eSource.getObjectParameters()) {
+            // Copy the parameter to the new instance
+            setObjectParameter(sObjParamName, eSource.getObjectParameter(sObjParamName));
+        }
     }
 
     /**
@@ -36,8 +61,10 @@ public class BaseEffect implements Effect {
             return target;
 
         // Init start time
-        if (!params.containsKey(INFO_START_TIME) || (Double.valueOf(params.get(INFO_START_TIME)) == Double.MAX_VALUE))
-            params.put(INFO_START_TIME, String.valueOf(new Date().getTime()));
+        if (!params.containsKey(INFO_START_TIME) || (getNumericParameter(INFO_START_TIME) == Double.MAX_VALUE))
+            setNumericParameter(INFO_START_TIME, Double.valueOf(new Date().getTime()));
+
+        // Update target with effect info
         target.setEffectInfo(this, params);
         return target;
     }
@@ -65,7 +92,30 @@ public class BaseEffect implements Effect {
     }
 
     @Override
+    public Double getNumericParameter(String sParamName) {
+        String sRes = params.get(sParamName);
+        if (sRes != null)
+            return Double.valueOf(sRes);
+
+        return null;
+    }
+
+    @Override
+    public Double setNumericParameter(String sParamName, Double dNewVal) {
+        String sRes = setParameter(sParamName, String.valueOf(dNewVal));
+        if (sRes != null)
+            return Double.valueOf(sRes);
+        return null;
+    }
+
+    @Override
     public synchronized boolean complete() {
+        // If stopped
+        if (bStopped)
+            // then also complete
+            return true;
+
+        // Calculate remaining time
         double dStart = Double.MAX_VALUE;
         if (params.containsKey(INFO_START_TIME))
                 dStart = Double.valueOf(params.get(INFO_START_TIME));
@@ -76,8 +126,34 @@ public class BaseEffect implements Effect {
     }
 
     @Override
-    public synchronized double getDuration() {
-        return Double.valueOf(params.get(PARAM_DURATION));
+    public Set<String> getObjectParameters() {
+        return new HashSet<>(objectParams.keySet());
+    }
 
+    @Override
+    public Object setObjectParameter(String sParamName, Object oNewValue) {
+        Object oPrv = getObjectParameter(sParamName);
+        objectParams.put(sParamName, oNewValue);
+
+        return oPrv;
+    }
+
+    @Override
+    public Object getObjectParameter(String sParamName) {
+        if (objectParams.containsKey(sParamName))
+            return objectParams.get(sParamName);
+
+        return null;
+    }
+
+    @Override
+    public synchronized double getDuration() {
+        return getNumericParameter(PARAM_DURATION);
+
+    }
+
+    @Override
+    public void stop() {
+        bStopped = true;
     }
 }

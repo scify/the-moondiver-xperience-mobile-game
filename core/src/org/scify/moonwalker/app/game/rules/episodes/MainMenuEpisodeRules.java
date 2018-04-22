@@ -1,14 +1,16 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
+import org.scify.engine.renderables.effects.EffectSequence;
+import org.scify.engine.renderables.effects.FadeEffect;
 import org.scify.engine.renderables.effects.FunctionEffect;
-import org.scify.engine.renderables.effects.libgdx.FadeLGDXEffect;
-import org.scify.engine.renderables.effects.libgdx.LGDXEffectList;
 import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.ui.actors.ActionButton;
 import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
 
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class MainMenuEpisodeRules extends BaseEpisodeRules {
 
@@ -34,8 +36,8 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
             if (renderable.getCountDownValue() < 0) {
                 gameState.addGameEvent(new GameEvent("AUDIO_STOP_UI", renderable.BG_AUDIO_PATH));
                 gameState.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", renderable.BG_AUDIO_PATH));
-                LGDXEffectList fadeOutEffects = new LGDXEffectList();
-                fadeOutEffects.addEffect(new FadeLGDXEffect(1.0, 0.0, 1000));
+                EffectSequence fadeOutEffects = new EffectSequence();
+                fadeOutEffects.addEffect(new FadeEffect(1.0, 0.0, 1000));
                 fadeOutEffects.addEffect(new FunctionEffect(new Runnable() {
                     @Override
                     public void run() {

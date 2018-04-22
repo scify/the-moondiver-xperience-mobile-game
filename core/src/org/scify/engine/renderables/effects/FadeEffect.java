@@ -3,17 +3,18 @@ package org.scify.engine.renderables.effects;
 import java.util.Date;
 
 public class FadeEffect extends BaseEffect {
-    public static String PARAM_FROM_ALPHA = "fromAlpha";
-    public static String PARAM_TO_ALPHA = "toAlpha";
-//    public static String INFO_CURRENT_ALPHA = "currentAlpha";
+    public static String PARAM_FROM_ALPHA = "PARAM_FROM_ALPHA";
+    public static String PARAM_TO_ALPHA = "PARAM_TO_ALPHA";
+    public static String INFO_CURRENT_ALPHA = "PARAM_TARGET_ALPHA";
 
-    protected double dStartAlpha;
-    protected double dEndAlpha;
-    protected double dCurtime;
-    protected double dStartTime;
-    protected double dDuration;
-    protected double dTimeRemaining;
-    protected double dTargetAlpha;
+//    public static String INFO_CURRENT_ALPHA = "currentAlpha";
+//    protected double dStartAlpha;
+//    protected double dEndAlpha;
+//    protected double dCurtime;
+//    protected double dStartTime;
+//    protected double dDuration;
+//    protected double dTimeRemaining;
+//    protected double dTargetAlpha;
 
     /**
      * Creates a fade-in effect, from alpha 0.0 to 1.0, taking place within 1 second progressively.
@@ -21,8 +22,12 @@ public class FadeEffect extends BaseEffect {
     public FadeEffect() {
         super(1000);
 
-        params.put(PARAM_FROM_ALPHA, "0.0");
-        params.put(PARAM_TO_ALPHA, "1.0");
+        setNumericParameter(PARAM_FROM_ALPHA, 0.0);
+        setNumericParameter(PARAM_TO_ALPHA, 1.0);
+    }
+
+    public FadeEffect(Effect eSource) {
+        super(eSource);
     }
 
     /**
@@ -35,8 +40,8 @@ public class FadeEffect extends BaseEffect {
     public FadeEffect(double dFromAlpha, double dToAlpha, double dDurationMSec) {
         super(dDurationMSec);
 
-        params.put(PARAM_FROM_ALPHA, String.valueOf(dFromAlpha));
-        params.put(PARAM_TO_ALPHA, String.valueOf(dToAlpha));
+        setNumericParameter(PARAM_FROM_ALPHA, dFromAlpha);
+        setNumericParameter(PARAM_TO_ALPHA, dToAlpha);
     }
 
     @Override
@@ -50,18 +55,19 @@ public class FadeEffect extends BaseEffect {
     }
 
     protected double calculateAlpha() {
-        dStartAlpha = Double.valueOf(params.get(PARAM_FROM_ALPHA));
-        dEndAlpha = Double.valueOf(params.get(PARAM_TO_ALPHA));
+        double dStartAlpha = getNumericParameter(PARAM_FROM_ALPHA);
+        double dEndAlpha = getNumericParameter(PARAM_TO_ALPHA);
 
-        dCurtime = new Date().getTime();
-        dStartTime = Long.valueOf(params.get(INFO_START_TIME));
-        dDuration = Double.valueOf(params.get(PARAM_DURATION));
+        double dCurtime = new Date().getTime();
+        double dStartTime = getNumericParameter(INFO_START_TIME);
+        double dDuration = getDuration();
 
-        dTimeRemaining = dCurtime - dStartTime;
+        double dTimeRemaining = dCurtime - dStartTime;
 
         double dPercentage = dTimeRemaining / dDuration;
 
         // Pose limits to alpha values
+        double dTargetAlpha;
         if (dEndAlpha > dStartAlpha)
             dTargetAlpha = Math.min(dStartAlpha + dPercentage * (dEndAlpha - dStartAlpha),
                     dEndAlpha);
@@ -69,6 +75,7 @@ public class FadeEffect extends BaseEffect {
             dTargetAlpha = Math.max(dStartAlpha + dPercentage * (dEndAlpha - dStartAlpha),
                     dEndAlpha);
 
+        setNumericParameter(INFO_CURRENT_ALPHA, dTargetAlpha);
         return dTargetAlpha;
     }
 

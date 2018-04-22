@@ -3,11 +3,16 @@ package org.scify.engine.renderables.effects.libgdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import org.scify.engine.renderables.Renderable;
+import org.scify.engine.renderables.effects.Effect;
 import org.scify.engine.renderables.effects.MoveEffect;
 
 public class MoveLGDXEffect extends MoveEffect implements LGDXEffect {
     public MoveLGDXEffect(double dFromX, double dFromY, double dToX, double dToY, double dDuration) {
         super(dFromX, dFromY, dToX, dToY, dDuration);
+    }
+
+    public MoveLGDXEffect(Effect eSource) {
+        super(eSource);
     }
 
     public MoveLGDXEffect(double dToX, double dToY, double dDuration) {
@@ -24,8 +29,8 @@ public class MoveLGDXEffect extends MoveEffect implements LGDXEffect {
     public void applyToActor(Actor aTarget, Renderable rRenderable) {
         super.applyTo(rRenderable);
 
-        rRenderable.setxPos((float)dCurrentX);
-        rRenderable.setyPos((float)dCurrentY);
+        rRenderable.setxPos((float)getCurrentX());
+        rRenderable.setyPos((float)getCurrentY());
     }
 
     /**
@@ -38,7 +43,15 @@ public class MoveLGDXEffect extends MoveEffect implements LGDXEffect {
     public void applyToSprite(Sprite sTarget, Renderable rRenderable) {
         super.applyTo(rRenderable);
 
-        rRenderable.setxPos((float)dCurrentX);
-        rRenderable.setyPos((float)dCurrentY);
+        rRenderable.setxPos((float)getCurrentX());
+        rRenderable.setyPos((float)getCurrentY());
+    }
+
+    public double getCurrentX() {
+        return getNumericParameter(INFO_CURRENT_X);
+    }
+
+    public double getCurrentY() {
+        return getNumericParameter(INFO_CURRENT_Y);
     }
 }

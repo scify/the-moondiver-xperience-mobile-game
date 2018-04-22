@@ -1,23 +1,31 @@
 package org.scify.engine.renderables.effects;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-public class EffectList extends BaseEffect {
+public class EffectSequence extends BaseEffect {
+    public  static final String PARAM_SERIES_OF_EFFECTS = "PARAM_SERIES_OF_EFFECTS";
+    public  static final String INFO_CURRENT_FIELD = "INFO_CURRENT_FIELD";
+
     protected List<Effect> seriesOfEffects;
     protected ListIterator<Effect> ieCurrent;
     protected Effect eCurrent;
     double dDuration;
 
-    public EffectList() {
+    public EffectSequence() {
+        super(0.0);
+
         // Initialize list
         seriesOfEffects = new LinkedList<>();
+
+        setObjectParameter(PARAM_SERIES_OF_EFFECTS, seriesOfEffects);
         resetCurrent();
         updateDuration();
     }
 
-    public EffectList(List<Effect> oneAfterTheOther) {
+    public EffectSequence(List<Effect> oneAfterTheOther) {
         // Initialize list
         seriesOfEffects = new LinkedList<>(oneAfterTheOther);
         resetCurrent();
@@ -37,7 +45,7 @@ public class EffectList extends BaseEffect {
         }
 
         // Update params
-        params.put(PARAM_DURATION, String.valueOf(dDuration));
+        double dRes = setNumericParameter(PARAM_DURATION, dDuration);
 
         return dDuration;
     }
@@ -79,6 +87,8 @@ public class EffectList extends BaseEffect {
         else
             eCurrent = null;
 
+        setObjectParameter(INFO_CURRENT_FIELD, eCurrent);
+
     }
 
     public void addEffect(Effect eToAdd) {
@@ -91,5 +101,9 @@ public class EffectList extends BaseEffect {
         seriesOfEffects.clear();
         resetCurrent();
         updateDuration();
+    }
+
+    public List<Effect> getSeriesOfEffects() {
+        return new ArrayList<>((List)getObjectParameter(PARAM_SERIES_OF_EFFECTS));
     }
 }

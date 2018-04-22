@@ -2,10 +2,9 @@ package org.scify.moonwalker.app.game.rules.episodes;
 
 
 import org.scify.engine.*;
-import org.scify.engine.conversation.ConversationLine;
+import org.scify.engine.renderables.effects.EffectSequence;
+import org.scify.engine.renderables.effects.FadeEffect;
 import org.scify.engine.renderables.effects.FunctionEffect;
-import org.scify.engine.renderables.effects.libgdx.FadeLGDXEffect;
-import org.scify.engine.renderables.effects.libgdx.LGDXEffectList;
 import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.game.rules.ConversationRules;
 import org.scify.moonwalker.app.ui.renderables.RoomRenderable;
@@ -32,8 +31,8 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
             gsCurrent.removeGameEventsWithType("ROOM_OUTRO");
             outroInitiated = true;
             renderable.turnOffPhone();
-            LGDXEffectList fadeOutEffects = new LGDXEffectList();
-            fadeOutEffects.addEffect(new FadeLGDXEffect(1.0, 0.0, 2000));
+            EffectSequence fadeOutEffects = new EffectSequence();
+            fadeOutEffects.addEffect(new FadeEffect(1.0, 0.0, 2000));
             fadeOutEffects.addEffect(new FunctionEffect(new Runnable() {
                 @Override
                 public void run() {

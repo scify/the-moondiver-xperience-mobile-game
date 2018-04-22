@@ -3,10 +3,10 @@ package org.scify.moonwalker.app.ui.actors;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import org.scify.engine.renderables.Renderable;
+import org.scify.engine.renderables.effects.Effect;
+import org.scify.engine.renderables.effects.EffectSequence;
+import org.scify.engine.renderables.effects.FadeEffect;
 import org.scify.engine.renderables.effects.FunctionEffect;
-import org.scify.engine.renderables.effects.libgdx.FadeLGDXEffect;
-import org.scify.engine.renderables.effects.libgdx.LGDXEffect;
-import org.scify.engine.renderables.effects.libgdx.LGDXEffectList;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.ui.ThemeController;
 import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
@@ -80,8 +80,8 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
         actorInitiated = true;
 
         // Fade-in everything
-        LGDXEffectList fadeInEffects = new LGDXEffectList();
-        fadeInEffects.addEffect(new FadeLGDXEffect(0.0, 1.0, 1000));
+        EffectSequence fadeInEffects = new EffectSequence();
+        fadeInEffects.addEffect(new FadeEffect(0.0, 1.0, 1000));
         fadeInEffects.addEffect(new FunctionEffect(new Runnable() {
             @Override
             public void run() {
@@ -198,14 +198,14 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
 
     public void updateSelectedAvatar(String selectedButtonId) {
         if (selectedButtonId.equals("boyButton") || selectedButtonId.equals("boyAvatarButton")) {
-            LGDXEffect fadeIn = new FadeLGDXEffect(boyAvatarButton.getColor().a, 1.0, 500);
-            LGDXEffect fadeOut = new FadeLGDXEffect(girlAvatarButton.getColor().a, 0.5, 500);
+            Effect fadeIn = new FadeEffect(boyAvatarButton.getColor().a, 1.0, 500);
+            Effect fadeOut = new FadeEffect(girlAvatarButton.getColor().a, 0.5, 500);
 
             renderable.getBoyAvatarButton().apply(fadeIn);
             renderable.getGirlAvatarButton().apply(fadeOut);
         } else if (selectedButtonId.equals("girlButton") || selectedButtonId.equals("girlAvatarButton")) {
-            LGDXEffect fadeIn = new FadeLGDXEffect(girlAvatarButton.getColor().a, 1.0, 500);
-            LGDXEffect fadeOut = new FadeLGDXEffect(boyAvatarButton.getColor().a, 0.5, 500);
+            Effect fadeIn = new FadeEffect(girlAvatarButton.getColor().a, 1.0, 500);
+            Effect fadeOut = new FadeEffect(boyAvatarButton.getColor().a, 0.5, 500);
 
             renderable.getBoyAvatarButton().apply(fadeOut);
             renderable.getGirlAvatarButton().apply(fadeIn);

@@ -6,12 +6,16 @@ import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.effects.libgdx.LGDXEffect;
 
 public class FunctionEffect extends BaseEffect implements LGDXEffect  {
-    protected Runnable toRun;
+    public final String PARAM_OBJ_RUNNABLE = "PARAM_OBJ_RUNNABLE";
 
     public FunctionEffect(Runnable rToRun) {
-        super(0.0);
+        super(1000);
 
-        toRun = rToRun;
+        setObjectParameter(PARAM_OBJ_RUNNABLE, rToRun);
+    }
+
+    public FunctionEffect(Effect eSource) {
+        super(eSource);
     }
 
     /**
@@ -26,7 +30,11 @@ public class FunctionEffect extends BaseEffect implements LGDXEffect  {
     public synchronized EffectTarget applyTo(EffectTarget target) {
         super.applyTo(target);
 
-        toRun.run();
+        Object oToRun = getObjectParameter(PARAM_OBJ_RUNNABLE);
+        if (oToRun != null) {
+            ((Runnable)oToRun).run();
+            stop();
+        }
 
         return target;
     }

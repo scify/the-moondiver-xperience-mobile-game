@@ -3,25 +3,23 @@ package org.scify.engine.renderables.effects.libgdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import org.scify.engine.renderables.Renderable;
+import org.scify.engine.renderables.effects.Effect;
 import org.scify.engine.renderables.effects.RotateEffect;
 
 public class RotateLGDXEffect extends RotateEffect implements LGDXEffect {
-    public static String PARAM_ORIGIN_X = "originX";
-    public static String PARAM_ORIGIN_Y = "originY";
-
-    public RotateLGDXEffect() {
-        super();
-
-        params.put(PARAM_ORIGIN_X, "0.0");
-        params.put(PARAM_ORIGIN_Y, "0.0");
-
-    }
+    public final static String PARAM_ORIGIN_X = "PARAM_ORIGIN_X";
+    public final static String PARAM_ORIGIN_Y = "PARAM_ORIGIN_Y";
 
     public RotateLGDXEffect(double dFromAngle, double dToAngle, double dDurationMSec) {
         super(dFromAngle, dToAngle, dDurationMSec);
 
-        params.put(PARAM_ORIGIN_X, "0.0");
-        params.put(PARAM_ORIGIN_Y, "0.0");
+        // Set origin to default values
+        setNumericParameter(PARAM_ORIGIN_X, 0.0);
+        setNumericParameter(PARAM_ORIGIN_Y, 0.0);
+    }
+
+    public RotateLGDXEffect(Effect eSource) {
+        super(eSource);
     }
 
     @Override
@@ -38,6 +36,7 @@ public class RotateLGDXEffect extends RotateEffect implements LGDXEffect {
         //////////////
         // Update target rotation, also using origin
         aTarget.setOrigin((float)getOriginX(), (float)getOriginY());
+        double dTargetAngle = getNumericParameter(INFO_CURRENT_ANGLE);
         aTarget.setRotation((float)dTargetAngle);
     }
 
@@ -52,23 +51,25 @@ public class RotateLGDXEffect extends RotateEffect implements LGDXEffect {
 
         // Update target rotation, also using origin
         sTarget.setOrigin((float)getOriginX(), (float)getOriginY());
-        sTarget.setRotation((float)dTargetAngle);
+        double dCurrentRotation = getNumericParameter(INFO_CURRENT_ANGLE);
+        sTarget.setRotation((float)dCurrentRotation);
 
     }
 
     protected double getOriginX() {
-        return Double.valueOf(params.get(PARAM_ORIGIN_X));
+        return getNumericParameter(PARAM_ORIGIN_X);
     }
 
     protected double getOriginY() {
-        return Double.valueOf(params.get(PARAM_ORIGIN_Y));
+
+        return getNumericParameter(PARAM_ORIGIN_Y);
     }
 
     protected void setOriginX(double dNewX) {
-        params.put(PARAM_ORIGIN_X,String.valueOf(dNewX));
+        setNumericParameter(PARAM_ORIGIN_X,dNewX);
     }
 
     protected void setOriginY(double dNewY) {
-        params.put(PARAM_ORIGIN_Y,String.valueOf(dNewY));
+        setNumericParameter(PARAM_ORIGIN_Y,dNewY);
     }
 }

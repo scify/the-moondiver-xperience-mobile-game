@@ -19,17 +19,17 @@ import org.scify.engine.RenderingEngine;
 import org.scify.engine.UserInputHandler;
 import org.scify.engine.audio.AudioEngine;
 import org.scify.engine.renderables.Renderable;
+import org.scify.engine.renderables.effects.Effect;
+import org.scify.engine.renderables.effects.libgdx.LGDXEffect;
 import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
+import org.scify.moonwalker.app.ui.actors.IContainerActor;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 import org.scify.moonwalker.app.ui.renderables.RenderableManager;
 import org.scify.moonwalker.app.ui.sound.GdxAudioEngine;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGameState> {
     /**
@@ -133,12 +133,77 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         }
     }
 
-    protected void drawRenderable(org.scify.engine.renderables.Renderable renderable) {
+    protected void drawRenderable(Renderable renderable) {
         if (!bDisposalOngoing) {
+
             if (renderableManager.renderableExists(renderable)) {
                 renderableManager.drawRenderable(renderable);
             } else {
                 renderableManager.createAndAddRenderable(renderable);
+            }
+
+            updateEffectList(renderable);
+        }
+    }
+
+
+    protected void updateEffectList(Renderable renderable) {
+        List<Effect> toRemove = new ArrayList<>();
+        LinkedList<Effect> lEffects = new LinkedList<>(renderable.getEffects());
+
+        // For each effect on the renderable
+        for (Effect eCur: lEffects) {
+            // Mark effect for removal, if complete
+            if (eCur.complete())
+                toRemove.add(eCur);
+            else {
+                // If not an LGDX effect
+                if (!(eCur instanceof LGDXEffect)) {
+                    // Handle as sprite
+                    if (renderableManager.renderableExistsAsSprite(renderable)) {
+                        Sprite sCur = renderableManager.getSpriteForRenderable(renderable);
+                        LGDXEffect leCur = renderableManager.getOrCreateLGDXEffectForSprite(eCur,
+                                sCur);
+                    }
+                    else
+                    {
+                        // Handle as actor
+                        Actor aCur = renderableManager.getOrCreateActorResourceFor(renderable);
+                        // create corresponding LGDX effect for actor
+                        LGDXEffect leCur = renderableManager.getOrCreateLGDXEffectForActor(eCur,
+                                aCur);
+
+                        // If container add to children as well
+                        if (aCur instanceof IContainerActor) {
+                            updateChildrenEffects(aCur, renderable, eCur);
+                        }
+                    }
+                }
+            }
+        }
+
+        // For each completed effect
+        for (Effect eToRemove: toRemove) {
+            // Remove it
+            renderableManager.removeEffectFromRenderable(eToRemove, renderable);
+        }
+    }
+
+    protected void updateChildrenEffects(Actor aParent, Renderable rParent, Effect eCur) {
+        if (eCur.complete())
+            return;
+
+        IContainerActor<Renderable> caToDraw = (IContainerActor)aParent;
+        // For every child
+        Map<Actor,Renderable> mChildren = caToDraw.getChildrenActorsAndRenderables();
+        for (Map.Entry<Actor,Renderable> mCur : mChildren.entrySet()) {
+            // create corresponding LGDX effect for child actor
+            LGDXEffect leCur = renderableManager.getOrCreateLGDXEffectForActor(eCur,
+                    mCur.getKey());
+
+            // If child is a container repeat recursively
+            if (mCur.getKey() instanceof IContainerActor) {
+                updateChildrenEffects(mCur.getKey(), mCur.getValue(), eCur);
             }
         }
     }

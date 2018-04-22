@@ -8,7 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import org.scify.engine.UserInputHandler;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.effects.Effect;
+import org.scify.engine.renderables.effects.libgdx.EffectNotRegisteredException;
 import org.scify.engine.renderables.effects.libgdx.LGDXEffect;
+import org.scify.engine.renderables.effects.libgdx.LGDXEffectFactory;
 import org.scify.moonwalker.app.ui.ComponentFactory;
 import org.scify.moonwalker.app.ui.SpriteFactory;
 import org.scify.moonwalker.app.ui.ThemeController;
@@ -23,11 +25,16 @@ import java.util.*;
 
 public class RenderableManager {
 
-    private Map<Renderable, Sprite> renderableSpriteMap;
-    private Map<Renderable, Actor> renderableActorMap;
-    private ComponentFactory<Actor> actorFactory;
-    private ComponentFactory<Sprite> spriteFactory;
+    protected Map<Renderable, Sprite> renderableSpriteMap;
+    protected Map<Renderable, Actor> renderableActorMap;
+    protected ComponentFactory<Actor> actorFactory;
+    protected ComponentFactory<Sprite> spriteFactory;
+    protected LGDXEffectFactory<LGDXEffect> effectFactory;
     protected UserInputHandlerImpl userInputHandler;
+
+    protected Map<Actor, Map<Effect, LGDXEffect>> actorEffects;
+    protected Map<Sprite, Map<Effect, LGDXEffect>> spriteEffects;
+
     protected Batch batch;
     protected Stage stage;
 
@@ -36,6 +43,10 @@ public class RenderableManager {
         actorFactory = ActorFactory.getInstance(themeController.getSkin());
         actorFactory.setUserInputHandler(userInputHandler);
         this.spriteFactory = new SpriteFactory(themeController.getSkin());
+        this.effectFactory = LGDXEffectFactory.getFactorySingleton();
+
+        this.actorEffects = new HashMap<>();
+        this.spriteEffects = new HashMap<>();
     }
 
     public void setBatch(Batch batch) {
@@ -71,73 +82,71 @@ public class RenderableManager {
     }
 
     protected synchronized void applyActorEffects(Actor aToDraw, Renderable renderable) {
-        // If a container
-        if (aToDraw instanceof IContainerActor) {
-            IContainerActor<Renderable> caToDraw = (IContainerActor)aToDraw;
-            // For every child
-            for (Actor aCur: caToDraw.getChildrenActorsAndRenderables().keySet()) {
-                // Apply effect to child
-                applyActorEffects(aCur, caToDraw.getChildrenActorsAndRenderables().get(aCur));
-            }
-
-        }
-
-        List<Effect> toRemove = new ArrayList<>();
-        LinkedList<Effect> lEffects = new LinkedList<>(renderable.getEffects());
+        // Effect application
+        /////////////////////
+        if (actorEffects.get(aToDraw) == null)
+            return;
 
         // For each effect
-        for (Effect e: lEffects) {
-            // If a LibGDX effect
-            if (e instanceof LGDXEffect) {
-                LGDXEffect leEffect = (LGDXEffect)e;
-                // apply it
-                leEffect.applyToActor(aToDraw, renderable);
-
-                // Mark effect for removal, if complete
-                if (leEffect.complete())
-                    toRemove.add(leEffect);
-            }
-            else
-                System.err.println("Ignoring non-LGDX actor Effect " + e.toString());
-        }
-
-        // Remove appropriate effects
-        for (Effect e : toRemove) {
-            // DEBUG LINES
-            System.err.println("Removing actor effect " + e.toString());
-            //////////////
-            renderable.removeEffect(e);
+        for (Map.Entry<Effect, LGDXEffect> eCur: actorEffects.get(aToDraw).entrySet()) {
+            // apply
+            eCur.getValue().applyToActor(aToDraw, renderable);
         }
     }
 
     protected synchronized void applySpriteEffects(Sprite sToDraw, Renderable renderable) {
-        List<Effect> toRemove = new ArrayList<>();
-        LinkedList<Effect> lEffects = new LinkedList<>(renderable.getEffects());
+        // Effect application
+        /////////////////////
+        if (spriteEffects.get(sToDraw) == null)
+            return;
 
         // For each effect
-        for (Effect e: lEffects) {
-            // If a LibGDX effect
-            if (e instanceof LGDXEffect) {
-                LGDXEffect leEffect = (LGDXEffect)e;
-                // apply it
-                leEffect.applyToSprite(sToDraw, renderable);
+        for (Map.Entry<Effect, LGDXEffect> eCur: spriteEffects.get(sToDraw).entrySet()) {
+            // apply
+            eCur.getValue().applyToSprite(sToDraw, renderable);
+        }
+    }
 
-                // Remove effect, if complete
-                if (leEffect.complete())
-                    toRemove.add(leEffect);
+    public LGDXEffect getOrCreateLGDXEffectForSprite(Effect eCur, Sprite sToDraw) {
+        if (!spriteEffects.containsKey(sToDraw)) {
+            spriteEffects.put(sToDraw, new HashMap<Effect, LGDXEffect>());
+        }
+
+        if (!spriteEffects.get(sToDraw).containsKey(eCur)) {
+            try {
+                spriteEffects.get(sToDraw).put(eCur, effectFactory.getEffectFor(eCur));
+            } catch (EffectNotRegisteredException e) {
+                e.printStackTrace();
+                System.err.println("Ignoring...");
             }
-            else
-                System.err.println("Ignoring non-LGDX sprite Effect " + e.toString());
-
         }
 
-        // Remove appropriate effects
-        for (Effect e : toRemove){
+        return spriteEffects.get(sToDraw).get(eCur);
+
+    }
+
+    public LGDXEffect getOrCreateLGDXEffectForActor(Effect eCur, Actor aToDraw) {
+        if (!actorEffects.containsKey(aToDraw)) {
+                actorEffects.put(aToDraw, new HashMap<Effect, LGDXEffect>());
             // DEBUG LINES
-            System.err.println("Removing sprite effect " + e.toString());
+            System.err.println("Initialized effect list for actor " + aToDraw.toString() + ".");
             //////////////
-            renderable.removeEffect(e);
         }
+
+        if (!actorEffects.get(aToDraw).containsKey(eCur)) {
+            try {
+                actorEffects.get(aToDraw).put(eCur, effectFactory.getEffectFor(eCur));
+                // DEBUG LINES
+                System.err.println("Created new effect for " + eCur.toString() + "," + aToDraw.toString() + ".");
+                //////////////
+            } catch (EffectNotRegisteredException e) {
+                e.printStackTrace();
+                System.err.println("Ignoring...");
+            }
+        }
+
+        return actorEffects.get(aToDraw).get(eCur);
+
     }
 
     protected void update(Renderable renderable, Actor actor) {
@@ -156,6 +165,7 @@ public class RenderableManager {
         // OBSOLETE:
 //        batch.draw(sToDraw, sToDraw.getX(), sToDraw.getY(), sToDraw.getWidth(), sToDraw.getHeight());
         if (renderable.isVisible()) {
+            // TODO: Examine if all is fine now
             // TODO: Examine if all is fine now
             sToDraw.draw(batch); // Follow this approach, to use sprite all traits (including color, alpha, etc)
         }
@@ -245,6 +255,8 @@ public class RenderableManager {
     public void reset() {
         renderableSpriteMap = new HashMap<>();
         renderableActorMap = new HashMap<>();
+        actorEffects = new HashMap<>();
+        spriteEffects = new HashMap<>();
     }
 
     public void dispose() {
@@ -260,11 +272,11 @@ public class RenderableManager {
         return renderableExistsAsSprite(renderable) || renderableExistsAsActor(renderable);
     }
 
-    protected boolean renderableExistsAsSprite(Renderable renderable) {
+    public boolean renderableExistsAsSprite(Renderable renderable) {
         return renderableSpriteMap.containsKey(renderable);
     }
 
-    protected boolean renderableExistsAsActor(Renderable renderable) {
+    public boolean renderableExistsAsActor(Renderable renderable) {
         return renderableActorMap.containsKey(renderable);
     }
 
@@ -282,5 +294,23 @@ public class RenderableManager {
         for(Actor stageActor : stage.getActors()) {
             System.out.println("Actor " + stageActor.getClass() + " " + stageActor.getName() + " " + stageActor.getZIndex());
         }
+    }
+
+    public synchronized void removeEffectFromRenderable(Effect eToRemove, Renderable renderable) {
+        if(renderableExistsAsSprite(renderable)) {
+            Map<Effect, LGDXEffect> mMap = spriteEffects.get(renderableSpriteMap.get(renderable));
+            if (mMap != null)
+                mMap.remove(eToRemove);
+        }
+        else {
+            Map<Effect, LGDXEffect> mMap = actorEffects.get(renderableActorMap.get(renderable));
+            if (mMap != null)
+                mMap.remove(eToRemove);
+        }
+
+    }
+
+    public Sprite getSpriteForRenderable(Renderable renderable) {
+        return renderableSpriteMap.get(renderable);
     }
 }
