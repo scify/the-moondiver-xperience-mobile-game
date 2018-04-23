@@ -9,7 +9,7 @@ public class FunctionEffect extends BaseEffect implements LGDXEffect  {
     public final String PARAM_OBJ_RUNNABLE = "PARAM_OBJ_RUNNABLE";
 
     public FunctionEffect(Runnable rToRun) {
-        super(1000);
+        super(1000.0);
 
         setObjectParameter(PARAM_OBJ_RUNNABLE, rToRun);
     }
@@ -47,7 +47,7 @@ public class FunctionEffect extends BaseEffect implements LGDXEffect  {
      */
     @Override
     public void applyToActor(Actor aTarget, Renderable rRenderable) {
-        super.applyTo(rRenderable);
+        applyTo(rRenderable);
         // Do nothing
     }
 
@@ -59,7 +59,7 @@ public class FunctionEffect extends BaseEffect implements LGDXEffect  {
      */
     @Override
     public void applyToSprite(Sprite sTarget, Renderable rRenderable) {
-        super.applyTo(rRenderable);
+        applyTo(rRenderable);
         // Do nothing
     }
 }

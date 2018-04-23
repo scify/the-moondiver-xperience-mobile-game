@@ -3,7 +3,6 @@ package org.scify.engine.renderables;
 import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.UserAction;
 import org.scify.engine.UserActionCode;
-import org.scify.moonwalker.app.ui.actors.ActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,7 @@ public class MultipleChoiceConversationRenderable extends Renderable{
     protected String relativeAvatarImgPath;
     protected String title;
     protected List<ConversationLine> conversationLines;
-    protected List<ActionButton> buttons;
+    protected List<ActionButtonWithEffect> buttons;
 
 
     public MultipleChoiceConversationRenderable(String id) {
@@ -52,13 +51,13 @@ public class MultipleChoiceConversationRenderable extends Renderable{
     }
 
     protected void addPossibleAnswer(ConversationLine line) {
-        ActionButton button = new ActionButton("text_button", "multiple_selection_answer");
+        ActionButtonWithEffect button = new ActionButtonWithEffect("text_button", "multiple_selection_answer");
         button.setTitle(line.getText());
         button.setUserAction(new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, line.getId()));
         buttons.add(button);
     }
 
-    public List<ActionButton> getButtons() {
+    public List<ActionButtonWithEffect> getButtons() {
         return buttons;
     }
 }

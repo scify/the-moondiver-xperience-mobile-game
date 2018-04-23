@@ -9,13 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import org.scify.engine.renderables.MultipleChoiceConversationRenderable;
-import org.scify.engine.renderables.NextConversationRenderable;
-import org.scify.engine.renderables.TwoChoiceConversationRenderable;
+import org.scify.engine.renderables.*;
 import org.scify.engine.renderables.effects.libgdx.LGDXContainerStack;
 import org.scify.moonwalker.app.ui.ComponentFactory;
 import org.scify.moonwalker.app.ui.UnsupportedRenderableTypeException;
-import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.ui.actors.calculator.CalculatorComponent;
 import org.scify.moonwalker.app.ui.actors.conversation.MultipleChoiceConversationActor;
 import org.scify.moonwalker.app.ui.actors.conversation.NextConversationActor;
@@ -75,17 +72,17 @@ public class ActorFactory extends ComponentFactory {
             case "rotatable_text_button":
                 gParent = new LGDXContainerStack();
                 gParent.setTransform(true);
-                TextButton tbBtn =  createTextButton((ActionButton) renderable);
+                TextButton tbBtn =  createTextButton((ActionButtonWithEffect) renderable);
                 tbBtn.setWidth(renderable.getWidth());
                 tbBtn.setHeight(renderable.getHeight());
                 gParent.add(tbBtn);
                 toReturn = gParent;
                 break;
             case "text_button":
-                toReturn = createTextButton((ActionButton) renderable);
+                toReturn = createTextButton((ActionButtonWithEffect) renderable);
                 break;
             case "image_button":
-                toReturn = createImageButton((ActionButton) renderable);
+                toReturn = createImageButton((ActionButtonWithEffect) renderable);
                 break;
             case "calculator":
                 toReturn = new CalculatorComponent(skin);
@@ -114,8 +111,8 @@ public class ActorFactory extends ComponentFactory {
         return toReturn;
     }
 
-    protected Image createImage(String imgFileRelevantPath, Renderable renderable) {
-        Image img = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath(imgFileRelevantPath)))));
+    protected ImageWithEffect createImage(String imgFileRelevantPath, Renderable renderable) {
+        ImageWithEffect img = new ImageWithEffect(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath(imgFileRelevantPath)))));
 
         if (renderable.getWidth() == 0 && renderable.getHeight() == 0) {
             // Delegate image size to renderable
@@ -126,7 +123,7 @@ public class ActorFactory extends ComponentFactory {
         return img;
     }
 
-    protected Button createButton(ActionButton button) {
+    protected Button createButton(ActionButtonWithEffect button) {
         if (button.getType().equals("image_button"))
             return createImageButton(button);
         else if (button.getType().equals("text_button"))
@@ -134,32 +131,32 @@ public class ActorFactory extends ComponentFactory {
         return null;
     }
 
-    protected TextButton createTextButton(ActionButton actionButton) {
-        TextButton btn = new TextButton(actionButton.getTitle(), skin);
-        setCommonAttrsAndListener(btn, actionButton);
+    protected TextButtonWithEffect createTextButton(ActionButtonWithEffect actionButtonWithEffect) {
+        TextButtonWithEffect btn = new TextButtonWithEffect(actionButtonWithEffect.getTitle(), skin);
+        setCommonAttrsAndListener(btn, actionButtonWithEffect);
         return btn;
     }
 
-    protected ImageButton createImageButton(ActionButton actionButton) {
-        Drawable btnImage = new SpriteDrawable(new Sprite(new Texture(resourceLocator.getFilePath(actionButton.getImgPath()))));
-        ImageButton btn = new ImageButton(btnImage);
-        setCommonAttrsAndListener(btn, actionButton);
+    protected ImageButtonWithEffect createImageButton(ActionButtonWithEffect actionButtonWithEffect) {
+        Drawable btnImage = new SpriteDrawable(new Sprite(new Texture(resourceLocator.getFilePath(actionButtonWithEffect.getImgPath()))));
+        ImageButtonWithEffect btn = new ImageButtonWithEffect(btnImage);
+        setCommonAttrsAndListener(btn, actionButtonWithEffect);
         return btn;
     }
 
-    protected void setCommonAttrsAndListener(Button btn, ActionButton actionButton) {
-        setButtonDimensions(actionButton, btn);
-        btn.setName(actionButton.getId());
-        addButtonListener(btn, actionButton);
+    protected void setCommonAttrsAndListener(Button btn, ActionButtonWithEffect actionButtonWithEffect) {
+        setButtonDimensions(actionButtonWithEffect, btn);
+        btn.setName(actionButtonWithEffect.getId());
+        addButtonListener(btn, actionButtonWithEffect);
     }
 
-    protected void setButtonDimensions(ActionButton actionButton, Button btn) {
-        btn.setPosition(actionButton.getxPos(), actionButton.getyPos());
-        if (actionButton.getWidth() != 0)
-            btn.setWidth(actionButton.getWidth());
-        if (actionButton.getHeight() != 0)
-            btn.setHeight(actionButton.getHeight());
-        btn.pad(actionButton.getPadding());
+    protected void setButtonDimensions(ActionButtonWithEffect actionButtonWithEffect, Button btn) {
+        btn.setPosition(actionButtonWithEffect.getxPos(), actionButtonWithEffect.getyPos());
+        if (actionButtonWithEffect.getWidth() != 0)
+            btn.setWidth(actionButtonWithEffect.getWidth());
+        if (actionButtonWithEffect.getHeight() != 0)
+            btn.setHeight(actionButtonWithEffect.getHeight());
+        btn.pad(actionButtonWithEffect.getPadding());
     }
 
     private MainMenuActor createMainMenuActor(MainMenuRenderable renderable) {
@@ -229,7 +226,7 @@ public class ActorFactory extends ComponentFactory {
         MultipleChoiceConversationActor actor = new MultipleChoiceConversationActor(skin, renderable);
         //actor.setZIndex(1);
         int btnIndex = 1;
-        for (ActionButton button : renderable.getButtons()) {
+        for (ActionButtonWithEffect button : renderable.getButtons()) {
             actor.addButton(createButton(button), btnIndex);
             btnIndex++;
         }
@@ -239,16 +236,16 @@ public class ActorFactory extends ComponentFactory {
     private Actor createTwoChoiceConversationActor(TwoChoiceConversationRenderable renderable) {
         TwoChoiceConversationActor actor = new TwoChoiceConversationActor(skin, renderable);
         actor.setZIndex(1);
-        java.util.List<ActionButton> buttons = renderable.getButtons();
+        java.util.List<ActionButtonWithEffect> buttons = renderable.getButtons();
         actor.init(createButton(buttons.get(0)), createButton(buttons.get(1)));
         return actor;
     }
 
-    private void addButtonListener(Button button, final ActionButton actionButton) {
+    private void addButtonListener(Button button, final ActionButtonWithEffect actionButtonWithEffect) {
         button.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                userInputHandler.addUserAction(actionButton.getUserAction());
+                userInputHandler.addUserAction(actionButtonWithEffect.getUserAction());
             }
         });
     }

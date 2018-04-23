@@ -1,7 +1,7 @@
 package org.scify.moonwalker.app.ui.renderables;
 
 import org.scify.engine.renderables.Renderable;
-import org.scify.moonwalker.app.ui.actors.ActionButton;
+import org.scify.engine.renderables.ActionButtonWithEffect;
 
 public class CockpitRenderable extends Renderable {
 
@@ -17,15 +17,15 @@ public class CockpitRenderable extends Renderable {
     protected String positionValue;
     protected String daysLeftValue;
 
-    protected ActionButton navigateButton;
-    protected ActionButton launchButton;
-    protected ActionButton chargeButton;
-    protected ActionButton spaceshipPartsButton;
-    protected ActionButton mapButton;
+    protected ActionButtonWithEffect navigateButton;
+    protected ActionButtonWithEffect launchButton;
+    protected ActionButtonWithEffect chargeButton;
+    protected ActionButtonWithEffect spaceshipPartsButton;
+    protected ActionButtonWithEffect mapButton;
 
     protected boolean contactButtonIsLighted;
-    protected ActionButton contactButtonSimple;
-    protected ActionButton contactButtonLighted;
+    protected ActionButtonWithEffect contactButtonSimple;
+    protected ActionButtonWithEffect contactButtonLighted;
 
 
     public CockpitRenderable(float xPos, float yPos, float width, float height, String type, String id) {
@@ -70,35 +70,35 @@ public class CockpitRenderable extends Renderable {
         renderableWasUpdated();
     }
 
-    public ActionButton getNavigateButton() {
+    public ActionButtonWithEffect getNavigateButton() {
         return navigateButton;
     }
 
-    public ActionButton getLaunchButton() {
+    public ActionButtonWithEffect getLaunchButton() {
         return launchButton;
     }
 
-    public void setNavigateButton(ActionButton navigateButton) {
+    public void setNavigateButton(ActionButtonWithEffect navigateButton) {
         this.navigateButton = navigateButton;
     }
 
-    public void setLaunchButton(ActionButton launchButton) {
+    public void setLaunchButton(ActionButtonWithEffect launchButton) {
         this.launchButton = launchButton;
     }
 
-    public ActionButton getSpaceshipPartsButton() {
+    public ActionButtonWithEffect getSpaceshipPartsButton() {
         return spaceshipPartsButton;
     }
 
-    public void setSpaceshipPartsButton(ActionButton spaceshipPartsButton) {
+    public void setSpaceshipPartsButton(ActionButtonWithEffect spaceshipPartsButton) {
         this.spaceshipPartsButton = spaceshipPartsButton;
     }
 
-    public ActionButton getMapButton() {
+    public ActionButtonWithEffect getMapButton() {
         return mapButton;
     }
 
-    public void setMapButton(ActionButton mapButton) {
+    public void setMapButton(ActionButtonWithEffect mapButton) {
         this.mapButton = mapButton;
     }
 
@@ -106,15 +106,15 @@ public class CockpitRenderable extends Renderable {
         return contactButtonIsLighted;
     }
 
-    public ActionButton getContactButtonSimple() {
+    public ActionButtonWithEffect getContactButtonSimple() {
         return contactButtonSimple;
     }
 
-    public ActionButton getContactButtonLighted() {
+    public ActionButtonWithEffect getContactButtonLighted() {
         return contactButtonLighted;
     }
 
-    public void setContactButtons(ActionButton contactButtonSimple, ActionButton contactButtonLighted) {
+    public void setContactButtons(ActionButtonWithEffect contactButtonSimple, ActionButtonWithEffect contactButtonLighted) {
         this.contactButtonSimple = contactButtonSimple;
         this.contactButtonLighted = contactButtonLighted;
     }
@@ -137,11 +137,11 @@ public class CockpitRenderable extends Renderable {
         renderableWasUpdated();
     }
 
-    public ActionButton getChargeButton() {
+    public ActionButtonWithEffect getChargeButton() {
         return chargeButton;
     }
 
-    public void setChargeButton(ActionButton chargeButton) {
+    public void setChargeButton(ActionButtonWithEffect chargeButton) {
         this.chargeButton = chargeButton;
     }
 }

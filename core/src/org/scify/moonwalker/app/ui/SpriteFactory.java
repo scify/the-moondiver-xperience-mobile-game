@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.scify.engine.renderables.Renderable;
+import org.scify.moonwalker.app.ui.sprites.SpriteWithEffects;
 
 public class SpriteFactory extends ComponentFactory{
 
@@ -18,13 +19,13 @@ public class SpriteFactory extends ComponentFactory{
         switch (renderable.getType()) {
             case "background_image":
                 Texture texture = new Texture(resourceLocator.getFilePath(renderable.getImgPath()));
-                Sprite sprite = new Sprite(texture);
+                Sprite sprite = new SpriteWithEffects(texture);
                 sprite.setSize(renderable.getWidth(), renderable.getHeight());
                 sToReturn = sprite;
                 break;
             case "player":
                 Texture playerImg = new Texture(resourceLocator.getFilePath("img/player.png"));
-                Sprite playerSprite = new Sprite(playerImg);
+                Sprite playerSprite = new SpriteWithEffects(playerImg);
                 playerSprite.setSize(renderable.getWidth(), renderable.getHeight());
                 sToReturn = playerSprite;
                 break;

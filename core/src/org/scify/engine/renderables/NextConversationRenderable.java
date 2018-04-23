@@ -1,10 +1,8 @@
 package org.scify.engine.renderables;
 
 import org.scify.engine.conversation.ConversationLine;
-import org.scify.engine.renderables.Renderable;
 import org.scify.engine.UserAction;
 import org.scify.engine.UserActionCode;
-import org.scify.moonwalker.app.ui.actors.ActionButton;
 
 public class NextConversationRenderable extends Renderable {
 
@@ -13,7 +11,7 @@ public class NextConversationRenderable extends Renderable {
 
     protected ConversationLine conversationLine;
     protected String relativeAvatarPath;
-    protected ActionButton buttonNext;
+    protected ActionButtonWithEffect buttonNext;
     protected boolean buttonNextActive;
 
     public NextConversationRenderable(String id) {
@@ -24,7 +22,7 @@ public class NextConversationRenderable extends Renderable {
         this.yPos = 0.03f *  screenHeight;
         width = 0.96f * screenWidth;
         height = 0.3f * screenHeight;
-        buttonNext = new ActionButton("text_button", "button_next");
+        buttonNext = new ActionButtonWithEffect("text_button", "button_next");
         buttonNext.setTitle("Επόμενο");
         buttonNextActive = true;
         tableBGRenderable = new ImageRenderable("chat_bg", BG_IMG_PATH);
@@ -75,7 +73,7 @@ public class NextConversationRenderable extends Renderable {
         return relativeAvatarPath;
     }
 
-    public ActionButton getButtonNext() {
+    public ActionButtonWithEffect getButtonNext() {
         return buttonNext;
     }
 }

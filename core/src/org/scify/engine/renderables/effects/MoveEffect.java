@@ -63,8 +63,6 @@ public class MoveEffect extends BaseEffect {
 
             calculateTargetPosition();
 
-            // Update target effect info
-            target.setEffectInfo(this, params);
         }
 
         return target;

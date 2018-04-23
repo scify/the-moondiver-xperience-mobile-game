@@ -1,8 +1,6 @@
 package org.scify.moonwalker.app.ui;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -22,11 +20,12 @@ import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.effects.Effect;
 import org.scify.engine.renderables.effects.libgdx.LGDXEffect;
 import org.scify.moonwalker.app.MoonWalkerGameState;
+import org.scify.moonwalker.app.MoonwalkerUIPainter;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.actors.IContainerActor;
+import org.scify.moonwalker.app.ui.actors.Updateable;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
-import org.scify.moonwalker.app.ui.renderables.RenderableManager;
 import org.scify.moonwalker.app.ui.sound.GdxAudioEngine;
 
 import java.util.*;
@@ -39,39 +38,46 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private GameEvent currentGameEvent;
 
     protected long lLastUpdate = -1L;
-    protected Image worldImg;
+    protected Texture worldImgTexture;
     protected MoonWalkerGameState currentGameState;
     protected AudioEngine audioEngine;
     protected CameraController cameraController;
     protected AppInfo appInfo;
     protected World world;
-    protected RenderableManager renderableManager;
+    protected RenderableBookKeeper renderableBookKeeper;
     protected ThemeController themeController;
     protected UserInputHandlerImpl userInputHandler;
-    protected Label fpsLabel;
     protected SpriteBatch batch;
     protected Stage stage;
     protected Viewport gameViewport;
     protected ResourceLocator resourceLocator;
     protected boolean bDisposalOngoing;
     protected boolean audioEnabled;
+    protected MoonwalkerUIPainter painter;
 
     public MoonWalkerRenderingEngine(UserInputHandler userInputHandler, SpriteBatch batch, Stage stage) {
         this.resourceLocator = new ResourceLocator();
         cameraController = new CameraController();
+        cameraController.initCamera(stage);
+
         this.userInputHandler = (UserInputHandlerImpl) userInputHandler;
         audioEngine = new GdxAudioEngine();
+        themeController = new ThemeController();
+
         appInfo = AppInfo.getInstance();
         this.batch = batch;
         this.stage = stage;
+
+        painter = new MoonwalkerUIPainter(stage, cameraController);
+        painter.setOverallBackground(createBackgroundDefaultImg());
+        painter.setFont(themeController.getFont());
+        painter.setSkin(themeController.getSkin());
+
         gameViewport = stage.getViewport();
-        themeController = new ThemeController();
-        renderableManager = new RenderableManager(themeController, userInputHandler);
-        renderableManager.setBatch(batch);
-        renderableManager.setStage(stage);
-        cameraController.initCamera(stage);
-        createBackgroundDefaultImg();
-        initFPSLabel();
+        renderableBookKeeper = new RenderableBookKeeper(themeController, userInputHandler);
+        renderableBookKeeper.setBatch(batch);
+        renderableBookKeeper.setStage(stage);
+
         audioEngine.pauseCurrentlyPlayingAudios();
         audioEngine.loadSound("audio/mainMenu/menu.mp3");
         audioEngine.loadSound("audio/message.mp3");
@@ -90,20 +96,16 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         System.out.println("\n\n");
     }
 
-    private void initFPSLabel() {
-        fpsLabel = new Label("", themeController.getSkin());
-        fpsLabel.setStyle(new Label.LabelStyle(themeController.getFont(), Color.RED));
-        fpsLabel.setPosition(20, appInfo.getScreenHeight() - 20);
-        // fps label has twice the normal font size
-        fpsLabel.setFontScale(2);
-    }
 
-    protected void createBackgroundDefaultImg() {
+    protected Image createBackgroundDefaultImg() {
         // Init empty pixmap
         Pixmap pTmp = new Pixmap(appInfo.getScreenWidth(), appInfo.getScreenHeight(), Pixmap.Format.RGB565);
-        worldImg = new Image(new Texture(pTmp));
+        worldImgTexture = new Texture(pTmp);
+        Image worldImg = new Image(worldImgTexture);
         worldImg.setWidth(appInfo.getScreenWidth());
         worldImg.setHeight(appInfo.getScreenHeight());
+
+        return worldImg;
     }
 
     @Override
@@ -128,85 +130,32 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 for (Renderable renderable : currentState.getRenderableList()) {
                     drawRenderable(renderable);
                 }
-                //renderableManager.printActors();
             }
         }
     }
 
+    /**
+     * This function
+     * @param renderable
+     */
     protected void drawRenderable(Renderable renderable) {
         if (!bDisposalOngoing) {
+            // Get the UI representation of the renderable
+            Object uiRepresentationOfRenderable = renderableBookKeeper.getUIRepresentationOfRenderable(renderable);
 
-            if (renderableManager.renderableExists(renderable)) {
-                renderableManager.drawRenderable(renderable);
-            } else {
-                renderableManager.createAndAddRenderable(renderable);
+            // if the uiRepresentationOfRenderable implements the Updatable interface, pass the renderable as argument
+            // for it to be updated
+            if(uiRepresentationOfRenderable instanceof Updateable) {
+                ((Updateable) uiRepresentationOfRenderable).update(renderable);
             }
 
-            updateEffectList(renderable);
+            // Get the effects, if any
+            Map<Effect, LGDXEffect> renderableEffects = renderableBookKeeper.getEffectsFor(uiRepresentationOfRenderable);
+            // Then draw the renderable
+            painter.drawUIRenderable(uiRepresentationOfRenderable, renderable, renderableEffects);
         }
     }
 
-
-    protected void updateEffectList(Renderable renderable) {
-        List<Effect> toRemove = new ArrayList<>();
-        LinkedList<Effect> lEffects = new LinkedList<>(renderable.getEffects());
-
-        // For each effect on the renderable
-        for (Effect eCur: lEffects) {
-            // Mark effect for removal, if complete
-            if (eCur.complete())
-                toRemove.add(eCur);
-            else {
-                // If not an LGDX effect
-                if (!(eCur instanceof LGDXEffect)) {
-                    // Handle as sprite
-                    if (renderableManager.renderableExistsAsSprite(renderable)) {
-                        Sprite sCur = renderableManager.getSpriteForRenderable(renderable);
-                        LGDXEffect leCur = renderableManager.getOrCreateLGDXEffectForSprite(eCur,
-                                sCur);
-                    }
-                    else
-                    {
-                        // Handle as actor
-                        Actor aCur = renderableManager.getOrCreateActorResourceFor(renderable);
-                        // create corresponding LGDX effect for actor
-                        LGDXEffect leCur = renderableManager.getOrCreateLGDXEffectForActor(eCur,
-                                aCur);
-
-                        // If container add to children as well
-                        if (aCur instanceof IContainerActor) {
-                            updateChildrenEffects(aCur, renderable, eCur);
-                        }
-                    }
-                }
-            }
-        }
-
-        // For each completed effect
-        for (Effect eToRemove: toRemove) {
-            // Remove it
-            renderableManager.removeEffectFromRenderable(eToRemove, renderable);
-        }
-    }
-
-    protected void updateChildrenEffects(Actor aParent, Renderable rParent, Effect eCur) {
-        if (eCur.complete())
-            return;
-
-        IContainerActor<Renderable> caToDraw = (IContainerActor)aParent;
-        // For every child
-        Map<Actor,Renderable> mChildren = caToDraw.getChildrenActorsAndRenderables();
-        for (Map.Entry<Actor,Renderable> mCur : mChildren.entrySet()) {
-            // create corresponding LGDX effect for child actor
-            LGDXEffect leCur = renderableManager.getOrCreateLGDXEffectForActor(eCur,
-                    mCur.getKey());
-
-            // If child is a container repeat recursively
-            if (mCur.getKey() instanceof IContainerActor) {
-                updateChildrenEffects(mCur.getKey(), mCur.getValue(), eCur);
-            }
-        }
-    }
 
     private void handleGameEvents(List<GameEvent> eventsList) {
         if (!bDisposalOngoing) {
@@ -228,7 +177,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         switch (eventType) {
             case "BACKGROUND_IMG_UI":
                 String imgPath = (String) gameEvent.parameters;
-                worldImg.setDrawable(new SpriteDrawable(new Sprite(new Texture(resourceLocator.getFilePath(imgPath)))));
+                painter.setOverallBackground(createBackgroundCustomImg(imgPath));
                 listIterator.remove();
                 break;
             case "BORDER_UI":
@@ -285,15 +234,26 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         }
     }
 
+
+    private Image createBackgroundCustomImg(String imgPath) {
+        // Free existing texture, if available
+        if (worldImgTexture != null) {
+            worldImgTexture.dispose();
+        }
+        // Update texture
+        worldImgTexture = new Texture(resourceLocator.getFilePath(imgPath));
+        return new Image(worldImgTexture);
+    }
+
     private void updateLabelText(HashMap.SimpleEntry<Renderable, String> parameters) {
-        Actor actor = renderableManager.getOrCreateActorResourceFor(parameters.getKey());
+        Actor actor = renderableBookKeeper.getOrCreateActorResourceFor(parameters.getKey());
         Label label = (Label) actor;
         label.setText(parameters.getValue());
     }
 
     protected synchronized void resetEngine() {
         bDisposalOngoing = true;
-        renderableManager.reset();
+        renderableBookKeeper.reset();
         bDisposalOngoing = false;
     }
 
@@ -305,7 +265,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     @Override
     public synchronized void disposeRenderables() {
         bDisposalOngoing = true;
-        renderableManager.dispose();
+        renderableBookKeeper.dispose();
         resetEngine();
         bDisposalOngoing = false;
     }
@@ -329,6 +289,8 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         themeController.dispose();
         cameraController.disposeResources();
         audioEngine.disposeResources();
+        worldImgTexture.dispose();
+
         bDisposalOngoing = false;
     }
 
@@ -340,7 +302,8 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 Thread.yield();
                 return; // Do nothing
             } else {
-                drawComponents(delta, lNewTime);
+                drawGameState(currentGameState);
+                painter.updateStage(delta, lNewTime, lLastUpdate);
                 cameraController.render(world);
                 cameraController.setProjectionMatrix(batch);
                 lLastUpdate = lNewTime;
@@ -348,22 +311,5 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         }
     }
 
-    protected void drawComponents(Float delta, long lNewTime) {
-        if (!bDisposalOngoing) {
-            Gdx.gl.glClearColor(0, 0, 0, 1);
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-            //stage.setDebugAll(true);
-            synchronized (batch) {
-                batch.begin();
-                fpsLabel.setText(String.valueOf(1000 / (lNewTime - lLastUpdate)));
-                fpsLabel.draw(batch, 1);
-                worldImg.draw(batch, 1);
-                drawGameState(currentGameState);
-                batch.end();
-                cameraController.update();
-                stage.act(delta);
-                stage.draw();
-            }
-        }
-    }
+
 }

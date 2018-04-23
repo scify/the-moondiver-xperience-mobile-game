@@ -6,7 +6,7 @@ import org.scify.engine.renderables.effects.Effect;
 import org.scify.engine.renderables.effects.EffectSequence;
 import org.scify.engine.renderables.effects.FadeEffect;
 import org.scify.engine.renderables.effects.FunctionEffect;
-import org.scify.moonwalker.app.ui.actors.ActionButton;
+import org.scify.engine.renderables.ActionButtonWithEffect;
 
 public class MainMenuRenderable extends Renderable {
 
@@ -32,16 +32,16 @@ public class MainMenuRenderable extends Renderable {
     public final String BOY_MUSIC_AUDIO_PATH = "audio/room_episode/boy/music.mp3";
     public final String GIRL_MUSIC_AUDIO_PATH = "audio/room_episode/girl/music.mp3";
 
-    protected ActionButton boyAvatarButton;
-    protected ActionButton girlAvatarButton;
-    protected ActionButton boyButton;
-    protected ActionButton girlButton;
-    protected ActionButton selectedAvatarButton;
-    protected ActionButton startGameButton;
-    protected ActionButton continueGameButton;
-    protected ActionButton toggleAudioButton;
-    protected ActionButton aboutButton;
-    protected ActionButton quitButton;
+    protected ActionButtonWithEffect boyAvatarButton;
+    protected ActionButtonWithEffect girlAvatarButton;
+    protected ActionButtonWithEffect boyButton;
+    protected ActionButtonWithEffect girlButton;
+    protected ActionButtonWithEffect selectedAvatarButton;
+    protected ActionButtonWithEffect startGameButton;
+    protected ActionButtonWithEffect continueGameButton;
+    protected ActionButtonWithEffect toggleAudioButton;
+    protected ActionButtonWithEffect aboutButton;
+    protected ActionButtonWithEffect quitButton;
 
     protected int countDownValue;
     protected boolean playerSelectionStatus;
@@ -63,21 +63,21 @@ public class MainMenuRenderable extends Renderable {
 
     public boolean isReadyForInput() { return inputEnabled; }
 
-    public void setBoyAvatarButton(ActionButton boyAvatarButton) {
+    public void setBoyAvatarButton(ActionButtonWithEffect boyAvatarButton) {
         this.boyAvatarButton = boyAvatarButton;
         this.boyAvatarButton.setVisible(false);
     }
 
-    public ActionButton getBoyAvatarButton() {
+    public ActionButtonWithEffect getBoyAvatarButton() {
         return boyAvatarButton;
     }
 
-    public void setGirlAvatarButton(ActionButton girlAvatarButton) {
+    public void setGirlAvatarButton(ActionButtonWithEffect girlAvatarButton) {
         this.girlAvatarButton = girlAvatarButton;
         this.girlAvatarButton.setVisible(false);
     }
 
-    public ActionButton getGirlAvatarButton() {
+    public ActionButtonWithEffect getGirlAvatarButton() {
         return girlAvatarButton;
     }
 
@@ -147,70 +147,70 @@ public class MainMenuRenderable extends Renderable {
         }
     }
 
-    public ActionButton getBoyButton() {
+    public ActionButtonWithEffect getBoyButton() {
         return boyButton;
     }
 
-    public void setBoyButton(ActionButton button) {
+    public void setBoyButton(ActionButtonWithEffect button) {
         this.boyButton = button;
         this.boyButton.setVisible(false);
     }
 
-    public ActionButton getGirlButton() {
+    public ActionButtonWithEffect getGirlButton() {
         return girlButton;
     }
 
-    public void setGirlButton(ActionButton button) {
+    public void setGirlButton(ActionButtonWithEffect button) {
         this.girlButton = button;
         this.girlButton.setVisible(false);
     }
 
-    public ActionButton getSelectedAvatarButton() {
+    public ActionButtonWithEffect getSelectedAvatarButton() {
         return selectedAvatarButton;
     }
 
-    public void setSelectedAvatarButton(ActionButton selectedAvatarButton) {
+    public void setSelectedAvatarButton(ActionButtonWithEffect selectedAvatarButton) {
         this.selectedAvatarButton = selectedAvatarButton;
         renderableWasUpdated();
     }
 
-    public ActionButton getStartGameButton() {
+    public ActionButtonWithEffect getStartGameButton() {
         return startGameButton;
     }
 
-    public void setStartGameButton(ActionButton button) {
+    public void setStartGameButton(ActionButtonWithEffect button) {
         this.startGameButton = button;
     }
 
-    public ActionButton getContinueGameButton() {
+    public ActionButtonWithEffect getContinueGameButton() {
         return continueGameButton;
     }
 
-    public void setContinueGameButton(ActionButton button) {
+    public void setContinueGameButton(ActionButtonWithEffect button) {
         this.continueGameButton = button;
     }
 
-    public ActionButton getToggleAudioButton() {
+    public ActionButtonWithEffect getToggleAudioButton() {
         return toggleAudioButton;
     }
 
-    public void setToggleAudioButton(ActionButton button) {
+    public void setToggleAudioButton(ActionButtonWithEffect button) {
         this.toggleAudioButton = button;
     }
 
-    public ActionButton getAboutButton() {
+    public ActionButtonWithEffect getAboutButton() {
         return aboutButton;
     }
 
-    public void setAboutButton(ActionButton button) {
+    public void setAboutButton(ActionButtonWithEffect button) {
         this.aboutButton = button;
     }
 
-    public ActionButton getQuitButton() {
+    public ActionButtonWithEffect getQuitButton() {
         return quitButton;
     }
 
-    public void setQuitButton(ActionButton button) {
+    public void setQuitButton(ActionButtonWithEffect button) {
         this.quitButton = button;
     }
 }

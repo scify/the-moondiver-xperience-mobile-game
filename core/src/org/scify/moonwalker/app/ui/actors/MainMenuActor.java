@@ -85,7 +85,9 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
         fadeInEffects.addEffect(new FunctionEffect(new Runnable() {
             @Override
             public void run() {
+
                 renderable.enableInput();
+
             }
         }));
         renderable.apply(fadeInEffects);
@@ -95,11 +97,12 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
 
     //returns heightLeftForBottom
     protected float createTopBanner(float heightOfTopRow) {
-        topBannerImage = (Image) factory.createResourceForType(renderable.getTopBannerRenderable());
+        topBannerImage = (ImageWithEffect) factory.createResourceForType(renderable.getTopBannerRenderable());
         float width = convertWidth(topBannerImage.getWidth());
         float height = convertHeight(topBannerImage.getHeight());
         row().height(height).width(width);
         Actor topBannerActor = add(topBannerImage).maxHeight(height).maxWidth(width).colspan(3).top().getActor();
+
         getChildrenActorsAndRenderables().put(topBannerActor, renderable.getTopBannerRenderable());
         return getHeight() - (height + heightOfTopRow);
     }

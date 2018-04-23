@@ -30,7 +30,7 @@ public class Renderable extends Positionable implements EffectTarget {
     /**
      * A map holding current effect state info.
      */
-    protected Map<Effect, Map<String,String>> effectInfo = new HashMap<>();
+    protected Set<Effect> effectInfo = new HashSet<>();
 
     /**
      * Describes the visibility of the renderable. A non-visible renderable is also disabled, i.e. cannot
@@ -102,17 +102,12 @@ public class Renderable extends Positionable implements EffectTarget {
 
     @Override
     public Set<Effect> getEffects() {
-        return effectInfo.keySet();
+        return new HashSet<>(effectInfo);
     }
 
     @Override
-    public Map<String, String> getEffectInfo(Effect effectOfInterest) {
-        return effectInfo.get(effectOfInterest);
-    }
-
-    @Override
-    public void setEffectInfo(Effect effectOfInterest, Map<String, String> updatedInfo) {
-        effectInfo.put(effectOfInterest, updatedInfo);
+    public void addEffect(Effect effectOfInterest) {
+        effectInfo.add(effectOfInterest);
     }
 
     @Override

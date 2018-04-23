@@ -8,9 +8,9 @@ import org.scify.moonwalker.app.game.quiz.Question;
 
 import java.util.HashMap;
 
-public class TextInputDialog extends ActionDialog {
+public class TextInputDialogWithEffect extends ActionDialogWithEffect {
 
-    public TextInputDialog(float xPos, float yPos, float width, float height, String title, String bodyText, Skin sKin) {
+    public TextInputDialogWithEffect(float xPos, float yPos, float width, float height, String title, String bodyText, Skin sKin) {
         super(xPos, yPos, width, height, title, bodyText, sKin);
     }
 

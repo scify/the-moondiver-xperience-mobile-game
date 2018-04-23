@@ -14,7 +14,7 @@ import org.scify.engine.UserActionCode;
 import org.scify.engine.UserInputHandler;
 import org.scify.moonwalker.app.game.quiz.Answer;
 import org.scify.moonwalker.app.helpers.AppInfo;
-import org.scify.moonwalker.app.ui.actors.ActionButton;
+import org.scify.engine.renderables.ActionButtonWithEffect;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -118,7 +118,7 @@ public class UserInputHandlerImpl extends ChangeListener implements UserInputHan
         pendingUserActions.add(new UserAction(UserActionCode.BUTTON_PRESSED, actor));
     }
 
-    public void addClickListenerForActor(final ActionButton button, Actor actor) {
+    public void addClickListenerForActor(final ActionButtonWithEffect button, Actor actor) {
         actor.addListener(new UserInputHandlerImpl() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

@@ -5,7 +5,7 @@ import org.scify.engine.renderables.effects.EffectSequence;
 import org.scify.engine.renderables.effects.FadeEffect;
 import org.scify.engine.renderables.effects.FunctionEffect;
 import org.scify.moonwalker.app.game.SelectedPlayer;
-import org.scify.moonwalker.app.ui.actors.ActionButton;
+import org.scify.engine.renderables.ActionButtonWithEffect;
 import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
 
 import java.util.Date;
@@ -148,30 +148,30 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
     protected void createAndAddMainMenuButtons() {
         buttonTitlesAndActionCodes = new LinkedHashMap<>();
 
-        ActionButton start = createActionButton("ΝΕΟ ΠΑΙΧΝΙΔΙ", renderable.START_BUTTON_IMG_PATH, UserActionCode.NEW_GAME);
+        ActionButtonWithEffect start = createActionButton("ΝΕΟ ΠΑΙΧΝΙΔΙ", renderable.START_BUTTON_IMG_PATH, UserActionCode.NEW_GAME);
         renderable.setStartGameButton(start);
 
-        ActionButton cont = createActionButton("ΣΥΝΕΧΙΣΕ", renderable.CONTINUE_BUTTON_IMG_PATH, UserActionCode.CONTINUE);
+        ActionButtonWithEffect cont = createActionButton("ΣΥΝΕΧΙΣΕ", renderable.CONTINUE_BUTTON_IMG_PATH, UserActionCode.CONTINUE);
         renderable.setContinueGameButton(cont);
 
-        ActionButton toggle = createActionButton("ΗΧΟΣ ON/OFF", renderable.TOGGLE_AUDIO_BUTTON_IMG_PATH, UserActionCode.TOGGLE_AUDIO);
+        ActionButtonWithEffect toggle = createActionButton("ΗΧΟΣ ON/OFF", renderable.TOGGLE_AUDIO_BUTTON_IMG_PATH, UserActionCode.TOGGLE_AUDIO);
         renderable.setToggleAudioButton(toggle);
 
-        ActionButton about = createActionButton("ABOUT", renderable.ABOUT_BUTTON_IMG_PATH, UserActionCode.ABOUT);
+        ActionButtonWithEffect about = createActionButton("ABOUT", renderable.ABOUT_BUTTON_IMG_PATH, UserActionCode.ABOUT);
         renderable.setAboutButton(about);
 
-        ActionButton quit = createActionButton("ΕΞΟΔΟΣ", renderable.QUIT_BUTTON_IMG_PATH, UserActionCode.QUIT);
+        ActionButtonWithEffect quit = createActionButton("ΕΞΟΔΟΣ", renderable.QUIT_BUTTON_IMG_PATH, UserActionCode.QUIT);
         renderable.setQuitButton(quit);
     }
 
     protected void createAvatarSelectionRenderable() {
-        ActionButton boyButton = createActionButton("boyButton", renderable.BOY_BUTTON_IMG_PATH, UserActionCode.BOY_SELECTED);
-        ActionButton boyAvatarButton = createActionButton("boyAvatarButton", renderable.BOY_IMG_PATH, UserActionCode.BOY_SELECTED);
+        ActionButtonWithEffect boyButton = createActionButton("boyButton", renderable.BOY_BUTTON_IMG_PATH, UserActionCode.BOY_SELECTED);
+        ActionButtonWithEffect boyAvatarButton = createActionButton("boyAvatarButton", renderable.BOY_IMG_PATH, UserActionCode.BOY_SELECTED);
         renderable.setBoyButton(boyButton);
         renderable.setBoyAvatarButton(boyAvatarButton);
 
-        ActionButton girlButton = createActionButton("girlButton", renderable.GIRL_BUTTON_IMG_PATH, UserActionCode.GIRL_SELECTED);
-        ActionButton girlAvatarButton = createActionButton("girlAvatarButton", renderable.GIRL_IMG_PATH, UserActionCode.GIRL_SELECTED);
+        ActionButtonWithEffect girlButton = createActionButton("girlButton", renderable.GIRL_BUTTON_IMG_PATH, UserActionCode.GIRL_SELECTED);
+        ActionButtonWithEffect girlAvatarButton = createActionButton("girlAvatarButton", renderable.GIRL_IMG_PATH, UserActionCode.GIRL_SELECTED);
         renderable.setGirlButton(girlButton);
         renderable.setGirlAvatarButton(girlAvatarButton);
 
@@ -204,7 +204,7 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
         currentState.addGameEvent(new GameEvent("AVATAR_SELECTED", newSelection, this));
     }
 
-    protected ActionButton createActionButton(String id, String imgPath, UserActionCode code) {
+    protected ActionButtonWithEffect createActionButton(String id, String imgPath, UserActionCode code) {
         return createImageButton(id, imgPath, new UserAction(code), 0, 0);
     }
 }

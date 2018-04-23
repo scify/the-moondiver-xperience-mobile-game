@@ -65,7 +65,7 @@ public class BaseEffect implements Effect {
             setNumericParameter(INFO_START_TIME, Double.valueOf(new Date().getTime()));
 
         // Update target with effect info
-        target.setEffectInfo(this, params);
+        target.addEffect(this);
         return target;
     }
 

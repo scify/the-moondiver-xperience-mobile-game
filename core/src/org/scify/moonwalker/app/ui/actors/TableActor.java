@@ -7,20 +7,25 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.Renderable;
+import org.scify.engine.renderables.effects.Effect;
+import org.scify.engine.renderables.effects.EffectTarget;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
-public abstract class TableActor<T extends Renderable> extends Table implements IContainerActor<T> {
+public abstract class TableActor<T extends Renderable> extends Table implements IContainerActor<T>, EffectTarget {
 
     protected ResourceLocator resourceLocator;
     protected AppInfo appInfo;
     protected Image background;
     protected final float TABLES_PADDING_PIXELS = 7;
     protected long timestamp;
+    protected Set<Effect> effects;
 
     protected T renderable;
     protected Map<Actor, Renderable> childrenActorsToRenderables;
@@ -31,6 +36,7 @@ public abstract class TableActor<T extends Renderable> extends Table implements 
         resourceLocator = new ResourceLocator();
         childrenActorsToRenderables = new HashMap<>();
         renderable = rRenderable;
+        effects  = new HashSet<>();
     }
 
     public Cell addTextCell(Table table, String labelTxt) {
@@ -56,10 +62,19 @@ public abstract class TableActor<T extends Renderable> extends Table implements 
     }
 
     public void addBackground(ImageRenderable imageRenderable, float width, float height) {
-        background = new Image();
-        background.setDrawable(ActorFactory.getInstance().createImage(imageRenderable.getImgPath(), imageRenderable).getDrawable());
+        // Remove existing background
+        if (background != null)
+        {
+            removeActor(background);
+        }
+
+        // Get new image
+        background = ActorFactory.getInstance().createImage(imageRenderable.getImgPath(), imageRenderable);
+        // Update size
         background.setSize(width, height);
+        // Add to important children
         getChildrenActorsAndRenderables().put(background, imageRenderable);
+        // Add it to the table, as an actor
         addActor(background);
     }
 
@@ -107,5 +122,25 @@ public abstract class TableActor<T extends Renderable> extends Table implements 
     @Override
     public T getRenderable() {
         return renderable;
+    }
+
+    @Override
+    public EffectTarget apply(Effect toApply) {
+        return toApply.applyTo(this);
+    }
+
+    @Override
+    public Set<Effect> getEffects() {
+        return new HashSet<>(effects);
+    }
+
+    @Override
+    public void addEffect(Effect effectOfInterest) {
+        effects.add(effectOfInterest);
+    }
+
+    @Override
+    public void removeEffect(Effect eToRemove) {
+        effects.remove(eToRemove);
     }
 }

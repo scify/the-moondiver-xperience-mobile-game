@@ -37,7 +37,7 @@ public class LGDXParallelEffectList extends ParallelEffectList implements LGDXEf
         // If no factory is provided
         if (factory == null)
             // use default one
-            factory = new LGDXEffectFactory<>();
+            factory = LGDXEffectFactory.getFactorySingleton();
 
         // For each effect
         for (Effect eCur: elSource.getSeriesOfEffects()) {

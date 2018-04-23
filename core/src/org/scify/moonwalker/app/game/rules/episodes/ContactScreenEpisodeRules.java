@@ -1,8 +1,6 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
-import org.scify.engine.renderables.Renderable;
-import org.scify.moonwalker.app.ui.actors.ActionButton;
 import org.scify.moonwalker.app.ui.renderables.ContactScreenRenderable;
 
 public class ContactScreenEpisodeRules extends TemporaryEpisodeRules {

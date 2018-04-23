@@ -1,29 +1,29 @@
-package org.scify.moonwalker.app.ui.actors;
+package org.scify.engine.renderables;
 
-import org.scify.engine.renderables.Renderable;
 import org.scify.engine.UserAction;
+import org.scify.engine.renderables.Renderable;
 
-public class ActionButton extends Renderable {
+public class TextLabel extends Renderable {
 
-    protected String title;
+    protected String label;
     protected UserAction userAction;
     protected float padding;
     protected String imgPath;
 
-    public ActionButton(float xPos, float yPos, float width, float height, String type, String id) {
+    public TextLabel(float xPos, float yPos, float width, float height, String type, String id) {
         super(xPos, yPos, width, height, type, id);
     }
 
-    public ActionButton(String type, String id) {
+    public TextLabel(String type, String id) {
         super(type, id);
     }
 
-    public String getTitle() {
-        return title;
+    public String getLabel() {
+        return label;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public UserAction getUserAction() {

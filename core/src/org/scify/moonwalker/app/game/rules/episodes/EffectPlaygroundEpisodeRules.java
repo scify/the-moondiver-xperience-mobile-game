@@ -5,7 +5,7 @@ import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.effects.FadeEffect;
 import org.scify.engine.renderables.effects.RotateEffect;
 import org.scify.engine.renderables.effects.SlideEffect;
-import org.scify.moonwalker.app.ui.actors.ActionButton;
+import org.scify.engine.renderables.ActionButtonWithEffect;
 
 public class EffectPlaygroundEpisodeRules extends SimpleTimedImageEpisodeRules {
     protected final int MILLISECONDS_FOR_EPISODE = 20000;
@@ -21,7 +21,7 @@ public class EffectPlaygroundEpisodeRules extends SimpleTimedImageEpisodeRules {
         }
 
         if (aTest == null) {
-            aTest = new ActionButton("rotatable_text_button", "ID_OK");
+            aTest = new ActionButtonWithEffect("rotatable_text_button", "ID_OK");
             aTest.setxPos(250);
             aTest.setyPos(250);
             aTest.setWidth(250);
@@ -29,7 +29,7 @@ public class EffectPlaygroundEpisodeRules extends SimpleTimedImageEpisodeRules {
             aTest.apply(new FadeEffect(1.0, 0.3, 5000.0)).apply(new
                     RotateEffect(0.0, 360.0, 8000.0));
             aTest.apply(new SlideEffect(aTest.getxPos(), aTest.getyPos(), 270.0, 1000));
-            ((ActionButton)aTest).setTitle("Normal (parallel)");
+            ((ActionButtonWithEffect)aTest).setTitle("Normal (parallel)");
             currentState.addRenderable(aTest);
 
 //            aTest2 = new TextLabel("rotatable_label", "ID_ANOTHER");

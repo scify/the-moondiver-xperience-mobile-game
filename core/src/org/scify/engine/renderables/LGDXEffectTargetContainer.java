@@ -1,13 +1,14 @@
 package org.scify.engine.renderables;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import org.scify.engine.renderables.effects.EffectTarget;
 
 import java.util.List;
 
 /**
  * Describes the class of containers that are used to apply effects to the contained renderables.
  */
-public interface LGDXEffectTargetContainer {
+public interface LGDXEffectTargetContainer extends EffectTarget {
     /**
      * Returns the actual actors (usually one) in the container.
      *

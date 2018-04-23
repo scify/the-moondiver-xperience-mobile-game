@@ -44,9 +44,6 @@ public class BounceEffect extends BaseEffect {
 
         calculateOffsets();
 
-        // Update target effect info
-        target.setEffectInfo(this, params);
-
         return target;
     }
 

@@ -12,7 +12,7 @@ import org.scify.moonwalker.app.game.quiz.Answer;
 import org.scify.engine.UserAction;
 import org.scify.moonwalker.app.game.quiz.Question;
 import org.scify.moonwalker.app.helpers.AppInfo;
-import org.scify.moonwalker.app.ui.actors.ActionButton;
+import org.scify.engine.renderables.ActionButtonWithEffect;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -127,9 +127,9 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
         return gsCurrent.eventsQueueContainsEvent("PAUSE_GAME");
     }
 
-    protected ActionButton createEscapeButton() {
+    protected ActionButtonWithEffect createEscapeButton() {
         float btnRealSize = appInfo.pixelsWithDensity(ESCAPE_BUTTON_SIZE_PIXELS);
-        ActionButton escape = new ActionButton(0, appInfo.getScreenHeight() - btnRealSize, btnRealSize, btnRealSize, "image_button", "escape_button");
+        ActionButtonWithEffect escape = new ActionButtonWithEffect(0, appInfo.getScreenHeight() - btnRealSize, btnRealSize, btnRealSize, "image_button", "escape_button");
         escape.setPadding(appInfo.pixelsWithDensity(ESCAPE_BUTTON_PADDING_PIXELS));
         escape.setImgPath("img/close.png");
         return escape;
@@ -139,8 +139,8 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
         currentState.removeAllGameEventsOwnedBy(this);
     }
 
-    protected ActionButton createImageButton(String id, String imgPath, UserAction userAction, float widthPixels, float heightPixels) {
-        ActionButton button = new ActionButton("image_button", id);
+    protected ActionButtonWithEffect createImageButton(String id, String imgPath, UserAction userAction, float widthPixels, float heightPixels) {
+        ActionButtonWithEffect button = new ActionButtonWithEffect("image_button", id);
         button.setImgPath(imgPath);
         button.setUserAction(userAction);
         button.setWidth(appInfo.pixelsWithDensity(widthPixels));
