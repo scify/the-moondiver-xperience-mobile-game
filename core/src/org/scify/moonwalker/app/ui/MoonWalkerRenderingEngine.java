@@ -3,14 +3,12 @@ package org.scify.moonwalker.app.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.scify.engine.GameEvent;
 import org.scify.engine.RenderingEngine;
@@ -44,7 +42,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     protected CameraController cameraController;
     protected AppInfo appInfo;
     protected World world;
-    protected RenderableBookKeeper renderableBookKeeper;
+    protected LGDXRenderableBookKeeper bookKeeper;
     protected ThemeController themeController;
     protected UserInputHandlerImpl userInputHandler;
     protected SpriteBatch batch;
@@ -74,9 +72,15 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         painter.setSkin(themeController.getSkin());
 
         gameViewport = stage.getViewport();
-        renderableBookKeeper = new RenderableBookKeeper(themeController, userInputHandler);
-        renderableBookKeeper.setBatch(batch);
-        renderableBookKeeper.setStage(stage);
+        try {
+            bookKeeper = LGDXRenderableBookKeeper.initBookKeeper(themeController, userInputHandler);
+        } catch (org.scify.moonwalker.app.ui.LGDXRenderableBookKeeper.AlreadyInitializedBookKeeperException e) {
+            System.err.println("WARNING: Keeper already initialized. Full error:");
+            e.printStackTrace(System.err);
+        }
+
+        bookKeeper.setBatch(batch);
+        bookKeeper.setStage(stage);
 
         audioEngine.pauseCurrentlyPlayingAudios();
         audioEngine.loadSound("audio/mainMenu/menu.mp3");
@@ -128,7 +132,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         if (!bDisposalOngoing) {
             synchronized (currentState.getRenderableList()) {
                 for (Renderable renderable : currentState.getRenderableList()) {
-                    drawRenderable(renderable);
+                        drawRenderable(renderable);
                 }
             }
         }
@@ -141,18 +145,37 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     protected void drawRenderable(Renderable renderable) {
         if (!bDisposalOngoing) {
             // Get the UI representation of the renderable
-            Object uiRepresentationOfRenderable = renderableBookKeeper.getUIRepresentationOfRenderable(renderable);
-
-            // if the uiRepresentationOfRenderable implements the Updatable interface, pass the renderable as argument
-            // for it to be updated
-            if(uiRepresentationOfRenderable instanceof Updateable) {
-                ((Updateable) uiRepresentationOfRenderable).update(renderable);
-            }
+            Object uiRepresentationOfRenderable = bookKeeper.getUIRepresentationOfRenderable(renderable);
 
             // Get the effects, if any
-            Map<Effect, LGDXEffect> renderableEffects = renderableBookKeeper.getEffectsFor(uiRepresentationOfRenderable);
-            // Then draw the renderable
-            painter.drawUIRenderable(uiRepresentationOfRenderable, renderable, renderableEffects);
+            Map<Effect, LGDXEffect> renderableEffects = bookKeeper.getEffectsFor(uiRepresentationOfRenderable);
+            // DEBUG LINES
+//            System.err.println(renderable.getId() + " " + renderableEffects.size());
+            ///////////////
+
+            // Then draw the renderable itself, if needed
+            if (renderable.needsUpdate()) {
+
+                // if the uiRepresentationOfRenderable implements the Updatable interface, pass the renderable as argument
+                // for it to be updated
+                if(uiRepresentationOfRenderable instanceof Updateable) {
+                    ((Updateable) uiRepresentationOfRenderable).update(renderable);
+                }
+
+                painter.drawUIRenderable(uiRepresentationOfRenderable, renderable, renderableEffects);
+                // and share that it is now updated
+                renderable.wasUpdated();
+            }
+
+            // If actor is a container
+            if (uiRepresentationOfRenderable instanceof IContainerActor) {
+                // For every contained actor
+                for (Map.Entry<Actor,Renderable> mearCur : ((IContainerActor<Renderable>)uiRepresentationOfRenderable).getChildrenActorsAndRenderables().entrySet()) {
+                    // draw it
+                    drawRenderable(mearCur.getValue());
+                }
+            }
+
         }
     }
 
@@ -246,14 +269,14 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     }
 
     private void updateLabelText(HashMap.SimpleEntry<Renderable, String> parameters) {
-        Actor actor = renderableBookKeeper.getOrCreateActorResourceFor(parameters.getKey());
+        Actor actor = bookKeeper.getOrCreateActorResourceFor(parameters.getKey());
         Label label = (Label) actor;
         label.setText(parameters.getValue());
     }
 
     protected synchronized void resetEngine() {
         bDisposalOngoing = true;
-        renderableBookKeeper.reset();
+        bookKeeper.reset();
         bDisposalOngoing = false;
     }
 
@@ -265,7 +288,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     @Override
     public synchronized void disposeRenderables() {
         bDisposalOngoing = true;
-        renderableBookKeeper.dispose();
+        bookKeeper.dispose();
         resetEngine();
         bDisposalOngoing = false;
     }

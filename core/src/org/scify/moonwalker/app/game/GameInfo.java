@@ -12,7 +12,7 @@ public class GameInfo {
     protected MoonPhase nextMoonPhase;
     protected MoonPhase postNextMoonPhase;
     protected MoonPhasesController moonPhasesController;
-    protected SelectedPlayer selectedPlayer;
+    protected String selectedPlayer;
     protected boolean contactRequestFlag;
 
     private static GameInfo instance;
@@ -116,11 +116,11 @@ public class GameInfo {
         return nextLocation;
     }
 
-    public void setSelectedPlayer(SelectedPlayer selectedPlayer) {
+    public void setSelectedPlayer(String selectedPlayer) {
         this.selectedPlayer = selectedPlayer;
     }
 
-    public SelectedPlayer getSelectedPlayer() {
+    public String getSelectedPlayer() {
         return selectedPlayer;
     }
 }

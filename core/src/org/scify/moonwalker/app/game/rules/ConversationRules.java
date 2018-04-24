@@ -12,11 +12,14 @@ import org.scify.engine.renderables.effects.Effect;
 import org.scify.engine.renderables.effects.FadeEffect;
 import org.scify.engine.renderables.effects.MoveEffect;
 import org.scify.engine.renderables.effects.ParallelEffectList;
+import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 
 import java.awt.geom.Point2D;
 import java.util.*;
+
+import static org.scify.moonwalker.app.game.SelectedPlayer.girl;
 
 public class ConversationRules extends MoonWalkerRules {
     /**
@@ -320,11 +323,11 @@ public class ConversationRules extends MoonWalkerRules {
         String avatarsPath = "img/avatars/";
         if (speakerId.equals("player")) {
             switch (gameInfo.getSelectedPlayer()) {
-                case boy:
+                case SelectedPlayer.boy:
                     return avatarsPath + "boy.png";
-                case girl:
+                case SelectedPlayer.girl:
                     return avatarsPath + "girl.png";
-                case unset:
+                case SelectedPlayer.unset:
                     return null;
                 default:
                     return null;

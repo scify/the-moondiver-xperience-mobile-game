@@ -34,7 +34,7 @@ public class EffectSequence extends BaseEffect {
 
     @Override
     public synchronized double getDuration() {
-
+        updateDuration();
         return dDuration;
     }
 

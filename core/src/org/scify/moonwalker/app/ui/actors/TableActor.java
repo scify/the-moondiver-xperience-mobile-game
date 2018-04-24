@@ -11,6 +11,7 @@ import org.scify.engine.renderables.effects.Effect;
 import org.scify.engine.renderables.effects.EffectTarget;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
+import org.scify.moonwalker.app.ui.LGDXRenderableBookKeeper;
 import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
 
 import java.util.HashMap;
@@ -18,7 +19,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class TableActor<T extends Renderable> extends Table implements IContainerActor<T>, EffectTarget {
+public class TableActor<T extends Renderable> extends Table implements IContainerActor<T>, EffectTarget {
 
     protected ResourceLocator resourceLocator;
     protected AppInfo appInfo;
@@ -26,7 +27,7 @@ public abstract class TableActor<T extends Renderable> extends Table implements 
     protected final float TABLES_PADDING_PIXELS = 7;
     protected long timestamp;
     protected Set<Effect> effects;
-
+    protected LGDXRenderableBookKeeper bookKeeper = LGDXRenderableBookKeeper.getInstance();
     protected T renderable;
     protected Map<Actor, Renderable> childrenActorsToRenderables;
 
@@ -69,13 +70,15 @@ public abstract class TableActor<T extends Renderable> extends Table implements 
         }
 
         // Get new image
-        background = ActorFactory.getInstance().createImage(imageRenderable.getImgPath(), imageRenderable);
+        background = (ImageWithEffect) bookKeeper.getUIRepresentationOfRenderable(imageRenderable);
+
         // Update size
         background.setSize(width, height);
-        // Add to important children
-        getChildrenActorsAndRenderables().put(background, imageRenderable);
-        // Add it to the table, as an actor
-        addActor(background);
+        setBackground(background.getDrawable());
+//        // Add to important children
+//        getChildrenActorsAndRenderables().put(background, imageRenderable);
+//        // Add it to the table, as an actor
+//        addActor(background);
     }
 
     public void addBackground(ImageRenderable imageRenderable) {

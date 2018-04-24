@@ -4,12 +4,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.effects.Effect;
-import org.scify.engine.renderables.effects.EffectSequence;
 import org.scify.engine.renderables.effects.FadeEffect;
-import org.scify.engine.renderables.effects.FunctionEffect;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.ui.ThemeController;
 import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
+
+import java.util.Map;
 
 public class MainMenuActor extends TableActor<MainMenuRenderable> implements Updateable {
 
@@ -23,6 +23,7 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
 
     protected Table menuTable;
     protected Table countDownTable;
+    protected Renderable countDownRenderable; // Local renderable
     protected Label countDownLabel;
 
     protected Button boyButton;
@@ -31,9 +32,7 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
     protected Button girlAvatarButton;
 
     protected Image topBannerImage;
-
     protected boolean actorInitiated;
-    protected ActorFactory factory;
 
 
 
@@ -48,8 +47,6 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
     }
 
     protected void init() {
-        // Get actor factory
-        factory = ActorFactory.getInstance();
 
         float screenWidth = getWidth();
         float screenHeight = getHeight();
@@ -61,15 +58,15 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
         row().height(heightLeft).width(screenWidth);
 
         // create actors
-        setStartButton(factory.createButton(renderable.getStartGameButton()));
-        setContinueButton(factory.createButton(renderable.getContinueGameButton()));
-        setToggleAudioButton(factory.createButton(renderable.getToggleAudioButton()));
-        setAboutButton(factory.createButton(renderable.getAboutButton()));
-        setQuitButton(factory.createButton(renderable.getQuitButton()));
-        setBoyButton(factory.createButton(renderable.getBoyButton()));
-        setBoyAvatarButton(factory.createButton(renderable.getBoyAvatarButton()));
-        setGirlButton(factory.createButton(renderable.getGirlButton()));
-        setGirlAvatarButton(factory.createButton(renderable.getGirlAvatarButton()));
+        setStartButton((Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getStartGameButton()));
+        setContinueButton((Button) bookKeeper.getUIRepresentationOfRenderable((renderable.getContinueGameButton())));
+        setToggleAudioButton((Button) bookKeeper.getUIRepresentationOfRenderable((renderable.getToggleAudioButton())));
+        setAboutButton((Button) bookKeeper.getUIRepresentationOfRenderable((renderable.getAboutButton())));
+        setQuitButton((Button) bookKeeper.getUIRepresentationOfRenderable((renderable.getQuitButton())));
+        setBoyButton((Button) bookKeeper.getUIRepresentationOfRenderable((renderable.getBoyButton())));
+        setBoyAvatarButton((Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getBoyAvatarButton()));
+        setGirlButton((Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getGirlButton()));
+        setGirlAvatarButton((Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getGirlAvatarButton()));
 
         // Create episode-specific background
         //setBackground(renderable.);
@@ -79,31 +76,24 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
 
         actorInitiated = true;
 
-        // Fade-in everything
-        EffectSequence fadeInEffects = new EffectSequence();
-        fadeInEffects.addEffect(new FadeEffect(0.0, 1.0, 1000));
-        fadeInEffects.addEffect(new FunctionEffect(new Runnable() {
-            @Override
-            public void run() {
+        // For every important child
+        for (Map.Entry<Actor, Renderable> mearCur : getChildrenActorsAndRenderables().entrySet()) {
+            // Share that its position is now handled by the table
+            mearCur.getValue().setPositionDrawble(false);
 
-                renderable.enableInput();
-
-            }
-        }));
-        renderable.apply(fadeInEffects);
-
+        }
         //debugAll();
     }
 
     //returns heightLeftForBottom
     protected float createTopBanner(float heightOfTopRow) {
-        topBannerImage = (ImageWithEffect) factory.createResourceForType(renderable.getTopBannerRenderable());
+        topBannerImage = (ImageWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getTopBannerRenderable());
         float width = convertWidth(topBannerImage.getWidth());
         float height = convertHeight(topBannerImage.getHeight());
         row().height(height).width(width);
-        Actor topBannerActor = add(topBannerImage).maxHeight(height).maxWidth(width).colspan(3).top().getActor();
+        add(topBannerImage).maxHeight(height).maxWidth(width).colspan(3).top();
 
-        getChildrenActorsAndRenderables().put(topBannerActor, renderable.getTopBannerRenderable());
+        getChildrenActorsAndRenderables().put(topBannerImage, renderable.getTopBannerRenderable());
         return getHeight() - (height + heightOfTopRow);
     }
 
@@ -160,10 +150,25 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
         menuTable.add().width(width).height(height);
         stack.addActor(menuTable);
 
-        countDownTable = new Table();
+        // Init renderable for countdown
+        countDownRenderable = new Renderable("countdown", "countdown_id");
+        countDownRenderable.setVisible(false);
+
+        // Create corresponding actor
+        Actor aTable = createCountDownTable(stack, height, width, countDownRenderable);
+
+        // Update bookkeeper (due to custom actor)
+        bookKeeper.setCustomActorForRenderable(countDownRenderable, aTable);
+
+        // Add to important children (to support effects)
+        getChildrenActorsAndRenderables().put(aTable, countDownRenderable);
+    }
+
+    protected Actor createCountDownTable(Stack stack, float height, float width, Renderable rRenderable) {
+        countDownTable = new TableActor<Renderable>(getSkin(), rRenderable);
+
         countDownTable.defaults();
         countDownTable.center();
-        countDownTable.setVisible(false);
         countDownLabel = new Label(renderable.getCountDownValue() + "", getSkin());
         Label.LabelStyle ls = new Label.LabelStyle();
         ThemeController themeController = new ThemeController(30, "controls");
@@ -173,6 +178,8 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
         countDownTable.add(countDownLabel);
         stack.addActor(countDownTable);
         add(stack).width(width);
+
+        return countDownTable;
     }
 
     protected void createGirlSelection() {
@@ -219,14 +226,21 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
 
     @Override
     public void update(Renderable rRenderable) {
+        // If we have an actor and it's been some time since the last update
         if (actorInitiated && this.renderable.getRenderableLastUpdated() > timestamp) {
             this.renderable = (MainMenuRenderable) rRenderable;
             this.timestamp = this.renderable.getRenderableLastUpdated();
+            // If we have selected an avatar and the countdown is not visible
             if (this.renderable.getSelectedAvatarButton() != null) {
-                countDownTable.setVisible(true);
+                // Show the count down
+                countDownRenderable.setVisible(true);
+                // Get its value
                 int countDown = this.renderable.getCountDownValue();
+                // and update the label accordingly
                 if (countDown >= 0)
                     countDownLabel.setText(countDown + "");
+
+                // If we switched selection
                 if (lastSelectedAvatarButton != this.renderable.getSelectedAvatarButton()) {
                     // Update the selected avatar
                     lastSelectedAvatarButton = this.renderable.getSelectedAvatarButton();

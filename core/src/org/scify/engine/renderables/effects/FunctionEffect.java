@@ -9,7 +9,7 @@ public class FunctionEffect extends BaseEffect implements LGDXEffect  {
     public final String PARAM_OBJ_RUNNABLE = "PARAM_OBJ_RUNNABLE";
 
     public FunctionEffect(Runnable rToRun) {
-        super(1000.0);
+        super(Double.MAX_VALUE);
 
         setObjectParameter(PARAM_OBJ_RUNNABLE, rToRun);
     }
@@ -28,15 +28,14 @@ public class FunctionEffect extends BaseEffect implements LGDXEffect  {
      */
     @Override
     public synchronized EffectTarget applyTo(EffectTarget target) {
-        super.applyTo(target);
 
         Object oToRun = getObjectParameter(PARAM_OBJ_RUNNABLE);
         if (oToRun != null) {
-            ((Runnable)oToRun).run();
             stop();
+            ((Runnable)oToRun).run();
         }
 
-        return target;
+        return super.applyTo(target);
     }
 
     /**

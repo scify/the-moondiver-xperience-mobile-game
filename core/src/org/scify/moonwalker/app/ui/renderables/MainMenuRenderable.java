@@ -7,6 +7,7 @@ import org.scify.engine.renderables.effects.EffectSequence;
 import org.scify.engine.renderables.effects.FadeEffect;
 import org.scify.engine.renderables.effects.FunctionEffect;
 import org.scify.engine.renderables.ActionButtonWithEffect;
+import org.scify.moonwalker.app.game.SelectedPlayer;
 
 public class MainMenuRenderable extends Renderable {
 
@@ -144,6 +145,17 @@ public class MainMenuRenderable extends Renderable {
             getQuitButton().apply(fadeOutEffect);
 
             renderableWasUpdated();
+        }
+    }
+
+    public ActionButtonWithEffect getPlayerButton(String btnName) {
+        switch (btnName) {
+            case SelectedPlayer.boy:
+                return boyButton;
+            case SelectedPlayer.girl:
+                return girlButton;
+            default:
+                return null;
         }
     }
 

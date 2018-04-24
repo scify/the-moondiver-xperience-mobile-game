@@ -18,7 +18,6 @@ import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.ui.CameraController;
 import org.scify.moonwalker.app.ui.actors.IContainerActor;
 
-import java.awt.*;
 import java.util.Map;
 
 /**
@@ -96,8 +95,14 @@ public class MoonwalkerUIPainter {
 
 
     public void drawActorFromRenderable(Renderable renderable, Actor aToDraw, Map<Effect, LGDXEffect> uiRenderableEffects) {
-        aToDraw.setPosition(renderable.getxPos(), renderable.getyPos());
+        // Update position, when appropriate
+        if (renderable.isPositionDrawable())
+            aToDraw.setPosition(renderable.getxPos(), renderable.getyPos());
+
+        // Apply effects
         applyActorEffects(aToDraw, renderable, uiRenderableEffects); // Deal with effects
+
+        // Update visibility
         applyActorVisibility(aToDraw, renderable); // Apply visibility
 
 
@@ -106,7 +111,18 @@ public class MoonwalkerUIPainter {
         if(aToDraw.getStage() == null) {
             //System.out.println("new actor with name: " + renderable.getId());
             aToDraw.setName(renderable.getId());
-            stage.addActor(aToDraw);
+
+            // DEBUG LINES
+//            if (aToDraw instanceof ImageWithEffect) {
+//                System.err.println(renderable + " parent --> " + aToDraw.getParent().toString());
+//            }
+            //////////////
+
+            // If actor does not have a parent
+            if (aToDraw.getParent() == null) {
+                // we should add it to the stage
+                stage.addActor(aToDraw);
+            }
         }else {// update the z index of the actor, according to the renderable's z index
             // Take into account also the z-index rule (<0 means invisible)
             if(renderable.getZIndex() >= 0)
@@ -177,6 +193,12 @@ public class MoonwalkerUIPainter {
             }
 
         }
+
+        // DEGUG LINES
+//        if (renderable.getId().contains("countdown")  && renderable.isVisible()) {
+//            System.err.println("Found it!!!");
+//        }
+        //////////////
 
         // Update visibility
         aToDraw.setVisible(renderable.isVisible());

@@ -29,30 +29,14 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
     @Override
     public GameState getNextState(final GameState gameState, UserAction userAction) {
         long timestamp = new Date().getTime();
+        // Examine if we have a cooldown event
         GameEvent coolDownEvent = gameState.getGameEventsWithType("COOLDOWN");
+        // If we do and we should update the cooldown counter (e.g. 1sec has passed)
         if (coolDownEvent != null && timestamp > coolDownEvent.delay) {
-            renderable.decreaseCountDown();
-            gameState.removeGameEventsWithType("COOLDOWN");
-            if (renderable.getCountDownValue() < 0) {
-                gameState.addGameEvent(new GameEvent("AUDIO_STOP_UI", renderable.BG_AUDIO_PATH));
-                gameState.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", renderable.BG_AUDIO_PATH));
-                EffectSequence fadeOutEffects = new EffectSequence();
-                fadeOutEffects.addEffect(new FadeEffect(1.0, 0.0, 1000));
-                fadeOutEffects.addEffect(new FunctionEffect(new Runnable() {
-                    @Override
-                    public void run() {
-                        endGameAndAddEventWithType(gameState, "NEW_GAME");
-                    }
-                }));
-                renderable.apply(fadeOutEffects);
-            } else {
-                gameState.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.CLICK_AUDIO_PATH));
-                gameState.addGameEvent(new GameEvent("COOLDOWN", timestamp + 1000, false, this));
-            }
+            doCountdown(gameState, timestamp);
         }
-        if (fadeInEffectsCompleted == false && renderable != null && renderable.isReadyForInput()) {
-            fadeInEffectsCompleted = true;
-        }
+        // Check if fade in is now complete
+        fadeInEffectsCompleted = fadeInEffectsCompleted == false && renderable != null && renderable.isReadyForInput();
 
         return super.getNextState(gameState, userAction);
     }
@@ -65,11 +49,7 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
             switch (userAction.getActionCode()) {
                 case NEW_GAME:
                     if (mainMenuButtonsEnabled) {
-                        renderable.disableInput();
-                        gameState.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.CLICK_AUDIO_PATH));
-                        prepareNextEpisodeAudio(gameState);
-                        renderable.initiatePlayerSelection();
-                        mainMenuButtonsEnabled = false;
+                        initPlayerSelection(gameState);
                     }
                     break;
                 case TOGGLE_AUDIO:
@@ -84,42 +64,10 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
                     }
                     break;
                 case BOY_SELECTED:
-                    gameInfo.setSelectedPlayer(SelectedPlayer.boy);
-                    coolDownEvent = gameState.getGameEventsWithType("COOLDOWN");
-                    avatarSelected = gameState.getGameEventsWithType("AVATAR_SELECTED");
-                    gameState.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.CLICK_AUDIO_PATH));
-                    if (coolDownEvent != null) {
-                        gameState.removeGameEventsWithType("COOLDOWN");
-                    }
-                    if (avatarSelected != null && avatarSelected.parameters.equals("boy")) {
-                        renderable.setSelectedAvatarButton(renderable.getBoyButton());
-                        renderable.forceCountDownToZero();
-                        gameState.addGameEvent(new GameEvent("COOLDOWN", new Date().getTime(), false, this));
-                    } else {
-                        removePreviousAvatarSelectionAndAddNew(gameState, "boy");
-                        renderable.setSelectedAvatarButton(renderable.getBoyButton());
-                        renderable.resetCountDown();
-                        gameState.addGameEvent(new GameEvent("COOLDOWN", new Date().getTime() + 1000, false, this));
-                    }
+                    setSelectedPlayer(gameState, SelectedPlayer.boy);
                     break;
                 case GIRL_SELECTED:
-                    gameInfo.setSelectedPlayer(SelectedPlayer.girl);
-                    coolDownEvent = gameState.getGameEventsWithType("COOLDOWN");
-                    avatarSelected = gameState.getGameEventsWithType("AVATAR_SELECTED");
-                    gameState.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.CLICK_AUDIO_PATH));
-                    if (coolDownEvent != null) {
-                        gameState.removeGameEventsWithType("COOLDOWN");
-                    }
-                    if (avatarSelected != null && avatarSelected.parameters.equals("girl")) {
-                        renderable.setSelectedAvatarButton(renderable.getGirlButton());
-                        renderable.forceCountDownToZero();
-                        gameState.addGameEvent(new GameEvent("COOLDOWN", new Date().getTime(), false, this));
-                    } else {
-                        removePreviousAvatarSelectionAndAddNew(gameState, "girl");
-                        renderable.setSelectedAvatarButton(renderable.getGirlButton());
-                        renderable.resetCountDown();
-                        gameState.addGameEvent(new GameEvent("COOLDOWN", new Date().getTime() + 1000, false, this));
-                    }
+                    setSelectedPlayer(gameState, SelectedPlayer.girl);
                     break;
             }
         }
@@ -127,16 +75,48 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
 
     }
 
+    protected void setSelectedPlayer(GameState gameState, String selectedPlayer) {
+        GameEvent coolDownEvent;
+        GameEvent avatarSelected;
+        gameInfo.setSelectedPlayer(selectedPlayer);
+
+        coolDownEvent = gameState.getGameEventsWithType("COOLDOWN");
+        avatarSelected = gameState.getGameEventsWithType("AVATAR_SELECTED");
+        gameState.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.CLICK_AUDIO_PATH));
+        if (coolDownEvent != null) {
+            gameState.removeGameEventsWithType("COOLDOWN");
+        }
+        if (avatarSelected != null && avatarSelected.parameters.equals(selectedPlayer)) {
+            renderable.setSelectedAvatarButton(renderable.getPlayerButton(selectedPlayer));
+            renderable.forceCountDownToZero();
+            gameState.addGameEvent(new GameEvent("COOLDOWN", new Date().getTime(), false, this));
+        } else {
+            removePreviousAvatarSelectionAndAddNew(gameState, selectedPlayer);
+            renderable.setSelectedAvatarButton(renderable.getPlayerButton(selectedPlayer));
+            renderable.resetCountDown();
+            gameState.addGameEvent(new GameEvent("COOLDOWN", new Date().getTime() + 1000, false, this));
+        }
+    }
+
     @Override
     public void episodeStartedEvents(GameState currentState) {
+        // If we are just starting
         if (!isEpisodeStarted(currentState)) {
+            // Create the main renderable (and friends)
             renderable = new MainMenuRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), "main_menu");
-            currentState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", renderable.BG_AUDIO_PATH));
-            super.episodeStartedEvents(currentState);
             createAndAddMainMenuButtons();
             createAvatarSelectionRenderable();
             currentState.addRenderable(renderable);
+
+            // Start sound
+            currentState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", renderable.BG_AUDIO_PATH));
+
+            // Perform fade in process
+            fadeInStage();
             //addEpisodeBackgroundImage(currentState, "img/mainMenu/bg.png");
+
+            // Make sure you share that you are started
+            super.episodeStartedEvents(currentState);
         }
     }
 
@@ -207,4 +187,65 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
     protected ActionButtonWithEffect createActionButton(String id, String imgPath, UserActionCode code) {
         return createImageButton(id, imgPath, new UserAction(code), 0, 0);
     }
+
+
+    // Updated process
+    protected void fadeInStage() {
+        // Fade-in everything
+        EffectSequence fadeInEffects = new EffectSequence();
+        fadeInEffects.addEffect(new FadeEffect(0.0, 1.0, 1000));
+        fadeInEffects.addEffect(new FunctionEffect(new Runnable() {
+            @Override
+            public void run() {
+
+                renderable.enableInput();
+
+            }
+        }));
+        renderable.apply(fadeInEffects);
+
+    }
+
+    protected void initPlayerSelection(GameState gameState) {
+        renderable.disableInput();
+        gameState.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.CLICK_AUDIO_PATH));
+        prepareNextEpisodeAudio(gameState);
+        renderable.initiatePlayerSelection();
+        mainMenuButtonsEnabled = false;
+    }
+
+    protected void doCountdown(GameState gameState, long timestamp) {
+        // update cooldown counter
+        renderable.decreaseCountDown();
+        gameState.removeGameEventsWithType("COOLDOWN");
+
+        // If we have reached below zero
+        if (renderable.getCountDownValue() < 0) {
+            fadeOutStage(gameState);
+        } else {
+            // inform UI to update the cooldown
+            gameState.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.CLICK_AUDIO_PATH));
+            gameState.addGameEvent(new GameEvent("COOLDOWN", timestamp + 1000, false, this));
+        }
+
+    }
+
+    protected void fadeOutStage(final GameState gameState) {
+        renderable.disableInput();
+
+        gameState.addGameEvent(new GameEvent("AUDIO_STOP_UI", renderable.BG_AUDIO_PATH));
+        gameState.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", renderable.BG_AUDIO_PATH));
+        // do fade out
+        EffectSequence fadeOutEffects = new EffectSequence();
+        fadeOutEffects.addEffect(new FadeEffect(1.0, 0.0, 1000));
+        fadeOutEffects.addEffect(new FunctionEffect(new Runnable() {
+            @Override
+            public void run() {
+                endGameAndAddEventWithType(gameState, "NEW_GAME");
+            }
+        }));
+        renderable.apply(fadeOutEffects);
+
+    }
+
 }

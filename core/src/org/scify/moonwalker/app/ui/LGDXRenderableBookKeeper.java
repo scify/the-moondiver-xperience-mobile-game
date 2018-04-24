@@ -24,7 +24,7 @@ import java.util.*;
  * This class undertakes the task of keeping the mappings between all non-LGDX renderables, effects, etc. to their
  * LGDX counterparts.
  */
-public class RenderableBookKeeper {
+public class LGDXRenderableBookKeeper {
 
     protected Map<Renderable, Sprite> renderableSpriteMap;
     protected Map<Renderable, Actor> renderableActorMap;
@@ -39,7 +39,7 @@ public class RenderableBookKeeper {
     protected Batch batch;
     protected Stage stage;
 
-    public RenderableBookKeeper(ThemeController themeController, UserInputHandler userInputHandler) {
+    public LGDXRenderableBookKeeper(ThemeController themeController, UserInputHandler userInputHandler) {
         this.userInputHandler = (UserInputHandlerImpl) userInputHandler;
         actorFactory = ActorFactory.getInstance(themeController.getSkin());
         actorFactory.setUserInputHandler(userInputHandler);
@@ -50,6 +50,40 @@ public class RenderableBookKeeper {
         this.spriteEffects = new HashMap<>();
     }
 
+    /**
+     * Singleton pattern variable.
+     */
+    protected static LGDXRenderableBookKeeper instance;
+
+    /**
+     * Initializes the LGDXRenderableBookKeeper with a given environment (theme controller, user input handler)
+     * @param themeController The controller.
+     * @param userInputHandler The user input handler.
+     * @return The bookkeeper instance created.
+     */
+    public static LGDXRenderableBookKeeper initBookKeeper(ThemeController themeController, UserInputHandler userInputHandler) throws AlreadyInitializedBookKeeperException {
+        if (instance == null) {
+            instance = new LGDXRenderableBookKeeper(themeController, userInputHandler);
+            return instance;
+        }
+        else
+            throw new AlreadyInitializedBookKeeperException("Bookkeeper already initialized.");
+
+    }
+
+
+    /**
+     * Returns the singleton instance of bookkeeper, if it was initialized before, through a call to initBookKeeper.
+     * Throws a runtime {@link UninitializedBookKeeperException}, if the keeper was not initialized.
+     * @return The {@link LGDXRenderableBookKeeper}.
+     */
+    public static LGDXRenderableBookKeeper getInstance() {
+        if (instance == null)
+            throw new UninitializedBookKeeperException("Should first call init book keeper.");
+
+        return instance;
+    }
+
     public void setBatch(Batch batch) {
         this.batch = batch;
     }
@@ -58,6 +92,12 @@ public class RenderableBookKeeper {
         this.stage = stage;
     }
 
+    /**
+     * Returns an LGDX equivalent of the renderable, also updating any applied effects.
+     * If an equivalent has not been created, it also creates it.
+     * @param renderable The renderable we want to return.
+     * @return The updated LGDX equivalent of the renderable.
+     */
     public Object getUIRepresentationOfRenderable(Renderable renderable) {
         Object oRes;
         if (!renderableUIRepresentationExists(renderable)) {
@@ -168,9 +208,14 @@ public class RenderableBookKeeper {
     }
 
     protected Actor createActorResourceFor(final Renderable toDraw) {
+        return createActorResourceFor(toDraw, actorFactory);
+    }
+
+
+    protected Actor createActorResourceFor(final Renderable toDraw, ComponentFactory<Actor> cfFactory) {
         Actor resource = null;
         try {
-            Actor newActorForRenderable = actorFactory.createResourceForType(toDraw);
+            Actor newActorForRenderable = cfFactory.createResourceForType(toDraw);
             if(newActorForRenderable != null) {
                 resource = newActorForRenderable;
                 addActor(toDraw, newActorForRenderable);
@@ -185,7 +230,7 @@ public class RenderableBookKeeper {
         return resource;
     }
 
-    private Actor addActor(final Renderable toDraw, Actor newActorForRenderable) {
+    protected Actor addActor(final Renderable toDraw, Actor newActorForRenderable) {
         addClickListenerIfButton(toDraw, newActorForRenderable);
         renderableActorMap.put(toDraw, newActorForRenderable);
         return  newActorForRenderable;
@@ -221,6 +266,8 @@ public class RenderableBookKeeper {
                     e.printStackTrace(System.err);
                 }
             }
+
+            reset();
         }
     }
 
@@ -322,13 +369,22 @@ public class RenderableBookKeeper {
         return spriteEffects.get(sToDraw);
     }
 
+    /**
+     * Returns the effects for the specific actor/sprite.
+     * @param uiRepresentationOfRenderable The actor/sprite to look up.
+     * @return A map between the effects of the object and their LGDXEffect aspects.
+     */
     public Map<Effect, LGDXEffect> getEffectsFor(Object uiRepresentationOfRenderable) {
-        if (uiRepresentationOfRenderable instanceof Actor) {
+        Map<Effect, LGDXEffect> mRes = new HashMap<>();
+
+        if ((uiRepresentationOfRenderable instanceof Actor) && actorEffects.containsKey(uiRepresentationOfRenderable)) {
             return actorEffects.get(uiRepresentationOfRenderable);
         }
-        else {
+        if ((uiRepresentationOfRenderable instanceof Sprite) && spriteEffects.containsKey(uiRepresentationOfRenderable)) {
             return spriteEffects.get(uiRepresentationOfRenderable);
         }
+
+        return mRes;
     }
 
     public void updateEffectList(Renderable renderable, EffectTarget target) {
@@ -356,10 +412,11 @@ public class RenderableBookKeeper {
                         // create corresponding LGDX effect for actor
                         getOrCreateLGDXEffectForActor(eCur, aCur);
 
-                        // If container add to children as well
-                        if (aCur instanceof IContainerActor) {
-                            propagateEffectToChildren(aCur, renderable, eCur);
-                        }
+                        // OBSOLETE: Do NOT propagate to children.
+//                        // If container add to children as well
+//                        if (aCur instanceof IContainerActor) {
+//                            propagateEffectToChildren(aCur, renderable, eCur);
+//                        }
                     }
                 }
             }
@@ -375,23 +432,44 @@ public class RenderableBookKeeper {
         }
     }
 
-    protected void propagateEffectToChildren(Actor aParent, Renderable rParent, Effect eCur) {
-        if (eCur.complete())
-            return;
+    public void setCustomActorForRenderable(Renderable rCountdownTable, Actor aTable) {
+        addActor(rCountdownTable, aTable);
+    }
 
-        IContainerActor<Renderable> caToDraw = (IContainerActor)aParent;
-        // For every child
-        Map<Actor,Renderable> mChildren = caToDraw.getChildrenActorsAndRenderables();
-        for (Map.Entry<Actor,Renderable> mCur : mChildren.entrySet()) {
-            // create corresponding LGDX effect for child actor
-            getOrCreateLGDXEffectForActor(eCur, mCur.getKey());
+//    protected void propagateEffectToChildren(Actor aParent, Renderable rParent, Effect eCur) {
+//        if (eCur.complete())
+//            return;
+//
+//        IContainerActor<Renderable> caToDraw = (IContainerActor)aParent;
+//        // For every child
+//        Map<Actor,Renderable> mChildren = caToDraw.getChildrenActorsAndRenderables();
+//        for (Map.Entry<Actor,Renderable> mCur : mChildren.entrySet()) {
+//            // create corresponding LGDX effect for child actor
+//            getOrCreateLGDXEffectForActor(eCur, mCur.getKey());
+//
+//            // If child is a container repeat recursively
+//            if (mCur.getKey() instanceof IContainerActor) {
+//                propagateEffectToChildren(mCur.getKey(), mCur.getValue(), eCur);
+//            }
+//        }
+//    }
 
-            // If child is a container repeat recursively
-            if (mCur.getKey() instanceof IContainerActor) {
-                propagateEffectToChildren(mCur.getKey(), mCur.getValue(), eCur);
-            }
+
+    /**
+     * Uninitialized bookkeeper exception.
+     */
+    public static class UninitializedBookKeeperException extends RuntimeException {
+        public UninitializedBookKeeperException(String sMsg) {
+            super(sMsg);
         }
     }
 
-
+    /**
+     * Already initialized bookkeeper exception.
+     */
+    public static class AlreadyInitializedBookKeeperException extends Throwable {
+        public AlreadyInitializedBookKeeperException(String sMsg) {
+            super(sMsg);
+        }
+    }
 }

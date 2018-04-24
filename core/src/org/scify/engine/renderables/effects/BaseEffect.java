@@ -153,7 +153,8 @@ public class BaseEffect implements Effect {
     }
 
     @Override
-    public void stop() {
+    public synchronized void stop() {
+        setNumericParameter(PARAM_DURATION, 0.0);
         bStopped = true;
     }
 }

@@ -22,6 +22,7 @@ public class Renderable extends Positionable implements EffectTarget {
     protected UserInputHandler userInputHandler;
     protected String imgPath;
     protected AppInfo appInfo;
+    protected boolean needsUpdate;
     /**
      * timestamp describing when the component was last updated
      */
@@ -48,6 +49,7 @@ public class Renderable extends Positionable implements EffectTarget {
         this.id = id;
         appInfo = AppInfo.getInstance();
         visible = true;
+        needsUpdate = true;
     }
 
     public Renderable(String type, String id) {
@@ -56,6 +58,16 @@ public class Renderable extends Positionable implements EffectTarget {
         this.id = id;
         appInfo = AppInfo.getInstance();
         visible = true;
+        needsUpdate = true;
+    }
+
+    public boolean needsUpdate() {
+        needsUpdate = needsUpdate || (getEffects().size() > 0);
+        return needsUpdate;
+    }
+
+    public void wasUpdated() {
+        this.needsUpdate = false;
     }
 
     public String getType() {
@@ -92,7 +104,8 @@ public class Renderable extends Positionable implements EffectTarget {
     }
     
     protected void renderableWasUpdated() {
-        this.renderableLastUpdated = new Date().getTime();
+        needsUpdate = true;
+        renderableLastUpdated = new Date().getTime();
     }
 
     @Override
@@ -116,6 +129,7 @@ public class Renderable extends Positionable implements EffectTarget {
     }
 
     public void setVisible(boolean visible) {
+        needsUpdate = true;
         this.visible = visible;
     }
 }
