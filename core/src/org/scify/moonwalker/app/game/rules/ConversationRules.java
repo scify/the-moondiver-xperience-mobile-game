@@ -8,10 +8,7 @@ import org.scify.engine.renderables.MultipleChoiceConversationRenderable;
 import org.scify.engine.renderables.NextConversationRenderable;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.TwoChoiceConversationRenderable;
-import org.scify.engine.renderables.effects.Effect;
-import org.scify.engine.renderables.effects.FadeEffect;
-import org.scify.engine.renderables.effects.MoveEffect;
-import org.scify.engine.renderables.effects.ParallelEffectList;
+import org.scify.engine.renderables.effects.*;
 import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
@@ -227,7 +224,8 @@ public class ConversationRules extends MoonWalkerRules {
     }
 
     protected void addNextConversationLine(final ConversationLine conversationLine, final GameState gameState, boolean newSpeaker) {
-        NextConversationRenderable nextConversationRenderable = new NextConversationRenderable("next_conversation_" + conversationLine.getId());
+        NextConversationRenderable nextConversationRenderable =
+                new NextConversationRenderable("next_conversation_" + conversationLine.getId());
         if (lastConversationRenderable != null) {
             lastConversationRenderable.apply(getOutroEffect(lastConversationRenderable, conversationLine, gameState, newSpeaker));
         }
@@ -249,25 +247,21 @@ public class ConversationRules extends MoonWalkerRules {
         lRes.addEffect(new FadeEffect(0.0, 1.0, 1000));
         final boolean bOther = !conversationLine.getSpeakerId().contains("player");
 
-        if (newSpeaker) {
-            lRes.addEffect(new MoveEffect((float) -target.getWidth(), (float) target.getyPos(), target.getxPos(),
-                    target.getyPos(), 1000) {
-                @Override
-                protected Point2D.Double calculateTargetPosition() {
-                    Point2D.Double dRes = super.calculateTargetPosition();
-                    if (bOther) {
-                        dRes.x = 1000 - dRes.getX();
-                    }
+        // TODO: Check ParallelEffect
+//        if (newSpeaker) {
+//            double dStartX = -target.getWidth();
+//            if (bOther) {
+//                dStartX = AppInfo.getInstance().getScreenWidth() + target.getWidth();
+//            }
 
-                    return dRes;
-                }
-
-                @Override
-                protected double projectionFunction(double dStart, double dEnd, double dPercentageOfChange) {
-                    return dStart + (1.0 - Math.exp(- 5 * dPercentageOfChange)) * (dEnd - dStart);
-                }
-            });
-        }
+//            lRes.addEffect(new MoveEffect(dStartX, target.getyPos(), target.getxPos(), target.getyPos(), 1000) {
+//
+//                @Override
+//                protected double projectionFunction(double dStart, double dEnd, double dPercentageOfChange) {
+//                    return dStart + dPercentageOfChange * (dEnd - dStart);
+//                }
+//            });
+//        }
 
         return lRes;
     }
