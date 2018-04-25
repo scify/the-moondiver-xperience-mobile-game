@@ -39,8 +39,21 @@ public class LGDXEffectFactory<T extends LGDXEffect> {
             return (T)parallelEffectList(eSource);
         }
 
+        if (eSource instanceof VisibilityEffect) {
+            return (T)visibilityEffect(eSource);
+        }
+
+        if (eSource instanceof SetAlphaEffect) {
+            return (T)setAlpha(eSource);
+        }
+
+
         // No equivalent LGDX implementation found
         throw new EffectNotRegisteredException(eSource, "Current factory:" + this.getClass().getCanonicalName());
+    }
+
+    public static SetAlphaEffect setAlpha(Effect eSource) {
+        return new SetAlphaLGDXEffect(eSource);
     }
 
     public FunctionLGDXEffect function(Effect eSource) {
@@ -80,6 +93,10 @@ public class LGDXEffectFactory<T extends LGDXEffect> {
 
     public static LGDXEffectSequence effectSequence(Effect eSource) {
         return new LGDXEffectSequence((EffectSequence)eSource, getFactorySingleton());
+    }
+
+    public static VisibilityLGDXEffect visibilityEffect(Effect eSource) {
+        return new VisibilityLGDXEffect((VisibilityEffect)eSource);
     }
 
     /**

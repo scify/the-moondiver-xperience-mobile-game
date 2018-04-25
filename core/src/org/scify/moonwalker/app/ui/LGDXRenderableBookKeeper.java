@@ -9,6 +9,7 @@ import org.scify.engine.UserInputHandler;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.effects.Effect;
 import org.scify.engine.renderables.effects.EffectTarget;
+import org.scify.engine.renderables.effects.LGDXIgnorableEffect;
 import org.scify.engine.renderables.effects.libgdx.EffectNotRegisteredException;
 import org.scify.engine.renderables.effects.libgdx.LGDXEffect;
 import org.scify.engine.renderables.effects.libgdx.LGDXEffectFactory;
@@ -145,8 +146,11 @@ public class LGDXRenderableBookKeeper {
                 /////////////
 
             } catch (EffectNotRegisteredException e) {
-                e.printStackTrace();
-                System.err.println("Ignoring...");
+                // If NOT an ignorable effect (i.e. not a meta-effect or similar)
+                if (!(eCur instanceof LGDXIgnorableEffect)) {
+                    e.printStackTrace();
+                    System.err.println("Ignoring...");
+                }
             }
         }
 
@@ -169,7 +173,7 @@ public class LGDXRenderableBookKeeper {
         if (!actorEffects.containsKey(aToDraw)) {
                 actorEffects.put(aToDraw, new HashMap<Effect, LGDXEffect>());
             // DEBUG LINES
-            System.err.println("Initialized effect list for actor " + aToDraw.toString() + ".");
+//            System.err.println("Initialized effect list for actor " + aToDraw.toString() + ".");
             //////////////
         }
 
@@ -177,11 +181,14 @@ public class LGDXRenderableBookKeeper {
             try {
                 actorEffects.get(aToDraw).put(eCur, effectFactory.getEffectFor(eCur));
                 // DEBUG LINES
-                System.err.println("Created new effect for " + eCur.toString() + "," + aToDraw.toString() + ".");
+//                System.err.println("Created new effect for " + eCur.toString() + "," + aToDraw.toString() + ".");
                 //////////////
             } catch (EffectNotRegisteredException e) {
-                e.printStackTrace();
-                System.err.println("Ignoring...");
+                // If NOT an ignorable effect (i.e. not a meta-effect or similar)
+                if (!(eCur instanceof LGDXIgnorableEffect)) {
+                    e.printStackTrace();
+                    System.err.println("Ignoring...");
+                }
             }
         }
 
@@ -221,7 +228,7 @@ public class LGDXRenderableBookKeeper {
                 addActor(toDraw, newActorForRenderable);
 
                 // DEBUG LINES
-                printActors();
+//                printActors();
                 /////////////
             }
         } catch (UnsupportedRenderableTypeException e) {
@@ -425,7 +432,7 @@ public class LGDXRenderableBookKeeper {
         // For each completed effect
         for (Effect eToRemove: toRemove) {
             // DEBUG LINES
-            System.err.println("Removing " + eToRemove + " from " + renderable.toString());
+             System.err.println("Removing " + eToRemove + " from " + renderable.toString());
             //////////////
             // Remove it
             removeEffectFromRenderableAndRelatedUIElements(eToRemove, renderable);

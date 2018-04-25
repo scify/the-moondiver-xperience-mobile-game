@@ -59,6 +59,8 @@ public class ConversationRules extends MoonWalkerRules {
         conversationLines = new ArrayList<>();
         resourceLocator = new ResourceLocator();
         json = new Json();
+        json.setUsePrototypes(false);
+        json.setIgnoreUnknownFields(false);
         conversationLines = json.fromJson(ArrayList.class, ConversationLine.class, Gdx.files.internal(resourceLocator.getFilePath(conversationJSONFilePath)));
         ID = UUID.randomUUID().toString();
         oldConversationLines = new ArrayList<>();
@@ -244,24 +246,25 @@ public class ConversationRules extends MoonWalkerRules {
 
     protected Effect getIntroEffect(Renderable target, ConversationLine conversationLine, GameState gameState, boolean newSpeaker) {
         ParallelEffectList lRes = new ParallelEffectList();
-        lRes.addEffect(new FadeEffect(0.0, 1.0, 1000));
+        lRes.addEffect(new FadeEffect(0.0, 1.0, 500));
         final boolean bOther = !conversationLine.getSpeakerId().contains("player");
 
-        // TODO: Check ParallelEffect
-//        if (newSpeaker) {
+        if (newSpeaker) {
+            // Full slide
 //            double dStartX = -target.getWidth();
 //            if (bOther) {
 //                dStartX = AppInfo.getInstance().getScreenWidth() + target.getWidth();
 //            }
 
-//            lRes.addEffect(new MoveEffect(dStartX, target.getyPos(), target.getxPos(), target.getyPos(), 1000) {
-//
-//                @Override
-//                protected double projectionFunction(double dStart, double dEnd, double dPercentageOfChange) {
-//                    return dStart + dPercentageOfChange * (dEnd - dStart);
-//                }
-//            });
-//        }
+            // Partial slide
+            double dStartX = target.getxPos() - (target.getWidth() / 4);
+            if (bOther) {
+                dStartX = target.getxPos() + (target.getWidth() / 4);
+            }
+
+
+            lRes.addEffect(new MoveEffect(dStartX, target.getyPos(), target.getxPos(), target.getyPos(), 200));
+        }
 
         return lRes;
     }
@@ -269,15 +272,6 @@ public class ConversationRules extends MoonWalkerRules {
     private Effect getOutroEffect(Renderable target, ConversationLine conversationLine, GameState gameState, boolean newSpeaker) {
         ParallelEffectList lRes = new ParallelEffectList();
         lRes.addEffect(new FadeEffect(1.0, 0.0, 200));
-        if (newSpeaker) {
-            lRes.addEffect(new MoveEffect((float)-target.getWidth(), (float)target.getyPos(), 1000) {
-                @Override
-                protected double projectionFunction(double dStart, double dEnd, double dPercentageOfChange) {
-                    return dStart + (1.0 - Math.exp(- 5 * dPercentageOfChange)) * (dEnd - dStart);
-                }
-
-            });
-        }
 
         return lRes;
     }

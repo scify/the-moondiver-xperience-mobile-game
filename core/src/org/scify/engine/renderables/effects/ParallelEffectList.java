@@ -11,12 +11,16 @@ public class ParallelEffectList extends BaseEffect {
     protected Effect eCurrent;
 
     public ParallelEffectList() {
+        super(0.0);
+
         // Initialize list
         seriesOfEffects = new LinkedList<>();
         updateDuration();
     }
 
     public ParallelEffectList(List<Effect> oneAfterTheOther) {
+        super(0);
+
         // Initialize list
         seriesOfEffects = new LinkedList<>(oneAfterTheOther);
         updateDuration();

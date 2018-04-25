@@ -32,8 +32,8 @@ public class LGDXEffectSequence extends EffectSequence implements LGDXEffect {
     public void applyToActor(Actor aTarget, Renderable rRenderable) {
         applyTo(rRenderable);
 
-        if (eCurrent != null) {
-            ((LGDXEffect)eCurrent).applyToActor(aTarget, rRenderable);
+        if (getCurrentEffect() != null) {
+            ((LGDXEffect)getCurrentEffect()).applyToActor(aTarget, rRenderable);
         }
     }
 
@@ -41,8 +41,8 @@ public class LGDXEffectSequence extends EffectSequence implements LGDXEffect {
     public void applyToSprite(Sprite sTarget, Renderable rRenderable) {
         applyTo(rRenderable);
 
-        if (eCurrent != null) {
-            ((LGDXEffect)eCurrent).applyToSprite(sTarget, rRenderable);
+        if (getCurrentEffect() != null) {
+            ((LGDXEffect)getCurrentEffect()).applyToSprite(sTarget, rRenderable);
         }
     }
 }

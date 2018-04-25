@@ -11,11 +11,11 @@ public class BaseEffect implements Effect {
 
     protected boolean bStopped = false;
 
-    public BaseEffect() {
-        initMaps();
-        // Default duration is zero
-        // params.put(PARAM_DURATION, "0.0");
-    }
+//    public BaseEffect() {
+//        initMaps();
+//        // Default duration is zero
+//        // params.put(PARAM_DURATION, "0.0");
+//    }
 
     protected void initMaps() {
         params = new TreeMap<>();
