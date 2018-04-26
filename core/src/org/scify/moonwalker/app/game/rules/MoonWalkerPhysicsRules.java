@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.*;
 
 import org.scify.engine.*;
 import org.scify.engine.EpisodeEndState;
+import org.scify.engine.renderables.Renderable;
 import org.scify.engine.rules.PhysicsRules;
 import org.scify.engine.Player;
 import org.scify.moonwalker.app.game.BodyFactory;
@@ -17,7 +18,7 @@ import java.util.Map;
 public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListener{
 
     World world;
-    protected Map<Renderable, Body> renderableBodyMap = new HashMap<>();
+    protected Map<org.scify.engine.renderables.Renderable, Body> renderableBodyMap = new HashMap<>();
     private final float keyStrokeAcceleration = 70f;
     private AppInfo appInfo;
     protected BodyFactory bodyFactory;
@@ -41,7 +42,7 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
         world.setContactListener(this);
     }
 
-    protected Body getResourceFor(Renderable renderable) {
+    protected Body getResourceFor(org.scify.engine.renderables.Renderable renderable) {
         // If I have an existing sprite, reuse it
         if(renderableBodyMap.containsKey(renderable))
             return renderableBodyMap.get(renderable);
@@ -49,7 +50,7 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
             return createBodyFromRenderableAndAddToMap(renderable);
     }
 
-    protected Body createBodyFromRenderableAndAddToMap(Renderable renderable) {
+    protected Body createBodyFromRenderableAndAddToMap(org.scify.engine.renderables.Renderable renderable) {
         Body newResourceForRenderable;
         try {
             newResourceForRenderable = bodyFactory.createResourceForRenderable(renderable);
@@ -72,7 +73,7 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
         if(userAction != null)
             handleUserAction(userAction, gsCurrent);
         handleBorderRules(gsCurrent);
-        for(Renderable renderable: gsCurrent.getRenderableList()) {
+        for(org.scify.engine.renderables.Renderable renderable: gsCurrent.getRenderableList()) {
             Body body = getResourceFor(renderable);
             if(body != null) {
                 // body position is relevant to its body, so we need to

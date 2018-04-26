@@ -7,19 +7,35 @@ import org.scify.moonwalker.app.game.episodes.*;
 public class MoonWalkerScenario extends Scenario {
 
     public MoonWalkerScenario() {
-        Episode firstEpisode = new MainMenuEpisode();
-        //setFirstEpisode(new CockpitEpisode());
-        setFirstEpisode(firstEpisode);
-        Episode secondEpisode = new AvatarSelectionEpisode();
-        addEpisodeAfterCurrent(secondEpisode);
+        Episode mainMenuEpisode = new MainMenuEpisode();
         Episode roomEpisode = new RoomEpisode();
-        addEpisodeAfter(secondEpisode, roomEpisode);
-        Episode forestLoadingEpisode = new ForestLoadingEpisode();
-        addEpisodeAfter(roomEpisode, forestLoadingEpisode);
-        Episode forestEpisode = new ForestEpisode();
-        addEpisodeAfter(forestLoadingEpisode, forestEpisode);
-        Episode cockpitEpisode = new CockpitEpisode();
-        addEpisodeAfter(forestEpisode, cockpitEpisode);
+//        Episode cockpitEpisode = new CockpitEpisode();
+
+//        Episode effectPlaygroundEpisode = new EffectPlaygroundEpisode();
+//        setFirstEpisode(effectPlaygroundEpisode);
+
+        setFirstEpisode(mainMenuEpisode);
+        addEpisodeAfterCurrent(roomEpisode);
+//
+//        Episode forestLoadingEpisode = new ForestLoadingEpisode();
+//        addEpisodeAfter(roomEpisode, forestLoadingEpisode);
+//
+//        Episode forestEpisode = new ForestEpisode();
+//        addEpisodeAfter(forestLoadingEpisode, forestEpisode);
+//
+//        addEpisodeAfter(forestEpisode, new CockpitEpisode());
+
+//        setFirstEpisode(forestEpisode);
+
+
+//        addEpisodeAfterCurrent(roomEpisode);
+//        addEpisodeAfterCurrent(cockpitEpisode);
+
+//
+//
+//        Episode cockpitEpisode = new CockpitEpisode();
+//        addEpisodeAfter(forestEpisode, cockpitEpisode);
+
     }
 
     @Override
@@ -28,6 +44,9 @@ public class MoonWalkerScenario extends Scenario {
         switch (endStateCode) {
             case CALCULATOR_STARTED:
                 addTemporaryEpisode(new CalculatorEpisode());
+                break;
+            case CONTACT_SCREEN_EPISODE_STARTED:
+                addTemporaryEpisode(new ContactScreenEpisode());
                 break;
             case MAP_EPISODE_STARTED:
                 addTemporaryEpisode(new MapEpisode());

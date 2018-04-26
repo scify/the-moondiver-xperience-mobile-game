@@ -1,10 +1,11 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
+import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.game.GameInfo;
 import org.scify.moonwalker.app.game.Location;
 import org.scify.moonwalker.app.game.LocationController;
-import org.scify.moonwalker.app.ui.actors.ActionButton;
+import org.scify.engine.renderables.ActionButtonWithEffect;
 import org.scify.moonwalker.app.ui.renderables.MapLocationRenderable;
 
 import java.util.LinkedList;
@@ -37,8 +38,8 @@ public class MapEpisodeRules extends TemporaryEpisodeRules {
             gameInfo = GameInfo.getInstance();
             super.episodeStartedEvents(currentState);
             addEpisodeBackgroundImage(currentState, "img/map_europe.png");
-            addPlayerAvatar(currentState);
-            ActionButton escape = createEscapeButton();
+            //addPlayerAvatar(currentState);
+            ActionButtonWithEffect escape = createEscapeButton();
             escape.setUserAction(new UserAction(UserActionCode.BACK));
             currentState.addRenderable(escape);
             createMapLocationRenderables();
@@ -52,7 +53,7 @@ public class MapEpisodeRules extends TemporaryEpisodeRules {
         for(Location location : locationController.getLocations()) {
             MapLocationRenderable renderable = new MapLocationRenderable(appInfo.pixelsWithDensity(location.getPosX()), appInfo.pixelsWithDensity((location.getPosY())), appInfo.pixelsWithDensity(150), appInfo.pixelsWithDensity(100), "location");
             renderable.setLocation(location);
-            ActionButton locationBtn = new ActionButton(appInfo.pixelsWithDensity(50), appInfo.pixelsWithDensity(25), appInfo.pixelsWithDensity(20), appInfo.pixelsWithDensity(20), "image_button", "location1Btn");
+            ActionButtonWithEffect locationBtn = new ActionButtonWithEffect(appInfo.pixelsWithDensity(50), appInfo.pixelsWithDensity(25), appInfo.pixelsWithDensity(20), appInfo.pixelsWithDensity(20), "image_button", "location1Btn");
             //TODO
             locationBtn.setUserAction(new UserAction(UserActionCode.FINISH_EPISODE, location));
             locationBtn.setImgPath(location.getImgPath());

@@ -1,5 +1,7 @@
 package org.scify.engine;
 
+import org.scify.engine.renderables.Renderable;
+
 public class Player extends Renderable {
 
     protected String name;

@@ -1,7 +1,7 @@
 package org.scify.moonwalker.app.game;
 
 import com.badlogic.gdx.physics.box2d.*;
-import org.scify.engine.Renderable;
+import org.scify.engine.renderables.Renderable;
 
 public class BodyFactory {
 

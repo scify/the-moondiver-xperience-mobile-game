@@ -1,6 +1,7 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
+import org.scify.engine.renderables.Renderable;
 
 public class ForestEpisodeRules extends BaseEpisodeRules{
 
@@ -19,14 +20,14 @@ public class ForestEpisodeRules extends BaseEpisodeRules{
             super.episodeStartedEvents(currentState);
             addEpisodeBackgroundImage(currentState, "img/forest.jpg");
             createAndAddRocket(currentState);
-            addPlayerAvatar(currentState);
+            //addPlayerAvatar(currentState);
         }
     }
 
     protected void createAndAddRocket(GameState currentState) {
         final float rocketWidth = appInfo.pixelsWithDensity(ROCKET_IMG_WIDTH_PIXELS);
         final float rocketHeight = appInfo.pixelsWithDensity(ROCKET_IMG_HEIGHT_PIXELS);
-        Renderable renderable = new Renderable("image", "rocket");
+        org.scify.engine.renderables.Renderable renderable = new Renderable("image", "rocket");
         renderable.setWidth(rocketWidth);
         renderable.setHeight(rocketHeight);
         renderable.setxPos(rocketWidth);

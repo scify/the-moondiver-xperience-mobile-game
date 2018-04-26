@@ -3,16 +3,16 @@ package org.scify.moonwalker.app.game.rules;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import org.scify.engine.*;
 import org.scify.engine.EpisodeEndState;
+import org.scify.engine.renderables.Renderable;
 import org.scify.engine.rules.Rules;
 import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.engine.GameState;
-import org.scify.engine.conversation.ConversationRules;
 import org.scify.moonwalker.app.game.GameInfo;
 import org.scify.moonwalker.app.game.quiz.Answer;
 import org.scify.engine.UserAction;
 import org.scify.moonwalker.app.game.quiz.Question;
 import org.scify.moonwalker.app.helpers.AppInfo;
-import org.scify.moonwalker.app.ui.actors.ActionButton;
+import org.scify.engine.renderables.ActionButtonWithEffect;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +21,7 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
 
     protected int worldX;
     protected int worldY;
-    protected Map<String, Renderable> idToRenderable;
+    protected Map<String, org.scify.engine.renderables.Renderable> idToRenderable;
     protected ConversationRules conversationRules;
     protected AppInfo appInfo;
     protected MoonWalkerPhysicsRules physics;
@@ -58,7 +58,7 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
         return idToRenderable.get(rId) != null;
     }
 
-    protected void addRenderableEntry(String rId, Renderable renderable) {
+    protected void addRenderableEntry(String rId, org.scify.engine.renderables.Renderable renderable) {
         idToRenderable.put(rId, renderable);
     }
 
@@ -127,9 +127,9 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
         return gsCurrent.eventsQueueContainsEvent("PAUSE_GAME");
     }
 
-    protected ActionButton createEscapeButton() {
+    protected ActionButtonWithEffect createEscapeButton() {
         float btnRealSize = appInfo.pixelsWithDensity(ESCAPE_BUTTON_SIZE_PIXELS);
-        ActionButton escape = new ActionButton(0, appInfo.getScreenHeight() - btnRealSize, btnRealSize, btnRealSize, "image_button", "escape_button");
+        ActionButtonWithEffect escape = new ActionButtonWithEffect(0, appInfo.getScreenHeight() - btnRealSize, btnRealSize, btnRealSize, "image_button", "escape_button");
         escape.setPadding(appInfo.pixelsWithDensity(ESCAPE_BUTTON_PADDING_PIXELS));
         escape.setImgPath("img/close.png");
         return escape;
@@ -139,8 +139,8 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
         currentState.removeAllGameEventsOwnedBy(this);
     }
 
-    protected ActionButton createImageButton(String id, String imgPath, UserAction userAction, float widthPixels, float heightPixels) {
-        ActionButton button = new ActionButton("image_button", id);
+    protected ActionButtonWithEffect createImageButton(String id, String imgPath, UserAction userAction, float widthPixels, float heightPixels) {
+        ActionButtonWithEffect button = new ActionButtonWithEffect("image_button", id);
         button.setImgPath(imgPath);
         button.setUserAction(userAction);
         button.setWidth(appInfo.pixelsWithDensity(widthPixels));
@@ -169,7 +169,9 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
     }
 
     protected void setFieldsForTimedEpisode(GameState gsCurrent, String imgPath, int millisecondsToLast) {
-        gsCurrent.storeAdditionalDataEntry("timed_episode_img_path", imgPath);
+        if (imgPath != null) {
+            gsCurrent.storeAdditionalDataEntry("timed_episode_img_path", imgPath);
+        }
         gsCurrent.storeAdditionalDataEntry("timed_episode_milliseconds", millisecondsToLast);
     }
 }

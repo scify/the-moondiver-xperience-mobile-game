@@ -1,8 +1,6 @@
 package org.scify.moonwalker.app.ui.actors;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import org.scify.engine.Renderable;
+import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.ui.renderables.SpaceshipChargerRenderable;
 
 public class SpaceshipChargerActor extends TableActor implements Updateable {
@@ -29,13 +27,13 @@ public class SpaceshipChargerActor extends TableActor implements Updateable {
     protected Cell destinationDistanceValueCell;
 
     public SpaceshipChargerActor(Skin skin, SpaceshipChargerRenderable renderable) {
-        super(skin);
+        super(skin, renderable);
 
         this.renderable = renderable;
         timestamp = this.renderable.getRenderableLastUpdated();
         setWidth(renderable.getWidth());
         setHeight(renderable.getHeight());
-        addBackground(renderable.getImgPath());
+        //addBackground(renderable.getImgPath());
         debug();
     }
 

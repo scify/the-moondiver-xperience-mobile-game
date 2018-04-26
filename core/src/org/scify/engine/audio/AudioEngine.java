@@ -1,5 +1,8 @@
 package org.scify.engine.audio;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
+
 public interface AudioEngine {
     void pauseCurrentlyPlayingAudios();
     void pauseSound(String filePath);
@@ -7,5 +10,8 @@ public interface AudioEngine {
     void playSound(String filePath);
     void playSoundLoop(String filePath);
     void pauseAndPlaySound(String filePath);
+    void stopSound(String filePath);
     void disposeResources();
+    void loadSound(String filePath);
+    void disposeSound(String filePath);
 }

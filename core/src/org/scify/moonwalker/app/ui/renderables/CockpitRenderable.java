@@ -1,7 +1,7 @@
 package org.scify.moonwalker.app.ui.renderables;
 
-import org.scify.engine.Renderable;
-import org.scify.moonwalker.app.ui.actors.ActionButton;
+import org.scify.engine.renderables.Renderable;
+import org.scify.engine.renderables.ActionButtonWithEffect;
 
 public class CockpitRenderable extends Renderable {
 
@@ -13,18 +13,25 @@ public class CockpitRenderable extends Renderable {
 
     protected String motorEfficiencyValue;
     protected String remainingEnergyValue;
-    protected String destinationDistanceValue;
+    protected int destinationDistanceValue;
     protected String positionValue;
     protected String daysLeftValue;
 
-    protected ActionButton launchButton;
-    protected ActionButton chargeButton;
-    protected ActionButton spaceshipPartsButton;
-    protected ActionButton mapButton;
-    protected ActionButton contactButton;
+    protected ActionButtonWithEffect navigateButton;
+    protected ActionButtonWithEffect launchButton;
+    protected ActionButtonWithEffect chargeButton;
+    protected ActionButtonWithEffect spaceshipPartsButton;
+    protected ActionButtonWithEffect mapButton;
+
+    protected boolean contactButtonIsLighted;
+    protected ActionButtonWithEffect contactButtonSimple;
+    protected ActionButtonWithEffect contactButtonLighted;
+
 
     public CockpitRenderable(float xPos, float yPos, float width, float height, String type, String id) {
         super(xPos, yPos, width, height, type, id);
+        setImgPath("img/cockpit/bg.png");
+        contactButtonIsLighted = false;
     }
 
     public String getMotorEfficiencyValue() {
@@ -45,11 +52,11 @@ public class CockpitRenderable extends Renderable {
         renderableWasUpdated();
     }
 
-    public String getDestinationDistanceValue() {
+    public int getDestinationDistanceValue() {
         return destinationDistanceValue;
     }
 
-    public void setDestinationDistanceValue(String destinationDistanceValue) {
+    public void setDestinationDistanceValue(int destinationDistanceValue) {
         this.destinationDistanceValue = destinationDistanceValue;
         renderableWasUpdated();
     }
@@ -63,36 +70,62 @@ public class CockpitRenderable extends Renderable {
         renderableWasUpdated();
     }
 
-    public ActionButton getLaunchButton() {
+    public ActionButtonWithEffect getNavigateButton() {
+        return navigateButton;
+    }
+
+    public ActionButtonWithEffect getLaunchButton() {
         return launchButton;
     }
 
-    public void setLaunchButton(ActionButton launchButton) {
+    public void setNavigateButton(ActionButtonWithEffect navigateButton) {
+        this.navigateButton = navigateButton;
+    }
+
+    public void setLaunchButton(ActionButtonWithEffect launchButton) {
         this.launchButton = launchButton;
     }
 
-    public ActionButton getSpaceshipPartsButton() {
+    public ActionButtonWithEffect getSpaceshipPartsButton() {
         return spaceshipPartsButton;
     }
 
-    public void setSpaceshipPartsButton(ActionButton spaceshipPartsButton) {
+    public void setSpaceshipPartsButton(ActionButtonWithEffect spaceshipPartsButton) {
         this.spaceshipPartsButton = spaceshipPartsButton;
     }
 
-    public ActionButton getMapButton() {
+    public ActionButtonWithEffect getMapButton() {
         return mapButton;
     }
 
-    public void setMapButton(ActionButton mapButton) {
+    public void setMapButton(ActionButtonWithEffect mapButton) {
         this.mapButton = mapButton;
     }
 
-    public ActionButton getContactButton() {
-        return contactButton;
+    public boolean isContactButtonLighted() {
+        return contactButtonIsLighted;
     }
 
-    public void setContactButton(ActionButton contactButton) {
-        this.contactButton = contactButton;
+    public ActionButtonWithEffect getContactButtonSimple() {
+        return contactButtonSimple;
+    }
+
+    public ActionButtonWithEffect getContactButtonLighted() {
+        return contactButtonLighted;
+    }
+
+    public void setContactButtons(ActionButtonWithEffect contactButtonSimple, ActionButtonWithEffect contactButtonLighted) {
+        this.contactButtonSimple = contactButtonSimple;
+        this.contactButtonLighted = contactButtonLighted;
+    }
+
+    public void toogleContactButton() {
+        if (contactButtonIsLighted) {
+            contactButtonIsLighted = false;
+        }else {
+            contactButtonIsLighted = true;
+        }
+        renderableWasUpdated();
     }
 
     public String getDaysLeftValue() {
@@ -104,11 +137,11 @@ public class CockpitRenderable extends Renderable {
         renderableWasUpdated();
     }
 
-    public ActionButton getChargeButton() {
+    public ActionButtonWithEffect getChargeButton() {
         return chargeButton;
     }
 
-    public void setChargeButton(ActionButton chargeButton) {
+    public void setChargeButton(ActionButtonWithEffect chargeButton) {
         this.chargeButton = chargeButton;
     }
 }

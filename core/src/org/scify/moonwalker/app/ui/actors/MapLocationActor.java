@@ -8,12 +8,12 @@ public class MapLocationActor extends TableActor {
     protected MapLocationRenderable renderable;
 
     public MapLocationActor(Skin skin, MapLocationRenderable renderable, Button button) {
-        super(skin);
+        super(skin, renderable);
         this.renderable = renderable;
         timestamp = renderable.getRenderableLastUpdated();
         setWidth(renderable.getWidth());
         setHeight(renderable.getHeight());
-        addBackground(renderable.getImgPath());
+        //addBackground(renderable.getImgPath());
         initSubTable(this);
         addTextCell(this, renderable.getDestinationName()).top();
         row();

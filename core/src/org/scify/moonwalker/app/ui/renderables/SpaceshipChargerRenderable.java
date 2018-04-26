@@ -1,10 +1,10 @@
 package org.scify.moonwalker.app.ui.renderables;
 
-import org.scify.engine.Renderable;
+import org.scify.engine.renderables.Renderable;
 import org.scify.engine.UserAction;
 import org.scify.engine.UserActionCode;
 import org.scify.moonwalker.app.game.MoonPhase;
-import org.scify.moonwalker.app.ui.actors.ActionButton;
+import org.scify.engine.renderables.ActionButtonWithEffect;
 
 public class SpaceshipChargerRenderable extends Renderable{
 
@@ -15,9 +15,9 @@ public class SpaceshipChargerRenderable extends Renderable{
     public final String REMAINING_ENERGY_LABEL = "Διαθέσιμη ενέργεια";
     public final String DESTINATION_DISTANCE_LABEL= "Απόσταση προορισμού";
 
-    protected ActionButton calculatorButton;
-    protected ActionButton chargeButton;
-    protected ActionButton escapeButton;
+    protected ActionButtonWithEffect calculatorButton;
+    protected ActionButtonWithEffect chargeButton;
+    protected ActionButtonWithEffect escapeButton;
 
     protected MoonPhase currentMoonPhase;
     protected MoonPhase nextMoonPhase;
@@ -30,24 +30,24 @@ public class SpaceshipChargerRenderable extends Renderable{
     public SpaceshipChargerRenderable(float xPos, float yPos, float width, float height, String id) {
         super(xPos, yPos, width, height, "spaceship_charger", id);
         remainingEnergy = 0;
-        calculatorButton = new ActionButton("image_button", "calculator_button");
+        calculatorButton = new ActionButtonWithEffect("image_button", "calculator_button");
         calculatorButton.setHeight(40);
 
         calculatorButton.setUserAction(new UserAction(UserActionCode.CALCULATOR_EPISODE));
         calculatorButton.setImgPath("img/button.png");
 
-        chargeButton = new ActionButton("image_button", "charge_button");
+        chargeButton = new ActionButtonWithEffect("image_button", "charge_button");
         //TODO update
         chargeButton.setUserAction(new UserAction(UserActionCode.CHARGE_SPACESHIP_PASS_DAY));
         chargeButton.setImgPath("img/button.png");
         chargeButton.setHeight(40);
     }
 
-    public ActionButton getCalculatorButton() {
+    public ActionButtonWithEffect getCalculatorButton() {
         return calculatorButton;
     }
 
-    public ActionButton getChargeButton() {
+    public ActionButtonWithEffect getChargeButton() {
         return chargeButton;
     }
 
@@ -121,11 +121,11 @@ public class SpaceshipChargerRenderable extends Renderable{
         return currentMoonPhase.getImgPath();
     }
 
-    public ActionButton getEscapeButton() {
+    public ActionButtonWithEffect getEscapeButton() {
         return escapeButton;
     }
 
-    public void setEscapeButton(ActionButton escapeButton) {
+    public void setEscapeButton(ActionButtonWithEffect escapeButton) {
         this.escapeButton = escapeButton;
         renderableWasUpdated();
     }

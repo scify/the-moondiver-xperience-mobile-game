@@ -1,6 +1,9 @@
 package org.scify.moonwalker.app.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Colors;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -16,19 +19,44 @@ public class ThemeController {
     private ResourceLocator resourceLocator;
     private AppInfo appInfo;
 
+    public ThemeController(int fontSize, String fontId) {
+        this.resourceLocator = new ResourceLocator();
+        this.appInfo = AppInfo.getInstance();
+        initFontAndSkin(fontSize, fontId);
+    }
+
+    public ThemeController(int fontSize) {
+        this.resourceLocator = new ResourceLocator();
+        this.appInfo = AppInfo.getInstance();
+        initFontAndSkin(fontSize, "dialog");
+    }
+
     public ThemeController() {
         this.resourceLocator = new ResourceLocator();
         this.appInfo = AppInfo.getInstance();
-        initFontAndSkin();
+        initFontAndSkin(20, "dialog");
     }
 
-    protected void initFontAndSkin() {
+    protected void initFontAndSkin(int fontSize, String fontId) {
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.characters=FreeTypeFontGenerator.DEFAULT_CHARS + "α  β  γ  δ  ε  ζ  η  θ  ι  κ  λ  μ  ν  ξ  ο  π  ρ  σ  τ  υ  ϕ  χ  ψ  ω ς Α  Β  Γ  Δ  Ε  Ζ  Η  Θ  Ι  Κ  Λ  Μ  Ν  Ξ  Ο  Π  Ρ  Σ  Τ  Υ  Φ  Χ  Ψ  Ω ά έ ή ί ό ύ ώ Ά Έ Ή Ί Ό Ύ Ώ";
-        parameter.size = (int) appInfo.pixelsWithDensity(22);
-
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(resourceLocator.getFilePath("fonts/Anonymous_Pro.ttf")));
+        parameter.characters=FreeTypeFontGenerator.DEFAULT_CHARS + "α  β  γ  δ  ε  ζ  η  θ  ι  κ  λ  μ  ν  ξ  ο  π  ρ  σ  τ  υ  φ  χ  ψ  ω  ς  Α  Β  Γ  Δ  Ε  Ζ  Η  Θ  Ι  Κ  Λ  Μ  Ν  Ξ  Ο  Π  Ρ  Σ  Τ  Υ  Φ  Χ  Ψ  Ω ά έ ή ί ό ύ ώ ΐ ΰ Ά Έ Ή Ί Ό Ύ Ώ";
+        int width = appInfo.getScreenWidth();
+        float ratio = width /731f;
+        parameter.size = (int)(ratio * fontSize);
+        parameter.magFilter = Texture.TextureFilter.Linear;
+        parameter.minFilter = Texture.TextureFilter.Linear;
+        FreeTypeFontGenerator generator;
+        if (fontId.equals("dialog")) {
+            generator = new FreeTypeFontGenerator(Gdx.files.internal(resourceLocator.getFilePath("fonts/CYN_EdraNR.otf")));
+        }else if (fontId.equals("controls")){
+            generator = new FreeTypeFontGenerator(Gdx.files.internal(resourceLocator.getFilePath("fonts/PVF_ClimaxTXT.otf")));
+        }else {
+            generator = new FreeTypeFontGenerator(Gdx.files.internal(resourceLocator.getFilePath("fonts/CYN_EdraNR.otf")));
+        }
+        //FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(resourceLocator.getFilePath("fonts/Anonymous_Pro.ttf")));
+        //FreeTypeFontGenerator
         font = generator.generateFont(parameter);
+        font.getData().markupEnabled = true;
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         skin = new Skin();
         skin.add("default-font", font, BitmapFont.class);
@@ -48,4 +76,5 @@ public class ThemeController {
     public void dispose() {
         font.dispose();
     }
+
 }

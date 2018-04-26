@@ -9,12 +9,22 @@ public abstract class Positionable {
     protected float width;
     protected float height;
     protected int zIndex;
+    protected boolean positionDrawable;
 
     public Positionable(float xPos, float yPos, float width, float height) {
         this.xPos = xPos;
         this.yPos = yPos;
         this.width = width;
         this.height = height;
+        positionDrawable = true;
+    }
+
+    public boolean isPositionDrawable() {
+        return positionDrawable;
+    }
+
+    public void setPositionDrawble(boolean drawblePosition) {
+        this.positionDrawable = drawblePosition;
     }
 
     public float getxPos() {

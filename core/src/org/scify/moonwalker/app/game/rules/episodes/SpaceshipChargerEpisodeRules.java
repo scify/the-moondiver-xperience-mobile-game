@@ -1,7 +1,7 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
-import org.scify.moonwalker.app.ui.actors.ActionButton;
+import org.scify.engine.renderables.ActionButtonWithEffect;
 import org.scify.moonwalker.app.ui.renderables.SpaceshipChargerRenderable;
 
 public class SpaceshipChargerEpisodeRules extends TemporaryEpisodeRules {
@@ -43,7 +43,7 @@ public class SpaceshipChargerEpisodeRules extends TemporaryEpisodeRules {
         setMoonPhases();
         spaceshipChargerRenderable.setRemainingEnergy(gameInfo.getRemainingEnergy());
 
-        ActionButton escape = createEscapeButton();
+        ActionButtonWithEffect escape = createEscapeButton();
         escape.setUserAction(new UserAction(UserActionCode.BACK));
 
         spaceshipChargerRenderable.setEscapeButton(escape);

@@ -1,7 +1,7 @@
 package org.scify.moonwalker.app.ui;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import org.scify.engine.Renderable;
+import org.scify.engine.renderables.Renderable;
 import org.scify.engine.UserInputHandler;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 

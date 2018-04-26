@@ -12,11 +12,13 @@ public class GameInfo {
     protected MoonPhase nextMoonPhase;
     protected MoonPhase postNextMoonPhase;
     protected MoonPhasesController moonPhasesController;
+    protected String selectedPlayer;
+    protected boolean contactRequestFlag;
 
     private static GameInfo instance;
 
     public static GameInfo getInstance() {
-        if(instance == null)
+        if (instance == null)
             instance = new GameInfo();
         return instance;
     }
@@ -24,11 +26,19 @@ public class GameInfo {
     private GameInfo() {
         moonPhasesController = new MoonPhasesController();
         currentDay = 0;
-        motorEfficiency = 0;
+        motorEfficiency = 10;
         remainingEnergy = 0;
-        daysLeftForDestination = -1;
+        daysLeftForDestination = 90;
+        LocationController lc = new LocationController();
+        currentLocation = lc.getLocations().get(0);
         setMoonPhases();
+        selectedPlayer = SelectedPlayer.unset;
+        contactRequestFlag = true;
     }
+
+    public boolean getContactRequestFlag () { return contactRequestFlag; }
+
+    public void setContactRequestFlag (Boolean contactRequestFlag) { this.contactRequestFlag = contactRequestFlag; }
 
     public int getCurrentDay() {
         return currentDay;
@@ -104,5 +114,13 @@ public class GameInfo {
 
     public Location getNextLocation() {
         return nextLocation;
+    }
+
+    public void setSelectedPlayer(String selectedPlayer) {
+        this.selectedPlayer = selectedPlayer;
+    }
+
+    public String getSelectedPlayer() {
+        return selectedPlayer;
     }
 }

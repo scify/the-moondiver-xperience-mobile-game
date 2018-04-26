@@ -1,5 +1,7 @@
 package org.scify.engine;
 
+import org.scify.engine.renderables.Renderable;
+
 import java.util.*;
 
 /**
@@ -148,22 +150,26 @@ public abstract class GameState {
         }
     }
 
-    public List<Renderable> getRenderableList() {
+    public List<org.scify.engine.renderables.Renderable> getRenderableList() {
         return renderableList;
     }
 
 
-    public void addRenderable(Renderable r) {
+    public void addRenderable(org.scify.engine.renderables.Renderable r) {
         renderableList.add(r);
     }
 
-    public void addRenderables(List<Renderable> renderables) {
+    public void addRenderables(List<org.scify.engine.renderables.Renderable> renderables) {
         renderableList.addAll(renderables);
     }
 
-    public Renderable getRenderable(Renderable renderable){
+    public void removeRenderable(Renderable r) {
+        renderableList.remove(r);
+    }
+
+    public org.scify.engine.renderables.Renderable getRenderable(org.scify.engine.renderables.Renderable renderable){
         synchronized (renderableList) {
-            ListIterator<Renderable> listIterator = renderableList.listIterator();
+            ListIterator<org.scify.engine.renderables.Renderable> listIterator = renderableList.listIterator();
             while (listIterator.hasNext()) {
                 Renderable current = listIterator.next();
                 if(current == renderable)

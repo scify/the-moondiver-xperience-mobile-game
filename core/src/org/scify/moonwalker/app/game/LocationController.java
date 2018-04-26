@@ -9,7 +9,7 @@ public class LocationController {
 
     public LocationController() {
         locations = new LinkedList<>();
-        Location greece = new Location("Ελλάδα", "img/globe.png", 39, 21);
+        Location greece = new Location("ΕΛΛΑΔΑ", "img/globe.png", 39, 21);
         Location uk = new Location("Ηνωμένο Βασίλειο", "img/globe.png", 55, 3);
         Location france = new Location("Γαλλία", "img/globe.png", 46, 2);
         Location poland = new Location("Πολωνία", "img/globe.png", 51, 19);
