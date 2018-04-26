@@ -69,7 +69,7 @@ public class MoveEffect extends BaseEffect {
         return target;
     }
 
-    protected Point2D.Double calculateTargetPosition() {
+    protected void calculateTargetPosition() {
         double dCurTime = new Date().getTime();
         double dStartTime = getNumericParameter(INFO_START_TIME);
 
@@ -87,18 +87,10 @@ public class MoveEffect extends BaseEffect {
         setNumericParameter(INFO_CURRENT_X, dCurrentX);
         setNumericParameter(INFO_CURRENT_Y, dCurrentY);
 
-        // Apply new location info
-        Point2D.Double pRes = new Point2D.Double();
-        pRes.setLocation(dCurrentX, dCurrentY);
-
         // Update whether we have reached the end
         if (dPercentage == 1.0)
             setBooleanParameter(INFO_EXECUTED_FINAL_STEP, true);
 
-        // DEBUG LINES
-//        System.err.println("Offset: " + pRes.toString());
-        //////////////
-        return pRes;
     }
 
     protected double projectionFunction(double dStart, double dEnd, double dPercentageOfChange) {
