@@ -7,7 +7,7 @@ public class DelayEffect extends BaseEffect {
     }
 
     public DelayEffect(double dDuration) {
-        super(dDuration);
+        super(dDuration, false, false);
     }
 
 }

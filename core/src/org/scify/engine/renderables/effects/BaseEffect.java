@@ -8,23 +8,30 @@ public class BaseEffect implements Effect {
 
     public static final String PARAM_DURATION = "PARAM_DURATION";
     public static final String INFO_START_TIME = "INFO_START_TIME";
+    public static final String PARAM_EXECUTE_AT_LEAST_ONCE = "PARAM_EXECUTE_AT_LEAST_ONCE";
+    public static final String PARAM_EXECUTE_FINAL_STEP = "PARAM_EXECUTE_FINAL_STEP";
+    public static final String INFO_EXECUTED_ONCE = "INFO_EXECUTED_ONCE";
+    public static final String INFO_EXECUTED_FINAL_STEP = "INFO_EXECUTED_FINAL_STEP";
 
+
+    /**
+     * Indicates whether the effect needs to be interrupted.
+     */
     protected boolean bStopped = false;
-
-//    public BaseEffect() {
-//        initMaps();
-//        // Default duration is zero
-//        // params.put(PARAM_DURATION, "0.0");
-//    }
+    /**
+     * Signals whether the effect was executed, at least once.
+     */
 
     protected void initMaps() {
         params = new TreeMap<>();
         objectParams = new TreeMap<>();
     }
 
-    public BaseEffect(double dDurationMSec) {
+    public BaseEffect(double dDurationMSec, boolean bExecuteOnce, boolean bExecuteFinalStep) {
         initMaps();
         setNumericParameter(PARAM_DURATION, dDurationMSec);
+        setBooleanParameter(PARAM_EXECUTE_AT_LEAST_ONCE, bExecuteOnce);
+        setBooleanParameter(PARAM_EXECUTE_FINAL_STEP, bExecuteFinalStep);
     }
 
     /**
@@ -64,8 +71,6 @@ public class BaseEffect implements Effect {
         if (!params.containsKey(INFO_START_TIME) || (getNumericParameter(INFO_START_TIME) == Double.MAX_VALUE))
             setNumericParameter(INFO_START_TIME, Double.valueOf(new Date().getTime()));
 
-        // Update target with effect info
-        target.addEffect(this);
         return target;
     }
 
@@ -115,14 +120,25 @@ public class BaseEffect implements Effect {
             // then also complete
             return true;
 
+
+
+        boolean bCompleted = true;
+
+        // Either no one asked for the execution of the final step, or we have already executed it, so we are complete on this aspect.
+        bCompleted = bCompleted &&  (!getBooleanParameter(PARAM_EXECUTE_FINAL_STEP) || getBooleanParameter(INFO_EXECUTED_FINAL_STEP));
+        // Either no one asked for at least one execution, or we have already done it, so we are complete on this aspect.
+        bCompleted = bCompleted &&  (!getBooleanParameter(PARAM_EXECUTE_AT_LEAST_ONCE) || getBooleanParameter(INFO_EXECUTED_ONCE));
+
         // Calculate remaining time
         double dStart = Double.MAX_VALUE;
         if (params.containsKey(INFO_START_TIME))
-                dStart = Double.valueOf(params.get(INFO_START_TIME));
-
+            dStart = Double.valueOf(params.get(INFO_START_TIME));
         double dRemaining = getDuration() - (new Date().getTime() - dStart);
+        // If we have passed the required time, we also are complete in this aspect
+        bCompleted = bCompleted && (dRemaining < 10e-5);
 
-        return dRemaining < 10e-5;
+        // This returns "completed" only if we are complete regarding all the aspects.
+        return bCompleted;
     }
 
     @Override
@@ -147,6 +163,19 @@ public class BaseEffect implements Effect {
     }
 
     @Override
+    public boolean setBooleanParameter(String sParamName, boolean bNewValue) {
+        boolean bPrv = getBooleanParameter(sParamName);
+
+        params.put(sParamName, String.valueOf(bNewValue));
+        return bPrv;
+    }
+
+    @Override
+    public boolean getBooleanParameter(String sParamName) {
+        return Boolean.valueOf(getParameter(sParamName));
+    }
+
+    @Override
     public synchronized double getDuration() {
         return getNumericParameter(PARAM_DURATION);
 
@@ -154,7 +183,13 @@ public class BaseEffect implements Effect {
 
     @Override
     public synchronized void stop() {
-        setNumericParameter(PARAM_DURATION, 0.0);
         bStopped = true;
+    }
+
+    @Override
+    public EffectTarget addEffectTo(EffectTarget target) {
+        target.addEffect(this);
+
+        return target;
     }
 }

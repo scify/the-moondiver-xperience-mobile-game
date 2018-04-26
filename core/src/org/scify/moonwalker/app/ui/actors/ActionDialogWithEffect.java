@@ -56,13 +56,4 @@ public class ActionDialogWithEffect extends Renderable implements EffectTarget {
         return new HashSet<>(effects);
     }
 
-    @Override
-    public void addEffect(Effect effectOfInterest) {
-        effects.add(effectOfInterest);
-    }
-
-    @Override
-    public void removeEffect(Effect eToRemove) {
-        effects.remove(eToRemove);
-    }
 }

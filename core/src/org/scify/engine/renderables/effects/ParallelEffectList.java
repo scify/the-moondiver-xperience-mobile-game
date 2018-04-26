@@ -11,7 +11,7 @@ public class ParallelEffectList extends BaseEffect {
     protected Effect eCurrent;
 
     public ParallelEffectList() {
-        super(0.0);
+        super(0.0, true, false);
 
         // Initialize list
         seriesOfEffects = new LinkedList<>();
@@ -19,7 +19,7 @@ public class ParallelEffectList extends BaseEffect {
     }
 
     public ParallelEffectList(List<Effect> oneAfterTheOther) {
-        super(0);
+        super(0, true, false);
 
         // Initialize list
         seriesOfEffects = new LinkedList<>(oneAfterTheOther);
@@ -70,16 +70,28 @@ public class ParallelEffectList extends BaseEffect {
 
     @Override
     public EffectTarget applyTo(EffectTarget target) {
+        // Execute only once
+        if (getBooleanParameter(INFO_EXECUTED_ONCE))
+            return target;
+
         super.applyTo(target);
 
         for (Effect e: this.seriesOfEffects) {
-            e.applyTo(target);
+            e.addEffectTo(target);
         }
+        setBooleanParameter(INFO_EXECUTED_ONCE, true);
 
         return target;
     }
 
     public List<Effect> getSeriesOfEffects() {
         return new ArrayList<>(seriesOfEffects);
+    }
+
+    @Override
+    public synchronized boolean complete() {
+        updateDuration();
+
+        return super.complete();
     }
 }

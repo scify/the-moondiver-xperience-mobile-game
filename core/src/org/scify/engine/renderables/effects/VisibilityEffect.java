@@ -7,7 +7,7 @@ public class VisibilityEffect extends BaseEffect {
     public static final String PARAM_VISIBILITY = "PARAM_VISIBILITY";
 
     public VisibilityEffect(final boolean bSetVisibilityTo) {
-        super(Double.MAX_VALUE);
+        super(0.0, true, false);
 
         setNumericParameter(PARAM_VISIBILITY, bSetVisibilityTo == true ? 1.0 : 0.0);
     }
@@ -16,4 +16,9 @@ public class VisibilityEffect extends BaseEffect {
         super(eSource);
     }
 
+    @Override
+    public synchronized EffectTarget applyTo(EffectTarget target) {
+        setBooleanParameter(INFO_EXECUTED_ONCE, true);
+        return super.applyTo(target);
+    }
 }

@@ -39,7 +39,7 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
                     readyToEndEpisode = true;
                 }
             }));
-            renderable.apply(fadeOutEffects);
+            renderable.addEffect(fadeOutEffects);
         } else if (renderable != null && renderable.isChatEnabled() && outroInitiated == false) {
             gsCurrent = handleConversationRules(gsCurrent, userAction);
         }

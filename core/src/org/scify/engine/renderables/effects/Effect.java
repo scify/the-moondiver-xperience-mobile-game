@@ -4,7 +4,7 @@ import java.util.Set;
 
 public interface Effect {
     /**
-     * Applies the effect to the input target.
+     * Applies the effect results to the input target.
      * @param rTarget An EffectTarget, where the effect is applied.
      * @return The affected EffectTarget.
      */
@@ -76,6 +76,22 @@ public interface Effect {
     public Object getObjectParameter(String sParamName);
 
     /**
+     * Updates a selected parameter value
+     * @param sParamName The name of the parameter to change.
+     * @param bNewValue The new boolean value of the parameter.
+     * @return The previous value of the parameter, before the change.
+     */
+    public boolean setBooleanParameter(String sParamName, boolean bNewValue);
+
+    /**
+     * Returns the value of the given parameter, as a boolean value.
+     * @param sParamName The name of the parameter to look up.
+     * @return The value of the parameter as a boolean value.
+     */
+    public boolean  getBooleanParameter(String sParamName);
+
+
+    /**
      * Returns the (expected) duration of the effect.
      * @return The duration of the effect, up to completion, in milliseconds.
      */
@@ -86,4 +102,12 @@ public interface Effect {
      * Stops the effect (usually by rendering it complete).
      */
     public void stop();
+
+    /**
+     * Adds the effect to the target, for later rendering. ALWAYS use this when you expect a rendering engine
+     * to render the effects.
+     * @param target The effect target.
+     * @return The effect target updated (allows chaining).
+     */
+    public EffectTarget addEffectTo(EffectTarget target);
 }

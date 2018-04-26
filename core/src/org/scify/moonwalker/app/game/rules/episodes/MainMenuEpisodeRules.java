@@ -127,7 +127,6 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
             renderable = new MainMenuRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), MAIN_MENU_ID);
             createAndAddMainMenuButtons();
             createAvatarSelectionRenderable();
-            currentState.addRenderable(renderable);
 
             // Start sound
             currentState.addGameEvent(new GameEvent(AUDIO_START_LOOP_UI, renderable.BG_AUDIO_PATH));
@@ -135,6 +134,8 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
             // Perform fade in process
             fadeInStage();
             //addEpisodeBackgroundImage(currentState, "img/mainMenu/bg.png");
+
+            currentState.addRenderable(renderable);
 
             // Make sure you share that you are started
             super.episodeStartedEvents(currentState);
@@ -214,6 +215,7 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
     protected void fadeInStage() {
         // Fade-in everything
         EffectSequence fadeInEffects = new EffectSequence();
+        fadeInEffects.addEffect(new FadeEffect(1.0, 0.0, 0));
         fadeInEffects.addEffect(new FadeEffect(0.0, 1.0, 1000));
         fadeInEffects.addEffect(new FunctionEffect(new Runnable() {
             @Override
@@ -223,7 +225,7 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
 
             }
         }));
-        renderable.apply(fadeInEffects);
+        renderable.addEffect(fadeInEffects);
 
     }
 
@@ -265,7 +267,7 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
                 endGameAndAddEventWithType(gameState, NEW_GAME);
             }
         }));
-        renderable.apply(fadeOutEffects);
+        renderable.addEffect(fadeOutEffects);
 
     }
 

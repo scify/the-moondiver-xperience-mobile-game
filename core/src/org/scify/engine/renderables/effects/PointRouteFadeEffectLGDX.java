@@ -15,7 +15,7 @@ public class PointRouteFadeEffectLGDX extends BaseEffect implements LGDXIgnorabl
     public static final String INFO_FADE_EFFECTS = "INFO_FADE_EFFECTS";
 
     public PointRouteFadeEffectLGDX(double dDurationMSec, List<Renderable> lirPointRenderables) {
-        super(dDurationMSec);
+        super(dDurationMSec, true, false);
 
         // Keep image renderables
         setObjectParameter(POINT_RENDERABLES, lirPointRenderables);
@@ -62,9 +62,12 @@ public class PointRouteFadeEffectLGDX extends BaseEffect implements LGDXIgnorabl
                 es.addEffect(new FadeEffect(0.0, 1.0, dStepDuration - 100));
 
                 // Apply effect list to point
-                ir.apply(es);
+                ir.addEffect(es);
             }
         }
+
+        setBooleanParameter(INFO_EXECUTED_ONCE, true);
+
         return super.applyTo(target);
     }
 }

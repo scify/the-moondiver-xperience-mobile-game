@@ -20,7 +20,7 @@ public class FadeEffect extends BaseEffect {
      * Creates a fade-in effect, from alpha 0.0 to 1.0, taking place within 1 second progressively.
      */
     public FadeEffect() {
-        super(1000);
+        super(1000, false, true);
 
         setNumericParameter(PARAM_FROM_ALPHA, 0.0);
         setNumericParameter(PARAM_TO_ALPHA, 1.0);
@@ -38,7 +38,7 @@ public class FadeEffect extends BaseEffect {
      * @param dDurationMSec The time taken for the full transition.
      */
     public FadeEffect(double dFromAlpha, double dToAlpha, double dDurationMSec) {
-        super(dDurationMSec);
+        super(dDurationMSec, false, true);
 
         setNumericParameter(PARAM_FROM_ALPHA, dFromAlpha);
         setNumericParameter(PARAM_TO_ALPHA, dToAlpha);
@@ -65,6 +65,10 @@ public class FadeEffect extends BaseEffect {
         double dTimeRemaining = dCurtime - dStartTime;
 
         double dPercentage = dTimeRemaining / dDuration;
+        // Check if we have exceeded the end
+        if (dPercentage > 1.0)
+            dPercentage =  1.0;
+
 
         // Pose limits to alpha values
         double dTargetAlpha;
@@ -76,6 +80,10 @@ public class FadeEffect extends BaseEffect {
                     dEndAlpha);
 
         setNumericParameter(INFO_CURRENT_ALPHA, dTargetAlpha);
+
+        if (dPercentage == 1.0)
+            setBooleanParameter(INFO_EXECUTED_FINAL_STEP, true);
+
         return dTargetAlpha;
     }
 

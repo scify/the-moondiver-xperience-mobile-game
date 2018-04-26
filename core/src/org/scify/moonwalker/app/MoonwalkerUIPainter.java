@@ -19,6 +19,7 @@ import org.scify.moonwalker.app.ui.CameraController;
 import org.scify.moonwalker.app.ui.actors.IContainerActor;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * This class can paint all types of actors and sprites for a given stage.
@@ -42,7 +43,7 @@ public class MoonwalkerUIPainter {
     }
 
     public MoonwalkerUIPainter(Stage sStage, CameraController ccCameraController) {
-        stage= sStage;
+        stage = sStage;
         batch = stage.getBatch();
         cameraController = ccCameraController;
         appInfo = AppInfo.getInstance();
@@ -72,35 +73,35 @@ public class MoonwalkerUIPainter {
         fpsLabel.setFontScale(2);
     }
 
-    public void drawUIRenderable(Object uiRenderable, Renderable renderable, Map<Effect, LGDXEffect> uiRenderableEffects) {
+    public void drawUIRenderable(Object uiRenderable, Renderable renderable) {
 
-        if(uiRenderable instanceof Sprite) {
-            Sprite sToDraw = (Sprite)uiRenderable;
-            drawSpriteFromRenderable(renderable, sToDraw, uiRenderableEffects);
+        if (uiRenderable instanceof Sprite) {
+            Sprite sToDraw = (Sprite) uiRenderable;
+            drawSpriteFromRenderable(renderable, sToDraw);
         } else {
-            Actor aToDraw = (Actor)uiRenderable;
-            drawActorFromRenderable(renderable, aToDraw, uiRenderableEffects);
+            Actor aToDraw = (Actor) uiRenderable;
+            drawActorFromRenderable(renderable, aToDraw);
         }
     }
 
-    public void drawSpriteFromRenderable(Renderable renderable, Sprite sToDraw, Map<Effect, LGDXEffect> uiRenderableEffects) {
+    public void drawSpriteFromRenderable(Renderable renderable, Sprite sToDraw) {
         sToDraw.setPosition(renderable.getxPos(), renderable.getyPos());
-        applySpriteEffects(sToDraw, renderable, uiRenderableEffects); // Deal with effects
+        applySpriteEffects(sToDraw, renderable); // Deal with effects
 
-        if (renderable.isVisible()) {
+        // Apply visibility
+        if (renderable.isVisible() && (renderable.getZIndex() >= 0)) {
             sToDraw.draw(batch); // Follow this approach, to use sprite all traits (including color, alpha, etc)
         }
     }
 
 
-
-    public void drawActorFromRenderable(Renderable renderable, Actor aToDraw, Map<Effect, LGDXEffect> uiRenderableEffects) {
+    public void drawActorFromRenderable(Renderable renderable, Actor aToDraw) {
         // Update position, when appropriate
         if (renderable.isPositionDrawable())
             aToDraw.setPosition(renderable.getxPos(), renderable.getyPos());
 
         // Apply effects
-        applyActorEffects(aToDraw, renderable, uiRenderableEffects); // Deal with effects
+        applyActorEffects(aToDraw, renderable); // Deal with effects
 
         // Update visibility
         applyActorVisibility(aToDraw, renderable); // Apply visibility
@@ -108,54 +109,56 @@ public class MoonwalkerUIPainter {
 
         // if actor does not have a stage, it means that
         // it is the first time that it is added to the stage.
-        if(aToDraw.getStage() == null) {
+        if (aToDraw.getStage() == null) {
             //System.out.println("new actor with name: " + renderable.getId());
             aToDraw.setName(renderable.getId());
-
-            // DEBUG LINES
-//            if (aToDraw instanceof ImageWithEffect) {
-//                System.err.println(renderable + " parent --> " + aToDraw.getParent().toString());
-//            }
-            //////////////
 
             // If actor does not have a parent
             if (aToDraw.getParent() == null) {
                 // we should add it to the stage
                 stage.addActor(aToDraw);
             }
-        }else {// update the z index of the actor, according to the renderable's z index
-            // Take into account also the z-index rule (<0 means invisible)
-            if(renderable.getZIndex() >= 0)
-                aToDraw.setZIndex(renderable.getZIndex());
-            else {
-                aToDraw.setVisible(false);
+        }
+    }
+
+    public synchronized void applyActorEffects(Actor aToDraw, Renderable renderable) {
+
+        // Effect application
+        /////////////////////
+        Set<Effect> actorEffects = renderable.getEffects();
+        if (actorEffects == null)
+            return;
+
+        // For each effect
+        for (Effect eCur : actorEffects) {
+            if (eCur instanceof LGDXEffect) {
+                // apply for LGDX effects
+                ((LGDXEffect) eCur).applyToActor(aToDraw, renderable);
+            } else {
+                // apply for generic effects
+                eCur.applyTo(renderable);
             }
         }
     }
 
-    public synchronized void applyActorEffects(Actor aToDraw, Renderable renderable, Map<Effect, LGDXEffect> actorEffectsMap) {
+    public synchronized void applySpriteEffects(Sprite sToDraw, Renderable renderable) {
+
         // Effect application
         /////////////////////
-        if (actorEffectsMap == null)
+        Set<Effect> spriteEffects = renderable.getEffects();
+
+        if (spriteEffects == null)
             return;
 
         // For each effect
-        for (Map.Entry<Effect, LGDXEffect> eCur: actorEffectsMap.entrySet()) {
-            // apply
-            eCur.getValue().applyToActor(aToDraw, renderable);
-        }
-    }
-
-    public synchronized void applySpriteEffects(Sprite sToDraw, Renderable renderable, Map<Effect, LGDXEffect> spriteEffectsMap) {
-        // Effect application
-        /////////////////////
-        if (spriteEffectsMap == null)
-            return;
-
-        // For each effect
-        for (Map.Entry<Effect, LGDXEffect> eCur: spriteEffectsMap.entrySet()) {
-            // apply
-            eCur.getValue().applyToSprite(sToDraw, renderable);
+        for (Effect eCur : spriteEffects) {
+            if (eCur instanceof LGDXEffect) {
+                // apply for LGDX effects
+                ((LGDXEffect) eCur).applyToSprite(sToDraw, renderable);
+            } else {
+                // apply for generic effects
+                eCur.applyTo(renderable);
+            }
         }
     }
 
@@ -185,22 +188,25 @@ public class MoonwalkerUIPainter {
     public void applyActorVisibility(Actor aToDraw, Renderable renderable) {
         // If a container
         if (aToDraw instanceof IContainerActor) {
-            IContainerActor<Renderable> caToDraw = (IContainerActor)aToDraw;
+            IContainerActor<Renderable> caToDraw = (IContainerActor) aToDraw;
             // For every child
-            for (Actor aCur: caToDraw.getChildrenActorsAndRenderables().keySet()) {
+            for (Actor aCur : caToDraw.getChildrenActorsAndRenderables().keySet()) {
                 // Apply effect to child
                 applyActorVisibility(aCur, caToDraw.getChildrenActorsAndRenderables().get(aCur));
             }
 
         }
 
-        // DEGUG LINES
-//        if (renderable.getId().contains("countdown")  && renderable.isVisible()) {
-//            System.err.println("Found it!!!");
-//        }
-        //////////////
-
         // Update visibility
         aToDraw.setVisible(renderable.isVisible());
 
-    }}
+        // update the z index of the actor, according to the renderable's z index
+        // Take into account also the z-index rule (<0 means invisible)
+        if (renderable.getZIndex() >= 0)
+            aToDraw.setZIndex(renderable.getZIndex());
+        else {
+            // TODO: Check in the future if it needs to be removed
+            aToDraw.setVisible(false);
+        }
+    }
+}

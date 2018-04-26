@@ -119,13 +119,15 @@ public class Renderable extends Positionable implements EffectTarget {
     }
 
     @Override
-    public void addEffect(Effect effectOfInterest) {
+    public EffectTarget addEffect(Effect effectOfInterest) {
         effectInfo.add(effectOfInterest);
+        return this;
     }
 
     @Override
-    public void removeEffect(Effect eToRemove) {
+    public EffectTarget removeEffect(Effect eToRemove) {
         effectInfo.remove(eToRemove);
+        return this;
     }
 
     public void setVisible(boolean visible) {

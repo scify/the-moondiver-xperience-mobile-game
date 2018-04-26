@@ -57,12 +57,14 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
         float heightLeft = createTopBanner(heightOfTopRow);
         row().height(heightLeft).width(screenWidth);
 
-        // create actors
+        // create actors for menu
         setStartButton((Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getStartGameButton()));
         setContinueButton((Button) bookKeeper.getUIRepresentationOfRenderable((renderable.getContinueGameButton())));
         setToggleAudioButton((Button) bookKeeper.getUIRepresentationOfRenderable((renderable.getToggleAudioButton())));
         setAboutButton((Button) bookKeeper.getUIRepresentationOfRenderable((renderable.getAboutButton())));
         setQuitButton((Button) bookKeeper.getUIRepresentationOfRenderable((renderable.getQuitButton())));
+
+        // create actors for character selection
         setBoyButton((Button) bookKeeper.getUIRepresentationOfRenderable((renderable.getBoyButton())));
         setBoyAvatarButton((Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getBoyAvatarButton()));
         setGirlButton((Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getGirlButton()));
@@ -211,14 +213,14 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
             Effect fadeIn = new FadeEffect(boyAvatarButton.getColor().a, 1.0, 500);
             Effect fadeOut = new FadeEffect(girlAvatarButton.getColor().a, 0.5, 500);
 
-            renderable.getBoyAvatarButton().apply(fadeIn);
-            renderable.getGirlAvatarButton().apply(fadeOut);
+            renderable.getBoyAvatarButton().addEffect(fadeIn);
+            renderable.getGirlAvatarButton().addEffect(fadeOut);
         } else if (selectedButtonId.equals("girlButton") || selectedButtonId.equals("girlAvatarButton")) {
             Effect fadeIn = new FadeEffect(girlAvatarButton.getColor().a, 1.0, 500);
             Effect fadeOut = new FadeEffect(boyAvatarButton.getColor().a, 0.5, 500);
 
-            renderable.getBoyAvatarButton().apply(fadeOut);
-            renderable.getGirlAvatarButton().apply(fadeIn);
+            renderable.getBoyAvatarButton().addEffect(fadeOut);
+            renderable.getGirlAvatarButton().addEffect(fadeIn);
         }
     }
 

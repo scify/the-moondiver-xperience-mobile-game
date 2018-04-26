@@ -41,7 +41,9 @@ public class RoomActor extends TableActor<RoomRenderable> implements Updateable 
         add(phonesStack).width(convertWidth(phoneOffImage.getWidth())).height(convertHeight(phoneOffImage.getHeight()));
         getChildrenActorsAndRenderables().put(phoneOffImage,renderable.getPhoneOffRenderable());
         getChildrenActorsAndRenderables().put(phoneOnImage,renderable.getPhoneOnRenderable());
+
         EffectSequence fadeInEffects = new EffectSequence();
+        fadeInEffects.addEffect(new FadeEffect(1.0, 0.0, 0));
         fadeInEffects.addEffect(new FadeEffect(0.0, 1.0, 2000));
         fadeInEffects.addEffect(new FunctionEffect(new Runnable() {
             @Override
@@ -49,7 +51,7 @@ public class RoomActor extends TableActor<RoomRenderable> implements Updateable 
                 renderable.enableChat();
             }
         }));
-        renderable.apply(fadeInEffects);
+        renderable.addEffect(fadeInEffects);
     }
 
     @Override

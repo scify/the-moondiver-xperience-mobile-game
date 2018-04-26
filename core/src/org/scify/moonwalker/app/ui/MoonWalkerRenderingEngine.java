@@ -147,12 +147,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             // Get the UI representation of the renderable
             Object uiRepresentationOfRenderable = bookKeeper.getUIRepresentationOfRenderable(renderable);
 
-            // Get the effects, if any
-            Map<Effect, LGDXEffect> renderableEffects = bookKeeper.getEffectsFor(uiRepresentationOfRenderable);
-            // DEBUG LINES
-//            System.err.println(renderable.getId() + " " + renderableEffects.size());
-            ///////////////
-
             // Then draw the renderable itself, if needed
             if (renderable.needsUpdate()) {
 
@@ -162,7 +156,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                     ((Updateable) uiRepresentationOfRenderable).update(renderable);
                 }
 
-                painter.drawUIRenderable(uiRepresentationOfRenderable, renderable, renderableEffects);
+                painter.drawUIRenderable(uiRepresentationOfRenderable, renderable);
                 // and share that it is now updated
                 renderable.wasUpdated();
             }

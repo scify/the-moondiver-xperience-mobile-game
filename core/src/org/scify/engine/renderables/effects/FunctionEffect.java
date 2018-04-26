@@ -5,11 +5,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.effects.libgdx.LGDXEffect;
 
-public class FunctionEffect extends BaseEffect implements LGDXEffect  {
+public class FunctionEffect extends BaseEffect  {
     public final String PARAM_OBJ_RUNNABLE = "PARAM_OBJ_RUNNABLE";
 
     public FunctionEffect(Runnable rToRun) {
-        super(Double.MAX_VALUE);
+        super(0.0, true, false);
 
         setObjectParameter(PARAM_OBJ_RUNNABLE, rToRun);
     }
@@ -28,37 +28,18 @@ public class FunctionEffect extends BaseEffect implements LGDXEffect  {
      */
     @Override
     public synchronized EffectTarget applyTo(EffectTarget target) {
+//        // If already executed
+//        if (getBooleanParameter(INFO_EXECUTED_ONCE))
+//            return super.applyTo(target);
 
         Object oToRun = getObjectParameter(PARAM_OBJ_RUNNABLE);
         if (oToRun != null) {
-            stop();
             ((Runnable)oToRun).run();
         }
 
+        setBooleanParameter(INFO_EXECUTED_ONCE, true);
         return super.applyTo(target);
     }
 
-    /**
-     * Applies the effect to the selected target, updating any effect info.
-     *
-     * @param aTarget     The target actor to update.
-     * @param rRenderable The renderable containing the effect state info.
-     */
-    @Override
-    public void applyToActor(Actor aTarget, Renderable rRenderable) {
-        applyTo(rRenderable);
-        // Do nothing
-    }
 
-    /**
-     * Applies the effect to the selected target, updating any effect info.
-     *
-     * @param sTarget     The target sprite to update.
-     * @param rRenderable The renderable containing the effect state info.
-     */
-    @Override
-    public void applyToSprite(Sprite sTarget, Renderable rRenderable) {
-        applyTo(rRenderable);
-        // Do nothing
-    }
 }

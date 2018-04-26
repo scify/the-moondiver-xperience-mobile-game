@@ -21,7 +21,7 @@ public class EffectSequence extends BaseEffect {
     }
 
     public EffectSequence() {
-        super(Double.MAX_VALUE);
+        super(0.0, false, true);
 
         // Initialize list
         setObjectParameter(PARAM_SERIES_OF_EFFECTS, new LinkedList<>());
@@ -30,7 +30,7 @@ public class EffectSequence extends BaseEffect {
     }
 
     public EffectSequence(List<Effect> oneAfterTheOther) {
-        super(Double.MAX_VALUE);
+        super(Double.MAX_VALUE, false, true);
 
         // Initialize list
         setObjectParameter(PARAM_SERIES_OF_EFFECTS, new LinkedList<>(oneAfterTheOther));
@@ -77,6 +77,7 @@ public class EffectSequence extends BaseEffect {
                     // Move to the next effect
                 }
                 else {
+                    setBooleanParameter(INFO_EXECUTED_FINAL_STEP, true);
                     eCurrent = null; // Else render current to null
                 }
                 // Update info
@@ -85,8 +86,8 @@ public class EffectSequence extends BaseEffect {
 
             // If we have a current effect
             if (getCurrentEffect() != null)
-                // Apply it
-                eCurrent.applyTo(target);
+                // Add it to the target
+                target.addEffect(eCurrent);
         }
 
         return target;
@@ -142,5 +143,12 @@ public class EffectSequence extends BaseEffect {
 
     public List<Effect> getSeriesOfEffects() {
         return ((List)getObjectParameter(PARAM_SERIES_OF_EFFECTS));
+    }
+
+    @Override
+    public synchronized boolean complete() {
+        updateDuration();
+
+        return super.complete();
     }
 }

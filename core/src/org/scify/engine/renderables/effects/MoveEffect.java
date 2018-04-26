@@ -18,7 +18,7 @@ public class MoveEffect extends BaseEffect {
      * Creates a fade-in effect, from alpha 0.0 to 1.0, taking place within 1 second progressively.
      */
     public MoveEffect() {
-        super(1000);
+        super(1000, true, true);
 
         setNumericParameter(PARAM_START_X, null);
         setNumericParameter(PARAM_START_Y, null);
@@ -27,14 +27,14 @@ public class MoveEffect extends BaseEffect {
     }
 
     public MoveEffect(double dToX, double dToY, double dDuration) {
-        super(dDuration);
+        super(dDuration, true, true);
 
         setNumericParameter(PARAM_TARGET_X, dToX);
         setNumericParameter(PARAM_TARGET_Y, dToY);
     }
 
     public MoveEffect(double dFromX, double dFromY, double dToX, double dToY, double dDuration) {
-        super(dDuration);
+        super(dDuration, true, true);
 
         setNumericParameter(PARAM_START_X, dFromX);
         setNumericParameter(PARAM_START_Y, dFromY);
@@ -59,6 +59,7 @@ public class MoveEffect extends BaseEffect {
                 // initialize it
                 setNumericParameter(PARAM_START_X, (double) pTarget.getxPos());
                 setNumericParameter(PARAM_START_Y, (double) pTarget.getyPos());
+                setBooleanParameter(INFO_EXECUTED_ONCE, true);
             }
 
             calculateTargetPosition();
@@ -74,6 +75,9 @@ public class MoveEffect extends BaseEffect {
 
         double dTimeRemaining = dCurTime - dStartTime;
         double dPercentage = dTimeRemaining / getDuration();
+        // Check maximum
+        if (dPercentage > 1.0)
+            dPercentage = 1.0;
 
         // Apply a function (sinusoid in this case) to determine current X and Y offsets.
         double dCurrentX = projectionFunction(getNumericParameter(PARAM_START_X), getNumericParameter(PARAM_TARGET_X), dPercentage);
@@ -86,6 +90,10 @@ public class MoveEffect extends BaseEffect {
         // Apply new location info
         Point2D.Double pRes = new Point2D.Double();
         pRes.setLocation(dCurrentX, dCurrentY);
+
+        // Update whether we have reached the end
+        if (dPercentage == 1.0)
+            setBooleanParameter(INFO_EXECUTED_FINAL_STEP, true);
 
         // DEBUG LINES
 //        System.err.println("Offset: " + pRes.toString());

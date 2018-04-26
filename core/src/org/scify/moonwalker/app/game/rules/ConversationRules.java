@@ -229,7 +229,7 @@ public class ConversationRules extends MoonWalkerRules {
         NextConversationRenderable nextConversationRenderable =
                 new NextConversationRenderable("next_conversation_" + conversationLine.getId());
         if (lastConversationRenderable != null) {
-            lastConversationRenderable.apply(getOutroEffect(lastConversationRenderable, conversationLine, gameState, newSpeaker));
+            lastConversationRenderable.addEffect(getOutroEffect(lastConversationRenderable, conversationLine, gameState, newSpeaker));
         }
         lastConversationRenderable = nextConversationRenderable;
         lastConversationRenderable.setZIndex(100);
@@ -238,7 +238,7 @@ public class ConversationRules extends MoonWalkerRules {
         sPrvSpeakerID = conversationLine.getSpeakerId();
         nextConversationRenderable.setRelativeAvatarPath(getAvatar(conversationLine.getSpeakerId()));
 //        nextConversationRenderable.apply(new FadeLGDXEffect(0.0, 1.0, 1000));
-        nextConversationRenderable.apply(getIntroEffect(nextConversationRenderable, conversationLine, gameState, newSpeaker));
+        nextConversationRenderable.addEffect(getIntroEffect(nextConversationRenderable, conversationLine, gameState, newSpeaker));
 
         gameState.addRenderable(nextConversationRenderable);
         oldConversationLines.add(nextConversationRenderable);
@@ -293,7 +293,7 @@ public class ConversationRules extends MoonWalkerRules {
     protected void addTwoChoiceConversationLines(List<ConversationLine> nextLines, GameState gameState, boolean newSpeaker) {
         TwoChoiceConversationRenderable twoChoiceConversationRenderable = new TwoChoiceConversationRenderable("two_choice_conversation");
         if (lastConversationRenderable != null) {
-            lastConversationRenderable.apply(getOutroEffect(lastConversationRenderable, nextLines.get(0), gameState, newSpeaker));
+            lastConversationRenderable.addEffect(getOutroEffect(lastConversationRenderable, nextLines.get(0), gameState, newSpeaker));
         }
         lastConversationRenderable = twoChoiceConversationRenderable;
         lastConversationRenderable.setZIndex(100);
@@ -301,7 +301,7 @@ public class ConversationRules extends MoonWalkerRules {
         // Update previous speaker
         sPrvSpeakerID = conversationLines.get(0).getSpeakerId();
         twoChoiceConversationRenderable.setRelativeAvatarImgPath(getAvatar(twoChoiceConversationRenderable.getConversationLines().get(0).getSpeakerId()));
-        twoChoiceConversationRenderable.apply(getIntroEffect(twoChoiceConversationRenderable, nextLines.get(0), gameState, newSpeaker));
+        twoChoiceConversationRenderable.addEffect(getIntroEffect(twoChoiceConversationRenderable, nextLines.get(0), gameState, newSpeaker));
 
         gameState.addRenderable(twoChoiceConversationRenderable);
         oldConversationLines.add(twoChoiceConversationRenderable);

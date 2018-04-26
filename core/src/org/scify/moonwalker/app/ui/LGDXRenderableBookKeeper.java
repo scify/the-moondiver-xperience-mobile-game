@@ -34,8 +34,8 @@ public class LGDXRenderableBookKeeper {
     protected LGDXEffectFactory<LGDXEffect> effectFactory;
     protected UserInputHandlerImpl userInputHandler;
 
-    protected Map<Actor, Map<Effect, LGDXEffect>> actorEffects;
-    protected Map<Sprite, Map<Effect, LGDXEffect>> spriteEffects;
+//    protected Map<Actor, Map<Effect, LGDXEffect>> actorEffects;
+//    protected Map<Sprite, Map<Effect, LGDXEffect>> spriteEffects;
 
     protected Batch batch;
     protected Stage stage;
@@ -46,9 +46,6 @@ public class LGDXRenderableBookKeeper {
         actorFactory.setUserInputHandler(userInputHandler);
         this.spriteFactory = new SpriteFactory(themeController.getSkin());
         this.effectFactory = LGDXEffectFactory.getFactorySingleton();
-
-        this.actorEffects = new HashMap<>();
-        this.spriteEffects = new HashMap<>();
     }
 
     /**
@@ -131,72 +128,22 @@ public class LGDXRenderableBookKeeper {
         }
     }
 
-    public LGDXEffect getOrCreateLGDXEffectForSprite(Effect eCur, Sprite sToDraw) {
-        if (!spriteEffects.containsKey(sToDraw)) {
-            spriteEffects.put(sToDraw, new HashMap<Effect, LGDXEffect>());
-        }
-
-        // If I have not created a LGDXEffect for the specified effect
-        if (!spriteEffects.get(sToDraw).containsKey(eCur)) {
-            try {
-                // Create the LGDXEffect and update the map
-                spriteEffects.get(sToDraw).put(eCur, effectFactory.getEffectFor(eCur));
-                // DEBUG INFO
-                System.err.println("Added effect for " + eCur.toString() + " on sprite " + sToDraw.toString());
-                /////////////
-
-            } catch (EffectNotRegisteredException e) {
-                // If NOT an ignorable effect (i.e. not a meta-effect or similar)
-                if (!(eCur instanceof LGDXIgnorableEffect)) {
-                    e.printStackTrace();
-                    System.err.println("Ignoring...");
-                }
+    public LGDXEffect getOrCreateLGDXEffectForRenderable(Effect eCur, Renderable renderable) {
+        try {
+            LGDXEffect lgeCur = effectFactory.getEffectFor(eCur);
+            // Update actor with new effect
+            renderable.addEffect(lgeCur);
+            return lgeCur;
+        } catch (EffectNotRegisteredException e) {
+            // If NOT an ignorable effect (i.e. not a meta-effect or similar)
+            if (!(eCur instanceof LGDXIgnorableEffect)) {
+                e.printStackTrace();
+                System.err.println("Ignoring...");
             }
         }
 
-        LGDXEffect lgeRes = spriteEffects.get(sToDraw).get(eCur);
-        // Update actor with new effect
-        ((EffectTarget)sToDraw).addEffect(lgeRes);
+        return null;
 
-        return lgeRes;
-
-    }
-
-    public LGDXEffect getOrCreateLGDXEffectForActor(Effect eCur, Actor aToDraw) throws InvalidParameterException {
-        if (!(aToDraw instanceof EffectTarget)) {
-            // DEBUG LINES
-            System.err.println("Actor " + aToDraw.toString() + " is not an EffectTarget. Ignoring...");
-            //////////////
-            return null;
-        }
-
-        if (!actorEffects.containsKey(aToDraw)) {
-                actorEffects.put(aToDraw, new HashMap<Effect, LGDXEffect>());
-            // DEBUG LINES
-//            System.err.println("Initialized effect list for actor " + aToDraw.toString() + ".");
-            //////////////
-        }
-
-        if (!actorEffects.get(aToDraw).containsKey(eCur)) {
-            try {
-                actorEffects.get(aToDraw).put(eCur, effectFactory.getEffectFor(eCur));
-                // DEBUG LINES
-//                System.err.println("Created new effect for " + eCur.toString() + "," + aToDraw.toString() + ".");
-                //////////////
-            } catch (EffectNotRegisteredException e) {
-                // If NOT an ignorable effect (i.e. not a meta-effect or similar)
-                if (!(eCur instanceof LGDXIgnorableEffect)) {
-                    e.printStackTrace();
-                    System.err.println("Ignoring...");
-                }
-            }
-        }
-
-        LGDXEffect lgeRes = actorEffects.get(aToDraw).get(eCur);
-        // Update actor with new effect
-        ((EffectTarget)aToDraw).addEffect(lgeRes);
-
-        return lgeRes;
     }
 
 
@@ -227,9 +174,6 @@ public class LGDXRenderableBookKeeper {
                 resource = newActorForRenderable;
                 addActor(toDraw, newActorForRenderable);
 
-                // DEBUG LINES
-//                printActors();
-                /////////////
             }
         } catch (UnsupportedRenderableTypeException e) {
             e.printStackTrace();
@@ -252,8 +196,6 @@ public class LGDXRenderableBookKeeper {
     public void reset() {
         renderableSpriteMap = new HashMap<>();
         renderableActorMap = new HashMap<>();
-        actorEffects = new HashMap<>();
-        spriteEffects = new HashMap<>();
     }
 
     public void dispose() {
@@ -312,91 +254,15 @@ public class LGDXRenderableBookKeeper {
         }
     }
 
-    public synchronized void removeEffectFromRenderableAndRelatedUIElements(Effect eToRemove, Renderable renderable) {
-        if(renderableExistsAsSprite(renderable)) {
-            Map<Effect, LGDXEffect> mMap = spriteEffects.get(renderableSpriteMap.get(renderable));
-            Sprite sToUpdate = renderableSpriteMap.get(renderable);
-
-            if (sToUpdate != null) {
-                if (sToUpdate instanceof EffectTarget) {
-                    EffectTarget eCur = (EffectTarget)sToUpdate;
-                    // Remove effect
-                    ((EffectTarget) sToUpdate).removeEffect(eToRemove);
-                }
-            }
-            // Finally remove mapping
-            if (mMap != null) {
-                spriteEffects.get(renderableSpriteMap.get(renderable)).remove(eToRemove);
-            }
-
-        }
-        else {
-            Map<Effect, LGDXEffect> mMap = actorEffects.get(renderableActorMap.get(renderable));
-
-
-            Actor aToUpdate = renderableActorMap.get(renderable);
-            if (aToUpdate != null) {
-                if (aToUpdate instanceof EffectTarget) {
-                    EffectTarget eCur = (EffectTarget)aToUpdate;
-                    // Remove effect
-                    ((EffectTarget) aToUpdate).removeEffect(eToRemove);
-                }
-            }
-
-            // If a container
-            if (aToUpdate instanceof IContainerActor) {
-                Map<Actor,Renderable> mChildren = ((IContainerActor<Renderable>)aToUpdate).getChildrenActorsAndRenderables();
-                // For each actor child
-                for (Map.Entry<Actor,Renderable> meContained : mChildren.entrySet()) {
-                    // remove its effects
-                    removeEffectFromRenderableAndRelatedUIElements(eToRemove, meContained.getValue());
-                }
-            }
-
-            // Finally remove mapping fro actorEffects
-            if (mMap != null) {
-                actorEffects.get(renderableActorMap.get(renderable)).remove(eToRemove);
-            }
-
-            // and update renderable in any case
-            renderable.removeEffect(eToRemove);
-        }
-
-    }
-
     public Sprite getSpriteForRenderable(Renderable renderable) {
         return renderableSpriteMap.get(renderable);
     }
 
-    public Map<Effect,LGDXEffect> getActorEffectsFor(Actor aToDraw) {
-        return actorEffects.get(aToDraw);
-    }
-
-    public Map<Effect, LGDXEffect> getSpriteEffectsFor(Sprite sToDraw) {
-        return spriteEffects.get(sToDraw);
-    }
-
-    /**
-     * Returns the effects for the specific actor/sprite.
-     * @param uiRepresentationOfRenderable The actor/sprite to look up.
-     * @return A map between the effects of the object and their LGDXEffect aspects.
-     */
-    public Map<Effect, LGDXEffect> getEffectsFor(Object uiRepresentationOfRenderable) {
-        Map<Effect, LGDXEffect> mRes = new HashMap<>();
-
-        if ((uiRepresentationOfRenderable instanceof Actor) && actorEffects.containsKey(uiRepresentationOfRenderable)) {
-            return actorEffects.get(uiRepresentationOfRenderable);
-        }
-        if ((uiRepresentationOfRenderable instanceof Sprite) && spriteEffects.containsKey(uiRepresentationOfRenderable)) {
-            return spriteEffects.get(uiRepresentationOfRenderable);
-        }
-
-        return mRes;
-    }
-
     public void updateEffectList(Renderable renderable, EffectTarget target) {
         List<Effect> toRemove = new ArrayList<>();
-        Set<Effect> lEffects = renderable.getEffects();
+        // Get renderable effects
+        Set<Effect> lEffects = new HashSet<>(renderable.getEffects());
+
 
         // For each effect on the renderable
         for (Effect eCur: lEffects) {
@@ -406,25 +272,9 @@ public class LGDXRenderableBookKeeper {
             else {
                 // If not an LGDX effect
                 if (!(eCur instanceof LGDXEffect)) {
-                    if (renderableExistsAsSprite(renderable)) {
-                        // Handle as sprite
-                        Sprite sCur = (Sprite)target;
-                        LGDXEffect leCur = getOrCreateLGDXEffectForSprite(eCur,
-                                sCur);
-                    }
-                    else
-                    {
-                        // Handle as actor
-                        Actor aCur = (Actor)target;
-                        // create corresponding LGDX effect for actor
-                        getOrCreateLGDXEffectForActor(eCur, aCur);
-
-                        // OBSOLETE: Do NOT propagate to children.
-//                        // If container add to children as well
-//                        if (aCur instanceof IContainerActor) {
-//                            propagateEffectToChildren(aCur, renderable, eCur);
-//                        }
-                    }
+                    getOrCreateLGDXEffectForRenderable(eCur, renderable);
+                    // Remove source effect from renderable, since we replaced it
+                    renderable.removeEffect(eCur);
                 }
             }
         }
@@ -435,7 +285,8 @@ public class LGDXRenderableBookKeeper {
              System.err.println("Removing " + eToRemove + " from " + renderable.toString());
             //////////////
             // Remove it
-            removeEffectFromRenderableAndRelatedUIElements(eToRemove, renderable);
+            renderable.removeEffect(eToRemove);
+//            removeEffectFromRenderableAndRelatedUIElements(eToRemove, renderable);
         }
     }
 

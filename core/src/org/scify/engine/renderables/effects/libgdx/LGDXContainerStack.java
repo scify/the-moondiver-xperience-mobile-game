@@ -35,12 +35,15 @@ public class LGDXContainerStack extends Stack implements LGDXEffectTargetContain
     }
 
     @Override
-    public void addEffect(Effect effectOfInterest) {
+    public EffectTarget addEffect(Effect effectOfInterest) {
         effects.add(effectOfInterest);
+        return this;
+
     }
 
     @Override
-    public void removeEffect(Effect eToRemove) {
+    public EffectTarget removeEffect(Effect eToRemove) {
         effects.remove(eToRemove);
+        return this;
     }
 }

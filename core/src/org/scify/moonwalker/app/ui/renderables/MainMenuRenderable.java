@@ -2,10 +2,7 @@ package org.scify.moonwalker.app.ui.renderables;
 
 import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.Renderable;
-import org.scify.engine.renderables.effects.Effect;
-import org.scify.engine.renderables.effects.EffectSequence;
-import org.scify.engine.renderables.effects.FadeEffect;
-import org.scify.engine.renderables.effects.FunctionEffect;
+import org.scify.engine.renderables.effects.*;
 import org.scify.engine.renderables.ActionButtonWithEffect;
 import org.scify.moonwalker.app.game.SelectedPlayer;
 
@@ -114,14 +111,16 @@ public class MainMenuRenderable extends Renderable {
         if (playerSelectionStatus == false) {
             playerSelectionStatus = true;
             selectedAvatarButton = null;
-            topBannerRenderable.setVisible(true);
-            boyAvatarButton.setVisible(true);
-            girlAvatarButton.setVisible(true);
-            boyButton.setVisible(true);
-            girlButton.setVisible(true);
+//            topBannerRenderable.setVisible(true);
+//            boyAvatarButton.setVisible(true);
+//            girlAvatarButton.setVisible(true);
+//            boyButton.setVisible(true);
+//            girlButton.setVisible(true);
             double fadingEffectsDuration = 1500;
 
             EffectSequence imgEffect = new EffectSequence();
+            imgEffect.addEffect(new FadeEffect(1.0, 0.0, 0.0));
+            imgEffect.addEffect(new VisibilityEffect(true));
             imgEffect.addEffect(new FadeEffect(0.0, 0.5, fadingEffectsDuration));
             imgEffect.addEffect(new FunctionEffect(new Runnable() {
                 @Override
@@ -129,20 +128,23 @@ public class MainMenuRenderable extends Renderable {
                     inputEnabled = true;
                 }
             }));
-            boyAvatarButton.apply(imgEffect);
-            girlAvatarButton.apply(imgEffect);
+            boyAvatarButton.addEffect(imgEffect);
+            girlAvatarButton.addEffect(imgEffect);
 
-            FadeEffect fadeInFullEffect = new FadeEffect(0.0, 1.0, fadingEffectsDuration);
-            topBannerRenderable.apply(fadeInFullEffect);
-            boyButton.apply(fadeInFullEffect);
-            girlButton.apply(fadeInFullEffect);
+            imgEffect = new EffectSequence();
+            imgEffect.addEffect(new FadeEffect(1.0, 0.0, 0.0));
+            imgEffect.addEffect(new VisibilityEffect(true));
+            imgEffect.addEffect(new FadeEffect(0.0, 1.0, fadingEffectsDuration));
+            topBannerRenderable.addEffect(imgEffect);
+            boyButton.addEffect(imgEffect);
+            girlButton.addEffect(imgEffect);
 
             Effect fadeOutEffect = new FadeEffect(1.0, 0.0, fadingEffectsDuration);
-            getStartGameButton().apply(fadeOutEffect);
-            getContinueGameButton().apply(fadeOutEffect);
-            getToggleAudioButton().apply(fadeOutEffect);
-            getAboutButton().apply(fadeOutEffect);
-            getQuitButton().apply(fadeOutEffect);
+            getStartGameButton().addEffect(fadeOutEffect);
+            getContinueGameButton().addEffect(fadeOutEffect);
+            getToggleAudioButton().addEffect(fadeOutEffect);
+            getAboutButton().addEffect(fadeOutEffect);
+            getQuitButton().addEffect(fadeOutEffect);
 
             renderableWasUpdated();
         }

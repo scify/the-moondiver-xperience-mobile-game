@@ -11,7 +11,7 @@ public class RotateEffect extends BaseEffect {
      * Creates a fade-in effect, from 0.0 to 360.0 degrees, taking place within 1 second progressively.
      */
     public RotateEffect() {
-        super(1000);
+        super(1000, false, true);
 
         setNumericParameter(PARAM_FROM_ANGLE, 0.0);
         setNumericParameter(PARAM_TO_ANGLE, 360.0);
@@ -29,7 +29,7 @@ public class RotateEffect extends BaseEffect {
      * @param dDurationMSec The time taken for the full transition.
      */
     public RotateEffect(double dFromAngle, double dToAngle, double dDurationMSec) {
-        super(dDurationMSec);
+        super(dDurationMSec, false, true);
 
         setNumericParameter(PARAM_FROM_ANGLE, dFromAngle);
         setNumericParameter(PARAM_TO_ANGLE, dToAngle);
@@ -51,11 +51,16 @@ public class RotateEffect extends BaseEffect {
         double dCurTime = new Date().getTime();
         double dTimeRemaining = dCurTime - getNumericParameter(INFO_START_TIME);
         double dPercentage = dTimeRemaining / getDuration();
+        if (dPercentage >= 1.0) {
+            setBooleanParameter(INFO_EXECUTED_FINAL_STEP, true);
+            dPercentage = 1.0;
+        }
 
         // Pose limits to alpha value
         double dTargetAngle = projectionFunction(dStartAngle, dEndAngle, dPercentage);
         // Update info
         setNumericParameter(INFO_CURRENT_ANGLE, dTargetAngle);
+
 
         return dTargetAngle;
     }

@@ -7,15 +7,15 @@ import org.scify.moonwalker.app.game.episodes.*;
 public class MoonWalkerScenario extends Scenario {
 
     public MoonWalkerScenario() {
-//        Episode mainMenuEpisode = new MainMenuEpisode();
-//        Episode roomEpisode = new RoomEpisode();
+        Episode mainMenuEpisode = new MainMenuEpisode();
+        Episode roomEpisode = new RoomEpisode();
 //        Episode cockpitEpisode = new CockpitEpisode();
 
-        Episode effectPlaygroundEpisode = new EffectPlaygroundEpisode();
-        setFirstEpisode(effectPlaygroundEpisode);
+//        Episode effectPlaygroundEpisode = new EffectPlaygroundEpisode();
+//        setFirstEpisode(effectPlaygroundEpisode);
 
-//        setFirstEpisode(mainMenuEpisode);
-//        addEpisodeAfterCurrent(roomEpisode);
+        setFirstEpisode(mainMenuEpisode);
+        addEpisodeAfterCurrent(roomEpisode);
 //
 //        Episode forestLoadingEpisode = new ForestLoadingEpisode();
 //        addEpisodeAfter(roomEpisode, forestLoadingEpisode);

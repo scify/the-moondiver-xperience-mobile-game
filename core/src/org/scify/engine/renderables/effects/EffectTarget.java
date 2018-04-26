@@ -21,13 +21,15 @@ public interface EffectTarget {
     /**
      * Adds an effect to the {@link EffectTarget}
      * @param effectOfInterest The effect we need to add.
+     * @return The effect target.
      */
-    public void addEffect(Effect effectOfInterest);
+    public EffectTarget addEffect(Effect effectOfInterest);
 
     /**
      * Removes a selected event from the active effects on the target.
      * Usually applied to complete effect that no longer need to be applied.
      * @param eToRemove The effect to remove.
+     * @return The effect target.
      */
-    public void removeEffect(Effect eToRemove);
+    public EffectTarget removeEffect(Effect eToRemove);
 }

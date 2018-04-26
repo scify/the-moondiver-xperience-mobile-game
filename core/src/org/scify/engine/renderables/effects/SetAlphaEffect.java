@@ -4,7 +4,7 @@ public class SetAlphaEffect extends BaseEffect {
     public static final String PARAM_ALPHA = "PARAM_ALPHA";
 
     public SetAlphaEffect(double dAlpha) {
-        super(Double.MAX_VALUE);
+        super(0.0, true, false);
 
         setNumericParameter(PARAM_ALPHA, dAlpha);
     }

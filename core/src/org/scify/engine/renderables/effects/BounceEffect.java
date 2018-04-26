@@ -32,7 +32,7 @@ public class BounceEffect extends BaseEffect {
      * @param dDurationMSec The time taken for the full transition.
      */
     public BounceEffect(double dBounceWidth, double dBounceHeight, double dDurationMSec) {
-        super(dDurationMSec);
+        super(dDurationMSec, false, true);
 
         setNumericParameter(PARAM_BOUNCE_WIDTH, dBounceWidth);
         setNumericParameter(PARAM_BOUNCE_HEIGHT, dBounceHeight);
@@ -57,6 +57,9 @@ public class BounceEffect extends BaseEffect {
 
         double dTimeRemaining = dCurTime - dStartTime;
         double dPercentage = dTimeRemaining / dDuration;
+        if (dPercentage > 1.0) {
+            dPercentage = 1.0;
+        }
 
         // Apply a function (sinusoid in this case) to determine current X and Y offsets.
         double dTargetXOffset = projectionFunction(dMaxXOffset, dPercentage);
@@ -69,6 +72,10 @@ public class BounceEffect extends BaseEffect {
         // Update target values
         setNumericParameter(INFO_TARGET_X_OFFSET, dTargetXOffset);
         setNumericParameter(INFO_TARGET_Y_OFFSET, dTargetYOffset);
+
+        // Update executed final step
+        if (dPercentage == 1.0)
+            setBooleanParameter(INFO_EXECUTED_FINAL_STEP, true);
 
         // DEBUG LINES
 //        System.err.println("Offset: " + pRes.toString());
