@@ -1,5 +1,6 @@
 package org.scify.moonwalker.app.ui.actors;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
@@ -13,10 +14,8 @@ public class RoomActor extends TableActor<RoomRenderable> implements Updateable 
 
     protected RoomRenderable renderable;
 
-    protected Image phoneOffImage;
-    protected Image phoneOnImage;
-
-    protected ActorFactory factory;
+    protected ImageWithEffect phoneOffImage;
+    protected ImageWithEffect phoneOnImage;
 
     public RoomActor(Skin skin, RoomRenderable renderable) {
         super(skin, renderable);
@@ -29,12 +28,10 @@ public class RoomActor extends TableActor<RoomRenderable> implements Updateable 
     }
 
     public void init() {
-        // Get actor factory
-        factory = ActorFactory.getInstance();
         float screenHeight = getHeight();
         float screenWidth = getWidth();
-        phoneOffImage = (Image) factory.createResourceForType(renderable.getPhoneOffRenderable());
-        phoneOnImage = (Image) factory.createResourceForType(renderable.getPhoneOnRenderable());
+        phoneOffImage = (ImageWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getPhoneOffRenderable());
+        phoneOnImage = (ImageWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getPhoneOnRenderable());
         Stack phonesStack = new Stack();
         phonesStack.add(phoneOffImage);
         phonesStack.add(phoneOnImage);

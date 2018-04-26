@@ -29,6 +29,7 @@ public class RoomRenderable extends Renderable {
         chatEnabled = false;
         tableBGRenderable = new ImageRenderable("bg", BG_IMG_PATH);
         phoneOnRenderable = new ImageRenderable("phone_on", PHONE_ON_IMG_PATH);
+        phoneOnRenderable.setZIndex(1);
         phoneOnRenderable.setVisible(false);
         phoneOffRenderable = new ImageRenderable("phone_off", PHONE_OFF_IMG_PATH);
     }
