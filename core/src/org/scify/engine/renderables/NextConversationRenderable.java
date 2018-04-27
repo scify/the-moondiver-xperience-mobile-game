@@ -3,11 +3,12 @@ package org.scify.engine.renderables;
 import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.UserAction;
 import org.scify.engine.UserActionCode;
+import org.scify.moonwalker.app.ui.renderables.TableRenderable;
 
-public class NextConversationRenderable extends Renderable {
+public class NextConversationRenderable extends TableRenderable {
 
     protected ImageRenderable tableBGRenderable;
-    public final String BG_IMG_PATH = "img/conversations/bg.png";
+    public final static String BG_IMG_PATH = "img/conversations/bg.png";
 
     protected ConversationLine conversationLine;
     protected String relativeAvatarPath;
@@ -15,7 +16,7 @@ public class NextConversationRenderable extends Renderable {
     protected boolean buttonNextActive;
 
     public NextConversationRenderable(String id) {
-        super("next_conversation", id);
+        super(0,0,0,0,"next_conversation", id, BG_IMG_PATH);
         float screenWidth = appInfo.getScreenWidth();
         float screenHeight = appInfo.getScreenHeight();
         this.xPos = 0.02f * screenWidth;

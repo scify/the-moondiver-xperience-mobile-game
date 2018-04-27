@@ -1,9 +1,8 @@
 package org.scify.moonwalker.app.ui.renderables;
 
-import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.ActionButtonWithEffect;
 
-public class CockpitRenderable extends Renderable {
+public class CockpitRenderable extends TableRenderable {
 
     public final String MOTOR_EFFICIENCY_IMG_PATH = "img/cockpit/motor_efficiency.png";
     public final String REMAINING_ENERGY_IMG_PATH = "img/cockpit/remaining_energy.png";
@@ -29,7 +28,7 @@ public class CockpitRenderable extends Renderable {
 
 
     public CockpitRenderable(float xPos, float yPos, float width, float height, String type, String id) {
-        super(xPos, yPos, width, height, type, id);
+        super(xPos, yPos, width, height, type, id, "");
         setImgPath("img/cockpit/bg.png");
         contactButtonIsLighted = false;
     }

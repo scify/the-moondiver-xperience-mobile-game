@@ -2,36 +2,28 @@ package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
 import org.scify.engine.conversation.ConversationLine;
-import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.effects.EffectSequence;
 import org.scify.engine.renderables.effects.FadeEffect;
 import org.scify.engine.renderables.effects.FunctionEffect;
-import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.game.rules.ConversationRules;
 import org.scify.moonwalker.app.ui.renderables.ForestRenderable;
-import org.scify.moonwalker.app.ui.renderables.RoomRenderable;
 
 import java.util.Set;
 
 public class ForestEpisodeRules extends BaseEpisodeRules{
     protected ForestRenderable renderable;
-    protected boolean readyToEndEpisode;
     protected boolean outroInitiated;
-
 
     public ForestEpisodeRules() {
         super();
         renderable = null;
-        readyToEndEpisode = false;
         outroInitiated = false;
     }
 
 
     @Override
     public GameState getNextState(GameState gsCurrent, UserAction userAction) {
-        GameEvent room_outro_event = gsCurrent.getGameEventsWithType(CONVERSATION_OUTRO);
-        if (room_outro_event != null) {
-            gsCurrent.removeGameEventsWithType(CONVERSATION_OUTRO);
+        if (conversationRules != null && conversationRules.isFinished() && !outroInitiated) {
             outroInitiated = true;
             EffectSequence fadeOutEffects = new EffectSequence();
             fadeOutEffects.addEffect(new FadeEffect(1.0, 0.0, 2000));
@@ -42,7 +34,7 @@ public class ForestEpisodeRules extends BaseEpisodeRules{
                 }
             }));
             renderable.addEffect(fadeOutEffects);
-        } else if (renderable != null && renderable.isChatEnabled() && outroInitiated == false) {
+        } else if (renderable != null && renderable.isChatEnabled()) {
             // Initialize conversation
             createConversation(gsCurrent, "conversations/episode_forest.json");
         }

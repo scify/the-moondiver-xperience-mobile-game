@@ -8,6 +8,7 @@ import org.scify.engine.renderables.effects.FadeEffect;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.ui.ThemeController;
 import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
+import org.scify.moonwalker.app.ui.renderables.TableRenderable;
 
 import java.util.Map;
 
@@ -167,7 +168,7 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
     }
 
     protected Actor createCountDownTable(Stack stack, float height, float width, Renderable rRenderable) {
-        countDownTable = new TableActor<Renderable>(getSkin(), rRenderable);
+        countDownTable = new Table();
 
         countDownTable.defaults();
         countDownTable.center();

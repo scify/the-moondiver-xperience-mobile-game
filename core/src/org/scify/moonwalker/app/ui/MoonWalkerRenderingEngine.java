@@ -224,10 +224,10 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             case "AUDIO_TOGGLE_UI":
                 if (audioEnabled) {
                     audioEnabled = false;
-                    audioEngine.stopSound("audio/mainMenu/menu.mp3");
+                    audioEngine.stopSound("audio/episode_mainMenu/bg.mp3");
                 }else {
                     audioEnabled = true;
-                    audioEngine.playSoundLoop("audio/mainMenu/menu.mp3");
+                    audioEngine.playSoundLoop("audio/episode_mainMenu/bg.mp3");
                 }
                 listIterator.remove();
                 break;

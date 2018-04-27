@@ -1,17 +1,16 @@
 package org.scify.moonwalker.app.ui.renderables;
 
-import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.game.Location;
 import org.scify.engine.renderables.ActionButtonWithEffect;
 
-public class MapLocationRenderable extends Renderable{
+public class MapLocationRenderable extends TableRenderable {
 
     protected Location location;
     protected String destinationInfo;
     protected ActionButtonWithEffect button;
 
     public MapLocationRenderable(float xPos, float yPos, float width, float height, String id) {
-        super(xPos, yPos, width, height, "map_location", id);
+        super(xPos, yPos, width, height, "map_location", id,  "");
     }
 
     public void setLocation(Location location) {

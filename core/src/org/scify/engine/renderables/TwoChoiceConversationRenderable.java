@@ -3,20 +3,20 @@ package org.scify.engine.renderables;
 import org.scify.engine.UserAction;
 import org.scify.engine.UserActionCode;
 import org.scify.engine.conversation.ConversationLine;
+import org.scify.moonwalker.app.ui.renderables.TableRenderable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TwoChoiceConversationRenderable extends Renderable{
+public class TwoChoiceConversationRenderable extends TableRenderable {
 
-    protected ImageRenderable tableBGRenderable;
-    public final String BG_IMG_PATH = "img/conversations/bg.png";
+    public final static String BG_IMG_PATH = "img/conversations/bg.png";
     protected String relativeAvatarImgPath;
     protected List<ConversationLine> conversationLines;
     protected List<ActionButtonWithEffect> buttons;
 
     public TwoChoiceConversationRenderable(String id) {
-        super("two_choice_conversation", id);
+        super(0,0,0,0,"two_choice_conversation", id, BG_IMG_PATH);
         float screenWidth = appInfo.getScreenWidth();
         float screenHeight = appInfo.getScreenHeight();
         this.xPos = 0.02f * screenWidth;

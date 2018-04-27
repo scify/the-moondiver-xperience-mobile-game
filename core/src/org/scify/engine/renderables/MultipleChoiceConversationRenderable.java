@@ -3,11 +3,12 @@ package org.scify.engine.renderables;
 import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.UserAction;
 import org.scify.engine.UserActionCode;
+import org.scify.moonwalker.app.ui.renderables.TableRenderable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MultipleChoiceConversationRenderable extends Renderable{
+public class MultipleChoiceConversationRenderable extends TableRenderable{
 
     protected String relativeAvatarImgPath;
     protected String title;
@@ -16,7 +17,7 @@ public class MultipleChoiceConversationRenderable extends Renderable{
 
 
     public MultipleChoiceConversationRenderable(String id) {
-        super("multiple_choice_conversation", id);
+        super(0,0,0,0, "multiple_choice_conversation", id, "");
         xPos = 0;
         yPos = 0;
         width = appInfo.getScreenWidth();

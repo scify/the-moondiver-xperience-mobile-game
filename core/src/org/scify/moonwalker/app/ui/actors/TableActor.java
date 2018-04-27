@@ -7,12 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.Renderable;
-import org.scify.engine.renderables.effects.Effect;
-import org.scify.engine.renderables.effects.EffectTarget;
+import org.scify.engine.renderables.effects.*;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.LGDXRenderableBookKeeper;
-import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
+import org.scify.moonwalker.app.ui.renderables.TableRenderable;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,7 +36,7 @@ public class TableActor<T extends Renderable> extends Table implements IContaine
         resourceLocator = new ResourceLocator();
         childrenActorsToRenderables = new HashMap<>();
         renderable = rRenderable;
-        effects  = new HashSet<>();
+        effects = new HashSet<>();
     }
 
     public Cell addTextCell(Table table, String labelTxt) {
@@ -64,8 +63,7 @@ public class TableActor<T extends Renderable> extends Table implements IContaine
 
     public void addBackground(ImageRenderable imageRenderable, float width, float height) {
         // Remove existing background
-        if (background != null)
-        {
+        if (background != null) {
             removeActor(background);
         }
 
@@ -148,6 +146,10 @@ public class TableActor<T extends Renderable> extends Table implements IContaine
     public EffectTarget removeEffect(Effect eToRemove) {
         effects.remove(eToRemove);
         return this;
+    }
+
+    protected void init() {
+        renderable.fadeIn();
     }
 
 }

@@ -1,12 +1,11 @@
 package org.scify.moonwalker.app.ui.renderables;
 
-import org.scify.engine.renderables.Renderable;
 import org.scify.engine.UserAction;
 import org.scify.engine.UserActionCode;
 import org.scify.moonwalker.app.game.MoonPhase;
 import org.scify.engine.renderables.ActionButtonWithEffect;
 
-public class SpaceshipChargerRenderable extends Renderable{
+public class SpaceshipChargerRenderable extends TableRenderable {
 
     public final String CURRENT_MOON_PHASE_LABEL = "Παρούσα φάση";
     public final String UNITS_LABEL = "Μονάδες";
@@ -28,7 +27,7 @@ public class SpaceshipChargerRenderable extends Renderable{
     protected int destinationDistance;
 
     public SpaceshipChargerRenderable(float xPos, float yPos, float width, float height, String id) {
-        super(xPos, yPos, width, height, "spaceship_charger", id);
+        super(xPos, yPos, width, height, "spaceship_charger", id, "");
         remainingEnergy = 0;
         calculatorButton = new ActionButtonWithEffect("image_button", "calculator_button");
         calculatorButton.setHeight(40);

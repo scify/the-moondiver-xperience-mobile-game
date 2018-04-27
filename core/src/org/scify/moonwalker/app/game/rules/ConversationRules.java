@@ -21,7 +21,6 @@ public class ConversationRules extends MoonWalkerBaseRules {
      */
     public static final String ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT = "ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT";
     public static final String ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT = "ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT";
-    public static final String CONVERSATION_READY_TO_FINISH = "CONVERSATION_READY_TO_FINISH";
     public static final String CONVERSATION_FINISHED = "CONVERSATION_FINISHED";
     public static final String CONVERSATION_PAUSED = "CONVERSATION_PAUSED";
     public static final String CONVERSATION_STARTED = "CONVERSATION_STARTED";
@@ -114,26 +113,17 @@ public class ConversationRules extends MoonWalkerBaseRules {
         if (gotAnswer(userAction)) {
             // Clear paused conversation flag
             resumeConversation(gameState);
-            removeActiveConversationComponents(gameState);
-
-
-            // Get if something was selected
             ConversationLine selected = getSelectedConversationLine(gameState, userAction);
-
+            removeActiveConversationComponents(gameState);
             if (selected != null) {
                 // Update what line was selected
+                onExitConversationOrder(gameState, selected);
                 setCurrentConversationLine(gameState, selected);
             }
 
-            // DEPRECATED
-//            if (isFinished()) {
-//                gameState.addGameEvent(new GameEvent(CONVERSATION_FINISHED, null, this));
-//            }
-
         }
-
         // If conversation is paused
-        if (isPaused())
+        if (isPaused() || isFinished())
             // return the current game state
             return gameState;
 
@@ -165,11 +155,10 @@ public class ConversationRules extends MoonWalkerBaseRules {
         handleNextConversationState(gameState, userAction);
         // Call event that signifies conversation order change
         handleOnEnterEventForCurrentConversationOrder(gameState);
-
-
-
         return gameState;
     }
+
+
 
     @Override
     protected void onExitConversationOrder(GameState gsCurrent, ConversationLine lineExited) {
@@ -201,18 +190,6 @@ public class ConversationRules extends MoonWalkerBaseRules {
         gameState.addGameEvent(new GameEvent(ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT, sAllEvents, this));
     }
 
-    protected void handleOnExitEventForCurrentConversationOrder(GameState gameState, ConversationLine selectedLine) {
-        Set<String> sAllEvents = selectedLine.getOnExitCurrentOrderTrigger();
-
-        // Examine what the trigger is and handle it
-        if (sAllEvents.contains("end")) {
-            setFinished(true);
-            gameState.addGameEvent(new GameEvent(CONVERSATION_READY_TO_FINISH, null, this));
-        }
-
-        // Throw a "Conversation on exit order event"
-        gameState.addGameEvent(new GameEvent(ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT, sAllEvents, this));
-    }
 
     protected boolean gotAnswer(UserAction userAction) {
         return (userAction != null && (userAction.getActionCode().equals(UserActionCode.NEXT_CONVERSATION_LINE) ||

@@ -1,17 +1,14 @@
 package org.scify.moonwalker.app.ui.renderables;
 
 import org.scify.engine.renderables.ImageRenderable;
-import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.effects.*;
 import org.scify.engine.renderables.ActionButtonWithEffect;
 import org.scify.moonwalker.app.game.SelectedPlayer;
 
-public class MainMenuRenderable extends Renderable {
-
-    protected ImageRenderable tableBGRenderable;
+public class MainMenuRenderable extends TableRenderable {
     protected ImageRenderable topBannerRenderable;
 
-    public final String BG_IMG_PATH = "img/episode_mainMenu/bg.png";
+    public final static String BG_IMG_PATH = "img/episode_mainMenu/bg.png";
     public final String TOP_BANNER_IMG_PATH = "img/episode_mainMenu/top.png";
     public final String BOY_IMG_PATH = "img/episode_mainMenu/boy.png";
     public final String GIRL_IMG_PATH = "img/episode_mainMenu/girl.png";
@@ -46,11 +43,10 @@ public class MainMenuRenderable extends Renderable {
     protected boolean inputEnabled;
 
     public MainMenuRenderable(float xPos, float yPos, float width, float height, String id) {
-        super(xPos, yPos, width, height, "main_menu", id);
+        super(xPos, yPos, width, height, "main_menu", id, BG_IMG_PATH);
         inputEnabled = false;
         playerSelectionStatus = false;
         countDownValue = 5;
-        tableBGRenderable = new ImageRenderable("bg", BG_IMG_PATH);
         topBannerRenderable = new ImageRenderable("topbannerImg", TOP_BANNER_IMG_PATH);
         topBannerRenderable.setVisible(false);
     }

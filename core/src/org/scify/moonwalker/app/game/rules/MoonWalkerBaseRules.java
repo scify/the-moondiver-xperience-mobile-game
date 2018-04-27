@@ -17,24 +17,24 @@ import org.scify.engine.renderables.ActionButtonWithEffect;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction, EpisodeEndState> {
 
     public static final String BACKGROUND_IMG_UI = "BACKGROUND_IMG_UI";
     public static final String TIMED_EPISODE_IMG_PATH = "timed_episode_img_path";
     public static final String TIMED_EPISODE_MILLISECONDS = "timed_episode_milliseconds";
-    public static final String CONVERSATION_OUTRO = "conversation_outro";
     protected int worldX;
     protected int worldY;
     protected Map<String, org.scify.engine.renderables.Renderable> idToRenderable;
     protected ConversationRules conversationRules;
+    protected boolean readyToEndEpisode = false;
     protected AppInfo appInfo;
     protected MoonWalkerPhysicsRules physics;
     protected float ESCAPE_BUTTON_SIZE_PIXELS = 70;
     protected float ESCAPE_BUTTON_PADDING_PIXELS = 10;
     protected GameState initialGameState;
     protected GameInfo gameInfo;
-
 
     public MoonWalkerBaseRules() {
         idToRenderable = new HashMap<>();
@@ -176,27 +176,6 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
         currentState.addGameEvent(new GameEvent(BACKGROUND_IMG_UI, imgPath));
     }
 
-//    protected boolean isConversationOngoing() {
-//        return isConversationStarted() && ! isConversationFinished();
-//    }
-//
-//    protected boolean conversationHasNotStartedAndNotFinished() {
-//        return !isConversationStarted() && !isConversationFinished();
-//    }
-//
-//    protected boolean isConversationStarted() {
-//        return conversationRules.isStarted();
-////        gsCurrent.eventsQueueContainsEvent("CONVERSATION_STARTED")
-//    }
-//
-//    protected boolean isConversationPaused() {
-//        return conversationRules.isPaused();
-//    }
-//
-//    protected boolean isConversationFinished() {
-////        return gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED");
-//        return conversationRules.isFinished();
-//    }
 
     protected void setFieldsForTimedEpisode(GameState gsCurrent, String imgPath, int millisecondsToLast) {
         if (imgPath != null) {
@@ -215,9 +194,6 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
             // ask the conversation rules to alter the current game state accordingly
             gsCurrent = conversationRules.getNextState(gsCurrent, userAction);
         }
-        if (conversationRules.isFinished()) {
-            gsCurrent.addGameEvent(new GameEvent(CONVERSATION_OUTRO));
-        }
 
         handleTriggerEventForCurrentConversationLine(gsCurrent, conversationRules.getCurrentConversationLine(gsCurrent));
         return gsCurrent;
@@ -235,7 +211,6 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
     }
 
     protected void onEnterConversationOrder(GameState gsCurrent, ConversationLine lineEntered) {
-        // Do nothing
     }
 
     protected void onExitConversationOrder(GameState gsCurrent, ConversationLine lineExited) {
