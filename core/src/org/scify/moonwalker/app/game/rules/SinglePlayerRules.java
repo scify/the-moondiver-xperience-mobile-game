@@ -24,7 +24,7 @@ public abstract class SinglePlayerRules extends MoonWalkerBaseRules {
     }
 
     @Override
-    public boolean isGameFinished(GameState gsCurrent) {
+    public boolean isEpisodeFinished(GameState gsCurrent) {
         return false;
     }
 

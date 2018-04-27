@@ -30,7 +30,7 @@ public interface Rules<StateType, Action, EndStateType> {
      * @param currentState The state to evaluate.
      * @return True if we have reached the end of the game. Otherwise, false.
      */
-    boolean isGameFinished(StateType currentState);
+    boolean isEpisodeFinished(StateType currentState);
 
     /**
      * Returns whether the game is in a paused state. This can be used to indicate that the Rules

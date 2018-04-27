@@ -73,7 +73,7 @@ public class KnightRaceRules extends SinglePlayerRules {
     }
 
     /**
-     * This method is similar to isGameFinished
+     * This method is similar to isEpisodeFinished
      * However, it is used internally by the getNextState method
      * in order to decide whether the ending Game Events should be added
      * to the current game state
@@ -84,11 +84,11 @@ public class KnightRaceRules extends SinglePlayerRules {
         // this episode is considered finished either
         // when the player has reached the top border of the screen
         // or the base rules class decides that should finish
-        return gsCurrent.eventsQueueContainsEvent("PLAYER_TOP_BORDER") || super.isGameFinished(gsCurrent);
+        return gsCurrent.eventsQueueContainsEvent("PLAYER_TOP_BORDER") || super.isEpisodeFinished(gsCurrent);
     }
 
     @Override
-    public boolean isGameFinished(GameState gsCurrent) {
+    public boolean isEpisodeFinished(GameState gsCurrent) {
         return episodeFinished(gsCurrent) && gsCurrent.eventsQueueContainsEvent("EPISODE_FINISHED");
     }
 
