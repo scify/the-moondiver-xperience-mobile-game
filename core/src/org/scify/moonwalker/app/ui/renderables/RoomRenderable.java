@@ -9,10 +9,15 @@ public class RoomRenderable extends Renderable {
     protected ImageRenderable phoneOffRenderable;
     protected ImageRenderable phoneOnRenderable;
 
-    //IMAGES
-    public final String BG_IMG_PATH = "img/episode_room/bg.png";
-    public final String PHONE_OFF_IMG_PATH = "img/episode_room/phoneMusic.png";
-    public final String PHONE_ON_IMG_PATH = "img/episode_room/phoneCalling.png";
+    //IMAGES BOY
+    public final String BOY_BG_IMG_PATH = "img/episode_room/boy/bg.png";
+    public final String BOY_PHONE_OFF_IMG_PATH = "img/episode_room/boy/phoneMusic.png";
+    public final String BOY_PHONE_ON_IMG_PATH = "img/episode_room/boy/phoneCalling.png";
+
+    //IMAGES GIRL
+    public final String GIRL_BG_IMG_PATH = "img/episode_room/girl/bg.png";
+    public final String GIRL_PHONE_OFF_IMG_PATH = "img/episode_room/girl/phoneMusic.png";
+    public final String GIRL_PHONE_ON_IMG_PATH = "img/episode_room/girl/phoneCalling.png";
 
     //AUDIO
     public final String BOY_MUSIC_AUDIO_PATH = "audio/room_episode/boy/music.mp3";
@@ -23,15 +28,22 @@ public class RoomRenderable extends Renderable {
     protected boolean chatEnabled;
 
 
-    public RoomRenderable(float xPos, float yPos, float width, float height, String id) {
+    public RoomRenderable(float xPos, float yPos, float width, float height, String id, boolean isBoy) {
         super(xPos, yPos, width, height, "room", id);
         permanentlyOn = false;
         chatEnabled = false;
-        tableBGRenderable = new ImageRenderable("bg", BG_IMG_PATH);
-        phoneOnRenderable = new ImageRenderable("phone_on", PHONE_ON_IMG_PATH);
+        if (isBoy) {
+            tableBGRenderable = new ImageRenderable("bg", BOY_BG_IMG_PATH);
+            phoneOnRenderable = new ImageRenderable("phone_on", BOY_PHONE_ON_IMG_PATH);
+            phoneOffRenderable = new ImageRenderable("phone_off", BOY_PHONE_OFF_IMG_PATH);
+        }else {
+            tableBGRenderable = new ImageRenderable("bg", GIRL_BG_IMG_PATH);
+            phoneOnRenderable = new ImageRenderable("phone_on", GIRL_PHONE_ON_IMG_PATH);
+            phoneOffRenderable = new ImageRenderable("phone_off", GIRL_PHONE_OFF_IMG_PATH);
+        }
         phoneOnRenderable.setZIndex(1);
         phoneOnRenderable.setVisible(false);
-        phoneOffRenderable = new ImageRenderable("phone_off", PHONE_OFF_IMG_PATH);
+
     }
 
     public void enableChat() {

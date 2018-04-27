@@ -66,6 +66,9 @@ public class ActorFactory extends ComponentFactory {
             case "room":
                 toReturn = createRoomActor((RoomRenderable) renderable);
                 break;
+            case "forest":
+                toReturn = createForestActor((ForestRenderable) renderable);
+                break;
             case "cockpit":
                 toReturn = createCockpitActor((CockpitRenderable) renderable);
                 break;
@@ -167,6 +170,12 @@ public class ActorFactory extends ComponentFactory {
 
     private Actor createRoomActor(final RoomRenderable renderable) {
         RoomActor actor = new RoomActor(skin, renderable);
+        actor.setZIndex(0);
+        return actor;
+    }
+
+    private Actor createForestActor(final ForestRenderable renderable) {
+        ForestActor actor = new ForestActor(skin, renderable);
         actor.setZIndex(0);
         return actor;
     }

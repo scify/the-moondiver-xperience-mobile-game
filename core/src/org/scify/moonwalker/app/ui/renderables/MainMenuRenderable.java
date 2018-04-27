@@ -11,17 +11,17 @@ public class MainMenuRenderable extends Renderable {
     protected ImageRenderable tableBGRenderable;
     protected ImageRenderable topBannerRenderable;
 
-    public final String BG_IMG_PATH = "img/mainMenu/bg.png";
-    public final String TOP_BANNER_IMG_PATH = "img/mainMenu/top.png";
-    public final String BOY_IMG_PATH = "img/mainMenu/boy.png";
-    public final String GIRL_IMG_PATH = "img/mainMenu/girl.png";
-    public final String BOY_BUTTON_IMG_PATH = "img/mainMenu/boyButton.png";
-    public final String GIRL_BUTTON_IMG_PATH = "img/mainMenu/girlButton.png";
-    public final String START_BUTTON_IMG_PATH = "img/mainMenu/start.png";
-    public final String CONTINUE_BUTTON_IMG_PATH = "img/mainMenu/continue.png";
-    public final String TOGGLE_AUDIO_BUTTON_IMG_PATH = "img/mainMenu/toggleAudio.png";
-    public final String ABOUT_BUTTON_IMG_PATH = "img/mainMenu/about.png";
-    public final String QUIT_BUTTON_IMG_PATH = "img/mainMenu/quit.png";
+    public final String BG_IMG_PATH = "img/episode_mainMenu/bg.png";
+    public final String TOP_BANNER_IMG_PATH = "img/episode_mainMenu/top.png";
+    public final String BOY_IMG_PATH = "img/episode_mainMenu/boy.png";
+    public final String GIRL_IMG_PATH = "img/episode_mainMenu/girl.png";
+    public final String BOY_BUTTON_IMG_PATH = "img/episode_mainMenu/boyButton.png";
+    public final String GIRL_BUTTON_IMG_PATH = "img/episode_mainMenu/girlButton.png";
+    public final String START_BUTTON_IMG_PATH = "img/episode_mainMenu/start.png";
+    public final String CONTINUE_BUTTON_IMG_PATH = "img/episode_mainMenu/continue.png";
+    public final String TOGGLE_AUDIO_BUTTON_IMG_PATH = "img/episode_mainMenu/toggleAudio.png";
+    public final String ABOUT_BUTTON_IMG_PATH = "img/episode_mainMenu/about.png";
+    public final String QUIT_BUTTON_IMG_PATH = "img/episode_mainMenu/quit.png";
 
     //AUDIO
     public final String BG_AUDIO_PATH = "audio/mainMenu/menu.mp3";
