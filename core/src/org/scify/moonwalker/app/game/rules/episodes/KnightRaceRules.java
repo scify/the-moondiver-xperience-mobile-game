@@ -63,12 +63,12 @@ public class KnightRaceRules extends SinglePlayerRules {
                 // ask the conversation rules to alter the current game state accordingly
                 gsCurrent = conversationRules.getNextState(gsCurrent, userAction);
             }
-            handleTriggerEventForCurrentConversationLine(gsCurrent);
+            handleTriggerEventForCurrentConversationLine(gsCurrent, conversationRules.getCurrentConversationLine(gsCurrent));
         }
         return gsCurrent;
     }
 
-    protected void handleTriggerEventForCurrentConversationLine(GameState gameState) {
+    protected void handleTriggerEventForCurrentConversationLine(GameState gameState, ConversationLine currentConversationLine) {
         ConversationLine currLine = conversationRules.getCurrentConversationLine(gameState);
     }
 

@@ -116,18 +116,19 @@ public class ConversationRules extends MoonWalkerBaseRules {
             resumeConversation(gameState);
             removeActiveConversationComponents(gameState);
 
+
             // Get if something was selected
             ConversationLine selected = getSelectedConversationLine(gameState, userAction);
 
-            if(selected != null) {
+            if (selected != null) {
                 // Update what line was selected
                 setCurrentConversationLine(gameState, selected);
-                handleOnExitEventForCurrentConversationOrder(gameState, selected);
             }
 
-            if (gameState.eventsQueueContainsEvent(CONVERSATION_READY_TO_FINISH)) {
-                gameState.addGameEvent(new GameEvent(CONVERSATION_FINISHED, null, this));
-            }
+            // DEPRECATED
+//            if (isFinished()) {
+//                gameState.addGameEvent(new GameEvent(CONVERSATION_FINISHED, null, this));
+//            }
 
         }
 
@@ -170,6 +171,22 @@ public class ConversationRules extends MoonWalkerBaseRules {
         return gameState;
     }
 
+    @Override
+    protected void onExitConversationOrder(GameState gsCurrent, ConversationLine lineExited) {
+        Set<String> sAllEvents = lineExited.getOnExitCurrentOrderTrigger();
+
+        // Examine what the trigger is and handle it
+        if (sAllEvents.contains("end")) {
+            setFinished(true);
+            gsCurrent.addGameEvent(new GameEvent(CONVERSATION_FINISHED, null, this));
+        }
+
+        // Throw a "Conversation on exit order event"
+        gsCurrent.addGameEvent(new GameEvent(ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT, sAllEvents, this));
+
+        super.onExitConversationOrder(gsCurrent, lineExited);
+    }
+
     protected void handleOnEnterEventForCurrentConversationOrder(GameState gameState) {
         if (nextLines == null)
             return;
@@ -189,7 +206,8 @@ public class ConversationRules extends MoonWalkerBaseRules {
 
         // Examine what the trigger is and handle it
         if (sAllEvents.contains("end")) {
-                gameState.addGameEvent(new GameEvent(CONVERSATION_READY_TO_FINISH, null, this));
+            setFinished(true);
+            gameState.addGameEvent(new GameEvent(CONVERSATION_READY_TO_FINISH, null, this));
         }
 
         // Throw a "Conversation on exit order event"

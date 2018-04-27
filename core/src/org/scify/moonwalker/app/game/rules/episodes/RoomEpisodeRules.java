@@ -2,6 +2,7 @@ package org.scify.moonwalker.app.game.rules.episodes;
 
 
 import org.scify.engine.*;
+import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.renderables.effects.EffectSequence;
 import org.scify.engine.renderables.effects.FadeEffect;
 import org.scify.engine.renderables.effects.FunctionEffect;
@@ -94,13 +95,13 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
             gsCurrent.addGameEvent(new GameEvent("ROOM_OUTRO"));
         }
         // Handle onExitConversationLine event
-        handleTriggerEventForCurrentConversationLine(gsCurrent);
+        handleTriggerEventForCurrentConversationLine(gsCurrent, conversationRules.getCurrentConversationLine(gsCurrent));
 
         return gsCurrent;
     }
 
     @Override
-    protected void onEnterConversationOrder(GameState gsCurrent) {
+    protected void onEnterConversationOrder(GameState gsCurrent, ConversationLine lineEntered) {
         Set<String> eventTrigger;
         eventTrigger = (Set<String>) gsCurrent.getGameEventsWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
         if (eventTrigger.contains(RING_PHONE)) {
@@ -110,11 +111,6 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
         if (eventTrigger.contains(TOGGLE)) {
             renderable.togglePhone();
         }
-    }
-
-    @Override
-    protected void onExitConversationOrder(GameState gsCurrent) {
-        // Do nothing
     }
 
     @Override

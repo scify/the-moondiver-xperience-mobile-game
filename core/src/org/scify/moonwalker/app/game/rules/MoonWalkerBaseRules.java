@@ -3,6 +3,7 @@ package org.scify.moonwalker.app.game.rules;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import org.scify.engine.*;
 import org.scify.engine.EpisodeEndState;
+import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.rules.Rules;
 import org.scify.moonwalker.app.MoonWalkerGameState;
@@ -22,6 +23,7 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
     public static final String BACKGROUND_IMG_UI = "BACKGROUND_IMG_UI";
     public static final String TIMED_EPISODE_IMG_PATH = "timed_episode_img_path";
     public static final String TIMED_EPISODE_MILLISECONDS = "timed_episode_milliseconds";
+    public static final String CONVERSATION_OUTRO = "conversation_outro";
     protected int worldX;
     protected int worldY;
     protected Map<String, org.scify.engine.renderables.Renderable> idToRenderable;
@@ -32,6 +34,7 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
     protected float ESCAPE_BUTTON_PADDING_PIXELS = 10;
     protected GameState initialGameState;
     protected GameInfo gameInfo;
+
 
     public MoonWalkerBaseRules() {
         idToRenderable = new HashMap<>();
@@ -108,8 +111,14 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
     }
 
     protected void createConversation(GameState gsCurrent, String conversationResFile) {
-        conversationRules = new ConversationRules(conversationResFile);
-        conversationRules.setStarted(true);
+        if (conversationRules == null) {
+            conversationRules = new ConversationRules(conversationResFile);
+            conversationRules.setStarted(true);
+        }
+    }
+
+    protected void disposeConversation() {
+        conversationRules = null;
     }
 
     @Override
@@ -117,11 +126,23 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
         physics.disposeResources();
     }
 
+    /**
+     * Returns next game state. If a conversation has been created, by createConversation, then it is also handled.
+     * @param gsCurrent The current state.
+     * @param userAction Any user action received.
+     * @return The updated state.
+     */
     @Override
     public GameState getNextState(GameState gsCurrent, UserAction userAction) {
         MoonWalkerGameState gameState = (MoonWalkerGameState) gsCurrent;
         if(userAction != null)
             handleUserAction(userAction, gameState);
+
+        // If I have a conversation
+        if (conversationRules != null) {
+            // Handle it
+            handleConversationRules(gsCurrent, userAction);
+        }
         return gameState;
     }
 
@@ -185,34 +206,39 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
     }
 
     protected GameState handleConversationRules(GameState gsCurrent, UserAction userAction) {
-        if (conversationRules == null) {
-            // call base class create method, passing the resource file for this specific conversation
-            createConversation(gsCurrent, "conversations/episode_forest.json");
+        if (conversationRules == null)
+        {
+            return gsCurrent;
         }
-        if (conversationRules.isStarted() && conversationRules.isFinished()) {
+        // If conversation ongoing
+        if (conversationRules.isStarted() && !conversationRules.isFinished()) {
             // ask the conversation rules to alter the current game state accordingly
             gsCurrent = conversationRules.getNextState(gsCurrent, userAction);
         }
         if (conversationRules.isFinished()) {
-            gsCurrent.addGameEvent(new GameEvent("FOREST_OUTRO"));
+            gsCurrent.addGameEvent(new GameEvent(CONVERSATION_OUTRO));
         }
 
-        handleTriggerEventForCurrentConversationLine(gsCurrent);
+        handleTriggerEventForCurrentConversationLine(gsCurrent, conversationRules.getCurrentConversationLine(gsCurrent));
         return gsCurrent;
     }
 
-    protected void handleTriggerEventForCurrentConversationLine(GameState gsCurrent) {
+    protected void handleTriggerEventForCurrentConversationLine(GameState gsCurrent, ConversationLine currentConversationLine) {
         if (gsCurrent.eventsQueueContainsEvent(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT)) {
-            onEnterConversationOrder(gsCurrent);
+            onEnterConversationOrder(gsCurrent, currentConversationLine);
             gsCurrent.removeGameEventsWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT);
         }
         if (gsCurrent.eventsQueueContainsEvent(ConversationRules.ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT)) {
-            onExitConversationOrder(gsCurrent);
+            onExitConversationOrder(gsCurrent, currentConversationLine);
             gsCurrent.removeGameEventsWithType(ConversationRules.ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT);
         }
     }
 
-    protected abstract void onEnterConversationOrder(GameState gsCurrent);
+    protected void onEnterConversationOrder(GameState gsCurrent, ConversationLine lineEntered) {
+        // Do nothing
+    }
 
-    protected abstract void onExitConversationOrder(GameState gsCurrent);
+    protected void onExitConversationOrder(GameState gsCurrent, ConversationLine lineExited) {
+
+    }
 }

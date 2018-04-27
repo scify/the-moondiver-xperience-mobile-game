@@ -1,6 +1,7 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
+import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.effects.EffectSequence;
 import org.scify.engine.renderables.effects.FadeEffect;
@@ -28,9 +29,9 @@ public class ForestEpisodeRules extends BaseEpisodeRules{
 
     @Override
     public GameState getNextState(GameState gsCurrent, UserAction userAction) {
-        GameEvent room_outro_event = gsCurrent.getGameEventsWithType("FOREST_OUTRO");
+        GameEvent room_outro_event = gsCurrent.getGameEventsWithType(CONVERSATION_OUTRO);
         if (room_outro_event != null) {
-            gsCurrent.removeGameEventsWithType("FOREST_OUTRO");
+            gsCurrent.removeGameEventsWithType(CONVERSATION_OUTRO);
             outroInitiated = true;
             EffectSequence fadeOutEffects = new EffectSequence();
             fadeOutEffects.addEffect(new FadeEffect(1.0, 0.0, 2000));
@@ -42,7 +43,8 @@ public class ForestEpisodeRules extends BaseEpisodeRules{
             }));
             renderable.addEffect(fadeOutEffects);
         } else if (renderable != null && renderable.isChatEnabled() && outroInitiated == false) {
-            gsCurrent = handleConversationRules(gsCurrent, userAction);
+            // Initialize conversation
+            createConversation(gsCurrent, "conversations/episode_forest.json");
         }
         return super.getNextState(gsCurrent, userAction);
     }
@@ -58,15 +60,17 @@ public class ForestEpisodeRules extends BaseEpisodeRules{
         }
     }
 
-    protected void handleTriggerEventForCurrentConversationLine(GameState gameState) {
+    @Override
+    protected void onEnterConversationOrder(GameState gsCurrent, ConversationLine lineEntered) {
         Set<String> eventTrigger;
-        if(gameState.eventsQueueContainsEvent(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT)) {
-            eventTrigger = (Set<String>) gameState.getGameEventsWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
+        if(gsCurrent.eventsQueueContainsEvent(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT)) {
+            eventTrigger = (Set<String>) gsCurrent.getGameEventsWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
             if (eventTrigger.contains("ring_phone")) {
-                gameState.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.MOBILE_AUDIO_PATH));
+                gsCurrent.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.MOBILE_AUDIO_PATH));
             }
-            gameState.removeGameEventsWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT);
         }
+
+        super.onEnterConversationOrder(gsCurrent, lineEntered);
     }
 
     @Override
