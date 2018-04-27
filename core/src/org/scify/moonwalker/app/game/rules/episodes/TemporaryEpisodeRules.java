@@ -35,7 +35,7 @@ public abstract class TemporaryEpisodeRules extends BaseEpisodeRules {
     }
 
     @Override
-    public boolean isGameFinished(GameState gsCurrent) {
+    public boolean isEpisodeFinished(GameState gsCurrent) {
         return gsCurrent.eventsQueueContainsEventOwnedBy("PREVIOUS_EPISODE", this);
     }
 }

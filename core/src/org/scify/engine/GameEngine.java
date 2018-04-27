@@ -47,7 +47,7 @@ public class GameEngine {
      * the last game state
      */
     public EpisodeEndState execute() {
-        while (!rules.isGameFinished(currentGameState)) {
+        while (!rules.isEpisodeFinished(currentGameState)) {
             doGameLoop();
             try {
                 Thread.sleep(100L); // Allow repainting

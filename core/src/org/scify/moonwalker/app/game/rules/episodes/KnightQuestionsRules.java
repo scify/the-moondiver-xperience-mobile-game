@@ -49,11 +49,11 @@ public class KnightQuestionsRules extends SinglePlayerRules {
         Player player = gameState.getPlayer();
         if(player.getScore() >= 2)
             return true;
-        return super.isGameFinished(gsCurrent);
+        return super.isEpisodeFinished(gsCurrent);
     }
 
     @Override
-    public boolean isGameFinished(GameState gsCurrent) {
+    public boolean isEpisodeFinished(GameState gsCurrent) {
         return rulesFinished(gsCurrent) && gsCurrent.eventsQueueContainsEvent("EPISODE_FINISHED");
     }
 

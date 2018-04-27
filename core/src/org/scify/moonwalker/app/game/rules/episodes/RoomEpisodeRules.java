@@ -131,7 +131,7 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
     }
 
     @Override
-    public boolean isGameFinished(GameState gsCurrent) {
+    public boolean isEpisodeFinished(GameState gsCurrent) {
         return readyToEndEpisode;
     }
 

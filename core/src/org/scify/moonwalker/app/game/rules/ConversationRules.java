@@ -333,7 +333,7 @@ public class ConversationRules extends MoonWalkerRules {
     }
 
     @Override
-    public boolean isGameFinished(GameState gsCurrent) {
+    public boolean isEpisodeFinished(GameState gsCurrent) {
         return false;
     }
 

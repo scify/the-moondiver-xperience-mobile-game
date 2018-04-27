@@ -24,7 +24,7 @@ public abstract class PhysicsRules implements Rules<GameState, UserAction, Episo
     }
 
     @Override
-    public boolean isGameFinished(GameState gsCurrent) {
+    public boolean isEpisodeFinished(GameState gsCurrent) {
         return false;
     }
 
