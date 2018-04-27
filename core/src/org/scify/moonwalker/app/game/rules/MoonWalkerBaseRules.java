@@ -17,8 +17,11 @@ import org.scify.engine.renderables.ActionButtonWithEffect;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class MoonWalkerRules implements Rules<GameState, UserAction, EpisodeEndState> {
+public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction, EpisodeEndState> {
 
+    public static final String BACKGROUND_IMG_UI = "BACKGROUND_IMG_UI";
+    public static final String TIMED_EPISODE_IMG_PATH = "timed_episode_img_path";
+    public static final String TIMED_EPISODE_MILLISECONDS = "timed_episode_milliseconds";
     protected int worldX;
     protected int worldY;
     protected Map<String, org.scify.engine.renderables.Renderable> idToRenderable;
@@ -30,7 +33,7 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
     protected GameState initialGameState;
     protected GameInfo gameInfo;
 
-    public MoonWalkerRules() {
+    public MoonWalkerBaseRules() {
         idToRenderable = new HashMap<>();
         appInfo = AppInfo.getInstance();
         gameInfo = GameInfo.getInstance();
@@ -106,7 +109,7 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
 
     protected void createConversation(GameState gsCurrent, String conversationResFile) {
         conversationRules = new ConversationRules(conversationResFile);
-        gsCurrent.addGameEvent(new GameEvent("CONVERSATION_STARTED", null, this));
+        conversationRules.setStarted(true);
     }
 
     @Override
@@ -149,29 +152,67 @@ public abstract class MoonWalkerRules implements Rules<GameState, UserAction, Ep
     }
 
     protected void addEpisodeBackgroundImage(GameState currentState, String imgPath) {
-        currentState.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", imgPath));
+        currentState.addGameEvent(new GameEvent(BACKGROUND_IMG_UI, imgPath));
     }
 
-    protected boolean isConversationOngoing(GameState gsCurrent) {
-        return isConversationStarted(gsCurrent) && ! isConversationFinished(gsCurrent);
-    }
-
-    protected boolean conversationHasNotStartedAndNotFinished(GameState gsCurrent) {
-        return !isConversationStarted(gsCurrent) && !isConversationFinished(gsCurrent);
-    }
-
-    protected boolean isConversationStarted(GameState gsCurrent) {
-        return gsCurrent.eventsQueueContainsEvent("CONVERSATION_STARTED");
-    }
-
-    protected boolean isConversationFinished(GameState gsCurrent) {
-        return gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED");
-    }
+//    protected boolean isConversationOngoing() {
+//        return isConversationStarted() && ! isConversationFinished();
+//    }
+//
+//    protected boolean conversationHasNotStartedAndNotFinished() {
+//        return !isConversationStarted() && !isConversationFinished();
+//    }
+//
+//    protected boolean isConversationStarted() {
+//        return conversationRules.isStarted();
+////        gsCurrent.eventsQueueContainsEvent("CONVERSATION_STARTED")
+//    }
+//
+//    protected boolean isConversationPaused() {
+//        return conversationRules.isPaused();
+//    }
+//
+//    protected boolean isConversationFinished() {
+////        return gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED");
+//        return conversationRules.isFinished();
+//    }
 
     protected void setFieldsForTimedEpisode(GameState gsCurrent, String imgPath, int millisecondsToLast) {
         if (imgPath != null) {
-            gsCurrent.storeAdditionalDataEntry("timed_episode_img_path", imgPath);
+            gsCurrent.storeAdditionalDataEntry(TIMED_EPISODE_IMG_PATH, imgPath);
         }
-        gsCurrent.storeAdditionalDataEntry("timed_episode_milliseconds", millisecondsToLast);
+        gsCurrent.storeAdditionalDataEntry(TIMED_EPISODE_MILLISECONDS, millisecondsToLast);
     }
+
+    protected GameState handleConversationRules(GameState gsCurrent, UserAction userAction) {
+        if (conversationRules == null) {
+            // call base class create method, passing the resource file for this specific conversation
+            createConversation(gsCurrent, "conversations/episode_forest.json");
+        }
+        if (conversationRules.isStarted() && conversationRules.isFinished()) {
+            // ask the conversation rules to alter the current game state accordingly
+            gsCurrent = conversationRules.getNextState(gsCurrent, userAction);
+        }
+        if (conversationRules.isFinished()) {
+            gsCurrent.addGameEvent(new GameEvent("FOREST_OUTRO"));
+        }
+
+        handleTriggerEventForCurrentConversationLine(gsCurrent);
+        return gsCurrent;
+    }
+
+    protected void handleTriggerEventForCurrentConversationLine(GameState gsCurrent) {
+        if (gsCurrent.eventsQueueContainsEvent(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT)) {
+            onEnterConversationOrder(gsCurrent);
+            gsCurrent.removeGameEventsWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT);
+        }
+        if (gsCurrent.eventsQueueContainsEvent(ConversationRules.ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT)) {
+            onExitConversationOrder(gsCurrent);
+            gsCurrent.removeGameEventsWithType(ConversationRules.ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT);
+        }
+    }
+
+    protected abstract void onEnterConversationOrder(GameState gsCurrent);
+
+    protected abstract void onExitConversationOrder(GameState gsCurrent);
 }

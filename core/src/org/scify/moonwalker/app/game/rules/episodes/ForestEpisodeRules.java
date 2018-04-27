@@ -58,22 +58,6 @@ public class ForestEpisodeRules extends BaseEpisodeRules{
         }
     }
 
-    protected GameState handleConversationRules(GameState gsCurrent, UserAction userAction) {
-        if (conversationHasNotStartedAndNotFinished(gsCurrent)) {
-            // call base class create method, passing the resource file for this specific conversation
-            createConversation(gsCurrent, "conversations/episode_forest.json");
-        }
-        if (isConversationOngoing(gsCurrent)) {
-            // ask the conversation rules to alter the current game state accordingly
-            gsCurrent = conversationRules.getNextState(gsCurrent, userAction);
-        }
-        if (isConversationFinished(gsCurrent)) {
-            gsCurrent.addGameEvent(new GameEvent("FOREST_OUTRO"));
-        }
-        handleTriggerEventForCurrentConversationLine(gsCurrent);
-        return gsCurrent;
-    }
-
     protected void handleTriggerEventForCurrentConversationLine(GameState gameState) {
         Set<String> eventTrigger;
         if(gameState.eventsQueueContainsEvent(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT)) {

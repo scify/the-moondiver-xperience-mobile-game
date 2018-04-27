@@ -13,12 +13,9 @@ import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 
-import java.awt.geom.Point2D;
 import java.util.*;
 
-import static org.scify.moonwalker.app.game.SelectedPlayer.girl;
-
-public class ConversationRules extends MoonWalkerRules {
+public class ConversationRules extends MoonWalkerBaseRules {
     /**
      * Constant event types
      */
@@ -27,6 +24,8 @@ public class ConversationRules extends MoonWalkerRules {
     public static final String CONVERSATION_READY_TO_FINISH = "CONVERSATION_READY_TO_FINISH";
     public static final String CONVERSATION_FINISHED = "CONVERSATION_FINISHED";
     public static final String CONVERSATION_PAUSED = "CONVERSATION_PAUSED";
+    public static final String CONVERSATION_STARTED = "CONVERSATION_STARTED";
+    public static final String NEXT_CONVERSATION = "next_conversation_";
 
     /**
      * All conversation lines that are read from the json file for
@@ -36,7 +35,39 @@ public class ConversationRules extends MoonWalkerRules {
     private Json json;
     protected ResourceLocator resourceLocator;
     protected Renderable lastConversationRenderable;
+
+    public boolean isStarted() {
+        return started;
+    }
+
+    public void setStarted(boolean started) {
+        this.started = started;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+
+    public boolean isPaused() {
+        return paused;
+    }
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+    }
+
+    // State information
+    protected boolean started = false;
+    protected boolean finished = false;
+    protected boolean paused = false;
+
+
     private AppInfo appInfo;
+
     /**
      * This id is used as a key when storing the current conversation line
      * in the game state
@@ -94,15 +125,18 @@ public class ConversationRules extends MoonWalkerRules {
                 handleOnExitEventForCurrentConversationOrder(gameState, selected);
             }
 
-            if (gameState.eventsQueueContainsEvent(CONVERSATION_READY_TO_FINISH))
+            if (gameState.eventsQueueContainsEvent(CONVERSATION_READY_TO_FINISH)) {
                 gameState.addGameEvent(new GameEvent(CONVERSATION_FINISHED, null, this));
+            }
 
         }
 
         // If conversation is paused
-        if (isConversationPaused(gameState))
+        if (isPaused())
             // return the current game state
             return gameState;
+
+
 
         // Move to appropriate next order
         // If we just started
@@ -169,6 +203,7 @@ public class ConversationRules extends MoonWalkerRules {
 
     protected void resumeConversation(GameState gameState) {
         gameState.removeGameEventsWithType(CONVERSATION_PAUSED);
+        setPaused(false);
     }
 
     /**
@@ -221,13 +256,13 @@ public class ConversationRules extends MoonWalkerRules {
             addMultipleChoiceConversationLines(nextLines, gameState, newSpeaker);
         }
         // await next event
-        pauseConversation(gameState);
+        pause(gameState);
 
     }
 
     protected void addNextConversationLine(final ConversationLine conversationLine, final GameState gameState, boolean newSpeaker) {
         NextConversationRenderable nextConversationRenderable =
-                new NextConversationRenderable("next_conversation_" + conversationLine.getId());
+                new NextConversationRenderable(NEXT_CONVERSATION + conversationLine.getId());
         if (lastConversationRenderable != null) {
             lastConversationRenderable.addEffect(getOutroEffect(lastConversationRenderable, conversationLine, gameState, newSpeaker));
         }
@@ -387,12 +422,28 @@ public class ConversationRules extends MoonWalkerRules {
         return null;
     }
 
-    protected boolean isConversationPaused(GameState gameState) {
-        return gameState.eventsQueueContainsEvent(CONVERSATION_PAUSED);
+//        return gameState.eventsQueueContainsEvent(CONVERSATION_PAUSED);
+
+    public void start(GameState gameState) {
+        started = true;
+        if (gameState != null) {
+            gameState.addGameEvent(new GameEvent(CONVERSATION_STARTED, null, this));
+        }
     }
 
-    protected void pauseConversation(GameState gameState) {
-        gameState.addGameEvent(new GameEvent(CONVERSATION_PAUSED, null, this));
+    public void pause(GameState gameState) {
+        paused = true;
+        if (gameState != null) {
+            gameState.addGameEvent(new GameEvent(CONVERSATION_PAUSED, null, this));
+        }
+    }
+
+    public void finish(GameState gameState) {
+        finished = true;
+        if (gameState != null) {
+            gameState.addGameEvent(new GameEvent(CONVERSATION_FINISHED, null, this));
+        }
+
     }
 
     public GameState cleanUpState(GameState currentState) {

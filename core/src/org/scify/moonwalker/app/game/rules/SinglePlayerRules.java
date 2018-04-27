@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class SinglePlayerRules extends MoonWalkerRules {
+public abstract class SinglePlayerRules extends MoonWalkerBaseRules {
 
     protected Player pPlayer;
 

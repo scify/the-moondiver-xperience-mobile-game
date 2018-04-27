@@ -20,6 +20,7 @@ import org.scify.moonwalker.app.ui.actors.conversation.TwoChoiceConversationActo
 import org.scify.moonwalker.app.ui.renderables.*;
 
 public class ActorFactory extends ComponentFactory {
+
     // USE AS SINGLETON
     protected static ActorFactory factory = null;
 
@@ -40,14 +41,14 @@ public class ActorFactory extends ComponentFactory {
     public Actor createResourceForType(Renderable renderable) {
         Actor toReturn;
         switch (renderable.getType()) {
-            case "label":
+            case Renderable.LABEL:
                 Label label = new Label("", skin);
                 label.setWidth(renderable.getWidth());
                 label.setHeight(renderable.getHeight());
                 label.setWrap(true);
                 toReturn = label;
                 break;
-            case "rotatable_label":
+            case Renderable.ROTATABLE_LABEL:
                 Stack gParent = new LGDXContainerStack();
                 gParent.setTransform(true);
                 label = new Label(((TextLabel)renderable).getLabel(), skin);
@@ -57,22 +58,22 @@ public class ActorFactory extends ComponentFactory {
                 gParent.add(label);
                 toReturn = gParent;
                 break;
-            case "image":
+            case Renderable.IMAGE:
                 toReturn = createImage(renderable.getImgPath(), renderable);
                 break;
-            case "main_menu":
+            case Renderable.MAIN_MENU:
                 toReturn = createMainMenuActor((MainMenuRenderable) renderable);
                 break;
-            case "room":
+            case Renderable.ROOM:
                 toReturn = createRoomActor((RoomRenderable) renderable);
                 break;
-            case "forest":
+            case Renderable.FOREST:
                 toReturn = createForestActor((ForestRenderable) renderable);
                 break;
-            case "cockpit":
+            case Renderable.COCKPIT:
                 toReturn = createCockpitActor((CockpitRenderable) renderable);
                 break;
-            case "rotatable_text_button":
+            case Renderable.ROTATABLE_TEXT_BUTTON:
                 gParent = new LGDXContainerStack();
                 gParent.setTransform(true);
                 TextButton tbBtn =  createTextButton((ActionButtonWithEffect) renderable);
@@ -81,31 +82,31 @@ public class ActorFactory extends ComponentFactory {
                 gParent.add(tbBtn);
                 toReturn = gParent;
                 break;
-            case "text_button":
+            case Renderable.TEXT_BUTTON:
                 toReturn = createTextButton((ActionButtonWithEffect) renderable);
                 break;
-            case "image_button":
+            case Renderable.IMAGE_BUTTON:
                 toReturn = createImageButton((ActionButtonWithEffect) renderable);
                 break;
-            case "calculator":
+            case Renderable.CALCULATOR:
                 toReturn = new CalculatorComponent(skin);
                 break;
-            case "spaceship_charger":
+            case Renderable.SPACESHIP_CHARGER:
                 toReturn = createSpaceshipControllerActor((SpaceshipChargerRenderable) renderable);
                 break;
-            case "map_location":
+            case Renderable.MAP_LOCATION:
                 toReturn = createMapLocationActor((MapLocationRenderable) renderable);
                 break;
-            case "next_conversation":
+            case Renderable.NEXT_CONVERSATION:
                 toReturn = createNextConversationActor((NextConversationRenderable) renderable);
                 break;
-            case "multiple_choice_conversation":
+            case Renderable.MULTIPLE_CHOICE_CONVERSATION:
                 toReturn = createMultipleChoiceConversationActor((MultipleChoiceConversationRenderable) renderable);
                 break;
-            case "two_choice_conversation":
+            case Renderable.TWO_CHOICE_CONVERSATION:
                 toReturn = createTwoChoiceConversationActor((TwoChoiceConversationRenderable) renderable);
                 break;
-            case "contact_screen":
+            case Renderable.CONTACT_SCREEN:
                 toReturn = createContactScreenActor((ContactScreenRenderable) renderable);
                 break;
             default:
@@ -127,9 +128,9 @@ public class ActorFactory extends ComponentFactory {
     }
 
     protected Button createButton(ActionButtonWithEffect button) {
-        if (button.getType().equals("image_button"))
+        if (button.getType().equals(Renderable.IMAGE_BUTTON))
             return createImageButton(button);
-        else if (button.getType().equals("text_button"))
+        else if (button.getType().equals(Renderable.TEXT_BUTTON))
             return createTextButton(button);
         return null;
     }
@@ -260,3 +261,4 @@ public class ActorFactory extends ComponentFactory {
     }
 
 }
+

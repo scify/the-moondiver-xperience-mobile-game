@@ -29,7 +29,7 @@ public class RoomRenderable extends Renderable {
 
 
     public RoomRenderable(float xPos, float yPos, float width, float height, String id, boolean isBoy) {
-        super(xPos, yPos, width, height, "room", id);
+        super(xPos, yPos, width, height, Renderable.ROOM, id);
         permanentlyOn = false;
         chatEnabled = false;
         if (isBoy) {

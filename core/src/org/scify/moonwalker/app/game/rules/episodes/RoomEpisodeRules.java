@@ -12,6 +12,8 @@ import org.scify.moonwalker.app.ui.renderables.RoomRenderable;
 import java.util.Set;
 
 public class RoomEpisodeRules extends BaseEpisodeRules {
+    public static final String RING_PHONE = "ring_phone";
+    public static final String TOGGLE = "toggle";
     protected RoomRenderable renderable;
     protected boolean readyToEndEpisode;
     protected boolean outroInitiated;
@@ -68,15 +70,20 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
     }
 
     protected GameState handleConversationRules(GameState gsCurrent, UserAction userAction) {
-        if (conversationHasNotStartedAndNotFinished(gsCurrent)) {
+        // If we have not initialized the conversation
+        if (conversationRules == null) {
             // call base class create method, passing the resource file for this specific conversation
             createConversation(gsCurrent, "conversations/episode_room.json");
         }
-        if (isConversationOngoing(gsCurrent)) {
+
+
+        // If conversation ongoing
+        if (conversationRules.isStarted() && !conversationRules.isFinished()) {
             // ask the conversation rules to alter the current game state accordingly
             gsCurrent = conversationRules.getNextState(gsCurrent, userAction);
         }
-        if (isConversationFinished(gsCurrent)) {
+        else
+        if (conversationRules.isFinished()) {
             if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
                 gsCurrent.addGameEvent(new GameEvent("AUDIO_STOP_UI", renderable.BOY_MUSIC_AUDIO_PATH));
                 gsCurrent.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", renderable.BOY_MUSIC_AUDIO_PATH));
@@ -86,48 +93,28 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
             }
             gsCurrent.addGameEvent(new GameEvent("ROOM_OUTRO"));
         }
+        // Handle onExitConversationLine event
         handleTriggerEventForCurrentConversationLine(gsCurrent);
+
         return gsCurrent;
     }
 
-    protected void handleTriggerEventForCurrentConversationLine(GameState gameState) {
+    @Override
+    protected void onEnterConversationOrder(GameState gsCurrent) {
         Set<String> eventTrigger;
-        if(gameState.eventsQueueContainsEvent(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT)) {
-            eventTrigger = (Set<String>) gameState.getGameEventsWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
-            if (eventTrigger.contains("ring_phone")) {
-                gameState.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.MOBILE_AUDIO_PATH));
-                renderable.togglePhone();
-            }
-            if (eventTrigger.contains("toggle")) {
-                renderable.togglePhone();
-            }
-
-            gameState.removeGameEventsWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT);
+        eventTrigger = (Set<String>) gsCurrent.getGameEventsWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
+        if (eventTrigger.contains(RING_PHONE)) {
+            gsCurrent.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.MOBILE_AUDIO_PATH));
+            renderable.togglePhone();
         }
-        /*if(gameState.eventsQueueContainsEvent("ON_EXIT_CONVERSATION_TRIGGER_EVENT")) {
-            eventTrigger = (String) gameState.getGameEventsWithType("ON_EXIT_CONVERSATION_TRIGGER_EVENT").parameters;
-            switch (eventTrigger) {
-                case "ring_phone":
+        if (eventTrigger.contains(TOGGLE)) {
+            renderable.togglePhone();
+        }
+    }
 
-                    gameState.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.MOBILE_AUDIO_PATH));
-                    renderable.togglePhone();
-
-                    break;
-                case "end":
-                    gameState.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.MOBILE_AUDIO_PATH));
-                    renderable.togglePhone();
-
-                    break;
-                case "toggle":
-
-                    renderable.togglePhone();
-
-                    break;
-                default:
-                    break;
-            }
-            gameState.removeGameEventsWithType("ON_ENTER_CONVERSATION_TRIGGER_EVENT");
-        }*/
+    @Override
+    protected void onExitConversationOrder(GameState gsCurrent) {
+        // Do nothing
     }
 
     @Override

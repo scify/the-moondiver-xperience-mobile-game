@@ -20,7 +20,7 @@ public class ActionDialogWithEffect extends Renderable implements EffectTarget {
     protected Set<Effect> effects;
 
     public ActionDialogWithEffect(float xPos, float yPos, float width, float height, String title, String bodyText, Skin sSkin) {
-        super(xPos, yPos, width, height, "dialog", title);
+        super(xPos, yPos, width, height, DIALOG, title);
         appInfo = AppInfo.getInstance();
         this.skin = sSkin;
         this.title = title;
