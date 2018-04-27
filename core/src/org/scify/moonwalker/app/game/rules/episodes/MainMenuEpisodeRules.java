@@ -4,6 +4,7 @@ import org.scify.engine.*;
 import org.scify.engine.renderables.effects.EffectSequence;
 import org.scify.engine.renderables.effects.FadeEffect;
 import org.scify.engine.renderables.effects.FunctionEffect;
+import org.scify.engine.renderables.effects.VisibilityEffect;
 import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.engine.renderables.ActionButtonWithEffect;
 import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
@@ -138,6 +139,7 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
             currentState.addRenderable(renderable);
 
             // Make sure you share that you are started
+            renderable.setVisible(false);
             super.episodeStartedEvents(currentState);
         }
     }
@@ -216,6 +218,7 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
         // Fade-in everything
         EffectSequence fadeInEffects = new EffectSequence();
         fadeInEffects.addEffect(new FadeEffect(1.0, 0.0, 0));
+        fadeInEffects.addEffect(new VisibilityEffect(true));
         fadeInEffects.addEffect(new FadeEffect(0.0, 1.0, 1000));
         fadeInEffects.addEffect(new FunctionEffect(new Runnable() {
             @Override

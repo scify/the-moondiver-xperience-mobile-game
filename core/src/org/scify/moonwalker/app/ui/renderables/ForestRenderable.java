@@ -7,6 +7,8 @@ public class ForestRenderable extends Renderable {
     protected ImageRenderable tableBGRenderable;
 
     public final String BG_IMG_PATH = "img/episode_forest/bg.png";
+
+    public final String FOREST_AUDIO_PATH = "audio/episode_forest/bg.mp3";
     public final String MOBILE_AUDIO_PATH = "audio/message.mp3";
 
     protected boolean chatEnabled;

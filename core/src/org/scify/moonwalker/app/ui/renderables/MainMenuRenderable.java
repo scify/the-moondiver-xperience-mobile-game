@@ -24,11 +24,11 @@ public class MainMenuRenderable extends Renderable {
     public final String QUIT_BUTTON_IMG_PATH = "img/episode_mainMenu/quit.png";
 
     //AUDIO
-    public final String BG_AUDIO_PATH = "audio/mainMenu/menu.mp3";
+    public final String BG_AUDIO_PATH = "audio/episode_mainMenu/bg.mp3";
     public final String CLICK_AUDIO_PATH = "audio/button1.mp3";
     //AUDIO BUFFERING FOR NEXT EPISODE
-    public final String BOY_MUSIC_AUDIO_PATH = "audio/room_episode/boy/music.mp3";
-    public final String GIRL_MUSIC_AUDIO_PATH = "audio/room_episode/girl/music.mp3";
+    public final String BOY_MUSIC_AUDIO_PATH = "audio/episode_room/boy_music.mp3";
+    public final String GIRL_MUSIC_AUDIO_PATH = "audio/episode_room/girl_music.mp3";
 
     protected ActionButtonWithEffect boyAvatarButton;
     protected ActionButtonWithEffect girlAvatarButton;

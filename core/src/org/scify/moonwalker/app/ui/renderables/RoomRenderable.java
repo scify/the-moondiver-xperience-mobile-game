@@ -20,8 +20,8 @@ public class RoomRenderable extends Renderable {
     public final String GIRL_PHONE_ON_IMG_PATH = "img/episode_room/girl/phoneCalling.png";
 
     //AUDIO
-    public final String BOY_MUSIC_AUDIO_PATH = "audio/room_episode/boy/music.mp3";
-    public final String GIRL_MUSIC_AUDIO_PATH = "audio/room_episode/girl/music.mp3";
+    public final String BOY_MUSIC_AUDIO_PATH = "audio/episode_room/boy_music.mp3";
+    public final String GIRL_MUSIC_AUDIO_PATH = "audio/episode_room/girl_music.mp3";
     public final String MOBILE_AUDIO_PATH = "audio/message.mp3";
 
     protected boolean permanentlyOn;

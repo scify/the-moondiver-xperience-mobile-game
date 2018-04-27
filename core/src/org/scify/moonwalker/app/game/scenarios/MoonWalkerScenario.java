@@ -8,7 +8,7 @@ public class MoonWalkerScenario extends Scenario {
 
     public MoonWalkerScenario() {
         Episode mainMenuEpisode = new MainMenuEpisode();
-        //Episode roomEpisode = new RoomEpisode();
+        Episode roomEpisode = new RoomEpisode();
         Episode forestLoadingEpisode = new ForestEpisode();
 //        Episode cockpitEpisode = new CockpitEpisode();
 
@@ -16,8 +16,8 @@ public class MoonWalkerScenario extends Scenario {
 //        setFirstEpisode(effectPlaygroundEpisode);
 
         setFirstEpisode(mainMenuEpisode);
-        //addEpisodeAfterCurrent(roomEpisode);
-        addEpisodeAfter(mainMenuEpisode, forestLoadingEpisode);
+        addEpisodeAfterCurrent(roomEpisode);
+        addEpisodeAfter(roomEpisode, forestLoadingEpisode);
 //
 
 //        addEpisodeAfter(roomEpisode, forestLoadingEpisode);

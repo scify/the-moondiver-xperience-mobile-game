@@ -232,6 +232,7 @@ public class ConversationRules extends MoonWalkerRules {
             lastConversationRenderable.addEffect(getOutroEffect(lastConversationRenderable, conversationLine, gameState, newSpeaker));
         }
         lastConversationRenderable = nextConversationRenderable;
+        lastConversationRenderable.setVisible(false);
         lastConversationRenderable.setZIndex(100);
         nextConversationRenderable.setConversationLine(conversationLine);
         // Update previous speaker
@@ -244,7 +245,11 @@ public class ConversationRules extends MoonWalkerRules {
         oldConversationLines.add(nextConversationRenderable);
     }
 
-    protected Effect getIntroEffect(Renderable target, ConversationLine conversationLine, GameState gameState, boolean newSpeaker) {
+    protected EffectSequence getIntroEffect(Renderable target, ConversationLine conversationLine, GameState gameState, boolean newSpeaker) {
+        EffectSequence ret = new EffectSequence();
+        ret.addEffect(new FadeEffect(1.0, 0.0, 0));
+        ret.addEffect(new VisibilityEffect(true));
+
         ParallelEffectList lRes = new ParallelEffectList();
         lRes.addEffect(new FadeEffect(0.0, 1.0, 500));
         final boolean bOther = !conversationLine.getSpeakerId().contains("player");
@@ -265,8 +270,9 @@ public class ConversationRules extends MoonWalkerRules {
 
             lRes.addEffect(new MoveEffect(dStartX, target.getyPos(), target.getxPos(), target.getyPos(), 200));
         }
+        ret.addEffect(lRes);
 
-        return lRes;
+        return ret;
     }
 
     private Effect getOutroEffect(Renderable target, ConversationLine conversationLine, GameState gameState, boolean newSpeaker) {
@@ -296,6 +302,7 @@ public class ConversationRules extends MoonWalkerRules {
             lastConversationRenderable.addEffect(getOutroEffect(lastConversationRenderable, nextLines.get(0), gameState, newSpeaker));
         }
         lastConversationRenderable = twoChoiceConversationRenderable;
+        lastConversationRenderable.setVisible(false);
         lastConversationRenderable.setZIndex(100);
         twoChoiceConversationRenderable.setConversationLines(nextLines);
         // Update previous speaker

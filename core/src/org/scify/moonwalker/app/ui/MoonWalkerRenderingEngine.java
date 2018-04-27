@@ -85,9 +85,12 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         bookKeeper.setStage(stage);
 
         audioEngine.pauseCurrentlyPlayingAudios();
-        audioEngine.loadSound("audio/mainMenu/menu.mp3");
-        audioEngine.loadSound("audio/message.mp3");
+        audioEngine.loadSound("audio/episode_mainMenu/bg.mp3");
         audioEngine.loadSound("audio/button1.mp3");
+        audioEngine.loadSound("audio/message.mp3");
+        //TMP
+        audioEngine.loadSound("audio/episode_forest/bg.mp3");
+
         audioEnabled = true;
         printDebugInfo();
         resetEngine();

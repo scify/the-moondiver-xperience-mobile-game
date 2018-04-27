@@ -53,6 +53,7 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
                 renderable = new RoomRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), "room", true);
             else
                 renderable = new RoomRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), "room", false);
+            renderable.setVisible(false);
             currentState.addRenderable(renderable);
             super.episodeStartedEvents(currentState);
             if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {

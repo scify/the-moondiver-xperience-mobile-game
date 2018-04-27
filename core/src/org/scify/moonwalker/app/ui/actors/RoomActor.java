@@ -8,6 +8,7 @@ import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.effects.EffectSequence;
 import org.scify.engine.renderables.effects.FadeEffect;
 import org.scify.engine.renderables.effects.FunctionEffect;
+import org.scify.engine.renderables.effects.VisibilityEffect;
 import org.scify.moonwalker.app.ui.renderables.RoomRenderable;
 
 public class RoomActor extends TableActor<RoomRenderable> implements Updateable {
@@ -41,6 +42,7 @@ public class RoomActor extends TableActor<RoomRenderable> implements Updateable 
 
         EffectSequence fadeInEffects = new EffectSequence();
         fadeInEffects.addEffect(new FadeEffect(1.0, 0.0, 0));
+        fadeInEffects.addEffect(new VisibilityEffect(true));
         fadeInEffects.addEffect(new FadeEffect(0.0, 1.0, 2000));
         fadeInEffects.addEffect(new FunctionEffect(new Runnable() {
             @Override

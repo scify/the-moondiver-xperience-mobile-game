@@ -51,8 +51,10 @@ public class ForestEpisodeRules extends BaseEpisodeRules{
     public void episodeStartedEvents(GameState currentState) {
         if (!isEpisodeStarted(currentState)) {
             renderable = new ForestRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), "forest");
+            renderable.setVisible(false);
             currentState.addRenderable(renderable);
             super.episodeStartedEvents(currentState);
+            currentState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", renderable.FOREST_AUDIO_PATH));
         }
     }
 
@@ -101,6 +103,8 @@ public class ForestEpisodeRules extends BaseEpisodeRules{
 
     protected GameState cleanUpState(GameState currentState) {
         currentState.removeAllGameEventsOwnedBy(this);
+        currentState.addGameEvent(new GameEvent("AUDIO_STOP_UI", renderable.FOREST_AUDIO_PATH));
+        currentState.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", renderable.FOREST_AUDIO_PATH));
         currentState.removeGameEventsWithType("CONVERSATION_READY_TO_FINISH");
         currentState.removeGameEventsWithType("CONVERSATION_FINISHED");
         currentState.removeGameEventsWithType("CONVERSATION_STARTED");
