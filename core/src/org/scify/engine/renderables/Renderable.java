@@ -16,21 +16,25 @@ public class Renderable extends Positionable implements EffectTarget {
     public static final String LABEL = "label";
     public static final String ROTATABLE_LABEL = "rotatable_label";
     public static final String IMAGE = "image";
+    public static final String TABLE = "table";
+    public static final String TEXT_BUTTON = "text_button";
+    public static final String ROTATABLE_TEXT_BUTTON = "rotatable_text_button";
+    public static final String IMAGE_BUTTON = "image_button";
+
+    public static final String NEXT_CONVERSATION = "next_conversation";
+    public static final String MULTIPLE_CHOICE_CONVERSATION = "multiple_choice_conversation";
+    public static final String TWO_CHOICE_CONVERSATION = "two_choice_conversation";
+
+    public static final String DIALOG = "DIALOG";
+
     public static final String MAIN_MENU = "main_menu";
     public static final String ROOM = "room";
     public static final String FOREST = "forest";
     public static final String COCKPIT = "cockpit";
-    public static final String ROTATABLE_TEXT_BUTTON = "rotatable_text_button";
-    public static final String TEXT_BUTTON = "text_button";
-    public static final String IMAGE_BUTTON = "image_button";
     public static final String CALCULATOR = "calculator";
     public static final String SPACESHIP_CHARGER = "spaceship_charger";
     public static final String MAP_LOCATION = "map_location";
-    public static final String NEXT_CONVERSATION = "next_conversation";
-    public static final String MULTIPLE_CHOICE_CONVERSATION = "multiple_choice_conversation";
-    public static final String TWO_CHOICE_CONVERSATION = "two_choice_conversation";
     public static final String CONTACT_SCREEN = "contact_screen";
-    public static final String DIALOG = "DIALOG";
 
     protected String type;
     /**

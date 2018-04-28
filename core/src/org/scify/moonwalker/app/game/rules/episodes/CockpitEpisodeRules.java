@@ -1,8 +1,8 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
+import org.scify.engine.renderables.ActionButtonRenderable;
 import org.scify.moonwalker.app.game.LocationController;
-import org.scify.engine.renderables.ActionButtonWithEffect;
 import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 
 import java.util.Date;
@@ -85,13 +85,13 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
     }
 
     protected void setCockpitButtons() {
-        ActionButtonWithEffect navigateBtn = createCockpitButton("navigation_button", "img/cockpit/navigate.png", UserActionCode.FINISH_EPISODE);
-        ActionButtonWithEffect launchBtn = createCockpitButton("launch_button", "img/cockpit/launch.png", UserActionCode.FINISH_EPISODE);
-        ActionButtonWithEffect spaceshipPartsButton = createCockpitButton("spaceship_parts_button", "img/cockpit/spaceship.png", UserActionCode.SPACESHIP_PARTS_EPISODE);
-        ActionButtonWithEffect mapBtn = createCockpitButton("map_button", "img/cockpit/map.png", UserActionCode.MAP_EPISODE);
-        ActionButtonWithEffect chargeBtn = createCockpitButton("charge_button", "img/cockpit/charge.png", UserActionCode.CHARGE_SPACESHIP_EPISODE);
-        ActionButtonWithEffect contactBtnSimple = createCockpitButton("contact_button_simple", "img/cockpit/contact.png", UserActionCode.CONTACT_SCREEN_EPISODE);
-        ActionButtonWithEffect contactBtnLighted = createCockpitButton("contact_button_lighted", "img/cockpit/contact_lighted.png", UserActionCode.CONTACT_SCREEN_EPISODE);
+        ActionButtonRenderable navigateBtn = createCockpitButton("navigation_button", "img/cockpit/navigate.png", UserActionCode.FINISH_EPISODE);
+        ActionButtonRenderable launchBtn = createCockpitButton("launch_button", "img/cockpit/launch.png", UserActionCode.FINISH_EPISODE);
+        ActionButtonRenderable spaceshipPartsButton = createCockpitButton("spaceship_parts_button", "img/cockpit/spaceship.png", UserActionCode.SPACESHIP_PARTS_EPISODE);
+        ActionButtonRenderable mapBtn = createCockpitButton("map_button", "img/cockpit/map.png", UserActionCode.MAP_EPISODE);
+        ActionButtonRenderable chargeBtn = createCockpitButton("charge_button", "img/cockpit/charge.png", UserActionCode.CHARGE_SPACESHIP_EPISODE);
+        ActionButtonRenderable contactBtnSimple = createCockpitButton("contact_button_simple", "img/cockpit/contact.png", UserActionCode.CONTACT_SCREEN_EPISODE);
+        ActionButtonRenderable contactBtnLighted = createCockpitButton("contact_button_lighted", "img/cockpit/contact_lighted.png", UserActionCode.CONTACT_SCREEN_EPISODE);
 
 
         renderable.setNavigateButton(navigateBtn);
@@ -102,7 +102,7 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
         renderable.setChargeButton(chargeBtn);
     }
 
-    protected ActionButtonWithEffect createCockpitButton(String id, String imgPath, UserActionCode code) {
+    protected ActionButtonRenderable createCockpitButton(String id, String imgPath, UserActionCode code) {
         return createImageButton(id, imgPath, new UserAction(code), 0, 0);
     }
 

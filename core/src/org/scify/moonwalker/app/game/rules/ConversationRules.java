@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Json;
 import org.scify.engine.*;
 import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.renderables.MultipleChoiceConversationRenderable;
-import org.scify.engine.renderables.NextConversationRenderable;
+import org.scify.engine.renderables.SingleChoiceConversationRenderable;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.TwoChoiceConversationRenderable;
 import org.scify.engine.renderables.effects.*;
@@ -256,23 +256,23 @@ public class ConversationRules extends MoonWalkerBaseRules {
     }
 
     protected void addNextConversationLine(final ConversationLine conversationLine, final GameState gameState, boolean newSpeaker) {
-        NextConversationRenderable nextConversationRenderable =
-                new NextConversationRenderable(NEXT_CONVERSATION + conversationLine.getId());
+        SingleChoiceConversationRenderable singleChoiceConversationRenderable =
+                new SingleChoiceConversationRenderable(NEXT_CONVERSATION + conversationLine.getId());
         if (lastConversationRenderable != null) {
             lastConversationRenderable.addEffect(getOutroEffect(lastConversationRenderable, conversationLine, gameState, newSpeaker));
         }
-        lastConversationRenderable = nextConversationRenderable;
+        lastConversationRenderable = singleChoiceConversationRenderable;
         lastConversationRenderable.setVisible(false);
         lastConversationRenderable.setZIndex(100);
-        nextConversationRenderable.setConversationLine(conversationLine);
+        singleChoiceConversationRenderable.setConversationLine(conversationLine);
         // Update previous speaker
         sPrvSpeakerID = conversationLine.getSpeakerId();
-        nextConversationRenderable.setRelativeAvatarPath(getAvatar(conversationLine.getSpeakerId()));
-//        nextConversationRenderable.apply(new FadeLGDXEffect(0.0, 1.0, 1000));
-        nextConversationRenderable.addEffect(getIntroEffect(nextConversationRenderable, conversationLine, gameState, newSpeaker));
+        singleChoiceConversationRenderable.setRelativeAvatarPath(getAvatar(conversationLine.getSpeakerId()));
+//        singleChoiceConversationRenderable.apply(new FadeLGDXEffect(0.0, 1.0, 1000));
+        singleChoiceConversationRenderable.addEffect(getIntroEffect(singleChoiceConversationRenderable, conversationLine, gameState, newSpeaker));
 
-        gameState.addRenderable(nextConversationRenderable);
-        oldConversationLines.add(nextConversationRenderable);
+        gameState.addRenderable(singleChoiceConversationRenderable);
+        oldConversationLines.add(singleChoiceConversationRenderable);
     }
 
     protected EffectSequence getIntroEffect(Renderable target, ConversationLine conversationLine, GameState gameState, boolean newSpeaker) {

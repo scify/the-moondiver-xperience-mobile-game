@@ -1,8 +1,8 @@
 package org.scify.moonwalker.app.ui.renderables;
 
-import org.scify.engine.renderables.ActionButtonWithEffect;
+import org.scify.engine.renderables.ActionButtonRenderable;
 
-public class CockpitRenderable extends TableRenderable {
+public class CockpitRenderable extends FadingTableRenderable {
 
     public final String MOTOR_EFFICIENCY_IMG_PATH = "img/cockpit/motor_efficiency.png";
     public final String REMAINING_ENERGY_IMG_PATH = "img/cockpit/remaining_energy.png";
@@ -16,15 +16,15 @@ public class CockpitRenderable extends TableRenderable {
     protected String positionValue;
     protected String daysLeftValue;
 
-    protected ActionButtonWithEffect navigateButton;
-    protected ActionButtonWithEffect launchButton;
-    protected ActionButtonWithEffect chargeButton;
-    protected ActionButtonWithEffect spaceshipPartsButton;
-    protected ActionButtonWithEffect mapButton;
+    protected ActionButtonRenderable navigateButton;
+    protected ActionButtonRenderable launchButton;
+    protected ActionButtonRenderable chargeButton;
+    protected ActionButtonRenderable spaceshipPartsButton;
+    protected ActionButtonRenderable mapButton;
 
     protected boolean contactButtonIsLighted;
-    protected ActionButtonWithEffect contactButtonSimple;
-    protected ActionButtonWithEffect contactButtonLighted;
+    protected ActionButtonRenderable contactButtonSimple;
+    protected ActionButtonRenderable contactButtonLighted;
 
 
     public CockpitRenderable(float xPos, float yPos, float width, float height, String type, String id) {
@@ -69,35 +69,35 @@ public class CockpitRenderable extends TableRenderable {
         renderableWasUpdated();
     }
 
-    public ActionButtonWithEffect getNavigateButton() {
+    public ActionButtonRenderable getNavigateButton() {
         return navigateButton;
     }
 
-    public ActionButtonWithEffect getLaunchButton() {
+    public ActionButtonRenderable getLaunchButton() {
         return launchButton;
     }
 
-    public void setNavigateButton(ActionButtonWithEffect navigateButton) {
+    public void setNavigateButton(ActionButtonRenderable navigateButton) {
         this.navigateButton = navigateButton;
     }
 
-    public void setLaunchButton(ActionButtonWithEffect launchButton) {
+    public void setLaunchButton(ActionButtonRenderable launchButton) {
         this.launchButton = launchButton;
     }
 
-    public ActionButtonWithEffect getSpaceshipPartsButton() {
+    public ActionButtonRenderable getSpaceshipPartsButton() {
         return spaceshipPartsButton;
     }
 
-    public void setSpaceshipPartsButton(ActionButtonWithEffect spaceshipPartsButton) {
+    public void setSpaceshipPartsButton(ActionButtonRenderable spaceshipPartsButton) {
         this.spaceshipPartsButton = spaceshipPartsButton;
     }
 
-    public ActionButtonWithEffect getMapButton() {
+    public ActionButtonRenderable getMapButton() {
         return mapButton;
     }
 
-    public void setMapButton(ActionButtonWithEffect mapButton) {
+    public void setMapButton(ActionButtonRenderable mapButton) {
         this.mapButton = mapButton;
     }
 
@@ -105,15 +105,15 @@ public class CockpitRenderable extends TableRenderable {
         return contactButtonIsLighted;
     }
 
-    public ActionButtonWithEffect getContactButtonSimple() {
+    public ActionButtonRenderable getContactButtonSimple() {
         return contactButtonSimple;
     }
 
-    public ActionButtonWithEffect getContactButtonLighted() {
+    public ActionButtonRenderable getContactButtonLighted() {
         return contactButtonLighted;
     }
 
-    public void setContactButtons(ActionButtonWithEffect contactButtonSimple, ActionButtonWithEffect contactButtonLighted) {
+    public void setContactButtons(ActionButtonRenderable contactButtonSimple, ActionButtonRenderable contactButtonLighted) {
         this.contactButtonSimple = contactButtonSimple;
         this.contactButtonLighted = contactButtonLighted;
     }
@@ -136,11 +136,11 @@ public class CockpitRenderable extends TableRenderable {
         renderableWasUpdated();
     }
 
-    public ActionButtonWithEffect getChargeButton() {
+    public ActionButtonRenderable getChargeButton() {
         return chargeButton;
     }
 
-    public void setChargeButton(ActionButtonWithEffect chargeButton) {
+    public void setChargeButton(ActionButtonRenderable chargeButton) {
         this.chargeButton = chargeButton;
     }
 }

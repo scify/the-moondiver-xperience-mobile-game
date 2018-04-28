@@ -3,17 +3,20 @@ package org.scify.moonwalker.app.ui.actors.conversation;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import org.scify.engine.renderables.MultipleChoiceConversationRenderable;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
-import org.scify.moonwalker.app.ui.actors.TableActor;
+import org.scify.moonwalker.app.ui.actors.FadingTableActor;
 
 
-public class MultipleChoiceConversationActor extends TableActor {
+public class MultipleChoiceConversationActor extends FadingTableActor<MultipleChoiceConversationRenderable> {
 
     protected String relativeAvatarPath;
     protected Image avatarImg;

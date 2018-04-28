@@ -3,7 +3,7 @@ package org.scify.moonwalker.app.ui.renderables;
 import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.Renderable;
 
-public class RoomRenderable extends TableRenderable {
+public class RoomRenderable extends FadingTableRenderable {
 
     protected ImageRenderable phoneOffRenderable;
     protected ImageRenderable phoneOnRenderable;

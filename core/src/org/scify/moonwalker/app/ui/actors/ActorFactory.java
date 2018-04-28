@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.scify.engine.renderables.*;
-import org.scify.engine.renderables.effects.libgdx.LGDXContainerStack;
 import org.scify.moonwalker.app.ui.ComponentFactory;
 import org.scify.moonwalker.app.ui.UnsupportedRenderableTypeException;
 import org.scify.moonwalker.app.ui.actors.calculator.CalculatorComponent;
@@ -49,9 +48,9 @@ public class ActorFactory extends ComponentFactory {
                 toReturn = label;
                 break;
             case Renderable.ROTATABLE_LABEL:
-                Stack gParent = new LGDXContainerStack();
+                Stack gParent = new StackWithEffect();
                 gParent.setTransform(true);
-                label = new Label(((TextLabel)renderable).getLabel(), skin);
+                label = new Label(((TextLabelRenderable)renderable).getLabel(), skin);
                 gParent.setWidth(renderable.getWidth());
                 gParent.setHeight(renderable.getHeight());
                 label.setWrap(true);
@@ -74,19 +73,19 @@ public class ActorFactory extends ComponentFactory {
                 toReturn = createCockpitActor((CockpitRenderable) renderable);
                 break;
             case Renderable.ROTATABLE_TEXT_BUTTON:
-                gParent = new LGDXContainerStack();
+                gParent = new StackWithEffect();
                 gParent.setTransform(true);
-                TextButton tbBtn =  createTextButton((ActionButtonWithEffect) renderable);
+                TextButton tbBtn =  createTextButton((ActionButtonRenderable) renderable);
                 tbBtn.setWidth(renderable.getWidth());
                 tbBtn.setHeight(renderable.getHeight());
                 gParent.add(tbBtn);
                 toReturn = gParent;
                 break;
             case Renderable.TEXT_BUTTON:
-                toReturn = createTextButton((ActionButtonWithEffect) renderable);
+                toReturn = createTextButton((ActionButtonRenderable) renderable);
                 break;
             case Renderable.IMAGE_BUTTON:
-                toReturn = createImageButton((ActionButtonWithEffect) renderable);
+                toReturn = createImageButton((ActionButtonRenderable) renderable);
                 break;
             case Renderable.CALCULATOR:
                 toReturn = new CalculatorComponent(skin);
@@ -98,7 +97,7 @@ public class ActorFactory extends ComponentFactory {
                 toReturn = createMapLocationActor((MapLocationRenderable) renderable);
                 break;
             case Renderable.NEXT_CONVERSATION:
-                toReturn = createNextConversationActor((NextConversationRenderable) renderable);
+                toReturn = createNextConversationActor((SingleChoiceConversationRenderable) renderable);
                 break;
             case Renderable.MULTIPLE_CHOICE_CONVERSATION:
                 toReturn = createMultipleChoiceConversationActor((MultipleChoiceConversationRenderable) renderable);
@@ -109,10 +108,19 @@ public class ActorFactory extends ComponentFactory {
             case Renderable.CONTACT_SCREEN:
                 toReturn = createContactScreenActor((ContactScreenRenderable) renderable);
                 break;
+            case Renderable.TABLE:
+                toReturn = createTableActor((TableRenderable)renderable);
+                break;
             default:
                 throw new UnsupportedRenderableTypeException("renderable with type " + renderable.getType() + " is unsupported.");
         }
         return toReturn;
+    }
+
+    private Actor createTableActor(TableRenderable renderable) {
+        TableActor taRes = new TableActor<>(skin, renderable);
+
+        return taRes;
     }
 
     protected ImageWithEffect createImage(String imgFileRelevantPath, Renderable renderable) {
@@ -127,7 +135,7 @@ public class ActorFactory extends ComponentFactory {
         return img;
     }
 
-    protected Button createButton(ActionButtonWithEffect button) {
+    protected Button createButton(ActionButtonRenderable button) {
         if (button.getType().equals(Renderable.IMAGE_BUTTON))
             return createImageButton(button);
         else if (button.getType().equals(Renderable.TEXT_BUTTON))
@@ -135,32 +143,32 @@ public class ActorFactory extends ComponentFactory {
         return null;
     }
 
-    protected TextButtonWithEffect createTextButton(ActionButtonWithEffect actionButtonWithEffect) {
-        TextButtonWithEffect btn = new TextButtonWithEffect(actionButtonWithEffect.getTitle(), skin);
-        setCommonAttrsAndListener(btn, actionButtonWithEffect);
+    protected TextButtonWithEffect createTextButton(ActionButtonRenderable actionButtonRenderable) {
+        TextButtonWithEffect btn = new TextButtonWithEffect(actionButtonRenderable.getTitle(), skin);
+        setCommonAttrsAndListener(btn, actionButtonRenderable);
         return btn;
     }
 
-    protected ImageButtonWithEffect createImageButton(ActionButtonWithEffect actionButtonWithEffect) {
-        Drawable btnImage = new SpriteDrawable(new Sprite(new Texture(resourceLocator.getFilePath(actionButtonWithEffect.getImgPath()))));
+    protected ImageButtonWithEffect createImageButton(ActionButtonRenderable actionButtonRenderable) {
+        Drawable btnImage = new SpriteDrawable(new Sprite(new Texture(resourceLocator.getFilePath(actionButtonRenderable.getImgPath()))));
         ImageButtonWithEffect btn = new ImageButtonWithEffect(btnImage);
-        setCommonAttrsAndListener(btn, actionButtonWithEffect);
+        setCommonAttrsAndListener(btn, actionButtonRenderable);
         return btn;
     }
 
-    protected void setCommonAttrsAndListener(Button btn, ActionButtonWithEffect actionButtonWithEffect) {
-        setButtonDimensions(actionButtonWithEffect, btn);
-        btn.setName(actionButtonWithEffect.getId());
-        addButtonListener(btn, actionButtonWithEffect);
+    protected void setCommonAttrsAndListener(Button btn, ActionButtonRenderable actionButtonRenderable) {
+        setButtonDimensions(actionButtonRenderable, btn);
+        btn.setName(actionButtonRenderable.getId());
+        addButtonListener(btn, actionButtonRenderable);
     }
 
-    protected void setButtonDimensions(ActionButtonWithEffect actionButtonWithEffect, Button btn) {
-        btn.setPosition(actionButtonWithEffect.getxPos(), actionButtonWithEffect.getyPos());
-        if (actionButtonWithEffect.getWidth() != 0)
-            btn.setWidth(actionButtonWithEffect.getWidth());
-        if (actionButtonWithEffect.getHeight() != 0)
-            btn.setHeight(actionButtonWithEffect.getHeight());
-        btn.pad(actionButtonWithEffect.getPadding());
+    protected void setButtonDimensions(ActionButtonRenderable actionButtonRenderable, Button btn) {
+        btn.setPosition(actionButtonRenderable.getxPos(), actionButtonRenderable.getyPos());
+        if (actionButtonRenderable.getWidth() != 0)
+            btn.setWidth(actionButtonRenderable.getWidth());
+        if (actionButtonRenderable.getHeight() != 0)
+            btn.setHeight(actionButtonRenderable.getHeight());
+        btn.pad(actionButtonRenderable.getPadding());
     }
 
     private MainMenuActor createMainMenuActor(MainMenuRenderable renderable) {
@@ -224,7 +232,7 @@ public class ActorFactory extends ComponentFactory {
         return mapLocationActor;
     }
 
-    private Actor createNextConversationActor(NextConversationRenderable renderable) {
+    private Actor createNextConversationActor(SingleChoiceConversationRenderable renderable) {
         NextConversationActor actor = new NextConversationActor(skin, renderable);
         actor.setZIndex(1);
         actor.setButton(createButton(renderable.getButtonNext()));
@@ -236,7 +244,7 @@ public class ActorFactory extends ComponentFactory {
         MultipleChoiceConversationActor actor = new MultipleChoiceConversationActor(skin, renderable);
         //actor.setZIndex(1);
         int btnIndex = 1;
-        for (ActionButtonWithEffect button : renderable.getButtons()) {
+        for (ActionButtonRenderable button : renderable.getButtons()) {
             actor.addButton(createButton(button), btnIndex);
             btnIndex++;
         }
@@ -246,16 +254,16 @@ public class ActorFactory extends ComponentFactory {
     private Actor createTwoChoiceConversationActor(TwoChoiceConversationRenderable renderable) {
         TwoChoiceConversationActor actor = new TwoChoiceConversationActor(skin, renderable);
         actor.setZIndex(1);
-        java.util.List<ActionButtonWithEffect> buttons = renderable.getButtons();
+        java.util.List<ActionButtonRenderable> buttons = renderable.getButtons();
         actor.init(createButton(buttons.get(0)), createButton(buttons.get(1)));
         return actor;
     }
 
-    private void addButtonListener(Button button, final ActionButtonWithEffect actionButtonWithEffect) {
+    private void addButtonListener(Button button, final ActionButtonRenderable actionButtonRenderable) {
         button.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                userInputHandler.addUserAction(actionButtonWithEffect.getUserAction());
+                userInputHandler.addUserAction(actionButtonRenderable.getUserAction());
             }
         });
     }

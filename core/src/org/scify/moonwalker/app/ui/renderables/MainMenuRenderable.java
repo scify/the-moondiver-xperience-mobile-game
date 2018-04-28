@@ -1,11 +1,11 @@
 package org.scify.moonwalker.app.ui.renderables;
 
+import org.scify.engine.renderables.ActionButtonRenderable;
 import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.effects.*;
-import org.scify.engine.renderables.ActionButtonWithEffect;
 import org.scify.moonwalker.app.game.SelectedPlayer;
 
-public class MainMenuRenderable extends TableRenderable {
+public class MainMenuRenderable extends FadingTableRenderable {
     protected ImageRenderable topBannerRenderable;
 
     public final static String BG_IMG_PATH = "img/episode_mainMenu/bg.png";
@@ -27,16 +27,16 @@ public class MainMenuRenderable extends TableRenderable {
     public final String BOY_MUSIC_AUDIO_PATH = "audio/episode_room/boy_music.mp3";
     public final String GIRL_MUSIC_AUDIO_PATH = "audio/episode_room/girl_music.mp3";
 
-    protected ActionButtonWithEffect boyAvatarButton;
-    protected ActionButtonWithEffect girlAvatarButton;
-    protected ActionButtonWithEffect boyButton;
-    protected ActionButtonWithEffect girlButton;
-    protected ActionButtonWithEffect selectedAvatarButton;
-    protected ActionButtonWithEffect startGameButton;
-    protected ActionButtonWithEffect continueGameButton;
-    protected ActionButtonWithEffect toggleAudioButton;
-    protected ActionButtonWithEffect aboutButton;
-    protected ActionButtonWithEffect quitButton;
+    protected ActionButtonRenderable boyAvatarButton;
+    protected ActionButtonRenderable girlAvatarButton;
+    protected ActionButtonRenderable boyButton;
+    protected ActionButtonRenderable girlButton;
+    protected ActionButtonRenderable selectedAvatarButton;
+    protected ActionButtonRenderable startGameButton;
+    protected ActionButtonRenderable continueGameButton;
+    protected ActionButtonRenderable toggleAudioButton;
+    protected ActionButtonRenderable aboutButton;
+    protected ActionButtonRenderable quitButton;
 
     protected int countDownValue;
     protected boolean playerSelectionStatus;
@@ -57,21 +57,21 @@ public class MainMenuRenderable extends TableRenderable {
 
     public boolean isReadyForInput() { return inputEnabled; }
 
-    public void setBoyAvatarButton(ActionButtonWithEffect boyAvatarButton) {
+    public void setBoyAvatarButton(ActionButtonRenderable boyAvatarButton) {
         this.boyAvatarButton = boyAvatarButton;
         this.boyAvatarButton.setVisible(false);
     }
 
-    public ActionButtonWithEffect getBoyAvatarButton() {
+    public ActionButtonRenderable getBoyAvatarButton() {
         return boyAvatarButton;
     }
 
-    public void setGirlAvatarButton(ActionButtonWithEffect girlAvatarButton) {
+    public void setGirlAvatarButton(ActionButtonRenderable girlAvatarButton) {
         this.girlAvatarButton = girlAvatarButton;
         this.girlAvatarButton.setVisible(false);
     }
 
-    public ActionButtonWithEffect getGirlAvatarButton() {
+    public ActionButtonRenderable getGirlAvatarButton() {
         return girlAvatarButton;
     }
 
@@ -146,7 +146,7 @@ public class MainMenuRenderable extends TableRenderable {
         }
     }
 
-    public ActionButtonWithEffect getPlayerButton(String btnName) {
+    public ActionButtonRenderable getPlayerButton(String btnName) {
         switch (btnName) {
             case SelectedPlayer.boy:
                 return boyButton;
@@ -157,70 +157,70 @@ public class MainMenuRenderable extends TableRenderable {
         }
     }
 
-    public ActionButtonWithEffect getBoyButton() {
+    public ActionButtonRenderable getBoyButton() {
         return boyButton;
     }
 
-    public void setBoyButton(ActionButtonWithEffect button) {
+    public void setBoyButton(ActionButtonRenderable button) {
         this.boyButton = button;
         this.boyButton.setVisible(false);
     }
 
-    public ActionButtonWithEffect getGirlButton() {
+    public ActionButtonRenderable getGirlButton() {
         return girlButton;
     }
 
-    public void setGirlButton(ActionButtonWithEffect button) {
+    public void setGirlButton(ActionButtonRenderable button) {
         this.girlButton = button;
         this.girlButton.setVisible(false);
     }
 
-    public ActionButtonWithEffect getSelectedAvatarButton() {
+    public ActionButtonRenderable getSelectedAvatarButton() {
         return selectedAvatarButton;
     }
 
-    public void setSelectedAvatarButton(ActionButtonWithEffect selectedAvatarButton) {
+    public void setSelectedAvatarButton(ActionButtonRenderable selectedAvatarButton) {
         this.selectedAvatarButton = selectedAvatarButton;
         renderableWasUpdated();
     }
 
-    public ActionButtonWithEffect getStartGameButton() {
+    public ActionButtonRenderable getStartGameButton() {
         return startGameButton;
     }
 
-    public void setStartGameButton(ActionButtonWithEffect button) {
+    public void setStartGameButton(ActionButtonRenderable button) {
         this.startGameButton = button;
     }
 
-    public ActionButtonWithEffect getContinueGameButton() {
+    public ActionButtonRenderable getContinueGameButton() {
         return continueGameButton;
     }
 
-    public void setContinueGameButton(ActionButtonWithEffect button) {
+    public void setContinueGameButton(ActionButtonRenderable button) {
         this.continueGameButton = button;
     }
 
-    public ActionButtonWithEffect getToggleAudioButton() {
+    public ActionButtonRenderable getToggleAudioButton() {
         return toggleAudioButton;
     }
 
-    public void setToggleAudioButton(ActionButtonWithEffect button) {
+    public void setToggleAudioButton(ActionButtonRenderable button) {
         this.toggleAudioButton = button;
     }
 
-    public ActionButtonWithEffect getAboutButton() {
+    public ActionButtonRenderable getAboutButton() {
         return aboutButton;
     }
 
-    public void setAboutButton(ActionButtonWithEffect button) {
+    public void setAboutButton(ActionButtonRenderable button) {
         this.aboutButton = button;
     }
 
-    public ActionButtonWithEffect getQuitButton() {
+    public ActionButtonRenderable getQuitButton() {
         return quitButton;
     }
 
-    public void setQuitButton(ActionButtonWithEffect button) {
+    public void setQuitButton(ActionButtonRenderable button) {
         this.quitButton = button;
     }
 }

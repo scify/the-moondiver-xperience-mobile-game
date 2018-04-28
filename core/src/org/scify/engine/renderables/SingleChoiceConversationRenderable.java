@@ -1,21 +1,21 @@
 package org.scify.engine.renderables;
 
-import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.UserAction;
 import org.scify.engine.UserActionCode;
-import org.scify.moonwalker.app.ui.renderables.TableRenderable;
+import org.scify.engine.conversation.ConversationLine;
+import org.scify.moonwalker.app.ui.renderables.FadingTableRenderable;
 
-public class NextConversationRenderable extends TableRenderable {
+public class SingleChoiceConversationRenderable extends FadingTableRenderable {
 
     protected ImageRenderable tableBGRenderable;
     public final static String BG_IMG_PATH = "img/conversations/bg.png";
 
     protected ConversationLine conversationLine;
     protected String relativeAvatarPath;
-    protected ActionButtonWithEffect buttonNext;
+    protected ActionButtonRenderable buttonNext;
     protected boolean buttonNextActive;
 
-    public NextConversationRenderable(String id) {
+    public SingleChoiceConversationRenderable(String id) {
         super(0,0,0,0,"next_conversation", id, BG_IMG_PATH);
         float screenWidth = appInfo.getScreenWidth();
         float screenHeight = appInfo.getScreenHeight();
@@ -23,7 +23,7 @@ public class NextConversationRenderable extends TableRenderable {
         this.yPos = 0.03f *  screenHeight;
         width = 0.96f * screenWidth;
         height = 0.3f * screenHeight;
-        buttonNext = new ActionButtonWithEffect("text_button", "button_next");
+        buttonNext = new ActionButtonRenderable("text_button", "button_next");
         buttonNext.setTitle("Επόμενο");
         buttonNextActive = true;
         tableBGRenderable = new ImageRenderable("chat_bg", BG_IMG_PATH);
@@ -74,7 +74,7 @@ public class NextConversationRenderable extends TableRenderable {
         return relativeAvatarPath;
     }
 
-    public ActionButtonWithEffect getButtonNext() {
+    public ActionButtonRenderable getButtonNext() {
         return buttonNext;
     }
 }

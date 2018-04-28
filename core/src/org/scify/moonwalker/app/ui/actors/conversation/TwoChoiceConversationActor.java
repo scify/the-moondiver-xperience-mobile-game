@@ -6,12 +6,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import org.scify.engine.conversation.ConversationLine;
-import org.scify.engine.renderables.NextConversationRenderable;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.TwoChoiceConversationRenderable;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
-import org.scify.moonwalker.app.ui.actors.TableActor;
+import org.scify.moonwalker.app.ui.actors.FadingTableActor;
 
 /**
  * This class describes the conversation component that is drawn
@@ -22,7 +21,7 @@ import org.scify.moonwalker.app.ui.actors.TableActor;
  * and an image path that represents the conversation participant who is saying
  * the line.
  */
-public class TwoChoiceConversationActor extends TableActor<TwoChoiceConversationRenderable> {
+public class TwoChoiceConversationActor extends FadingTableActor<TwoChoiceConversationRenderable> {
 
     protected ResourceLocator resourceLocator;
     protected AppInfo appInfo;

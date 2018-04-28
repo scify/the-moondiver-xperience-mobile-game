@@ -3,16 +3,16 @@ package org.scify.moonwalker.app.ui.actors;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import org.scify.engine.renderables.Renderable;
+import org.scify.engine.renderables.TableRenderable;
 import org.scify.engine.renderables.effects.Effect;
 import org.scify.engine.renderables.effects.FadeEffect;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.ui.ThemeController;
 import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
-import org.scify.moonwalker.app.ui.renderables.TableRenderable;
 
 import java.util.Map;
 
-public class MainMenuActor extends TableActor<MainMenuRenderable> implements Updateable {
+public class MainMenuActor<T extends MainMenuRenderable> extends FadingTableActor<T> implements Updateable {
 
     protected AppInfo appInfo;
 
@@ -37,7 +37,7 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
 
 
 
-    public MainMenuActor(Skin skin, MainMenuRenderable renderable) {
+    public MainMenuActor(Skin skin, T renderable) {
         super(skin, renderable);
         setWidth(renderable.getWidth());
         setHeight(renderable.getHeight());
@@ -108,7 +108,7 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
         stack.addActor(boyAvatarButton);
 
         // Add button
-        Table buttonTable = new Table();
+        Table buttonTable = new TableActor<TableRenderable>(getSkin(), this.renderable);
         buttonTable.defaults();
         buttonTable.bottom();
         float buttonWidth = convertWidth(boyButton.getWidth());
@@ -126,7 +126,7 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
 
     protected void createMenuButtons() {
         Stack stack = new Stack();
-        menuTable = new Table();
+        menuTable = new TableWithEffect();
         menuTable.defaults();
         menuTable.bottom();
         float width = convertWidth(startButton.getWidth());
@@ -168,7 +168,7 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
     }
 
     protected Actor createCountDownTable(Stack stack, float height, float width, Renderable rRenderable) {
-        countDownTable = new Table();
+        countDownTable = new TableWithEffect();
 
         countDownTable.defaults();
         countDownTable.center();
@@ -186,14 +186,14 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
     }
 
     protected void createGirlSelection() {
-        Stack stack = new Stack();
+        Stack stack = new StackWithEffect();
 
         //Add Image
         float width = convertWidth(girlAvatarButton.getWidth());
         stack.addActor(girlAvatarButton);
 
         // Add button
-        Table buttonTable = new Table();
+        Table buttonTable = new TableWithEffect();
         buttonTable.defaults();
         buttonTable.bottom();
         float buttonWidth = convertWidth(girlButton.getWidth());
@@ -231,7 +231,7 @@ public class MainMenuActor extends TableActor<MainMenuRenderable> implements Upd
     public void update(Renderable rRenderable) {
         // If we have an actor and it's been some time since the last update
         if (actorInitiated && this.renderable.getRenderableLastUpdated() > timestamp) {
-            this.renderable = (MainMenuRenderable) rRenderable;
+            this.renderable = (T) rRenderable;
             this.timestamp = this.renderable.getRenderableLastUpdated();
             // If we have selected an avatar and the countdown is not visible
             if (this.renderable.getSelectedAvatarButton() != null) {

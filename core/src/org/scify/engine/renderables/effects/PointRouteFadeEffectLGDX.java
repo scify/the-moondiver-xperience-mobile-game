@@ -52,6 +52,7 @@ public class PointRouteFadeEffectLGDX extends BaseEffect implements LGDXIgnorabl
                 EffectSequence es = new EffectSequence();
                 // Init by making invisible
                 es.addEffect(new SetAlphaEffect(0.0));
+                es.addEffect(new VisibilityEffect(true));
 
                 if (iCnt > 0) {
                     es.addEffect(new DelayEffect(dStepDuration * iCnt));

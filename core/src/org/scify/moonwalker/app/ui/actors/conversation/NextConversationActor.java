@@ -4,11 +4,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.conversation.ConversationLine;
-import org.scify.engine.renderables.NextConversationRenderable;
+import org.scify.engine.renderables.SingleChoiceConversationRenderable;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.actors.TableActor;
@@ -23,17 +22,17 @@ import org.scify.moonwalker.app.ui.actors.Updateable;
  * and an image path that represents the conversation participant who is saying
  * the line.
  */
-public class NextConversationActor extends TableActor<NextConversationRenderable> implements Updateable {
+public class NextConversationActor extends TableActor<SingleChoiceConversationRenderable> implements Updateable {
 
     protected Label lineLabel;
     protected ResourceLocator resourceLocator;
     protected AppInfo appInfo;
     protected Button button;
-    protected NextConversationRenderable renderable;
+    protected SingleChoiceConversationRenderable renderable;
     protected Image avatarImage;
     protected Image avatarBG;
 
-    public NextConversationActor(Skin skin, NextConversationRenderable renderable) {
+    public NextConversationActor(Skin skin, SingleChoiceConversationRenderable renderable) {
         super(skin, renderable);
         this.renderable = renderable;
         appInfo = AppInfo.getInstance();
@@ -89,7 +88,7 @@ public class NextConversationActor extends TableActor<NextConversationRenderable
     public void update(Renderable renderable) {
         if (this.renderable.getRenderableLastUpdated() > timestamp) {
             System.out.println("setting renderable: " + renderable.getRenderableLastUpdated() + " over: " + this.renderable.getRenderableLastUpdated());
-            this.renderable = (NextConversationRenderable) renderable;
+            this.renderable = (SingleChoiceConversationRenderable) renderable;
             this.timestamp = this.renderable.getRenderableLastUpdated();
             if (this.renderable.getButtonNextStatus()) {
                 enableButton();

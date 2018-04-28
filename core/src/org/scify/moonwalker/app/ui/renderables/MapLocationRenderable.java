@@ -1,13 +1,13 @@
 package org.scify.moonwalker.app.ui.renderables;
 
+import org.scify.engine.renderables.ActionButtonRenderable;
 import org.scify.moonwalker.app.game.Location;
-import org.scify.engine.renderables.ActionButtonWithEffect;
 
-public class MapLocationRenderable extends TableRenderable {
+public class MapLocationRenderable extends FadingTableRenderable {
 
     protected Location location;
     protected String destinationInfo;
-    protected ActionButtonWithEffect button;
+    protected ActionButtonRenderable button;
 
     public MapLocationRenderable(float xPos, float yPos, float width, float height, String id) {
         super(xPos, yPos, width, height, "map_location", id,  "");
@@ -33,11 +33,11 @@ public class MapLocationRenderable extends TableRenderable {
         return destinationInfo;
     }
 
-    public ActionButtonWithEffect getButton() {
+    public ActionButtonRenderable getButton() {
         return button;
     }
 
-    public void setButton(ActionButtonWithEffect button) {
+    public void setButton(ActionButtonRenderable button) {
         this.button = button;
     }
 }

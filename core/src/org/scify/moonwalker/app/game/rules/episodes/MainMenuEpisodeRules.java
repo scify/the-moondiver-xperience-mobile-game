@@ -1,12 +1,12 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
+import org.scify.engine.renderables.ActionButtonRenderable;
 import org.scify.engine.renderables.effects.EffectSequence;
 import org.scify.engine.renderables.effects.FadeEffect;
 import org.scify.engine.renderables.effects.FunctionEffect;
 import org.scify.engine.renderables.effects.VisibilityEffect;
 import org.scify.moonwalker.app.game.SelectedPlayer;
-import org.scify.engine.renderables.ActionButtonWithEffect;
 import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
 
 import java.util.Date;
@@ -152,30 +152,30 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
     protected void createAndAddMainMenuButtons() {
         buttonTitlesAndActionCodes = new LinkedHashMap<>();
 
-        ActionButtonWithEffect start = createActionButton("ΝΕΟ ΠΑΙΧΝΙΔΙ", renderable.START_BUTTON_IMG_PATH, UserActionCode.NEW_GAME);
+        ActionButtonRenderable start = createActionButton("ΝΕΟ ΠΑΙΧΝΙΔΙ", renderable.START_BUTTON_IMG_PATH, UserActionCode.NEW_GAME);
         renderable.setStartGameButton(start);
 
-        ActionButtonWithEffect cont = createActionButton("ΣΥΝΕΧΙΣΕ", renderable.CONTINUE_BUTTON_IMG_PATH, UserActionCode.CONTINUE);
+        ActionButtonRenderable cont = createActionButton("ΣΥΝΕΧΙΣΕ", renderable.CONTINUE_BUTTON_IMG_PATH, UserActionCode.CONTINUE);
         renderable.setContinueGameButton(cont);
 
-        ActionButtonWithEffect toggle = createActionButton("ΗΧΟΣ ON/OFF", renderable.TOGGLE_AUDIO_BUTTON_IMG_PATH, UserActionCode.TOGGLE_AUDIO);
+        ActionButtonRenderable toggle = createActionButton("ΗΧΟΣ ON/OFF", renderable.TOGGLE_AUDIO_BUTTON_IMG_PATH, UserActionCode.TOGGLE_AUDIO);
         renderable.setToggleAudioButton(toggle);
 
-        ActionButtonWithEffect about = createActionButton("ABOUT", renderable.ABOUT_BUTTON_IMG_PATH, UserActionCode.ABOUT);
+        ActionButtonRenderable about = createActionButton("ABOUT", renderable.ABOUT_BUTTON_IMG_PATH, UserActionCode.ABOUT);
         renderable.setAboutButton(about);
 
-        ActionButtonWithEffect quit = createActionButton("ΕΞΟΔΟΣ", renderable.QUIT_BUTTON_IMG_PATH, UserActionCode.QUIT);
+        ActionButtonRenderable quit = createActionButton("ΕΞΟΔΟΣ", renderable.QUIT_BUTTON_IMG_PATH, UserActionCode.QUIT);
         renderable.setQuitButton(quit);
     }
 
     protected void createAvatarSelectionRenderable() {
-        ActionButtonWithEffect boyButton = createActionButton(BOY_BUTTON_ID, renderable.BOY_BUTTON_IMG_PATH, UserActionCode.BOY_SELECTED);
-        ActionButtonWithEffect boyAvatarButton = createActionButton(BOY_AVATAR_BUTTON_ID, renderable.BOY_IMG_PATH, UserActionCode.BOY_SELECTED);
+        ActionButtonRenderable boyButton = createActionButton(BOY_BUTTON_ID, renderable.BOY_BUTTON_IMG_PATH, UserActionCode.BOY_SELECTED);
+        ActionButtonRenderable boyAvatarButton = createActionButton(BOY_AVATAR_BUTTON_ID, renderable.BOY_IMG_PATH, UserActionCode.BOY_SELECTED);
         renderable.setBoyButton(boyButton);
         renderable.setBoyAvatarButton(boyAvatarButton);
 
-        ActionButtonWithEffect girlButton = createActionButton(GIRL_BUTTON_ID, renderable.GIRL_BUTTON_IMG_PATH, UserActionCode.GIRL_SELECTED);
-        ActionButtonWithEffect girlAvatarButton = createActionButton(GIRL_AVATAR_BUTTON_ID, renderable.GIRL_IMG_PATH, UserActionCode.GIRL_SELECTED);
+        ActionButtonRenderable girlButton = createActionButton(GIRL_BUTTON_ID, renderable.GIRL_BUTTON_IMG_PATH, UserActionCode.GIRL_SELECTED);
+        ActionButtonRenderable girlAvatarButton = createActionButton(GIRL_AVATAR_BUTTON_ID, renderable.GIRL_IMG_PATH, UserActionCode.GIRL_SELECTED);
         renderable.setGirlButton(girlButton);
         renderable.setGirlAvatarButton(girlAvatarButton);
 
@@ -208,7 +208,7 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
         currentState.addGameEvent(new GameEvent(AVATAR_SELECTED, newSelection, this));
     }
 
-    protected ActionButtonWithEffect createActionButton(String id, String imgPath, UserActionCode code) {
+    protected ActionButtonRenderable createActionButton(String id, String imgPath, UserActionCode code) {
         return createImageButton(id, imgPath, new UserAction(code), 0, 0);
     }
 

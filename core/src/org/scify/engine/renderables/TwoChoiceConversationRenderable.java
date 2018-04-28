@@ -3,17 +3,17 @@ package org.scify.engine.renderables;
 import org.scify.engine.UserAction;
 import org.scify.engine.UserActionCode;
 import org.scify.engine.conversation.ConversationLine;
-import org.scify.moonwalker.app.ui.renderables.TableRenderable;
+import org.scify.moonwalker.app.ui.renderables.FadingTableRenderable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TwoChoiceConversationRenderable extends TableRenderable {
+public class TwoChoiceConversationRenderable extends FadingTableRenderable {
 
     public final static String BG_IMG_PATH = "img/conversations/bg.png";
     protected String relativeAvatarImgPath;
     protected List<ConversationLine> conversationLines;
-    protected List<ActionButtonWithEffect> buttons;
+    protected List<ActionButtonRenderable> buttons;
 
     public TwoChoiceConversationRenderable(String id) {
         super(0,0,0,0,"two_choice_conversation", id, BG_IMG_PATH);
@@ -50,13 +50,13 @@ public class TwoChoiceConversationRenderable extends TableRenderable {
     }
 
     protected void addPossibleAnswer(ConversationLine line) {
-        ActionButtonWithEffect button = new ActionButtonWithEffect("text_button", "two_selection_answer");
+        ActionButtonRenderable button = new ActionButtonRenderable("text_button", "two_selection_answer");
         button.setTitle(line.getText());
         button.setUserAction(new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, line.getId()));
         buttons.add(button);
     }
 
-    public List<ActionButtonWithEffect> getButtons() {
+    public List<ActionButtonRenderable> getButtons() {
         return buttons;
     }
 }

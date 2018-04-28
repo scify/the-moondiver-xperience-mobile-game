@@ -7,18 +7,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.Renderable;
-import org.scify.engine.renderables.effects.*;
+import org.scify.engine.renderables.effects.Effect;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.LGDXRenderableBookKeeper;
-import org.scify.moonwalker.app.ui.renderables.TableRenderable;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class TableActor<T extends Renderable> extends Table implements IContainerActor<T>, EffectTarget {
+public class TableActor<T extends Renderable> extends TableWithEffect implements IContainerActor {
 
     protected ResourceLocator resourceLocator;
     protected AppInfo appInfo;
@@ -125,31 +124,5 @@ public class TableActor<T extends Renderable> extends Table implements IContaine
         return renderable;
     }
 
-    @Override
-    public EffectTarget apply(Effect toApply) {
-        return toApply.applyTo(this);
-    }
-
-    @Override
-    public Set<Effect> getEffects() {
-        return new HashSet<>(effects);
-    }
-
-    @Override
-    public EffectTarget addEffect(Effect effectOfInterest) {
-        effects.add(effectOfInterest);
-        return this;
-
-    }
-
-    @Override
-    public EffectTarget removeEffect(Effect eToRemove) {
-        effects.remove(eToRemove);
-        return this;
-    }
-
-    protected void init() {
-        renderable.fadeIn();
-    }
 
 }

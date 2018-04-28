@@ -1,20 +1,19 @@
 package org.scify.engine.renderables;
 
 import org.scify.engine.UserAction;
-import org.scify.engine.renderables.Renderable;
 
-public class TextLabel extends Renderable {
+public class TextLabelRenderable extends Renderable {
 
     protected String label;
     protected UserAction userAction;
     protected float padding;
     protected String imgPath;
 
-    public TextLabel(float xPos, float yPos, float width, float height, String type, String id) {
+    public TextLabelRenderable(float xPos, float yPos, float width, float height, String type, String id) {
         super(xPos, yPos, width, height, type, id);
     }
 
-    public TextLabel(String type, String id) {
+    public TextLabelRenderable(String type, String id) {
         super(type, id);
     }
 

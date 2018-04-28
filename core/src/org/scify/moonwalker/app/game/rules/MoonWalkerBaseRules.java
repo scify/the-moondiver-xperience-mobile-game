@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import org.scify.engine.*;
 import org.scify.engine.EpisodeEndState;
 import org.scify.engine.conversation.ConversationLine;
+import org.scify.engine.renderables.ActionButtonRenderable;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.rules.Rules;
 import org.scify.moonwalker.app.MoonWalkerGameState;
@@ -13,11 +14,9 @@ import org.scify.moonwalker.app.game.quiz.Answer;
 import org.scify.engine.UserAction;
 import org.scify.moonwalker.app.game.quiz.Question;
 import org.scify.moonwalker.app.helpers.AppInfo;
-import org.scify.engine.renderables.ActionButtonWithEffect;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction, EpisodeEndState> {
 
@@ -151,9 +150,9 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
         return gsCurrent.eventsQueueContainsEvent("PAUSE_GAME");
     }
 
-    protected ActionButtonWithEffect createEscapeButton() {
+    protected ActionButtonRenderable createEscapeButton() {
         float btnRealSize = appInfo.pixelsWithDensity(ESCAPE_BUTTON_SIZE_PIXELS);
-        ActionButtonWithEffect escape = new ActionButtonWithEffect(0, appInfo.getScreenHeight() - btnRealSize, btnRealSize, btnRealSize, "image_button", "escape_button");
+        ActionButtonRenderable escape = new ActionButtonRenderable(0, appInfo.getScreenHeight() - btnRealSize, btnRealSize, btnRealSize, "image_button", "escape_button");
         escape.setPadding(appInfo.pixelsWithDensity(ESCAPE_BUTTON_PADDING_PIXELS));
         escape.setImgPath("img/close.png");
         return escape;
@@ -163,8 +162,8 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
         currentState.removeAllGameEventsOwnedBy(this);
     }
 
-    protected ActionButtonWithEffect createImageButton(String id, String imgPath, UserAction userAction, float widthPixels, float heightPixels) {
-        ActionButtonWithEffect button = new ActionButtonWithEffect("image_button", id);
+    protected ActionButtonRenderable createImageButton(String id, String imgPath, UserAction userAction, float widthPixels, float heightPixels) {
+        ActionButtonRenderable button = new ActionButtonRenderable("image_button", id);
         button.setImgPath(imgPath);
         button.setUserAction(userAction);
         button.setWidth(appInfo.pixelsWithDensity(widthPixels));

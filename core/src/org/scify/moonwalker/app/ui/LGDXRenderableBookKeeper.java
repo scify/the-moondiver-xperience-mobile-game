@@ -13,12 +13,10 @@ import org.scify.engine.renderables.effects.LGDXIgnorableEffect;
 import org.scify.engine.renderables.effects.libgdx.EffectNotRegisteredException;
 import org.scify.engine.renderables.effects.libgdx.LGDXEffect;
 import org.scify.engine.renderables.effects.libgdx.LGDXEffectFactory;
-import org.scify.engine.renderables.ActionButtonWithEffect;
+import org.scify.engine.renderables.ActionButtonRenderable;
 import org.scify.moonwalker.app.ui.actors.ActorFactory;
-import org.scify.moonwalker.app.ui.actors.IContainerActor;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 
-import java.security.InvalidParameterException;
 import java.util.*;
 
 /**
@@ -189,7 +187,7 @@ public class LGDXRenderableBookKeeper {
 
     protected void addClickListenerIfButton(final Renderable toDraw, Actor newActorForRenderable) {
         if(toDraw.getType().equals("text_button") || toDraw.getType().equals("image_button")) {
-            userInputHandler.addClickListenerForActor((ActionButtonWithEffect) toDraw, newActorForRenderable);
+            userInputHandler.addClickListenerForActor((ActionButtonRenderable) toDraw, newActorForRenderable);
         }
     }
 
