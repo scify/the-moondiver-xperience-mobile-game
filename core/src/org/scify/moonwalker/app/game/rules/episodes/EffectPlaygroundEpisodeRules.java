@@ -1,10 +1,11 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
+import com.badlogic.gdx.math.Vector2;
 import org.scify.engine.GameState;
 import org.scify.engine.renderables.ActionButtonRenderable;
 import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.Renderable;
-import org.scify.engine.renderables.effects.PointRouteFadeEffectLGDX;
+import org.scify.engine.renderables.effects.PointRouteSinglePointTypeEffect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,19 +63,33 @@ public class EffectPlaygroundEpisodeRules extends SimpleTimedImageEpisodeRules {
 //            aTest3.setyPos(50);
 //            ((TextLabelRenderable)aTest3).setLabel("Consequtive Parallels");
 //
-            List<Renderable> lPoints = new ArrayList<>();
+            // Point route with many points alternative
+//            List<Renderable> lPoints = new ArrayList<>();
+//            for (int iCnt=0; iCnt < 10; iCnt++) {
+//                ImageRenderable rPl = new ImageRenderable(10,10,50,50,"point" + String.valueOf(iCnt), "img/close.png");
+//                rPl.setxPos(50 + 50 * iCnt);
+//                rPl.setyPos((float)(50.0 + 100.0 * Math.sin(2.0 * Math.PI * iCnt / 8.0)));
+//                rPl.setVisible(false);
+//
+//                lPoints.add(rPl);
+//                currentState.addRenderable(rPl);
+//            }
+//
+//            PointRouteFadeEffectLGDX pRoute = new PointRouteFadeEffectLGDX(2000, lPoints);
+
+            // Point route with single item type alternative
+            List<Vector2> lvPoints = new ArrayList<>();
+            ImageRenderable rPl = new ImageRenderable(10,10,50,50,"pointType", "img/close.png");
+            rPl.setVisible(false);
+            // Create points
             for (int iCnt=0; iCnt < 10; iCnt++) {
-                ImageRenderable rPl = new ImageRenderable(10,10,50,50,"point" + String.valueOf(iCnt), "img/close.png");
-                rPl.setxPos(50 + 50 * iCnt);
-                rPl.setyPos((float)(50.0 + 100.0 * Math.sin(2.0 * Math.PI * iCnt / 8.0)));
-                rPl.setVisible(false);
-
-                lPoints.add(rPl);
-                currentState.addRenderable(rPl);
+                Vector2 vCur = new Vector2();
+                vCur.set(50 + 50 * iCnt, (float)(50.0));
+                lvPoints.add(vCur);
             }
+            PointRouteSinglePointTypeEffect pRoute = new PointRouteSinglePointTypeEffect(lvPoints, 10.0, 1.0, 5000);
 
-            PointRouteFadeEffectLGDX pRoute = new PointRouteFadeEffectLGDX(2000, lPoints);
-            pRoute.applyTo(lPoints.get(0));
+            rPl.addEffect(pRoute);
 
 //            EffectSequence elConPar = new EffectSequence();
 //
@@ -99,7 +114,7 @@ public class EffectPlaygroundEpisodeRules extends SimpleTimedImageEpisodeRules {
 //
 //            Renderable rPl = new Player(10,10,100,100,"player", "pl");
 //            rPl.apply(elConPar);
-//            currentState.addRenderable(rPl);
+            currentState.addRenderable(rPl);
 
         }
 

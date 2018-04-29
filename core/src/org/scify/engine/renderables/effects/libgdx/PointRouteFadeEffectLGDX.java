@@ -1,7 +1,8 @@
-package org.scify.engine.renderables.effects;
+package org.scify.engine.renderables.effects.libgdx;
 
 import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.Renderable;
+import org.scify.engine.renderables.effects.*;
 
 import java.util.List;
 
