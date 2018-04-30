@@ -120,7 +120,7 @@ public class RoomEpisodeRules extends BaseEpisodeRules {
 
     @Override
     public EpisodeEndState determineEndState(GameState gsCurrent) {
-        EpisodeEndStateCode code = EpisodeEndStateCode.EPISODE_FINISHED_FAILURE;
+        String code = EpisodeEndStateCode.EPISODE_FINISHED_FAILURE;
         if (gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED")) {
             code = EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS;
             conversationRules.cleanUpState(gsCurrent);

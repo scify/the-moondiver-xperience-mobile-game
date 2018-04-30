@@ -8,17 +8,28 @@ public class MoonWalkerScenario extends Scenario {
 
     public MoonWalkerScenario() {
         Episode mainMenuEpisode = new MainMenuEpisode();
-        Episode roomEpisode = new RoomEpisode();
+//        Episode roomEpisode = new RoomEpisode();
         Episode forestLoadingEpisode = new ForestEpisode();
-//        Episode cockpitEpisode = new CockpitEpisode();
 
-        Episode effectPlaygroundEpisode = new EffectPlaygroundEpisode();
-        setFirstEpisode(effectPlaygroundEpisode);
+//        Episode effectPlaygroundEpisode = new EffectPlaygroundEpisode();
+//        setFirstEpisode(effectPlaygroundEpisode);
 
-//        setFirstEpisode(mainMenuEpisode);
+        setFirstEpisode(mainMenuEpisode);
         //addEpisodeAfterCurrent(roomEpisode);
-//        addEpisodeAfter(mainMenuEpisode, forestLoadingEpisode);
+        addEpisodeAfter(mainMenuEpisode, forestLoadingEpisode);
+
+        addEpisodeAfter(forestLoadingEpisode, new MainMenuEpisode() {
+            @Override
+            public boolean isAccessible(EpisodeEndState state) {
+                return state.getEndStateCode().equals(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE);
+            }
+        });
+
+        addEpisodeAfter(forestLoadingEpisode, new CockpitEpisode());
+
 //
+//        Episode mapEpisode = new MapEpisode();
+//        addEpisodeAfter(mainMenuEpisode, mapEpisode);
 
 //        addEpisodeAfter(roomEpisode, forestLoadingEpisode);
 //
@@ -42,28 +53,28 @@ public class MoonWalkerScenario extends Scenario {
 
     @Override
     protected Episode getNextEpisode(EpisodeEndState state) {
-        EpisodeEndStateCode endStateCode = state.getEndStateCode();
+        String endStateCode = state.getEndStateCode();
         switch (endStateCode) {
-            case CALCULATOR_STARTED:
+            case EpisodeEndStateCode.CALCULATOR_STARTED:
                 addTemporaryEpisode(new CalculatorEpisode());
                 break;
-            case CONTACT_SCREEN_EPISODE_STARTED:
+            case EpisodeEndStateCode.CONTACT_SCREEN_EPISODE_STARTED:
                 addTemporaryEpisode(new ContactScreenEpisode());
                 break;
-            case MAP_EPISODE_STARTED:
+            case EpisodeEndStateCode.MAP_EPISODE_STARTED:
                 addTemporaryEpisode(new MapEpisode());
                 break;
-            case SPACESHIP_CHARGER_EPISODE_STARTED:
+            case EpisodeEndStateCode.SPACESHIP_CHARGER_EPISODE_STARTED:
                 addTemporaryEpisode(new SpaceshipChargerEpisode());
                 break;
-            case SIMPLE_TIMED_IMAGE_EPISODE:
+            case EpisodeEndStateCode.SIMPLE_TIMED_IMAGE_EPISODE:
                 addTemporaryEpisode(new SimpleTimedImageEpisode());
                 break;
-            case TEMP_EPISODE_FINISHED:
+            case EpisodeEndStateCode.TEMP_EPISODE_FINISHED:
                 break;
-            case PREVIOUS_EPISODE:
+            case EpisodeEndStateCode.PREVIOUS_EPISODE:
                 return lastEpisode;
-            case APP_QUIT:
+            case EpisodeEndStateCode.APP_QUIT:
                 return  null;
         }
         return super.getNextEpisode(state);

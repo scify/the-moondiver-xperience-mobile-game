@@ -1,11 +1,16 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.scify.engine.*;
 import org.scify.engine.renderables.ActionButtonRenderable;
 import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.game.GameInfo;
 import org.scify.moonwalker.app.game.Location;
 import org.scify.moonwalker.app.game.LocationController;
+import org.scify.moonwalker.app.ui.actors.ImageWithEffect;
 import org.scify.moonwalker.app.ui.renderables.MapLocationRenderable;
 
 import java.util.LinkedList;
@@ -16,6 +21,12 @@ public class MapEpisodeRules extends TemporaryEpisodeRules {
     protected List<Renderable> mapLocationRenderables;
     protected LocationController locationController;
     protected GameInfo gameInfo;
+    protected boolean travelOnly;
+
+
+    public MapEpisodeRules(boolean bTravelOnly) {
+        travelOnly = bTravelOnly;
+    }
 
     @Override
     protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
@@ -23,8 +34,8 @@ public class MapEpisodeRules extends TemporaryEpisodeRules {
             case FINISH_EPISODE:
                 setFieldsForTimedEpisode(gsCurrent, "img/next_day.jpg", 4000);
                 gsCurrent.addGameEvent(new GameEvent("SIMPLE_TIMED_IMAGE_EPISODE_STARTED", null, this));
-                episodeEndedEvents(gsCurrent);
                 setLocation(userAction);
+                episodeEndedEvents(gsCurrent);
                 break;
             default:
                 super.handleUserAction(gsCurrent, userAction);
@@ -36,23 +47,32 @@ public class MapEpisodeRules extends TemporaryEpisodeRules {
         if (!isEpisodeStarted(currentState)) {
             locationController = new LocationController();
             gameInfo = GameInfo.getInstance();
-            super.episodeStartedEvents(currentState);
-            addEpisodeBackgroundImage(currentState, "img/map_europe.png");
-            //addPlayerAvatar(currentState);
+            addEpisodeBackgroundImage(currentState, "img/episode_map/bg.png");
+
+            // Create back button
             ActionButtonRenderable escape = createEscapeButton();
             escape.setUserAction(new UserAction(UserActionCode.BACK));
             currentState.addRenderable(escape);
+
             createMapLocationRenderables();
             currentState.addRenderables(mapLocationRenderables);
+
+            super.episodeStartedEvents(currentState);
         }
     }
 
     protected void createMapLocationRenderables() {
         // use linked list to be ordered
         mapLocationRenderables = new LinkedList<>();
+        // For each location
+        int iCnt = 0;
         for(Location location : locationController.getLocations()) {
-            MapLocationRenderable renderable = new MapLocationRenderable(appInfo.pixelsWithDensity(location.getPosX()), appInfo.pixelsWithDensity((location.getPosY())), appInfo.pixelsWithDensity(150), appInfo.pixelsWithDensity(100), "location");
+            // Create location renderable
+            MapLocationRenderable renderable = new MapLocationRenderable(appInfo.pixelsWithDensity(location.getPosX()),
+                    appInfo.pixelsWithDensity((location.getPosY())), appInfo.pixelsWithDensity(150), appInfo.pixelsWithDensity(100), "location" + String.valueOf(iCnt++));
+            // update its location
             renderable.setLocation(location);
+            // and create corresponding button
             ActionButtonRenderable locationBtn = new ActionButtonRenderable(appInfo.pixelsWithDensity(50), appInfo.pixelsWithDensity(25), appInfo.pixelsWithDensity(20), appInfo.pixelsWithDensity(20), "image_button", "location1Btn");
             //TODO
             locationBtn.setUserAction(new UserAction(UserActionCode.FINISH_EPISODE, location));

@@ -5,6 +5,10 @@ import org.scify.moonwalker.app.game.rules.SinglePlayerRules;
 
 public class BaseEpisodeRules extends SinglePlayerRules {
 
+    public static final String EPISODE_FINISHED = "EPISODE_FINISHED";
+    public static final String EPISODE_STARTED = "EPISODE_STARTED";
+    public static final String CALCULATOR_STARTED = "CALCULATOR_STARTED";
+
     public BaseEpisodeRules () {
         super();
     }
@@ -34,26 +38,26 @@ public class BaseEpisodeRules extends SinglePlayerRules {
 
     @Override
     public boolean isEpisodeFinished(GameState gsCurrent) {
-        return gsCurrent.eventsQueueContainsEventOwnedBy("EPISODE_FINISHED", this);
+        return gsCurrent.eventsQueueContainsEventOwnedBy(EPISODE_FINISHED, this);
     }
 
     protected boolean isEpisodeStarted(GameState gsCurrent) {
-        return gsCurrent.eventsQueueContainsEventOwnedBy("EPISODE_STARTED", this);
+        return gsCurrent.eventsQueueContainsEventOwnedBy(EPISODE_STARTED, this);
     }
 
     @Override
     public EpisodeEndState determineEndState(GameState currentState) {
-        if(currentState.eventsQueueContainsEventOwnedBy("CALCULATOR_STARTED", this))
+        if(currentState.eventsQueueContainsEventOwnedBy(CALCULATOR_STARTED, this))
             return new EpisodeEndState(EpisodeEndStateCode.CALCULATOR_STARTED, cleanUpState(currentState));
         return null;
     }
 
     protected void episodeStartedEvents(GameState currentState) {
-        currentState.addGameEvent(new GameEvent("EPISODE_STARTED", null, this));
+        currentState.addGameEvent(new GameEvent(EPISODE_STARTED, null, this));
     }
 
     protected void episodeEndedEvents(GameState currentState) {
-        currentState.addGameEvent(new GameEvent("EPISODE_FINISHED", null, this));
+        currentState.addGameEvent(new GameEvent(EPISODE_FINISHED, null, this));
     }
 
     protected GameState cleanUpState(GameState currentState) {

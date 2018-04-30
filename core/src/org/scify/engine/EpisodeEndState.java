@@ -11,14 +11,14 @@ public class EpisodeEndState extends EpisodeState {
      * The code describes "how" the episode ended.
      * For example, the episode may end with a "success" or "failure" status
      */
-    protected EpisodeEndStateCode endStateCode;
+    protected String endStateCode;
 
-    public EpisodeEndState(EpisodeEndStateCode endStateCode, GameState gameState) {
+    public EpisodeEndState(String endStateCode, GameState gameState) {
         super(gameState);
         this.endStateCode = endStateCode;
     }
 
-    public EpisodeEndStateCode getEndStateCode() {
+    public String getEndStateCode() {
         return endStateCode;
     }
 

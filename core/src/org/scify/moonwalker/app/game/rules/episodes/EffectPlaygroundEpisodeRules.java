@@ -82,12 +82,12 @@ public class EffectPlaygroundEpisodeRules extends SimpleTimedImageEpisodeRules {
             ImageRenderable rPl = new ImageRenderable(10,10,50,50,"pointType", "img/close.png");
             rPl.setVisible(false);
             // Create points
-            for (int iCnt=0; iCnt < 10; iCnt++) {
+            for (int iCnt=0; iCnt < 5; iCnt++) {
                 Vector2 vCur = new Vector2();
-                vCur.set(50 + 50 * iCnt, (float)(50.0));
+                vCur.set(50 + 50 * iCnt, (float)(50.0 + 20 * Math.sin(2.0 * Math.PI * (float)iCnt / 100.0)));
                 lvPoints.add(vCur);
             }
-            PointRouteSinglePointTypeEffect pRoute = new PointRouteSinglePointTypeEffect(lvPoints, 10.0, 1.0, 5000);
+            PointRouteSinglePointTypeEffect pRoute = new PointRouteSinglePointTypeEffect(lvPoints, 3.0, 2.0, 5000);
 
             rPl.addEffect(pRoute);
 

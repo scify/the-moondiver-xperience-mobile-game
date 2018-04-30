@@ -139,7 +139,6 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
             currentState.addRenderable(renderable);
 
             // Make sure you share that you are started
-            renderable.setVisible(false);
             super.episodeStartedEvents(currentState);
         }
     }
@@ -215,22 +214,33 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
 
     // Updated process
     protected void fadeInStage() {
-        // Fade-in everything
-        EffectSequence fadeInEffects = new EffectSequence();
-        fadeInEffects.addEffect(new FadeEffect(1.0, 0.0, 0));
-        fadeInEffects.addEffect(new VisibilityEffect(true));
-        fadeInEffects.addEffect(new FadeEffect(0.0, 1.0, 1000));
-        fadeInEffects.addEffect(new FunctionEffect(new Runnable() {
+
+        renderable.setAfterFadeIn(new Runnable() {
             @Override
             public void run() {
-
                 renderable.enableInput();
-
             }
-        }));
-        renderable.addEffect(fadeInEffects);
+        });
+        renderable.fadeIn();
+
+//        // Fade-in everything
+//        EffectSequence fadeInEffects = new EffectSequence();
+//        fadeInEffects.addEffect(new FadeEffect(1.0, 0.0, 0));
+//        fadeInEffects.addEffect(new VisibilityEffect(true));
+//        fadeInEffects.addEffect(new FadeEffect(0.0, 1.0, 1000));
+//        fadeInEffects.addEffect(new FunctionEffect(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                renderable.enableInput();
+//
+//            }
+//        }));
+//        renderable.addEffect(fadeInEffects);
 
     }
+
+
 
     protected void initPlayerSelection(GameState gameState) {
         renderable.disableInput();
@@ -259,18 +269,34 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
     protected void fadeOutStage(final GameState gameState) {
         renderable.disableInput();
 
-        gameState.addGameEvent(new GameEvent(AUDIO_STOP_UI, renderable.BG_AUDIO_PATH));
-        gameState.addGameEvent(new GameEvent(AUDIO_DISPOSE_UI, renderable.BG_AUDIO_PATH));
-        // do fade out
-        EffectSequence fadeOutEffects = new EffectSequence();
-        fadeOutEffects.addEffect(new FadeEffect(1.0, 0.0, 1000));
-        fadeOutEffects.addEffect(new FunctionEffect(new Runnable() {
+
+        renderable.setBeforeFadeOut(new Runnable() {
+            @Override
+            public void run() {
+                gameState.addGameEvent(new GameEvent(AUDIO_STOP_UI, renderable.BG_AUDIO_PATH));
+                gameState.addGameEvent(new GameEvent(AUDIO_DISPOSE_UI, renderable.BG_AUDIO_PATH));
+            }
+        });
+
+        renderable.setAfterFadeOut(new Runnable() {
             @Override
             public void run() {
                 endGameAndAddEventWithType(gameState, NEW_GAME);
             }
-        }));
-        renderable.addEffect(fadeOutEffects);
+        });
+
+        renderable.fadeOut();
+
+//        // do fade out
+//        EffectSequence fadeOutEffects = new EffectSequence();
+//        fadeOutEffects.addEffect(new FadeEffect(1.0, 0.0, 1000));
+//        fadeOutEffects.addEffect(new FunctionEffect(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//            }
+//        }));
+//        renderable.addEffect(fadeOutEffects);
 
     }
 

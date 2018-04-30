@@ -10,7 +10,9 @@ import org.scify.moonwalker.app.ui.renderables.ForestRenderable;
 
 import java.util.Set;
 
-public class ForestEpisodeRules extends BaseEpisodeRules{
+public class ForestEpisodeRules extends BaseEpisodeRules {
+    public static final String CONVERSATION_FAIL = "fail";
+    public static final String CONVERSATION_FINISHED = "CONVERSATION_FINISHED";
     protected ForestRenderable renderable;
     protected boolean outroInitiated;
 
@@ -22,18 +24,16 @@ public class ForestEpisodeRules extends BaseEpisodeRules{
 
 
     @Override
-    public GameState getNextState(GameState gsCurrent, UserAction userAction) {
+    public GameState getNextState(final GameState gsCurrent, UserAction userAction) {
         if (conversationRules != null && conversationRules.isFinished() && !outroInitiated) {
             outroInitiated = true;
-            EffectSequence fadeOutEffects = new EffectSequence();
-            fadeOutEffects.addEffect(new FadeEffect(1.0, 0.0, 2000));
-            fadeOutEffects.addEffect(new FunctionEffect(new Runnable() {
+            renderable.setAfterFadeOut(new Runnable() {
                 @Override
                 public void run() {
-                    readyToEndEpisode = true;
+                    endGameAndAddEventWithType(gsCurrent, EPISODE_FINISHED);
                 }
-            }));
-            renderable.addEffect(fadeOutEffects);
+            });
+            renderable.fadeOut();
         } else if (renderable != null && renderable.isChatEnabled()) {
             // Initialize conversation
             createConversation(gsCurrent, "conversations/episode_forest.json");
@@ -42,13 +42,15 @@ public class ForestEpisodeRules extends BaseEpisodeRules{
     }
 
     @Override
-    public void episodeStartedEvents(GameState currentState) {
+    public void episodeStartedEvents(final GameState currentState) {
         if (!isEpisodeStarted(currentState)) {
             renderable = new ForestRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), "forest");
-            renderable.setVisible(false);
+            renderable.fadeIn();
             currentState.addRenderable(renderable);
-            super.episodeStartedEvents(currentState);
             currentState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", renderable.FOREST_AUDIO_PATH));
+
+            super.episodeStartedEvents(currentState);
+
         }
     }
 
@@ -66,17 +68,33 @@ public class ForestEpisodeRules extends BaseEpisodeRules{
     }
 
     @Override
-    public boolean isEpisodeFinished(GameState gsCurrent) {
-        return readyToEndEpisode;
+    protected void onExitConversationOrder(GameState gsCurrent, ConversationLine lineExited) {
+        Set<String> eventTrigger;
+
+        // If we received a conversation "fail" event
+        if(gsCurrent.eventsQueueContainsEvent(ConversationRules.ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT)) {
+            eventTrigger = (Set<String>) gsCurrent.getGameEventsWithType(ConversationRules.ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
+            if (eventTrigger.contains(CONVERSATION_FAIL)) {
+                gsCurrent.addGameEvent(new GameEvent(CONVERSATION_FAIL));
+            }
+        }
+
+        super.onExitConversationOrder(gsCurrent, lineExited);
     }
 
     @Override
     public EpisodeEndState determineEndState(GameState gsCurrent) {
-        EpisodeEndStateCode code = EpisodeEndStateCode.EPISODE_FINISHED_FAILURE;
-        if (gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED")) {
-            code = EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS;
-            conversationRules.cleanUpState(gsCurrent);
+        String code = "";
+        // Handle failed conversation
+        if (gsCurrent.eventsQueueContainsEvent(CONVERSATION_FAIL)) {
+            code = EpisodeEndStateCode.EPISODE_FINISHED_FAILURE;
+            gsCurrent.removeGameEventsWithType(CONVERSATION_FAIL);
         }
+        else
+        if (gsCurrent.eventsQueueContainsEvent(CONVERSATION_FINISHED)) {
+            code = EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS;
+        }
+        conversationRules.cleanUpState(gsCurrent);
 
         return new EpisodeEndState(code, cleanUpState(gsCurrent));
     }
@@ -86,7 +104,7 @@ public class ForestEpisodeRules extends BaseEpisodeRules{
         currentState.addGameEvent(new GameEvent("AUDIO_STOP_UI", renderable.FOREST_AUDIO_PATH));
         currentState.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", renderable.FOREST_AUDIO_PATH));
         currentState.removeGameEventsWithType("CONVERSATION_READY_TO_FINISH");
-        currentState.removeGameEventsWithType("CONVERSATION_FINISHED");
+        currentState.removeGameEventsWithType(CONVERSATION_FINISHED);
         currentState.removeGameEventsWithType("CONVERSATION_STARTED");
         return currentState;
     }

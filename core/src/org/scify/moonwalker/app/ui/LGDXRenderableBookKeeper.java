@@ -280,7 +280,7 @@ public class LGDXRenderableBookKeeper {
         // For each completed effect
         for (Effect eToRemove: toRemove) {
             // DEBUG LINES
-             System.err.println("Removing " + eToRemove + " from " + renderable.toString());
+//             System.err.println("Removing " + eToRemove + " from " + renderable.toString());
             //////////////
             // Remove it
             renderable.removeEffect(eToRemove);

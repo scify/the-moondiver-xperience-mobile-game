@@ -13,6 +13,12 @@ public class ForestRenderable extends FadingTableRenderable {
     public ForestRenderable(float xPos, float yPos, float width, float height, String id) {
         super(xPos, yPos, width, height, "forest", id, BG_IMG_PATH);
         chatEnabled = false;
+        setAfterFadeIn(new Runnable() {
+            @Override
+            public void run() {
+                chatEnabled = true;
+            }
+        });
     }
 
     public boolean isChatEnabled() {
@@ -23,6 +29,4 @@ public class ForestRenderable extends FadingTableRenderable {
         return tableBGRenderable;
     }
 
-    @Override
-    protected void performAfterFadeIn () { chatEnabled = true; }
 }

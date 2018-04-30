@@ -3,7 +3,7 @@ package org.scify.moonwalker.app.ui.actors;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import org.scify.moonwalker.app.ui.renderables.MapLocationRenderable;
 
-public class MapLocationActor extends TableActor {
+public class MapLocationActor extends TableActor<MapLocationRenderable> {
 
     protected MapLocationRenderable renderable;
 
@@ -20,6 +20,7 @@ public class MapLocationActor extends TableActor {
         addButtonCell(this, button);
         row();
         addTextCell(this, String.valueOf(renderable.getDestinationDistance()) + " km").bottom();
+        renderable.setPositionDrawble(true);
 
         //debug();
     }

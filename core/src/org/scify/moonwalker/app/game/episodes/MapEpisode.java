@@ -6,6 +6,6 @@ import org.scify.moonwalker.app.game.rules.episodes.MapEpisodeRules;
 
 public class MapEpisode extends EpisodeWithEndState {
     public MapEpisode() {
-        super(new MapEpisodeRules());
+        super(new MapEpisodeRules(false));
     }
 }

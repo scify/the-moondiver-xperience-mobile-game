@@ -27,7 +27,6 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
     protected int worldY;
     protected Map<String, org.scify.engine.renderables.Renderable> idToRenderable;
     protected ConversationRules conversationRules;
-    protected boolean readyToEndEpisode = false;
     protected AppInfo appInfo;
     protected MoonWalkerPhysicsRules physics;
     protected float ESCAPE_BUTTON_SIZE_PIXELS = 70;

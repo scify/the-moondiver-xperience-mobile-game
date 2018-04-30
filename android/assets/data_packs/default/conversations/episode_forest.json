@@ -5,8 +5,8 @@
   {"id": "4", "order":"4", "speakerId":"player", "text":"[[Χμμ... Το πιλοτήριο έχει κλειδαριά με κωδικό…]", "prerequisites":""},
   {"id": "5", "order":"5", "speakerId":"player", "text":"“Αχά! Μήνυμα. Η θεία. Για να δούμε...", "buttonText":"Chat", "prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone"},
   {"id": "6", "order":"6", "speakerId":"aunt", "text":"[#ffeeaaff]Ο κωδικός για να μπεις είναι #FlyMeToTheMoon! [#d4aa00ff]\u00af[#ffeeaaff]", "prerequisites":""},
-  {"id": "7", "order":"7", "speakerId":"player", "text":"Βάλε τον κωδικό και μπες στο σκάφος", "prerequisites":"", "onExitCurrentOrderTrigger":"end"},
-  {"id": "8", "order":"7", "speakerId":"player", "text":"Φύγε και κάνε τις κάλτσες σου ζευγάρια", "prerequisites":""},
-  {"id": "9", "order":"8", "speakerId":"player", "text":"[Ναι δεν θέλω να μπω στο σκάθος]", "prerequisites":"", "onExitCurrentOrderTrigger":"end"},
-  {"id": "10", "order":"8", "speakerId":"player", "text":"[Πλάκα κανω [#d4aa00ff]\u00af[#ffeeaaff]]", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
+  {"id": "7", "order":"7", "speakerId":"player", "text":"[Βάλε τον κωδικό και μπες στο σκάφος]", "prerequisites":"", "onExitCurrentOrderTrigger":"end"},
+  {"id": "8", "order":"7", "speakerId":"player", "text":"[Φύγε και κάνε τις κάλτσες σου ζευγάρια]", "prerequisites":""},
+  {"id": "9", "order":"8", "speakerId":"player", "text":"[Όχι, ΔΕΝ θέλω να μπω στο σκάφος!]", "prerequisites":"", "onExitCurrentOrderTrigger":"end,fail"},
+  {"id": "10", "order":"8", "speakerId":"player", "text":"[Πλάκα κανω [#d4aa00ff]\u00af[#ffeeaaff]. Μπαίνω!]", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
 ]
