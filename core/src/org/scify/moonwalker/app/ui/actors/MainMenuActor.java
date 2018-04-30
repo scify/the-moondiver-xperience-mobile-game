@@ -83,7 +83,6 @@ public class MainMenuActor<T extends MainMenuRenderable> extends FadingTableActo
         for (Map.Entry<Actor, Renderable> mearCur : getChildrenActorsAndRenderables().entrySet()) {
             // Share that its position is now handled by the table
             mearCur.getValue().setPositionDrawble(false);
-
         }
         //debugAll();
     }

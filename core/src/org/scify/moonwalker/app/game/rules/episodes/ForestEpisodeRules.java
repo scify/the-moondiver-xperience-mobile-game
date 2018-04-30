@@ -2,9 +2,6 @@ package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
 import org.scify.engine.conversation.ConversationLine;
-import org.scify.engine.renderables.effects.EffectSequence;
-import org.scify.engine.renderables.effects.FadeEffect;
-import org.scify.engine.renderables.effects.FunctionEffect;
 import org.scify.moonwalker.app.game.rules.ConversationRules;
 import org.scify.moonwalker.app.ui.renderables.ForestRenderable;
 
@@ -27,7 +24,7 @@ public class ForestEpisodeRules extends BaseEpisodeRules {
     public GameState getNextState(final GameState gsCurrent, UserAction userAction) {
         if (conversationRules != null && conversationRules.isFinished() && !outroInitiated) {
             outroInitiated = true;
-            renderable.setAfterFadeOut(new Runnable() {
+            renderable.addAfterFadeOut(new Runnable() {
                 @Override
                 public void run() {
                     endGameAndAddEventWithType(gsCurrent, EPISODE_FINISHED);

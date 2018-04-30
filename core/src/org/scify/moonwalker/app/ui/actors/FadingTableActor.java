@@ -10,7 +10,4 @@ public class FadingTableActor<T extends FadingTableRenderable> extends TableActo
         super(skin, rRenderable);
     }
 
-    protected void init() {
-        renderable.fadeIn();
-    }
 }

@@ -1,11 +1,10 @@
 package org.scify.moonwalker.app.game.episodes;
 
 import org.scify.engine.EpisodeWithEndState;
-import org.scify.engine.GameState;
-import org.scify.moonwalker.app.game.rules.episodes.MapEpisodeRules;
+import org.scify.moonwalker.app.game.rules.episodes.MapEpisodeOBSOLETERules;
 
 public class MapEpisode extends EpisodeWithEndState {
     public MapEpisode() {
-        super(new MapEpisodeRules(false));
+        super(new MapEpisodeOBSOLETERules(false));
     }
 }

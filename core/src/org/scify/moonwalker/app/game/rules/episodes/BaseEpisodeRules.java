@@ -9,6 +9,8 @@ public class BaseEpisodeRules extends SinglePlayerRules {
     public static final String EPISODE_STARTED = "EPISODE_STARTED";
     public static final String CALCULATOR_STARTED = "CALCULATOR_STARTED";
 
+    protected boolean episodeStarted = false;
+
     public BaseEpisodeRules () {
         super();
     }
@@ -53,7 +55,10 @@ public class BaseEpisodeRules extends SinglePlayerRules {
     }
 
     protected void episodeStartedEvents(GameState currentState) {
-        currentState.addGameEvent(new GameEvent(EPISODE_STARTED, null, this));
+        if (!episodeStarted) {
+            currentState.addGameEvent(new GameEvent(EPISODE_STARTED, null, this));
+            episodeStarted = true;
+        }
     }
 
     protected void episodeEndedEvents(GameState currentState) {
@@ -67,7 +72,7 @@ public class BaseEpisodeRules extends SinglePlayerRules {
     }
 
     protected void endGameAndAddEventWithType(GameState gsCurrent, String gameEventType) {
-        episodeEndedEvents(gsCurrent);
         gsCurrent.addGameEvent(new GameEvent(gameEventType, null, this));
+        episodeEndedEvents(gsCurrent);
     }
 }

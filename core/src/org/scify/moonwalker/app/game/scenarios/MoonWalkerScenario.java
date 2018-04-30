@@ -16,16 +16,16 @@ public class MoonWalkerScenario extends Scenario {
 
         setFirstEpisode(mainMenuEpisode);
         //addEpisodeAfterCurrent(roomEpisode);
-        addEpisodeAfter(mainMenuEpisode, forestLoadingEpisode);
-
-        addEpisodeAfter(forestLoadingEpisode, new MainMenuEpisode() {
-            @Override
-            public boolean isAccessible(EpisodeEndState state) {
-                return state.getEndStateCode().equals(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE);
-            }
-        });
-
-        addEpisodeAfter(forestLoadingEpisode, new CockpitEpisode());
+//        addEpisodeAfter(mainMenuEpisode, forestLoadingEpisode);
+//
+//        addEpisodeAfter(forestLoadingEpisode, new MainMenuEpisode() {
+//            @Override
+//            public boolean isAccessible(EpisodeEndState state) {
+//                return state.getEndStateCode().equals(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE);
+//            }
+//        });
+//
+//        addEpisodeAfter(forestLoadingEpisode, new CockpitEpisode());
 
 //
 //        Episode mapEpisode = new MapEpisode();

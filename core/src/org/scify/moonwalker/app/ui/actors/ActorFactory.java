@@ -228,8 +228,10 @@ public class ActorFactory extends ComponentFactory {
     }
 
     private Actor createMapLocationActor(MapLocationRenderable renderable) {
-        MapLocationActor mapLocationActor = new MapLocationActor(skin, renderable, createButton(renderable.getButton()));
-        return mapLocationActor;
+//        MapLocationActor mapLocationActor = new MapLocationActor(skin, renderable, createButton(renderable.getButton()));
+//        return mapLocationActor;
+        // TODO: correct it
+        return null;
     }
 
     private Actor createNextConversationActor(SingleChoiceConversationRenderable renderable) {

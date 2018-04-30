@@ -7,18 +7,21 @@ import org.scify.engine.renderables.effects.FadeEffect;
 import org.scify.engine.renderables.effects.FunctionEffect;
 import org.scify.engine.renderables.effects.VisibilityEffect;
 
-public class FadingTableRenderable extends TableRenderable {
-    protected Runnable beforeFadeIn;
-    protected Runnable afterFadeIn;
-    protected Runnable beforeFadeOut;
-    protected Runnable afterFadeOut;
+import java.util.ArrayList;
+import java.util.List;
 
-    public void setBeforeFadeOut(Runnable beforeFadeOut) {
-        this.beforeFadeOut = beforeFadeOut;
+public class FadingTableRenderable extends TableRenderable {
+    protected List<Runnable> beforeFadeIn = new ArrayList<>();
+    protected List<Runnable> afterFadeIn = new ArrayList<>();
+    protected List<Runnable> beforeFadeOut = new ArrayList<>();
+    protected List<Runnable> afterFadeOut = new ArrayList<>();
+
+    public void addBeforeFadeOut(Runnable beforeFadeOut) {
+        this.beforeFadeOut.add(beforeFadeOut);
     }
 
-    public void setAfterFadeOut(Runnable afterFadeOut) {
-        this.afterFadeOut = afterFadeOut;
+    public void addAfterFadeOut(Runnable afterFadeOut) {
+        this.afterFadeOut.add(afterFadeOut);
     }
 
     public FadingTableRenderable(String type, String id) {
@@ -48,65 +51,44 @@ public class FadingTableRenderable extends TableRenderable {
     }
 
     public void fadeIn () {
-        if (beforeFadeIn != null) {
-            beforeFadeIn.run();
-        }
-        // TODO: Agree on before fade in and after fade in
-
         EffectSequence fadeInEffects = new EffectSequence();
-        fadeInEffects.addEffect(new FunctionEffect(new Runnable() {
-            @Override
-            public void run() {
-                if (beforeFadeIn != null) {
-                    beforeFadeIn.run();
-                }
-            }
-        }));
+        // Add before effects
+        for (final Runnable rCur : beforeFadeIn) {
+            fadeInEffects.addEffect(new FunctionEffect(rCur));
+        }
+        // Add actual fade effect
         fadeInEffects.addEffect(new FadeEffect(1.0, 0.0, 0));
         fadeInEffects.addEffect(new VisibilityEffect(true));
         fadeInEffects.addEffect(new FadeEffect(0.0, 1.0, 2000));
-        fadeInEffects.addEffect(new FunctionEffect(new Runnable() {
-            @Override
-            public void run() {
-                if (afterFadeIn != null) {
-                    afterFadeIn.run();
-                }
-            }
-        }));
+        // Add after effects
+        for (final Runnable rCur : afterFadeIn) {
+            fadeInEffects.addEffect(new FunctionEffect(rCur));
+        }
         this.addEffect(fadeInEffects);
     }
 
     public void setBeforeFadeIn(Runnable beforeFadeIn) {
-        this.beforeFadeIn = beforeFadeIn;
+        this.beforeFadeIn.add(beforeFadeIn);
     }
 
-    public void setAfterFadeIn(Runnable afterFadeIn) {
-        this.afterFadeIn = afterFadeIn;
+    public void addAfterFadeIn(Runnable afterFadeIn) {
+        this.afterFadeIn.add(afterFadeIn);
     }
 
     public void fadeOut () {
-        // TODO: Agree on before fade out and after fade out
-
-
         EffectSequence fadeOutEffects = new EffectSequence();
-        fadeOutEffects.addEffect(new FunctionEffect(new Runnable() {
-            @Override
-            public void run() {
-                if (beforeFadeOut != null) {
-                    beforeFadeOut.run();
-                }
-            }
-        }));
+        // Add before effects
+        for (final Runnable rCur : beforeFadeOut) {
+            fadeOutEffects.addEffect(new FunctionEffect(rCur));
+        }
+        // Add actutal fade effects
         fadeOutEffects.addEffect(new FadeEffect(1.0, 0.0, 2000));
         fadeOutEffects.addEffect(new VisibilityEffect(false));
-        fadeOutEffects.addEffect(new FunctionEffect(new Runnable() {
-            @Override
-            public void run() {
-                if (afterFadeOut != null) {
-                    afterFadeOut.run();
-                }
-            }
-        }));
+
+        // Add after effects
+        for (final Runnable rCur : afterFadeOut) {
+            fadeOutEffects.addEffect(new FunctionEffect(rCur));
+        }
         this.addEffect(fadeOutEffects);
 
     }

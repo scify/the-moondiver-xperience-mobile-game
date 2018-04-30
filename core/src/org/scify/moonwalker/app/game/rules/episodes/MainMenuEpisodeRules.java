@@ -2,10 +2,6 @@ package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
 import org.scify.engine.renderables.ActionButtonRenderable;
-import org.scify.engine.renderables.effects.EffectSequence;
-import org.scify.engine.renderables.effects.FadeEffect;
-import org.scify.engine.renderables.effects.FunctionEffect;
-import org.scify.engine.renderables.effects.VisibilityEffect;
 import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
 
@@ -13,7 +9,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class MainMenuEpisodeRules extends BaseEpisodeRules {
+public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable> {
 
     public static final String AUDIO_START_UI = "AUDIO_START_UI";
     public static final String AUDIO_START_LOOP_UI = "AUDIO_START_LOOP_UI";
@@ -37,7 +33,6 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
     public static final String MAIN_MENU_ID = "main_menu";
 
     protected Map<String, UserActionCode> buttonTitlesAndActionCodes;
-    protected MainMenuRenderable renderable;
     protected boolean mainMenuButtonsEnabled;
     protected boolean fadeInEffectsCompleted;
 
@@ -45,7 +40,6 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
         super();
         mainMenuButtonsEnabled = true;
         fadeInEffectsCompleted = false;
-        renderable = null;
     }
 
     @Override
@@ -82,7 +76,7 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
                 case QUIT:
                     if (mainMenuButtonsEnabled) {
                         gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
-                        endGameAndAddEventWithType(gameState, APP_QUIT);
+                        endEpisode(gameState, APP_QUIT);
                     }
                     break;
                 case BOY_SELECTED:
@@ -124,21 +118,26 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
     public void episodeStartedEvents(GameState currentState) {
         // If we are just starting
         if (!isEpisodeStarted(currentState)) {
-            // Create the main renderable (and friends)
+            // Create the main renderable
+            // and update rule class variable
             renderable = new MainMenuRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), MAIN_MENU_ID);
+
+            // Create contained elements
             createAndAddMainMenuButtons();
             createAvatarSelectionRenderable();
 
             // Start sound
             currentState.addGameEvent(new GameEvent(AUDIO_START_LOOP_UI, renderable.BG_AUDIO_PATH));
 
-            // Perform fade in process
-            fadeInStage();
-            //addEpisodeBackgroundImage(currentState, "img/mainMenu/bg.png");
+            // Enable input after fade in
+            renderable.addAfterFadeIn(new Runnable() {
+                @Override
+                public void run() {
+                    renderable.enableInput();
+                }
+            });
 
-            currentState.addRenderable(renderable);
-
-            // Make sure you share that you are started
+            // Call parent starting process
             super.episodeStartedEvents(currentState);
         }
     }
@@ -197,10 +196,6 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
         return endState;
     }
 
-    @Override
-    public void episodeEndedEvents(GameState currentState) {
-        currentState.addGameEvent(new GameEvent(EPISODE_FINISHED, null, this));
-    }
 
     protected void removePreviousAvatarSelectionAndAddNew(GameState currentState, String newSelection) {
         currentState.removeGameEventsWithType(AVATAR_SELECTED);
@@ -212,33 +207,6 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
     }
 
 
-    // Updated process
-    protected void fadeInStage() {
-
-        renderable.setAfterFadeIn(new Runnable() {
-            @Override
-            public void run() {
-                renderable.enableInput();
-            }
-        });
-        renderable.fadeIn();
-
-//        // Fade-in everything
-//        EffectSequence fadeInEffects = new EffectSequence();
-//        fadeInEffects.addEffect(new FadeEffect(1.0, 0.0, 0));
-//        fadeInEffects.addEffect(new VisibilityEffect(true));
-//        fadeInEffects.addEffect(new FadeEffect(0.0, 1.0, 1000));
-//        fadeInEffects.addEffect(new FunctionEffect(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                renderable.enableInput();
-//
-//            }
-//        }));
-//        renderable.addEffect(fadeInEffects);
-
-    }
 
 
 
@@ -257,7 +225,7 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
 
         // If we have reached below zero
         if (renderable.getCountDownValue() < 0) {
-            fadeOutStage(gameState);
+            endEpisode(gameState, NEW_GAME);
         } else {
             // inform UI to update the cooldown
             gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
@@ -266,11 +234,10 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
 
     }
 
-    protected void fadeOutStage(final GameState gameState) {
+    protected void endEpisode(final GameState gameState, String sEpisodeEndEventType) {
         renderable.disableInput();
 
-
-        renderable.setBeforeFadeOut(new Runnable() {
+        renderable.addBeforeFadeOut(new Runnable() {
             @Override
             public void run() {
                 gameState.addGameEvent(new GameEvent(AUDIO_STOP_UI, renderable.BG_AUDIO_PATH));
@@ -278,25 +245,7 @@ public class MainMenuEpisodeRules extends BaseEpisodeRules {
             }
         });
 
-        renderable.setAfterFadeOut(new Runnable() {
-            @Override
-            public void run() {
-                endGameAndAddEventWithType(gameState, NEW_GAME);
-            }
-        });
-
-        renderable.fadeOut();
-
-//        // do fade out
-//        EffectSequence fadeOutEffects = new EffectSequence();
-//        fadeOutEffects.addEffect(new FadeEffect(1.0, 0.0, 1000));
-//        fadeOutEffects.addEffect(new FunctionEffect(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//            }
-//        }));
-//        renderable.addEffect(fadeOutEffects);
+        endGameAndAddEventWithType(gameState, sEpisodeEndEventType);
 
     }
 

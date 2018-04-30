@@ -16,7 +16,7 @@ import org.scify.moonwalker.app.ui.renderables.MapLocationRenderable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MapEpisodeRules extends TemporaryEpisodeRules {
+public class MapEpisodeOBSOLETERules extends TemporaryEpisodeRules {
 
     protected List<Renderable> mapLocationRenderables;
     protected LocationController locationController;
@@ -24,7 +24,7 @@ public class MapEpisodeRules extends TemporaryEpisodeRules {
     protected boolean travelOnly;
 
 
-    public MapEpisodeRules(boolean bTravelOnly) {
+    public MapEpisodeOBSOLETERules(boolean bTravelOnly) {
         travelOnly = bTravelOnly;
     }
 
@@ -68,8 +68,8 @@ public class MapEpisodeRules extends TemporaryEpisodeRules {
         int iCnt = 0;
         for(Location location : locationController.getLocations()) {
             // Create location renderable
-            MapLocationRenderable renderable = new MapLocationRenderable(appInfo.pixelsWithDensity(location.getPosX()),
-                    appInfo.pixelsWithDensity((location.getPosY())), appInfo.pixelsWithDensity(150), appInfo.pixelsWithDensity(100), "location" + String.valueOf(iCnt++));
+            MapLocationRenderable renderable = new MapLocationRenderable(appInfo.convertX(location.getPosX()),
+                    appInfo.convertY((location.getPosY())), appInfo.pixelsWithDensity(150), appInfo.pixelsWithDensity(100), "location" + String.valueOf(iCnt++));
             // update its location
             renderable.setLocation(location);
             // and create corresponding button
