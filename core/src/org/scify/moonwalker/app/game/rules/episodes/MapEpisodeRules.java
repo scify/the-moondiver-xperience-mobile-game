@@ -62,6 +62,8 @@ public class MapEpisodeRules extends FadingEpisodeRules<MapEpisodeRenderable> {
             renderable.setNextLocation((Location)userAction.getActionPayload());
             // Also update game info
             gameInfo.setNextLocation((Location)userAction.getActionPayload());
+
+            System.err.println("Selected location! :)" + ((Location)userAction.getActionPayload()).getName());
         }
 
         super.handleUserAction(gsCurrent, userAction);

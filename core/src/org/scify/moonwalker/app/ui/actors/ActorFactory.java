@@ -85,6 +85,7 @@ public class ActorFactory extends ComponentFactory {
                 toReturn = createTextButton((ActionButtonRenderable) renderable);
                 break;
             case Renderable.IMAGE_BUTTON:
+                // TODO: Check
                 toReturn = createImageButton((ActionButtonRenderable) renderable);
                 break;
             case Renderable.CALCULATOR:
@@ -229,6 +230,7 @@ public class ActorFactory extends ComponentFactory {
 
     private Actor createMapEpisodeActor(MapEpisodeRenderable renderable) {
         MapEpisodeActor mapEpisodeActor = new MapEpisodeActor(skin, renderable);
+        mapEpisodeActor.setZIndex(0);
         return mapEpisodeActor;
     }
 

@@ -1,8 +1,10 @@
 package org.scify.moonwalker.app.game.scenarios;
 
+import com.badlogic.gdx.Game;
 import org.scify.engine.*;
 import org.scify.engine.EpisodeEndStateCode;
 import org.scify.moonwalker.app.game.GameInfo;
+import org.scify.moonwalker.app.game.LocationController;
 import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.game.episodes.*;
 import org.scify.moonwalker.app.helpers.AppInfo;
@@ -10,7 +12,8 @@ import org.scify.moonwalker.app.helpers.AppInfo;
 public class MoonWalkerScenario extends Scenario {
 
     public MoonWalkerScenario() {
-        createBasicScenario();
+//        createBasicScenario();
+        createTestingScenario();
     }
 
     @Override
@@ -56,5 +59,16 @@ public class MoonWalkerScenario extends Scenario {
         Episode cockpit = new CockpitEpisode();
         addEpisodeAfter(forest, cockpit);
         return mainMenu;
+    }
+
+    protected Episode createTestingScenario() {
+        Episode mapEpisode = new MapEpisode();
+        setFirstEpisode(mapEpisode);
+        GameInfo info = GameInfo.getInstance();
+        LocationController lc = new LocationController();
+
+        info.setCurrentLocation(lc.getLocations().get(0));
+        info.setNextAllowedLocation(lc.getLocations().get(1));
+        return mapEpisode;
     }
 }

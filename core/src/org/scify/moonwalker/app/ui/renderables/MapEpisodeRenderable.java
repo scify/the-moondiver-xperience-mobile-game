@@ -15,6 +15,8 @@ import java.util.List;
 public class MapEpisodeRenderable extends FadingTableRenderable {
 
     public static final String MAP_SELECT_ACTION = "MAP_SELECT";
+    public static final String BG_IMAGE_PATH = "img/episode_map/bg.png";
+
     protected Location currentLocation;
     protected Location nextAllowedLocation;
     protected boolean locationSelected;
@@ -30,7 +32,8 @@ public class MapEpisodeRenderable extends FadingTableRenderable {
 
 
     public MapEpisodeRenderable(float xPos, float yPos, float width, float height, String id, List<Location> lLocations) {
-        super(xPos, yPos, width, height, Renderable.MAP_LOCATION, id,  "img/episode_map/bg.png");
+        super(xPos, yPos, width, height, Renderable.MAP_LOCATION, id, BG_IMAGE_PATH);
+
         locations = lLocations;
     }
 

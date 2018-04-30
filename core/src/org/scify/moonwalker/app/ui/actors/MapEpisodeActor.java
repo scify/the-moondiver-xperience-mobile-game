@@ -20,6 +20,7 @@ public class MapEpisodeActor extends FadingTableActor<MapEpisodeRenderable> impl
 
     public MapEpisodeActor(Skin skin, MapEpisodeRenderable rRenderable) {
         super(skin, rRenderable);
+        addBackground(renderable.getTableBGRenderable());
 
         createAndAddLocationPoints();
         createAndAddLocationImages();
@@ -69,9 +70,6 @@ public class MapEpisodeActor extends FadingTableActor<MapEpisodeRenderable> impl
             distanceHUD.setText(String.valueOf(lTarget.getDistanceFromLocation(renderable.getCurrentLocation())));
             // Update mission
             missionHUD.setText(lTarget.getMission());
-
-            // Share that we performed the update as needed
-            renderable.wasUpdated();
         }
     }
 }
