@@ -63,7 +63,7 @@ public class TwoChoiceConversationActor extends FadingTableActor<TwoChoiceConver
 
         add().height(height).width(0.01f * width);
 
-        //button
+        //closeButton
         Table buttonsTable = new Table();
         buttonsTable.defaults();
         buttonsTable.center();

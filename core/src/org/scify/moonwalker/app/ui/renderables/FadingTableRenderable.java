@@ -67,6 +67,8 @@ public class FadingTableRenderable extends TableRenderable {
         this.addEffect(fadeInEffects);
     }
 
+
+
     public void setBeforeFadeIn(Runnable beforeFadeIn) {
         this.beforeFadeIn.add(beforeFadeIn);
     }

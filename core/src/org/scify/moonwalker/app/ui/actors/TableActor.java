@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class TableActor<T extends Renderable> extends TableWithEffect implements IContainerActor {
+public class TableActor<T extends Renderable> extends TableWithEffect implements IContainerActor<T> {
 
     protected ResourceLocator resourceLocator;
     protected AppInfo appInfo;
@@ -101,17 +101,21 @@ public class TableActor<T extends Renderable> extends TableWithEffect implements
     }
 
     protected float convertHeight(float initialHeight) {
-        int initialBackgroundHeight = 1080;
-        float ret = getHeight() * initialHeight;
-        ret = ret / initialBackgroundHeight;
-        return ret;
+        // OBSOLETE:
+//        int initialBackgroundHeight = 1080;
+//        float ret = getHeight() * initialHeight;
+//        ret = ret / initialBackgroundHeight;
+//        return ret;
+        return appInfo.convertY(initialHeight);
     }
 
     protected float convertWidth(float initialWidth) {
-        int initialBackgroundWidth = 1920;
-        float ret = getWidth() * initialWidth;
-        ret = ret / initialBackgroundWidth;
-        return ret;
+        // OBSOLETE:
+//        int initialBackgroundWidth = 1920;
+//        float ret = getWidth() * initialWidth;
+//        ret = ret / initialBackgroundWidth;
+//        return ret;
+        return appInfo.convertX(initialWidth);
     }
 
     @Override

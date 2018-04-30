@@ -28,7 +28,7 @@ public class RoomRenderable extends FadingTableRenderable {
 
 
     public RoomRenderable(float xPos, float yPos, float width, float height, String id, boolean isBoy) {
-        super(xPos, yPos, width, height, Renderable.ROOM, id, isBoy ? BOY_BG_IMG_PATH : GIRL_BG_IMG_PATH);
+        super(xPos, yPos, width, height, Renderable.ACTOR_EPISODE_ROOM, id, isBoy ? BOY_BG_IMG_PATH : GIRL_BG_IMG_PATH);
 
         permanentlyOn = false;
         chatEnabled = false;

@@ -40,14 +40,14 @@ public class ActorFactory extends ComponentFactory {
     public Actor createResourceForType(Renderable renderable) {
         Actor toReturn;
         switch (renderable.getType()) {
-            case Renderable.LABEL:
+            case Renderable.ACTOR_LABEL:
                 Label label = new LabelWithEffect("", skin);
                 label.setWidth(renderable.getWidth());
                 label.setHeight(renderable.getHeight());
                 label.setWrap(true);
                 toReturn = label;
                 break;
-            case Renderable.ROTATABLE_LABEL:
+            case Renderable.ACTOR_ROTATABLE_LABEL:
                 Stack gParent = new StackWithEffect();
                 gParent.setTransform(true);
                 label = new Label(((TextLabelRenderable)renderable).getLabel(), skin);
@@ -57,22 +57,22 @@ public class ActorFactory extends ComponentFactory {
                 gParent.add(label);
                 toReturn = gParent;
                 break;
-            case Renderable.IMAGE:
+            case Renderable.ACTOR_IMAGE:
                 toReturn = createImage(renderable.getImgPath(), renderable);
                 break;
-            case Renderable.MAIN_MENU:
+            case Renderable.ACTOR_EPISODE_MAIN_MENU:
                 toReturn = createMainMenuActor((MainMenuRenderable) renderable);
                 break;
-            case Renderable.ROOM:
+            case Renderable.ACTOR_EPISODE_ROOM:
                 toReturn = createRoomActor((RoomRenderable) renderable);
                 break;
-            case Renderable.FOREST:
+            case Renderable.ACTOR_EPISODE_FOREST:
                 toReturn = createForestActor((ForestRenderable) renderable);
                 break;
-            case Renderable.COCKPIT:
+            case Renderable.ACTOR_EPISODE_COCKPIT:
                 toReturn = createCockpitActor((CockpitRenderable) renderable);
                 break;
-            case Renderable.ROTATABLE_TEXT_BUTTON:
+            case Renderable.ACTOR_ROTATABLE_TEXT_BUTTON:
                 gParent = new StackWithEffect();
                 gParent.setTransform(true);
                 TextButton tbBtn =  createTextButton((ActionButtonRenderable) renderable);
@@ -81,35 +81,35 @@ public class ActorFactory extends ComponentFactory {
                 gParent.add(tbBtn);
                 toReturn = gParent;
                 break;
-            case Renderable.TEXT_BUTTON:
+            case Renderable.ACTOR_TEXT_BUTTON:
                 toReturn = createTextButton((ActionButtonRenderable) renderable);
                 break;
-            case Renderable.IMAGE_BUTTON:
+            case Renderable.ACTOR_IMAGE_BUTTON:
                 // TODO: Check
                 toReturn = createImageButton((ActionButtonRenderable) renderable);
                 break;
-            case Renderable.CALCULATOR:
+            case Renderable.ACTOR_EPISODE_CALCULATOR:
                 toReturn = new CalculatorComponent(skin);
                 break;
-            case Renderable.SPACESHIP_CHARGER:
+            case Renderable.ACTOR_EPISODE_SPACESHIP_CHARGER:
                 toReturn = createSpaceshipControllerActor((SpaceshipChargerRenderable) renderable);
                 break;
-            case Renderable.MAP_LOCATION:
+            case Renderable.ACTOR_EPISODE_MAP_LOCATION:
                 toReturn = createMapEpisodeActor((MapEpisodeRenderable) renderable);
                 break;
-            case Renderable.NEXT_CONVERSATION:
+            case Renderable.CONVERSATION_SINGLE_CHOICE:
                 toReturn = createNextConversationActor((SingleChoiceConversationRenderable) renderable);
                 break;
-            case Renderable.MULTIPLE_CHOICE_CONVERSATION:
+            case Renderable.CONVERSATION_MULTIPLE_CHOICE:
                 toReturn = createMultipleChoiceConversationActor((MultipleChoiceConversationRenderable) renderable);
                 break;
-            case Renderable.TWO_CHOICE_CONVERSATION:
+            case Renderable.CONVERSATION_TWO_CHOICE:
                 toReturn = createTwoChoiceConversationActor((TwoChoiceConversationRenderable) renderable);
                 break;
-            case Renderable.CONTACT_SCREEN:
+            case Renderable.ACTOR_EPISODE_CONTACT_SCREEN:
                 toReturn = createContactScreenActor((ContactScreenRenderable) renderable);
                 break;
-            case Renderable.TABLE:
+            case Renderable.ACTOR_TABLE:
                 toReturn = createTableActor((TableRenderable)renderable);
                 break;
             default:
@@ -137,9 +137,9 @@ public class ActorFactory extends ComponentFactory {
     }
 
     protected Button createButton(ActionButtonRenderable button) {
-        if (button.getType().equals(Renderable.IMAGE_BUTTON))
+        if (button.getType().equals(Renderable.ACTOR_IMAGE_BUTTON))
             return createImageButton(button);
-        else if (button.getType().equals(Renderable.TEXT_BUTTON))
+        else if (button.getType().equals(Renderable.ACTOR_TEXT_BUTTON))
             return createTextButton(button);
         return null;
     }

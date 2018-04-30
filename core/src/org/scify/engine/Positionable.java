@@ -23,7 +23,7 @@ public abstract class Positionable {
         return positionDrawable;
     }
 
-    public void setPositionDrawble(boolean drawblePosition) {
+    public void setPositionDrawable(boolean drawblePosition) {
         this.positionDrawable = drawblePosition;
     }
 

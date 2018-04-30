@@ -82,7 +82,7 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
         // For every important child
         for (Map.Entry<Actor, Renderable> mearCur : getChildrenActorsAndRenderables().entrySet()) {
             // Share that its position is now handled by the table
-            mearCur.getValue().setPositionDrawble(false);
+            mearCur.getValue().setPositionDrawable(false);
         }
         //debugAll();
     }
@@ -106,7 +106,7 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
         float width = convertWidth(boyAvatarButton.getWidth());
         stack.addActor(boyAvatarButton);
 
-        // Add button
+        // Add closeButton
         Table buttonTable = new TableActor<TableRenderable>(getSkin(), this.renderable);
         buttonTable.defaults();
         buttonTable.bottom();
@@ -191,7 +191,7 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
         float width = convertWidth(girlAvatarButton.getWidth());
         stack.addActor(girlAvatarButton);
 
-        // Add button
+        // Add closeButton
         Table buttonTable = new TableWithEffect();
         buttonTable.defaults();
         buttonTable.bottom();

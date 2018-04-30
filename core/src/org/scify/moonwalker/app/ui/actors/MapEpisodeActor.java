@@ -6,6 +6,7 @@ import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.game.Location;
 import org.scify.moonwalker.app.ui.renderables.MapEpisodeRenderable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,42 +21,78 @@ public class MapEpisodeActor extends FadingTableActor<MapEpisodeRenderable> impl
 
     public MapEpisodeActor(Skin skin, MapEpisodeRenderable rRenderable) {
         super(skin, rRenderable);
-        addBackground(renderable.getTableBGRenderable());
+        setWidth(appInfo.getScreenWidth());
+        setHeight(appInfo.getScreenHeight());
+        addBackground(renderable.getTableBGRenderable(), appInfo.getScreenWidth(), appInfo.getScreenHeight());
 
-        createAndAddLocationPoints();
-        createAndAddLocationImages();
+        init();
+    }
+
+    protected void init() {
         createAndAddLocationNameHUD();
         createAndAddDistanceHUD();
         createAndAddMissionHUD();
+
+        createAndAddLocationPoints();
+        createAndAddLocationImages();
+
+        createAndAddExitButton();
+
     }
 
-    private void createAndAddMissionHUD() {
+    protected Actor createAndAddExitButton() {
+        Actor closeButton = (Actor)(bookKeeper.getUIRepresentationOfRenderable(renderable.getCloseButton()));
+        getChildrenActorsAndRenderables().put(closeButton, renderable.getCloseButton());
+        return closeButton;
+    }
+
+    private Actor createAndAddMissionHUD() {
         missionHUD = (LabelWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getMissionHUD());
         getChildrenActorsAndRenderables().put(missionHUD, renderable.getMissionHUD());
+        return missionHUD;
     }
 
-    private void createAndAddDistanceHUD() {
+    private Actor createAndAddDistanceHUD() {
         distanceHUD = (LabelWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getDistanceHUD());
         getChildrenActorsAndRenderables().put(distanceHUD, renderable.getDistanceHUD());
+
+        return distanceHUD;
     }
 
-    private void createAndAddLocationNameHUD() {
+    private Actor createAndAddLocationNameHUD() {
         locationNameHUD = (LabelWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getLocationNameHUD());
         getChildrenActorsAndRenderables().put(locationNameHUD, renderable.getLocationNameHUD());
+        return locationNameHUD;
     }
 
-    private void createAndAddLocationImages() {
-        // TODO: Later
+    private List<Actor> createAndAddLocationImages() {
+        List<Actor> lRes = new ArrayList<>();
+        // For each location point
+        for (Renderable rCur : renderable.getLocationNameLabels()) {
+            // Create corresponding point img
+            Actor aTmp = (Actor)bookKeeper.getUIRepresentationOfRenderable(rCur);
+            // and add it to important children
+            getChildrenActorsAndRenderables().put(aTmp, rCur);
+            // add it to return list
+            lRes.add(aTmp);
+        };
+
+        return lRes;
     }
 
-    private void createAndAddLocationPoints() {
+    private List<Actor> createAndAddLocationPoints() {
+        List<Actor> lRes = new ArrayList<>();
         // For each location point
         for (Renderable rCur : renderable.getLocationPoints()) {
             // Create corresponding point img
             Actor aTmp = (Actor)bookKeeper.getUIRepresentationOfRenderable(rCur);
             // and add it to important children
             getChildrenActorsAndRenderables().put(aTmp, rCur);
+            // add it to return list
+            lRes.add(aTmp);
         };
+
+        return lRes;
     }
 
 

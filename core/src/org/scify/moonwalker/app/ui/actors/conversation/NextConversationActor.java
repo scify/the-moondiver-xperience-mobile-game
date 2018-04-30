@@ -72,7 +72,7 @@ public class NextConversationActor extends TableActor<SingleChoiceConversationRe
         add(lineLabel).center().width(width * 0.64f);
 
         add().height(height).width(0.01f * width);
-        //button
+        //closeButton
         add(button).right().width(0.2f * width);
         if (nextButtonVisibility)
             enableButton();

@@ -9,18 +9,18 @@ public class LocationController {
 
     public LocationController() {
         locations = new LinkedList<>();
-        Location greece = new Location("ΕΛΛΑΔΑ", "img/globe.png", 390, 210, "GreekItem");
-        Location uk = new Location("Ηνωμένο Βασίλειο", "img/globe.png", 550, 30, "UKItem");
-        Location france = new Location("Γαλλία", "img/globe.png", 460, 20, "FrenchItem");
-        Location poland = new Location("Πολωνία", "img/globe.png", 510, 190, "PolishItem");
-        Location spain = new Location("Ισπανία", "img/globe.png", 400, 30, "SpanishItem");
-        Location italy = new Location("Ιταλία", "img/globe.png", 410, 120, "ItalianItem");
-        Location germany = new Location("Γερμανία", "img/globe.png", 510, 100, "GermanItem");
-        Location norway = new Location("Νορβηγία", "img/globe.png", 600, 80, "NordicItem");
+        Location greece = new Location("Ελλάδα", "img/episode_map/athens.png", 1699, 946, "GreekItem");
+        Location uk = new Location("Ηνωμένο Βασίλειο", "img/episode_map/london.png", 895, 420, "UKItem");
+        Location france = new Location("Γαλλία", "img/episode_map/paris.png", 965, 535, "FrenchItem");
+//        Location poland = new Location("Πολωνία", "img/globe.png", 510, 190, "PolishItem");
+        Location spain = new Location("Ισπανία", "img/episode_map/madrid.png", 725, 870, "SpanishItem");
+        Location italy = new Location("Ιταλία", "img/episode_map/milan.png", 1130, 680, "ItalianItem");
+        Location germany = new Location("Γερμανία", "img/episode_map/berlin.png", 1220, 400, "GermanItem");
+        Location norway = new Location("Νορβηγία", "img/episode_map/oslo.png", 1170, 90, "NordicItem");
         
         greece.addOtherLocationAndDistance(uk, 2500);
         greece.addOtherLocationAndDistance(france, 1800);
-        greece.addOtherLocationAndDistance(poland, 1500);
+//        greece.addOtherLocationAndDistance(poland, 1500);
         greece.addOtherLocationAndDistance(spain, 2200);
         greece.addOtherLocationAndDistance(italy, 700);
         greece.addOtherLocationAndDistance(germany, 1600);
@@ -28,7 +28,7 @@ public class LocationController {
 
         uk.addOtherLocationAndDistance(greece, 2500);
         uk.addOtherLocationAndDistance(france, 400);
-        uk.addOtherLocationAndDistance(poland, 1400);
+//        uk.addOtherLocationAndDistance(poland, 1400);
         uk.addOtherLocationAndDistance(spain, 1200);
         uk.addOtherLocationAndDistance(italy, 1400);
         uk.addOtherLocationAndDistance(germany, 900);
@@ -36,24 +36,24 @@ public class LocationController {
 
         france.addOtherLocationAndDistance(greece, 1800);
         france.addOtherLocationAndDistance(uk, 400);
-        france.addOtherLocationAndDistance(poland, 1300);
+//        france.addOtherLocationAndDistance(poland, 1300);
         france.addOtherLocationAndDistance(spain, 1000);
         france.addOtherLocationAndDistance(italy, 1000);
         france.addOtherLocationAndDistance(germany, 800);
         france.addOtherLocationAndDistance(norway, 1300);
 
-        poland.addOtherLocationAndDistance(greece, 1500);
-        poland.addOtherLocationAndDistance(uk, 1400);
-        poland.addOtherLocationAndDistance(france, 1300);
-        poland.addOtherLocationAndDistance(spain, 2200);
-        poland.addOtherLocationAndDistance(italy, 1300);
-        poland.addOtherLocationAndDistance(germany, 500);
-        poland.addOtherLocationAndDistance(norway, 1000);
+//        poland.addOtherLocationAndDistance(greece, 1500);
+//        poland.addOtherLocationAndDistance(uk, 1400);
+//        poland.addOtherLocationAndDistance(france, 1300);
+//        poland.addOtherLocationAndDistance(spain, 2200);
+//        poland.addOtherLocationAndDistance(italy, 1300);
+//        poland.addOtherLocationAndDistance(germany, 500);
+//        poland.addOtherLocationAndDistance(norway, 1000);
 
         spain.addOtherLocationAndDistance(greece, 2200);
         spain.addOtherLocationAndDistance(uk, 1200);
         spain.addOtherLocationAndDistance(france, 1000);
-        spain.addOtherLocationAndDistance(poland, 2200);
+//        spain.addOtherLocationAndDistance(poland, 2200);
         spain.addOtherLocationAndDistance(italy, 1300);
         spain.addOtherLocationAndDistance(germany, 1800);
         spain.addOtherLocationAndDistance(norway, 2400);
@@ -61,7 +61,7 @@ public class LocationController {
         italy.addOtherLocationAndDistance(greece, 700);
         italy.addOtherLocationAndDistance(uk, 1400);
         italy.addOtherLocationAndDistance(france, 1000);
-        italy.addOtherLocationAndDistance(poland, 1300);
+//        italy.addOtherLocationAndDistance(poland, 1300);
         italy.addOtherLocationAndDistance(spain, 1300);
         italy.addOtherLocationAndDistance(germany, 1100);
         italy.addOtherLocationAndDistance(norway, 2000);
@@ -69,7 +69,7 @@ public class LocationController {
         germany.addOtherLocationAndDistance(greece, 1600);
         germany.addOtherLocationAndDistance(uk, 900);
         germany.addOtherLocationAndDistance(france, 800);
-        germany.addOtherLocationAndDistance(poland, 500);
+//        germany.addOtherLocationAndDistance(poland, 500);
         germany.addOtherLocationAndDistance(spain, 1800);
         germany.addOtherLocationAndDistance(italy, 1100);
         germany.addOtherLocationAndDistance(norway, 800);
@@ -77,7 +77,7 @@ public class LocationController {
         norway.addOtherLocationAndDistance(greece, 2700);
         norway.addOtherLocationAndDistance(uk, 1100);
         norway.addOtherLocationAndDistance(france, 1300);
-        norway.addOtherLocationAndDistance(poland, 1000);
+//        norway.addOtherLocationAndDistance(poland, 1000);
         norway.addOtherLocationAndDistance(spain, 2400);
         norway.addOtherLocationAndDistance(italy, 2000);
         norway.addOtherLocationAndDistance(germany, 800);
@@ -85,7 +85,7 @@ public class LocationController {
         locations.add(greece);
         locations.add(uk);
         locations.add(france);
-        locations.add(poland);
+//        locations.add(poland);
         locations.add(spain);
         locations.add(italy);
         locations.add(germany);
@@ -94,5 +94,15 @@ public class LocationController {
 
     public List<Location> getLocations() {
         return locations;
+    }
+
+    protected static LocationController instance;
+    public static LocationController getInstance() {
+        if (instance == null) {
+            instance = new LocationController();
+        }
+
+        return instance;
+
     }
 }

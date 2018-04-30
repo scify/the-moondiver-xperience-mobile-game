@@ -33,12 +33,12 @@ public class SpaceshipChargerRenderable extends FadingTableRenderable {
         calculatorButton.setHeight(40);
 
         calculatorButton.setUserAction(new UserAction(UserActionCode.CALCULATOR_EPISODE));
-        calculatorButton.setImgPath("img/button.png");
+        calculatorButton.setImgPath("img/closeButton.png");
 
         chargeButton = new ActionButtonRenderable("image_button", "charge_button");
         //TODO update
         chargeButton.setUserAction(new UserAction(UserActionCode.CHARGE_SPACESHIP_PASS_DAY));
-        chargeButton.setImgPath("img/button.png");
+        chargeButton.setImgPath("img/closeButton.png");
         chargeButton.setHeight(40);
     }
 
