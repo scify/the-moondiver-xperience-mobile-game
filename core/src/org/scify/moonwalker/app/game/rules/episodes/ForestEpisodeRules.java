@@ -54,7 +54,7 @@ public class ForestEpisodeRules extends BaseEpisodeRules {
     @Override
     protected void onEnterConversationOrder(GameState gsCurrent, ConversationLine lineEntered) {
         Set<String> eventTrigger;
-        if(gsCurrent.eventsQueueContainsEvent(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT)) {
+        if (gsCurrent.eventsQueueContainsEvent(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT)) {
             eventTrigger = (Set<String>) gsCurrent.getGameEventsWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
             if (eventTrigger.contains("ring_phone")) {
                 gsCurrent.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.MOBILE_AUDIO_PATH));
@@ -69,7 +69,7 @@ public class ForestEpisodeRules extends BaseEpisodeRules {
         Set<String> eventTrigger;
 
         // If we received a conversation "fail" event
-        if(gsCurrent.eventsQueueContainsEvent(ConversationRules.ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT)) {
+        if (gsCurrent.eventsQueueContainsEvent(ConversationRules.ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT)) {
             eventTrigger = (Set<String>) gsCurrent.getGameEventsWithType(ConversationRules.ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
             if (eventTrigger.contains(CONVERSATION_FAIL)) {
                 gsCurrent.addGameEvent(new GameEvent(CONVERSATION_FAIL));
@@ -84,11 +84,9 @@ public class ForestEpisodeRules extends BaseEpisodeRules {
         String code = "";
         // Handle failed conversation
         if (gsCurrent.eventsQueueContainsEvent(CONVERSATION_FAIL)) {
-            code = EpisodeEndStateCode.EPISODE_FINISHED_FAILURE;
+            code = EpisodeEndStateCode.SCENARIO_NEEDS_RESTART;
             gsCurrent.removeGameEventsWithType(CONVERSATION_FAIL);
-        }
-        else
-        if (gsCurrent.eventsQueueContainsEvent(CONVERSATION_FINISHED)) {
+        } else if (gsCurrent.eventsQueueContainsEvent(CONVERSATION_FINISHED)) {
             code = EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS;
         }
         conversationRules.cleanUpState(gsCurrent);
