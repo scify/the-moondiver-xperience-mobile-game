@@ -41,7 +41,7 @@ public class ActorFactory extends ComponentFactory {
         Actor toReturn;
         switch (renderable.getType()) {
             case Renderable.LABEL:
-                Label label = new Label("", skin);
+                Label label = new LabelWithEffect("", skin);
                 label.setWidth(renderable.getWidth());
                 label.setHeight(renderable.getHeight());
                 label.setWrap(true);
@@ -94,7 +94,7 @@ public class ActorFactory extends ComponentFactory {
                 toReturn = createSpaceshipControllerActor((SpaceshipChargerRenderable) renderable);
                 break;
             case Renderable.MAP_LOCATION:
-                toReturn = createMapLocationActor((MapLocationRenderable) renderable);
+                toReturn = createMapEpisodeActor((MapEpisodeRenderable) renderable);
                 break;
             case Renderable.NEXT_CONVERSATION:
                 toReturn = createNextConversationActor((SingleChoiceConversationRenderable) renderable);
@@ -227,11 +227,9 @@ public class ActorFactory extends ComponentFactory {
         return spaceshipControllerActor;
     }
 
-    private Actor createMapLocationActor(MapLocationRenderable renderable) {
-//        MapLocationActor mapLocationActor = new MapLocationActor(skin, renderable, createButton(renderable.getButton()));
-//        return mapLocationActor;
-        // TODO: correct it
-        return null;
+    private Actor createMapEpisodeActor(MapEpisodeRenderable renderable) {
+        MapEpisodeActor mapEpisodeActor = new MapEpisodeActor(skin, renderable);
+        return mapEpisodeActor;
     }
 
     private Actor createNextConversationActor(SingleChoiceConversationRenderable renderable) {

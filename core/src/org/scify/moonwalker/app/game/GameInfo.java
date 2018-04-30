@@ -7,6 +7,16 @@ public class GameInfo {
     protected int remainingEnergy;
     protected Location currentLocation;
     protected Location nextLocation;
+    protected Location nextAllowedLocation;
+
+    public Location getNextAllowedLocation() {
+        return nextAllowedLocation;
+    }
+
+    public void setNextAllowedLocation(Location nextAllowedLocation) {
+        this.nextAllowedLocation = nextAllowedLocation;
+    }
+
     protected int daysLeftForDestination;
     protected MoonPhase currentMoonPhase;
     protected MoonPhase nextMoonPhase;

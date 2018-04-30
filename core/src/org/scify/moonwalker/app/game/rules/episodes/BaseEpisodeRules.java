@@ -28,10 +28,10 @@ public class BaseEpisodeRules extends SinglePlayerRules {
 
     protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
         switch (userAction.getActionCode()) {
-            case FINISH_EPISODE:
+            case UserActionCode.FINISH_EPISODE:
                 episodeEndedEvents(gsCurrent);
                 break;
-            case BACK:
+            case UserActionCode.BACK:
                 gsCurrent.addGameEvent(new GameEvent("BACK", null, this));
                 episodeEndedEvents(gsCurrent);
                 break;

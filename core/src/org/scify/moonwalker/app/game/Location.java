@@ -11,12 +11,18 @@ public class Location {
     protected int posX;
     protected int posY;
     protected Map<Location, Integer> distanceFromOtherLocations;
+    protected String mission;
 
-    public Location(String name, String imgUrl, int posX, int posY) {
+    public String getMission() {
+        return mission;
+    }
+
+    public Location(String name, String imgUrl, int posX, int posY, String mission) {
         this.name = name;
         this.imgPath = imgUrl;
         this.posX = posX;
         this.posY = posY;
+        this.mission = mission;
         distanceFromOtherLocations = new HashMap<>();
     }
 
@@ -54,5 +60,13 @@ public class Location {
         if(location == null)
             return 5000;
         return distanceFromOtherLocations.get(location);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Location))
+            return false;
+
+        return getName().equals(((Location)obj).getName());
     }
 }

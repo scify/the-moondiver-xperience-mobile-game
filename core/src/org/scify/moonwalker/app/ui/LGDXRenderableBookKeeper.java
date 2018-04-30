@@ -111,7 +111,7 @@ public class LGDXRenderableBookKeeper {
         return oRes;
     }
 
-    public Object createAndAddLGDXObjectForRenderable(Renderable renderable) {
+    protected Object createAndAddLGDXObjectForRenderable(Renderable renderable) {
         // Try to create as sprite
         Sprite sprite = createSpriteResourceFor(renderable);
         // If it does not fail

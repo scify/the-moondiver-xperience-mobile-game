@@ -68,21 +68,21 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
                         initPlayerSelection(gameState);
                     }
                     break;
-                case TOGGLE_AUDIO:
+                case UserActionCode.TOGGLE_AUDIO:
                     if (mainMenuButtonsEnabled) {
                         gameState.addGameEvent(new GameEvent(AUDIO_TOGGLE_UI));
                     }
                     break;
-                case QUIT:
+                case UserActionCode.QUIT:
                     if (mainMenuButtonsEnabled) {
                         gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
                         endEpisode(gameState, APP_QUIT);
                     }
                     break;
-                case BOY_SELECTED:
+                case UserActionCode.BOY_SELECTED:
                     setSelectedPlayer(gameState, SelectedPlayer.boy);
                     break;
-                case GIRL_SELECTED:
+                case UserActionCode.GIRL_SELECTED:
                     setSelectedPlayer(gameState, SelectedPlayer.girl);
                     break;
             }
@@ -202,7 +202,7 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
         currentState.addGameEvent(new GameEvent(AVATAR_SELECTED, newSelection, this));
     }
 
-    protected ActionButtonRenderable createActionButton(String id, String imgPath, UserActionCode code) {
+    protected ActionButtonRenderable createActionButton(String id, String imgPath, String code) {
         return createImageButton(id, imgPath, new UserAction(code), 0, 0);
     }
 

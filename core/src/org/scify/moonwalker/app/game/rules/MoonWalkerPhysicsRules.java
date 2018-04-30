@@ -101,16 +101,16 @@ public class MoonWalkerPhysicsRules extends PhysicsRules implements ContactListe
 
     private void moveBody(UserAction userAction, Body body) {
         switch (userAction.getActionCode()) {
-            case UP:
+            case UserActionCode.UP:
                 body.setLinearVelocity(body.getLinearVelocity().x, +keyStrokeAcceleration);
                 break;
-            case DOWN:
+            case UserActionCode.DOWN:
                 body.setLinearVelocity(body.getLinearVelocity().x, -keyStrokeAcceleration);
                 break;
-            case LEFT:
+            case UserActionCode.LEFT:
                 body.setLinearVelocity(-keyStrokeAcceleration, body.getLinearVelocity().y);
                 break;
-            case RIGHT:
+            case UserActionCode.RIGHT:
                 body.setLinearVelocity(+keyStrokeAcceleration, body.getLinearVelocity().y);
                 break;
             default:

@@ -45,11 +45,11 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
             }
         }else {
             switch (userAction.getActionCode()) {
-                case MAP_EPISODE:
+                case UserActionCode.MAP_EPISODE:
                     gsCurrent.addGameEvent(new GameEvent("MAP_EPISODE_STARTED", null, this));
                     episodeEndedEvents(gsCurrent);
                     break;
-                case CHARGE_SPACESHIP_EPISODE:
+                case UserActionCode.CHARGE_SPACESHIP_EPISODE:
                     gsCurrent.addGameEvent(new GameEvent("SPACESHIP_CHARGER_EPISODE_STARTED", null, this));
                     episodeEndedEvents(gsCurrent);
                     break;
@@ -102,7 +102,7 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
         renderable.setChargeButton(chargeBtn);
     }
 
-    protected ActionButtonRenderable createCockpitButton(String id, String imgPath, UserActionCode code) {
+    protected ActionButtonRenderable createCockpitButton(String id, String imgPath, String code) {
         return createImageButton(id, imgPath, new UserAction(code), 0, 0);
     }
 

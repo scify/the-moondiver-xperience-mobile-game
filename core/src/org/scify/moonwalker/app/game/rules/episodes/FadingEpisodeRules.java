@@ -18,9 +18,10 @@ public class FadingEpisodeRules<T extends FadingTableRenderable> extends BaseEpi
             currentState.addRenderable(renderable);
             // Apply fade in
             renderable.fadeIn();
-        }
 
+        }
         super.episodeStartedEvents(currentState);
+
     }
 
     // Usable in the episode ended events function

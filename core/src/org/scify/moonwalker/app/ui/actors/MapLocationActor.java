@@ -1,13 +1,13 @@
 package org.scify.moonwalker.app.ui.actors;
 
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import org.scify.moonwalker.app.ui.renderables.MapLocationRenderable;
+import org.scify.moonwalker.app.ui.renderables.MapEpisodeRenderable;
 
-public class MapLocationActor extends FadingTableActor<MapLocationRenderable> {
+public class MapLocationActor extends FadingTableActor<MapEpisodeRenderable> {
 
-    protected MapLocationRenderable renderable;
+    protected MapEpisodeRenderable renderable;
 
-    public MapLocationActor(Skin skin, MapLocationRenderable renderable) {
+    public MapLocationActor(Skin skin, MapEpisodeRenderable renderable) {
         super(skin, renderable);
     }
 

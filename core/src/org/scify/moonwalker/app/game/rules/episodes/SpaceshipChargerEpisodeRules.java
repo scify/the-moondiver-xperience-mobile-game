@@ -11,11 +11,11 @@ public class SpaceshipChargerEpisodeRules extends TemporaryEpisodeRules {
     @Override
     protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
         switch (userAction.getActionCode()) {
-            case CALCULATOR_EPISODE:
+            case UserActionCode.CALCULATOR_EPISODE:
                 gsCurrent.addGameEvent(new GameEvent("CALCULATOR_STARTED", null, this));
                 episodeEndedEvents(gsCurrent);
                 break;
-            case CHARGE_SPACESHIP_PASS_DAY:
+            case UserActionCode.CHARGE_SPACESHIP_PASS_DAY:
                 setFieldsForTimedEpisode(gsCurrent, "img/next_day.jpg", 4000);
                 gsCurrent.addGameEvent(new GameEvent("SIMPLE_TIMED_IMAGE_EPISODE_STARTED", null, this));
                 episodeEndedEvents(gsCurrent);

@@ -9,14 +9,14 @@ public class LocationController {
 
     public LocationController() {
         locations = new LinkedList<>();
-        Location greece = new Location("ΕΛΛΑΔΑ", "img/globe.png", 39, 21);
-        Location uk = new Location("Ηνωμένο Βασίλειο", "img/globe.png", 55, 3);
-        Location france = new Location("Γαλλία", "img/globe.png", 46, 2);
-        Location poland = new Location("Πολωνία", "img/globe.png", 51, 19);
-        Location spain = new Location("Ισπανία", "img/globe.png", 40, 3);
-        Location italy = new Location("Ιταλία", "img/globe.png", 41, 12);
-        Location germany = new Location("Γερμανία", "img/globe.png", 51, 10);
-        Location norway = new Location("Νορβηγία", "img/globe.png", 60, 8);
+        Location greece = new Location("ΕΛΛΑΔΑ", "img/globe.png", 390, 210, "GreekItem");
+        Location uk = new Location("Ηνωμένο Βασίλειο", "img/globe.png", 550, 30, "UKItem");
+        Location france = new Location("Γαλλία", "img/globe.png", 460, 20, "FrenchItem");
+        Location poland = new Location("Πολωνία", "img/globe.png", 510, 190, "PolishItem");
+        Location spain = new Location("Ισπανία", "img/globe.png", 400, 30, "SpanishItem");
+        Location italy = new Location("Ιταλία", "img/globe.png", 410, 120, "ItalianItem");
+        Location germany = new Location("Γερμανία", "img/globe.png", 510, 100, "GermanItem");
+        Location norway = new Location("Νορβηγία", "img/globe.png", 600, 80, "NordicItem");
         
         greece.addOtherLocationAndDistance(uk, 2500);
         greece.addOtherLocationAndDistance(france, 1800);

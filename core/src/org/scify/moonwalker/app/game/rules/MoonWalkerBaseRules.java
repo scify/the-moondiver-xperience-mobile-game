@@ -72,11 +72,11 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
 
     private void handleUserAction(UserAction userAction, MoonWalkerGameState gameState) {
         switch (userAction.getActionCode()) {
-            case ANSWER_SELECTION:
+            case UserActionCode.ANSWER_SELECTION:
                 Answer answer = (Answer) userAction.getActionPayload();
                 addEventsForAnswer(gameState, answer.isCorrect());
                 break;
-            case ANSWER_TEXT:
+            case UserActionCode.ANSWER_TEXT:
                 HashMap.SimpleEntry<Question, TextField> questionText = (HashMap.SimpleEntry<Question, TextField>) userAction.getActionPayload();
                 TextField textField = questionText.getValue();
                 Question question = questionText.getKey();

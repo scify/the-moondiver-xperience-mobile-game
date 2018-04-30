@@ -2,6 +2,8 @@ package org.scify.moonwalker.app.game.scenarios;
 
 import org.scify.engine.*;
 import org.scify.engine.EpisodeEndStateCode;
+import org.scify.moonwalker.app.game.GameInfo;
+import org.scify.moonwalker.app.game.LocationController;
 import org.scify.moonwalker.app.game.episodes.*;
 
 public class MoonWalkerScenario extends Scenario {
@@ -14,7 +16,14 @@ public class MoonWalkerScenario extends Scenario {
 //        Episode effectPlaygroundEpisode = new EffectPlaygroundEpisode();
 //        setFirstEpisode(effectPlaygroundEpisode);
 
-        setFirstEpisode(mainMenuEpisode);
+        Episode mapEpisode = new MapEpisode();
+        setFirstEpisode(mapEpisode);
+        // Update location info
+        GameInfo g = GameInfo.getInstance();
+        LocationController l = new LocationController();
+        g.setCurrentLocation(l.getLocations().get(0));
+        g.setNextAllowedLocation(l.getLocations().get(1));
+
         //addEpisodeAfterCurrent(roomEpisode);
 //        addEpisodeAfter(mainMenuEpisode, forestLoadingEpisode);
 //

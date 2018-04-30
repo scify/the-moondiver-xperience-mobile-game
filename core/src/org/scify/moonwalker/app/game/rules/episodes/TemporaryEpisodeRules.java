@@ -14,7 +14,7 @@ public abstract class TemporaryEpisodeRules extends BaseEpisodeRules {
     @Override
     protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
         switch (userAction.getActionCode()) {
-            case BACK:
+            case UserActionCode.BACK:
                 episodeEndedEvents(gsCurrent);
                 break;
             default:
