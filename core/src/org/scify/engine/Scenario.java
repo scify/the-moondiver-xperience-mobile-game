@@ -60,6 +60,12 @@ public abstract class Scenario {
         currentEpisode = firstEpisode;
     }
 
+    protected void clear() {
+        episodeListMap.clear();
+        currentEpisode = null;
+        lastEpisode = null;
+    }
+
     /**
      * Initializes and clears the episode order structure.
      */

@@ -71,7 +71,7 @@ public class BaseEpisodeRules extends SinglePlayerRules {
         return currentState;
     }
 
-    protected void endGameAndAddEventWithType(GameState gsCurrent, String gameEventType) {
+    protected void endEpisodeAndAddEventWithType(GameState gsCurrent, String gameEventType) {
         gsCurrent.addGameEvent(new GameEvent(gameEventType, null, this));
         episodeEndedEvents(gsCurrent);
     }

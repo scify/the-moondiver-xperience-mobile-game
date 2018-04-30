@@ -24,8 +24,6 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
     public static final String APP_QUIT = "APP_QUIT";
     public static final String NEW_GAME = "NEW_GAME";
 
-    public static final String EPISODE_FINISHED = "EPISODE_FINISHED";
-
     public static final String BOY_BUTTON_ID = "boyButton";
     public static final String BOY_AVATAR_BUTTON_ID = "boyAvatarButton";
     public static final String GIRL_BUTTON_ID = "girlButton";
@@ -59,8 +57,6 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
 
     @Override
     protected void handleUserAction(GameState gameState, UserAction userAction) {
-        GameEvent coolDownEvent;
-        GameEvent avatarSelected;
         if (renderable.isReadyForInput()) {
             switch (userAction.getActionCode()) {
                 case NEW_GAME:
@@ -127,7 +123,7 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
             createAvatarSelectionRenderable();
 
             // Start sound
-            currentState.addGameEvent(new GameEvent(AUDIO_START_LOOP_UI, renderable.BG_AUDIO_PATH));
+            currentState.addGameEvent(new GameEvent(AUDIO_START_LOOP_UI, renderable.MAINMENU_AUDIO_PATH));
 
             // Enable input after fade in
             renderable.addAfterFadeIn(new Runnable() {
@@ -180,23 +176,6 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
         gameInfo.setSelectedPlayer(SelectedPlayer.unset);
     }
 
-    @Override
-    public EpisodeEndState determineEndState(GameState currentState) {
-        EpisodeEndState endState = null;
-        if (currentState.eventsQueueContainsEvent(APP_QUIT))
-            endState = new EpisodeEndState(EpisodeEndStateCode.APP_QUIT, currentState);
-        else if (currentState.eventsQueueContainsEvent(NEW_GAME))
-            endState = new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS, currentState);
-        cleanUpGameState(currentState);
-        /*Iterator iter = currentState.getEventQueue().iterator();
-        System.out.println("GameEvents:");
-        while (iter.hasNext()) {
-            System.out.println("\t" + ((GameEvent)iter.next()).type);
-        }*/
-        return endState;
-    }
-
-
     protected void removePreviousAvatarSelectionAndAddNew(GameState currentState, String newSelection) {
         currentState.removeGameEventsWithType(AVATAR_SELECTED);
         currentState.addGameEvent(new GameEvent(AVATAR_SELECTED, newSelection, this));
@@ -234,18 +213,29 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
 
     }
 
+    @Override
+    public EpisodeEndState determineEndState(GameState currentState) {
+        EpisodeEndState endState = null;
+        if (currentState.eventsQueueContainsEvent(APP_QUIT))
+            endState = new EpisodeEndState(EpisodeEndStateCode.APP_QUIT, currentState);
+        else if (currentState.eventsQueueContainsEvent(NEW_GAME))
+            endState = new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS, currentState);
+        cleanUpGameState(currentState);
+        return endState;
+    }
+
     protected void endEpisode(final GameState gameState, String sEpisodeEndEventType) {
         renderable.disableInput();
 
         renderable.addBeforeFadeOut(new Runnable() {
             @Override
             public void run() {
-                gameState.addGameEvent(new GameEvent(AUDIO_STOP_UI, renderable.BG_AUDIO_PATH));
-                gameState.addGameEvent(new GameEvent(AUDIO_DISPOSE_UI, renderable.BG_AUDIO_PATH));
+                gameState.addGameEvent(new GameEvent(AUDIO_STOP_UI, renderable.MAINMENU_AUDIO_PATH));
+                gameState.addGameEvent(new GameEvent(AUDIO_DISPOSE_UI, renderable.MAINMENU_AUDIO_PATH));
             }
         });
 
-        endGameAndAddEventWithType(gameState, sEpisodeEndEventType);
+        endEpisodeAndAddEventWithType(gameState, sEpisodeEndEventType);
 
     }
 

@@ -3,67 +3,24 @@ package org.scify.moonwalker.app.game.scenarios;
 import org.scify.engine.*;
 import org.scify.engine.EpisodeEndStateCode;
 import org.scify.moonwalker.app.game.GameInfo;
-import org.scify.moonwalker.app.game.LocationController;
+import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.game.episodes.*;
+import org.scify.moonwalker.app.helpers.AppInfo;
 
 public class MoonWalkerScenario extends Scenario {
 
     public MoonWalkerScenario() {
-        Episode mainMenuEpisode = new MainMenuEpisode();
-//        Episode roomEpisode = new RoomEpisode();
-        Episode forestLoadingEpisode = new ForestEpisode();
-
-//        Episode effectPlaygroundEpisode = new EffectPlaygroundEpisode();
-//        setFirstEpisode(effectPlaygroundEpisode);
-
-        Episode mapEpisode = new MapEpisode();
-        setFirstEpisode(mapEpisode);
-        // Update location info
-        GameInfo g = GameInfo.getInstance();
-        LocationController l = new LocationController();
-        g.setCurrentLocation(l.getLocations().get(0));
-        g.setNextAllowedLocation(l.getLocations().get(1));
-
-        //addEpisodeAfterCurrent(roomEpisode);
-//        addEpisodeAfter(mainMenuEpisode, forestLoadingEpisode);
-//
-//        addEpisodeAfter(forestLoadingEpisode, new MainMenuEpisode() {
-//            @Override
-//            public boolean isAccessible(EpisodeEndState state) {
-//                return state.getEndStateCode().equals(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE);
-//            }
-//        });
-//
-//        addEpisodeAfter(forestLoadingEpisode, new CockpitEpisode());
-
-//
-//        Episode mapEpisode = new MapEpisode();
-//        addEpisodeAfter(mainMenuEpisode, mapEpisode);
-
-//        addEpisodeAfter(roomEpisode, forestLoadingEpisode);
-//
-//        Episode forestEpisode = new ForestEpisode();
-//        addEpisodeAfter(forestLoadingEpisode, forestEpisode);
-//
-//        addEpisodeAfter(forestEpisode, new CockpitEpisode());
-
-//        setFirstEpisode(forestEpisode);
-
-
-//        addEpisodeAfterCurrent(roomEpisode);
-//        addEpisodeAfterCurrent(cockpitEpisode);
-
-//
-//
-//        Episode cockpitEpisode = new CockpitEpisode();
-//        addEpisodeAfter(forestEpisode, cockpitEpisode);
-
+        createBasicScenario();
     }
 
     @Override
     protected Episode getNextEpisode(EpisodeEndState state) {
         String endStateCode = state.getEndStateCode();
         switch (endStateCode) {
+            case EpisodeEndStateCode.SCENARIO_NEEDS_RESTART:
+                clear();
+                GameInfo.getInstance().setSelectedPlayer(SelectedPlayer.unset);
+                return createBasicScenario();
             case EpisodeEndStateCode.CALCULATOR_STARTED:
                 addTemporaryEpisode(new CalculatorEpisode());
                 break;
@@ -87,5 +44,17 @@ public class MoonWalkerScenario extends Scenario {
                 return  null;
         }
         return super.getNextEpisode(state);
+    }
+
+    protected Episode createBasicScenario () {
+        Episode mainMenu = new MainMenuEpisode();
+        setFirstEpisode(mainMenu);
+        Episode room = new RoomEpisode();
+        addEpisodeAfter(mainMenu, room);
+        Episode forest = new ForestEpisode();
+        addEpisodeAfter(room, forest);
+        Episode cockpit = new CockpitEpisode();
+        addEpisodeAfter(forest, cockpit);
+        return mainMenu;
     }
 }
