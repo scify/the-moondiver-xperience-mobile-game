@@ -2,7 +2,10 @@ package org.scify.moonwalker.app.game.scenarios;
 
 import org.scify.engine.*;
 import org.scify.engine.EpisodeEndStateCode;
+import org.scify.moonwalker.app.game.GameInfo;
+import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.game.episodes.*;
+import org.scify.moonwalker.app.helpers.AppInfo;
 
 public class MoonWalkerScenario extends Scenario {
 
@@ -16,6 +19,7 @@ public class MoonWalkerScenario extends Scenario {
         switch (endStateCode) {
             case EpisodeEndStateCode.SCENARIO_NEEDS_RESTART:
                 clear();
+                GameInfo.getInstance().setSelectedPlayer(SelectedPlayer.unset);
                 return createBasicScenario();
             case EpisodeEndStateCode.CALCULATOR_STARTED:
                 addTemporaryEpisode(new CalculatorEpisode());

@@ -12,7 +12,7 @@ import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
 
 import java.util.Map;
 
-public class MainMenuActor<T extends MainMenuRenderable> extends FadingTableActor<T> implements Updateable {
+public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implements Updateable {
 
     protected AppInfo appInfo;
 
@@ -37,7 +37,7 @@ public class MainMenuActor<T extends MainMenuRenderable> extends FadingTableActo
 
 
 
-    public MainMenuActor(Skin skin, T renderable) {
+    public MainMenuActor(Skin skin, MainMenuRenderable renderable) {
         super(skin, renderable);
         setWidth(renderable.getWidth());
         setHeight(renderable.getHeight());
@@ -230,7 +230,7 @@ public class MainMenuActor<T extends MainMenuRenderable> extends FadingTableActo
     public void update(Renderable rRenderable) {
         // If we have an actor and it's been some time since the last update
         if (actorInitiated && this.renderable.getRenderableLastUpdated() > timestamp) {
-            this.renderable = (T) rRenderable;
+            this.renderable = (MainMenuRenderable) rRenderable;
             this.timestamp = this.renderable.getRenderableLastUpdated();
             // If we have selected an avatar and the countdown is not visible
             if (this.renderable.getSelectedAvatarButton() != null) {

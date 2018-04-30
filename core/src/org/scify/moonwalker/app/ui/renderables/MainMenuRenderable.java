@@ -9,23 +9,23 @@ public class MainMenuRenderable extends FadingTableRenderable {
     protected ImageRenderable topBannerRenderable;
 
     public final static String BG_IMG_PATH = "img/episode_mainMenu/bg.png";
-    public final String TOP_BANNER_IMG_PATH = "img/episode_mainMenu/top.png";
-    public final String BOY_IMG_PATH = "img/episode_mainMenu/boy.png";
-    public final String GIRL_IMG_PATH = "img/episode_mainMenu/girl.png";
-    public final String BOY_BUTTON_IMG_PATH = "img/episode_mainMenu/boyButton.png";
-    public final String GIRL_BUTTON_IMG_PATH = "img/episode_mainMenu/girlButton.png";
-    public final String START_BUTTON_IMG_PATH = "img/episode_mainMenu/start.png";
-    public final String CONTINUE_BUTTON_IMG_PATH = "img/episode_mainMenu/continue.png";
-    public final String TOGGLE_AUDIO_BUTTON_IMG_PATH = "img/episode_mainMenu/toggleAudio.png";
-    public final String ABOUT_BUTTON_IMG_PATH = "img/episode_mainMenu/about.png";
-    public final String QUIT_BUTTON_IMG_PATH = "img/episode_mainMenu/quit.png";
+    public final static String TOP_BANNER_IMG_PATH = "img/episode_mainMenu/top.png";
+    public final static String BOY_IMG_PATH = "img/episode_mainMenu/boy.png";
+    public final static String GIRL_IMG_PATH = "img/episode_mainMenu/girl.png";
+    public final static String BOY_BUTTON_IMG_PATH = "img/episode_mainMenu/boyButton.png";
+    public final static String GIRL_BUTTON_IMG_PATH = "img/episode_mainMenu/girlButton.png";
+    public final static String START_BUTTON_IMG_PATH = "img/episode_mainMenu/start.png";
+    public final static String CONTINUE_BUTTON_IMG_PATH = "img/episode_mainMenu/continue.png";
+    public final static String TOGGLE_AUDIO_BUTTON_IMG_PATH = "img/episode_mainMenu/toggleAudio.png";
+    public final static String ABOUT_BUTTON_IMG_PATH = "img/episode_mainMenu/about.png";
+    public final static String QUIT_BUTTON_IMG_PATH = "img/episode_mainMenu/quit.png";
 
     //AUDIO
-    public final String BG_AUDIO_PATH = "audio/episode_mainMenu/bg.mp3";
-    public final String CLICK_AUDIO_PATH = "audio/button1.mp3";
+    public final static String MAINMENU_AUDIO_PATH = "audio/episode_mainMenu/bg.mp3";
+    public final static String CLICK_AUDIO_PATH = "audio/button1.mp3";
     //AUDIO BUFFERING FOR NEXT EPISODE
-    public final String BOY_MUSIC_AUDIO_PATH = "audio/episode_room/boy_music.mp3";
-    public final String GIRL_MUSIC_AUDIO_PATH = "audio/episode_room/girl_music.mp3";
+    public final static String BOY_MUSIC_AUDIO_PATH = "audio/episode_room/boy_music.mp3";
+    public final static String GIRL_MUSIC_AUDIO_PATH = "audio/episode_room/girl_music.mp3";
 
     protected ActionButtonRenderable boyAvatarButton;
     protected ActionButtonRenderable girlAvatarButton;
