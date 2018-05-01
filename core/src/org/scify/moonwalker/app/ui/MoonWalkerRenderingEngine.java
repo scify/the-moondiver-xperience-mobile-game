@@ -3,6 +3,7 @@ package org.scify.moonwalker.app.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -47,7 +48,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     protected LGDXRenderableBookKeeper bookKeeper;
     protected ThemeController themeController;
     protected UserInputHandlerImpl userInputHandler;
-    protected SpriteBatch batch;
+    protected Batch batch;
     protected Stage stage;
     protected Viewport gameViewport;
     protected ResourceLocator resourceLocator;
@@ -152,8 +153,8 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             // Get the UI representation of the renderable
             Object uiRepresentationOfRenderable = bookKeeper.getUIRepresentationOfRenderable(renderable);
 
-            // Then draw the renderable itself, if needed
-            if (renderable.needsUpdate()) {
+            // Then draw the renderable itself, if needed (sprites always need to be updated)
+            if (renderable.needsUpdate() || !(uiRepresentationOfRenderable instanceof Actor)) {
 
                 // if the uiRepresentationOfRenderable implements the Updatable interface, pass the renderable as argument
                 // for it to be updated
@@ -335,8 +336,19 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 Thread.yield();
                 return; // Do nothing
             } else {
-                drawGameState(currentGameState);
-                painter.updateStage(delta, lNewTime, lLastUpdate);
+                batch = stage.getBatch();
+                synchronized (batch) {
+                    batch.begin();
+
+                    painter.updateStageBG(delta, lNewTime, lLastUpdate);
+                    drawGameState(currentGameState);
+
+                    batch.end();
+
+                    cameraController.update();
+                    stage.act(delta);
+                    stage.draw();
+                }
                 cameraController.render(world);
                 cameraController.setProjectionMatrix(batch);
                 lLastUpdate = lNewTime;

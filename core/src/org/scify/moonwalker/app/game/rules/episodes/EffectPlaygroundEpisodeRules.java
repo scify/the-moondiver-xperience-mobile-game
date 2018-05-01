@@ -2,6 +2,7 @@ package org.scify.moonwalker.app.game.rules.episodes;
 
 import com.badlogic.gdx.math.Vector2;
 import org.scify.engine.GameState;
+import org.scify.engine.UserAction;
 import org.scify.engine.renderables.ActionButtonRenderable;
 import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.Renderable;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EffectPlaygroundEpisodeRules extends SimpleTimedImageEpisodeRules {
-    protected final int MILLISECONDS_FOR_EPISODE = 200000;
+    protected final int MILLISECONDS_FOR_EPISODE = 20000;
     Renderable aTest, aTest2, aTest3;
 
 
@@ -25,6 +26,7 @@ public class EffectPlaygroundEpisodeRules extends SimpleTimedImageEpisodeRules {
 
         if (aTest == null) {
             aTest = new ActionButtonRenderable("rotatable_text_button", "ID_OK");
+            ((ActionButtonRenderable) aTest).setUserAction(new UserAction("test"));
 //            aTest.setxPos(250);
 //            aTest.setyPos(250);
 //            aTest.setWidth(250);
@@ -57,25 +59,25 @@ public class EffectPlaygroundEpisodeRules extends SimpleTimedImageEpisodeRules {
 //                    }));
 //            aTest2.addEffect(elList);
 //            currentState.addRenderable(aTest2);
-//
+////
 //            aTest3 = new TextLabelRenderable("rotatable_label", "ID_3RD");
 //            aTest3.setxPos(200);
 //            aTest3.setyPos(50);
 //            ((TextLabelRenderable)aTest3).setLabel("Consequtive Parallels");
-//
-            // Point route with many points alternative
-//            List<Renderable> lPoints = new ArrayList<>();
-//            for (int iCnt=0; iCnt < 10; iCnt++) {
-//                ImageRenderable rPl = new ImageRenderable(10,10,50,50,"point" + String.valueOf(iCnt), "img/close.png");
-//                rPl.setxPos(50 + 50 * iCnt);
-//                rPl.setyPos((float)(50.0 + 100.0 * Math.sin(2.0 * Math.PI * iCnt / 8.0)));
-//                rPl.setVisible(false);
-//
-//                lPoints.add(rPl);
-//                currentState.addRenderable(rPl);
-//            }
-//
-//            PointRouteFadeEffectLGDX pRoute = new PointRouteFadeEffectLGDX(2000, lPoints);
+////
+//            // Point route with many points alternative
+////            List<Renderable> lPoints = new ArrayList<>();
+////            for (int iCnt=0; iCnt < 10; iCnt++) {
+////                ImageRenderable rPl = new ImageRenderable(10,10,50,50,"point" + String.valueOf(iCnt), "img/close.png");
+////                rPl.setxPos(50 + 50 * iCnt);
+////                rPl.setyPos((float)(50.0 + 100.0 * Math.sin(2.0 * Math.PI * iCnt / 8.0)));
+////                rPl.setVisible(false);
+////
+////                lPoints.add(rPl);
+////                currentState.addRenderable(rPl);
+////            }
+////
+////            PointRouteFadeEffectLGDX pRoute = new PointRouteFadeEffectLGDX(2000, lPoints);
 
             // Point route with single item type alternative
             List<Vector2> lvPoints = new ArrayList<>();
@@ -88,13 +90,13 @@ public class EffectPlaygroundEpisodeRules extends SimpleTimedImageEpisodeRules {
                 lvPoints.add(vCur);
             }
             PointRouteSinglePointTypeEffect pRoute = new PointRouteSinglePointTypeEffect(lvPoints, 3.0, 2.0, 5000);
-
             rPl.addEffect(pRoute);
+            currentState.addRenderable(rPl);
 
 //            EffectSequence elConPar = new EffectSequence();
 //
-//
 //            ParallelEffectList pelList = new ParallelEffectList();
+//            pelList.addEffect(new VisibilityEffect(true));
 //            pelList.addEffect(new FadeEffect(1.0, 0.5, 2000.0));
 //            pelList.addEffect(new RotateEffect(0.0, 180.0, 2000.0));
 //            pelList.addEffect(new BounceEffect(50,0,5000.0));
@@ -108,17 +110,31 @@ public class EffectPlaygroundEpisodeRules extends SimpleTimedImageEpisodeRules {
 //            elConPar.addEffect(pelList);
 //            elConPar.addEffect(eDelay);
 //            elConPar.addEffect(pelList2);
-//
-//            aTest3.addEffect(elConPar);
-//            currentState.addRenderable(aTest3);
-//
-//            Renderable rPl = new Player(10,10,100,100,"player", "pl");
-//            rPl.apply(elConPar);
-            currentState.addRenderable(rPl);
+////
+//////            aTest3.addEffect(elConPar);
+//////            currentState.addRenderable(aTest3);
+////
+//            Renderable rCoin = new ImageRenderable(50,50,100,100,"player", "img/coin.png");
+//            rCoin.setVisible(false);
+////            ActionButtonRenderable rCoin = new ActionButtonRenderable(50, 50, 100, 100, Renderable.ACTOR_IMAGE, "coin!");
+//            rCoin.setImgPath("img/coin.png");
+////            rCoin.setUserAction(new UserAction("coin"));
+//            rCoin.addEffect(elConPar);
+//            currentState.addRenderable(rCoin);
 
         }
 
         super.episodeStartedEvents(currentState);
     }
 
+    @Override
+    protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
+        if (userAction.getActionCode().equals("test")) {
+            System.err.println("Test pressed!");
+        }
+        if (userAction.getActionCode().equals("coin")) {
+            System.err.println("Coin pressed!");
+        }
+        super.handleUserAction(gsCurrent, userAction);
+    }
 }

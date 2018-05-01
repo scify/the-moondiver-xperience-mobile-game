@@ -91,6 +91,11 @@ public class Renderable extends Positionable implements EffectTarget {
         needsUpdate = true;
     }
 
+    public void renderableWasUpdated() {
+        needsUpdate = true;
+        renderableLastUpdated = new Date().getTime();
+    }
+
     public boolean needsUpdate() {
         needsUpdate = needsUpdate || (getEffects().size() > 0);
         return needsUpdate;
@@ -131,11 +136,6 @@ public class Renderable extends Positionable implements EffectTarget {
 
     public long getRenderableLastUpdated() {
         return renderableLastUpdated;
-    }
-    
-    protected void renderableWasUpdated() {
-        needsUpdate = true;
-        renderableLastUpdated = new Date().getTime();
     }
 
     @Override

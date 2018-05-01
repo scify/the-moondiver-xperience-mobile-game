@@ -13,12 +13,12 @@ public class VisibilityLGDXEffect extends VisibilityEffect implements LGDXEffect
 
     @Override
     public void applyToActor(Actor aTarget, Renderable rRenderable) {
+        super.applyTo(rRenderable);
+
         boolean bNewVisibility = getNumericParameter(PARAM_VISIBILITY) == 1.0;
 //        System.err.println("Setting visibility to " + String.valueOf(bNewVisibility));
         rRenderable.setVisible(bNewVisibility);
-        stop();
 
-        super.applyTo(rRenderable);
     }
 
     @Override
@@ -26,12 +26,6 @@ public class VisibilityLGDXEffect extends VisibilityEffect implements LGDXEffect
         super.applyTo(rRenderable);
 
         boolean bNewVisibility = getNumericParameter(PARAM_VISIBILITY) == 1.0;
-        if (bNewVisibility)
-            sTarget.setAlpha(1.0f); // WARNING! Changes alpha!
-        else
-            sTarget.setAlpha(0.0f); // WARNING! Changes alpha!
-        stop();
-
-        super.applyTo(rRenderable);
+        rRenderable.setVisible(bNewVisibility);
     }
 }

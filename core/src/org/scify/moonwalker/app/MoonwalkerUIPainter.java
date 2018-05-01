@@ -3,9 +3,9 @@ package org.scify.moonwalker.app;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -18,7 +18,6 @@ import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.ui.CameraController;
 import org.scify.moonwalker.app.ui.actors.IContainerActor;
 
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -30,7 +29,7 @@ public class MoonwalkerUIPainter {
     protected Skin skin;
     protected BitmapFont font;
     protected AppInfo appInfo;
-    protected Batch batch;
+    protected SpriteBatch batch;
     protected Image overallBackground = null;
     protected CameraController cameraController;
 
@@ -44,7 +43,7 @@ public class MoonwalkerUIPainter {
 
     public MoonwalkerUIPainter(Stage sStage, CameraController ccCameraController) {
         stage = sStage;
-        batch = stage.getBatch();
+        batch = (SpriteBatch)stage.getBatch();
         cameraController = ccCameraController;
         appInfo = AppInfo.getInstance();
     }
@@ -74,7 +73,6 @@ public class MoonwalkerUIPainter {
     }
 
     public void drawUIRenderable(Object uiRenderable, Renderable renderable) {
-
         if (uiRenderable instanceof Sprite) {
             Sprite sToDraw = (Sprite) uiRenderable;
             drawSpriteFromRenderable(renderable, sToDraw);
@@ -162,27 +160,18 @@ public class MoonwalkerUIPainter {
         }
     }
 
-    public void updateStage(Float delta, long lNewTime, long lLastUpdate) {
-        Batch batch = stage.getBatch();
-
+    public void updateStageBG(Float delta, long lNewTime, long lLastUpdate) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //stage.setDebugAll(true);
-        synchronized (batch) {
-            batch.begin();
-            if (fpsLabel != null) {
-                fpsLabel.setText(String.valueOf(1000 / (lNewTime - lLastUpdate)));
-                fpsLabel.draw(batch, 1);
-            }
-
-            if (overallBackground != null)
-                overallBackground.draw(batch, 1);
-
-            batch.end();
-            cameraController.update();
-            stage.act(delta);
-            stage.draw();
+        if (fpsLabel != null) {
+            fpsLabel.setText(String.valueOf(1000 / (lNewTime - lLastUpdate)));
+            fpsLabel.draw(batch, 1);
         }
+
+        if (overallBackground != null)
+            overallBackground.draw(batch, 1);
+
     }
 
     public void applyActorVisibility(Actor aToDraw, Renderable renderable) {

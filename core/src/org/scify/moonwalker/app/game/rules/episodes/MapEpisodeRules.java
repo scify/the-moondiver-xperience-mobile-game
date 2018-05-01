@@ -1,9 +1,13 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
+import org.scify.engine.renderables.effects.EffectSequence;
+import org.scify.engine.renderables.effects.FunctionEffect;
 import org.scify.moonwalker.app.game.Location;
 import org.scify.moonwalker.app.game.LocationController;
 import org.scify.moonwalker.app.ui.renderables.MapEpisodeRenderable;
+
+import java.util.ArrayList;
 
 
 /* Guide:
@@ -14,9 +18,10 @@ import org.scify.moonwalker.app.ui.renderables.MapEpisodeRenderable;
  4th step: episodeEndedEvents, where we may update the gameInfo, as needed (and call super... to perform fade out etc.).
 */
 
-public class MapEpisodeRules extends FadingEpisodeRules<MapEpisodeRenderable> {
+public class MapEpisodeRules extends BaseEpisodeRules {
     protected LocationController locationController;
     protected boolean travelOnly;
+    protected MapEpisodeRenderable renderable;
 
 
     public MapEpisodeRules(boolean bTravelOnly) {
@@ -30,18 +35,18 @@ public class MapEpisodeRules extends FadingEpisodeRules<MapEpisodeRenderable> {
         if (!episodeStarted) {
             // Create main renderable
             renderable = new MapEpisodeRenderable(0.0f, 0.0f, appInfo.getScreenWidth(), appInfo.getScreenHeight(),
-                    "mapEpisodeRenderable", locationController.getLocations());
-
-            // Add important children
-            currentState.addRenderable(renderable.getCloseButton());
-            currentState.addRenderable(renderable.getDistanceHUD());
-            currentState.addRenderable(renderable.getLocationNameHUD());
-            currentState.addRenderable(renderable.getMissionHUD());
+                    "mapEpisodeRenderable", locationController.getLocations(), gameInfo.getNextAllowedLocation());
 
             // Get main properties from game state and apply to renderable
             renderable.setCurrentLocation(gameInfo.getCurrentLocation());
-            renderable.setNextAllowedLocation(gameInfo.getNextAllowedLocation());
             renderable.setLocationSelected(false);
+
+            // Add important children (taking into account current location,etc.)
+            currentState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
+            // and main renderable
+            currentState.addRenderable(renderable);
+
+            renderable.fadeIn();
 
             super.episodeStartedEvents(currentState);
         }
@@ -63,7 +68,7 @@ public class MapEpisodeRules extends FadingEpisodeRules<MapEpisodeRenderable> {
     }
 
     @Override
-    protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
+    protected void handleUserAction(final GameState gsCurrent, UserAction userAction) {
         // If location was selected
         String actionCode = userAction.getActionCode();
         switch (actionCode) {
@@ -74,7 +79,16 @@ public class MapEpisodeRules extends FadingEpisodeRules<MapEpisodeRenderable> {
                 gameInfo.setNextLocation((Location)userAction.getActionPayload());
                 break;
             case UserActionCode.QUIT:
-                endEpisodeAndAddEventWithType(gsCurrent, "");
+                EffectSequence eFadeOutAndEnd = renderable.getDefaultFadeOutEffect();
+                eFadeOutAndEnd.addEffect(new FunctionEffect(new Runnable() {
+                    @Override
+                    public void run() {
+                        endEpisodeAndAddEventWithType(gsCurrent, "");
+                    }
+                }));
+
+                renderable.addEffect(eFadeOutAndEnd);
+                renderable.fadeOut();
         }
 
         super.handleUserAction(gsCurrent, userAction);
@@ -84,4 +98,5 @@ public class MapEpisodeRules extends FadingEpisodeRules<MapEpisodeRenderable> {
     public EpisodeEndState determineEndState(GameState currentState) {
         return new EpisodeEndState(EpisodeEndStateCode.TEMP_EPISODE_FINISHED, currentState);
     }
+
 }

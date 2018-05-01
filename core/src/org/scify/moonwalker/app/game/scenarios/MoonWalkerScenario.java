@@ -12,8 +12,8 @@ import org.scify.moonwalker.app.game.episodes.*;
 public class MoonWalkerScenario extends Scenario {
 
     public MoonWalkerScenario() {
-        createBasicScenario();
-//        createTestingScenario();
+//        createBasicScenario();
+        createTestingScenario();
     }
 
     @Override
@@ -62,13 +62,19 @@ public class MoonWalkerScenario extends Scenario {
     }
 
     protected Episode createTestingScenario() {
-        Episode mapEpisode = new MapEpisode();
-        setFirstEpisode(mapEpisode);
-        GameInfo info = GameInfo.getInstance();
-        LocationController lc = LocationController.getInstance();
-        info.setCurrentLocation(lc.getLocations().get(0));
-        info.setNextAllowedLocation(lc.getLocations().get(1));
+        if (true) {
+            Episode mapEpisode = new MapEpisode();
+            setFirstEpisode(mapEpisode);
+            GameInfo info = GameInfo.getInstance();
+            LocationController lc = LocationController.getInstance();
+            info.setCurrentLocation(lc.getLocations().get(0));
+            info.setNextAllowedLocation(lc.getLocations().get(1));
+            return mapEpisode;
+        } else {
+            Episode playground = new EffectPlaygroundEpisode();
+            setFirstEpisode(playground);
+            return playground;
+        }
 
-        return mapEpisode;
     }
 }

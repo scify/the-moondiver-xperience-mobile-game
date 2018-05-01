@@ -183,6 +183,10 @@ public abstract class GameState {
         return player;
     }
 
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

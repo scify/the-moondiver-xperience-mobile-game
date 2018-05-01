@@ -22,7 +22,6 @@ public class SetAlphaLGDXEffect extends SetAlphaEffect implements LGDXEffect {
         Color cTarget = aTarget.getColor();
         cTarget.a = (float)(getNumericParameter(PARAM_ALPHA).doubleValue());
         aTarget.setColor( cTarget );
-        stop();
 
         super.applyTo(rRenderable);
     }
@@ -32,9 +31,7 @@ public class SetAlphaLGDXEffect extends SetAlphaEffect implements LGDXEffect {
         Color cTarget = sTarget.getColor();
         cTarget.a = (float)(getNumericParameter(PARAM_ALPHA).doubleValue());
         sTarget.setColor( cTarget );
-        stop();
 
         super.applyTo(rRenderable);
-
     }
 }

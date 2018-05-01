@@ -1,5 +1,6 @@
 package org.scify.engine.renderables.effects.libgdx;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import org.scify.engine.renderables.Renderable;
@@ -23,9 +24,10 @@ public class FadeLGDXEffect extends FadeEffect implements LGDXEffect {
         // DEBUG LINES
 //        System.err.println("Target alpha: " + String.valueOf(dTargetAlpha));
         //////////////
-
-        aTarget.setColor(aTarget.getColor().r, aTarget.getColor().g, aTarget.getColor().b,
-                (float) getCurrentAlpha());
+        Color cCol = aTarget.getColor();
+        cCol.a = (float) getCurrentAlpha();
+        // Update target alpha
+        aTarget.setColor(cCol);
 
     }
 
@@ -33,9 +35,10 @@ public class FadeLGDXEffect extends FadeEffect implements LGDXEffect {
     public synchronized void applyToSprite(Sprite sTarget, Renderable rRenderable) {
         super.applyTo(rRenderable);
 
+        Color cCol = sTarget.getColor();
+        cCol.a = (float) getCurrentAlpha();
         // Update target alpha
-        sTarget.setColor(sTarget.getColor().r, sTarget.getColor().g, sTarget.getColor().b,
-                (float) getCurrentAlpha());
+        sTarget.setColor(cCol);
     }
 
     protected double getCurrentAlpha() {
