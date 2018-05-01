@@ -6,23 +6,27 @@ import org.scify.engine.renderables.ActionButtonRenderable;
 import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.TextLabelRenderable;
-import org.scify.engine.renderables.effects.Effect;
-import org.scify.engine.renderables.effects.EffectSequence;
-import org.scify.engine.renderables.effects.FadeEffect;
-import org.scify.engine.renderables.effects.VisibilityEffect;
+import org.scify.engine.renderables.effects.*;
 import org.scify.moonwalker.app.game.Location;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class MapEpisodeRenderable extends Renderable {
 
     public static final String MAP_SELECT_ACTION = "MAP_SELECT";
+
     public static final String BG_IMAGE_PATH = "img/episode_map/bg.png";
     public static final String QUIT_BUTTON_IMG_PATH = "img/close.png";
+
+    public static final String DESTINATION_HUD_IMG_PATH = "img/episode_map/destination.png";
+    public static final String DISTANCE_HUD_IMG_PATH = "img/episode_map/distance.png";
+    public static final String MISSION_HUD_IMG_PATH = "img/episode_map/mission.png";
+
     public static final String CITY_DOT_IMG_PATH = "img/episode_map/city_dot.png";
+    public static final String PIN_IMG_PATH = "img/episode_map/pin.png";
+    public static final String SPACESHIP_IMG_PATH = "img/episode_map/spaceship.png";
+    public static final String STAR_IMG_PATH = "img/episode_map/star_red2.png";
+
 
     protected Location currentLocation;
     protected Location nextAllowedLocation;
@@ -44,10 +48,12 @@ public class MapEpisodeRenderable extends Renderable {
     }
 
     public MapEpisodeRenderable(float xPos, float yPos, float width, float height, String id, List<Location> lLocations,
-                                Location nextAllowedLocation) {
+                                Location nextAllowedLocation, Location currentLocation) {
         super(xPos, yPos, width, height, Renderable.ACTOR_EPISODE_MAP_LOCATION, id);
         locations = lLocations;
         this.nextAllowedLocation = nextAllowedLocation;
+        this.currentLocation = currentLocation;
+
 
         initSubRenderables();
     }
@@ -60,9 +66,49 @@ public class MapEpisodeRenderable extends Renderable {
         allRenderables.add(getDistanceHUD());
         allRenderables.add(getCloseButton());
 
+        allRenderables.addAll(getHUDLabels());
+
         allRenderables.addAll(getLocationPoints());
         allRenderables.addAll(getLocationNameLabels());
         allRenderables.add(getBackground());
+    }
+
+    protected List<Renderable> getHUDLabels() {
+        List<Renderable> lRes = new ArrayList<>();
+
+        Renderable rCur;
+        // Destination HUD
+        rCur = new ImageRenderable("destHUDLbl", DESTINATION_HUD_IMG_PATH);
+        rCur.setxPos(appInfo.convertX(85));
+        rCur.setyPos(appInfo.convertY(1080 - 85 - 124));
+        rCur.setWidth(appInfo.convertX(314));
+        rCur.setHeight(appInfo.convertY(124));
+        rCur.setZIndex(4);
+        rCur.setVisible(false);
+        lRes.add(rCur);
+
+        // Distance HUD
+        rCur = new ImageRenderable("distHUDLbl", DISTANCE_HUD_IMG_PATH);
+        rCur.setxPos(appInfo.convertX(110));
+        rCur.setyPos(appInfo.convertY(1080 - 380 - 200));
+        rCur.setWidth(appInfo.convertX(246));
+        rCur.setHeight(appInfo.convertY(200));
+        rCur.setZIndex(4);
+        rCur.setVisible(false);
+        lRes.add(rCur);
+
+        // Mission HUD
+        rCur = new ImageRenderable("missionHUDLbl", MISSION_HUD_IMG_PATH);
+        rCur.setxPos(appInfo.convertX(110));
+        rCur.setyPos(appInfo.convertY(1080 - 650 - 132));
+        rCur.setWidth(appInfo.convertX(246));
+        rCur.setHeight(appInfo.convertY(132));
+        rCur.setZIndex(4);
+        rCur.setVisible(false);
+        lRes.add(rCur);
+
+
+        return lRes;
     }
 
     public void setCurrentLocation(Location currentLocation) {
@@ -110,22 +156,10 @@ public class MapEpisodeRenderable extends Renderable {
         return locations;
     }
 
-    public Renderable getMissionHUD() {
-        if (missionHUD == null) {
-            missionHUD = new TextLabelRenderable(appInfo.convertX(50f),appInfo.convertY(1000f), appInfo.convertX(300), appInfo.convertY(50), Renderable.ACTOR_ROTATABLE_LABEL, "missionHUD");
-            missionHUD.setLabel("Mission");
-//            missionHUD.setPositionDrawable(false);
-            missionHUD.setVisible(false);
-        }
-
-        return missionHUD;
-    }
-
-
     public TextLabelRenderable getLocationNameHUD() {
         if (locationNameHUD == null) {
-            locationNameHUD = new TextLabelRenderable(appInfo.convertX(50f),appInfo.convertY(700f), appInfo.convertX(300), appInfo.convertY(50), Renderable.ACTOR_ROTATABLE_LABEL, "locationNameHUD");
-            locationNameHUD.setLabel("Location");
+            locationNameHUD = new TextLabelRenderable(appInfo.convertX(250f),appInfo.convertY(1080 - 275f), appInfo.convertX(0), appInfo.convertY(0), Renderable.ACTOR_ROTATABLE_LABEL, "locationNameHUD");
+            locationNameHUD.setLabel("");
 //            locationNameHUD.setPositionDrawable(false);
             locationNameHUD.setVisible(false);
         }
@@ -133,15 +167,27 @@ public class MapEpisodeRenderable extends Renderable {
         return locationNameHUD;
     }
 
+
     public TextLabelRenderable getDistanceHUD() {
         if (distanceHUD == null) {
-            distanceHUD = new TextLabelRenderable(appInfo.convertX(50f),appInfo.convertY(400f), appInfo.convertX(300), appInfo.convertY(50), Renderable.ACTOR_ROTATABLE_LABEL, "distanceHUD");
-            distanceHUD.setLabel("Distance");
+            distanceHUD = new TextLabelRenderable(appInfo.convertX(250f),appInfo.convertY(1080 - 525f), appInfo.convertX(0), appInfo.convertY(0), Renderable.ACTOR_ROTATABLE_LABEL, "distanceHUD");
+            distanceHUD.setLabel("");
 //            distanceHUD.setPositionDrawable(false);
             distanceHUD.setVisible(false);
         }
 
         return distanceHUD;
+    }
+
+    public Renderable getMissionHUD() {
+        if (missionHUD == null) {
+            missionHUD = new TextLabelRenderable(appInfo.convertX(250f),appInfo.convertY(1080 - 875f), appInfo.convertX(0), appInfo.convertY(0), Renderable.ACTOR_ROTATABLE_LABEL, "missionHUD");
+            missionHUD.setLabel("");
+//            missionHUD.setPositionDrawable(false);
+            missionHUD.setVisible(false);
+        }
+
+        return missionHUD;
     }
 
     public List<Renderable> getLocationPoints() {
@@ -150,22 +196,66 @@ public class MapEpisodeRenderable extends Renderable {
 
             // For each location (point)
             for (Location lCur : getLocations()) {
-                ActionButtonRenderable btn = new ActionButtonRenderable( appInfo.convertX(lCur.getPosX() - 8), appInfo.convertY(lCur.getPosY() - 8),
-                        appInfo.convertX(16), appInfo.convertY(16),  Renderable.ACTOR_IMAGE_BUTTON, "nextAllowedPoint");
+                Renderable btn;
+                if (lCur.equals(nextAllowedLocation)) {
+                    btn = createNextAllowedLocationRenderable(lCur);
+                }
+                else if (lCur.equals(currentLocation)) {
+                    btn = createCurrentLocationRenderable(lCur);
+                }
+                else {
+                    btn = createCityPointRenderable(lCur);
+                }
 
-                btn.setImgPath(CITY_DOT_IMG_PATH);
                 btn.setZIndex(5);
                 btn.setVisible(false);
 
+
                 locationPoints.add(btn);
 
-                if (lCur.equals(nextAllowedLocation)) {
-                    btn.setUserAction(new UserAction(MAP_SELECT_ACTION, lCur));
-                }
             }
         }
 
         return locationPoints;
+    }
+
+    private ActionButtonRenderable createCityPointRenderable(Location lCur) {
+        ActionButtonRenderable btn;
+        btn = new ActionButtonRenderable( appInfo.convertX(lCur.getPosX() - 8), appInfo.convertY(lCur.getPosY() - 8),
+                appInfo.convertX(16), appInfo.convertY(16),  Renderable.ACTOR_IMAGE_BUTTON, "point" + lCur.getName());
+        btn.setImgPath(CITY_DOT_IMG_PATH);
+        return btn;
+    }
+
+    private ImageRenderable createCurrentLocationRenderable(Location lCur) {
+        ImageRenderable btn;
+        btn = new ImageRenderable( appInfo.convertX(lCur.getPosX() - 33), appInfo.convertY(lCur.getPosY() - 72),
+                appInfo.convertX(66), appInfo.convertY(36),  "currentPoint", SPACESHIP_IMG_PATH);
+        btn.setImgPath(SPACESHIP_IMG_PATH);
+
+        RotateEffect rEffect = new RotateEffect(0.0, 360.0, 2000);
+        rEffect.setOriginPoint(16, 16);
+        btn.addEffect(rEffect);
+
+        return btn;
+    }
+
+    private ActionButtonRenderable createNextAllowedLocationRenderable(Location lCur) {
+        ActionButtonRenderable btn;
+        btn = new ActionButtonRenderable( appInfo.convertX(lCur.getPosX() - 45), appInfo.convertY(lCur.getPosY() + 5),
+                appInfo.convertX(40), appInfo.convertY(60),  Renderable.ACTOR_IMAGE_BUTTON, "nextAllowedPoint");
+        btn.setImgPath(PIN_IMG_PATH);
+        btn.setUserAction(new UserAction(MAP_SELECT_ACTION, lCur));
+
+        // and highlighted
+        EffectSequence eConstant = new EffectSequence();
+        eConstant.addEffect(new DelayEffect(3000)); // Await normal fade in
+//            eConstant.addEffect(new FadeEffect(1.0, 0.0, 1000));
+//            eConstant.addEffect(new FadeEffect(0.0, 1.0, 1000));
+        eConstant.addEffect(new BounceEffect(0, 20, 1000));
+        eConstant.addEffect(new BounceEffect(0, 20, 1000));
+        btn.addEffect(eConstant);
+        return btn;
     }
 
     public Renderable getBackground() {

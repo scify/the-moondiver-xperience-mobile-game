@@ -9,14 +9,14 @@ public class LocationController {
 
     public LocationController() {
         locations = new LinkedList<>();
-        Location greece = new Location("Ελλάδα", "img/episode_map/athens.png", 1600, 1080 - 950, "GreekItem");
-        Location uk = new Location("Ηνωμένο Βασίλειο", "img/episode_map/london.png", 900, 1080 - 420, "UKItem");
-        Location france = new Location("Γαλλία", "img/episode_map/paris.png", 965, 1080 - 540, "FrenchItem");
+        Location greece = new Location("Αθήνα", "img/episode_map/athens.png", 1600, 1080 - 950, "Πάρε το\nεξάρτημα G");
+        Location uk = new Location("Λονδίνο", "img/episode_map/london.png", 900, 1080 - 420, "Πάρε το\nεξάρτημα U");
+        Location france = new Location("Παρίσι", "img/episode_map/paris.png", 965, 1080 - 540, "Πάρε το\nεξάρτημα F");
 //        Location poland = new Location("Πολωνία", "img/globe.png", 510, 190, "PolishItem");
-        Location spain = new Location("Ισπανία", "img/episode_map/madrid.png", 725, 1080 - 870, "SpanishItem");
-        Location italy = new Location("Ιταλία", "img/episode_map/milan.png", 1130, 1080 - 680, "ItalianItem");
-        Location germany = new Location("Γερμανία", "img/episode_map/berlin.png", 1220, 1080 - 400, "GermanItem");
-        Location norway = new Location("Νορβηγία", "img/episode_map/oslo.png", 1170, 1080 - 90, "NordicItem");
+        Location spain = new Location("Μαδρίτη", "img/episode_map/madrid.png", 725, 1080 - 870, "Πάρε το\nεξάρτημα S");
+        Location italy = new Location("Μιλάνο", "img/episode_map/milan.png", 1130, 1080 - 680, "Πάρε το\nεξάρτημα I");
+        Location germany = new Location("Βερολίνο", "img/episode_map/berlin.png", 1220, 1080 - 400, "Πάρε το\nεξάρτημα D");
+        Location norway = new Location("Όσλο", "img/episode_map/oslo.png", 1170, 1080 - 90, "Πάρε το\nεξάρτημα N");
         
         greece.addOtherLocationAndDistance(uk, 2500);
         greece.addOtherLocationAndDistance(france, 1800);

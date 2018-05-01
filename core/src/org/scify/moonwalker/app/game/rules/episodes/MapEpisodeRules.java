@@ -35,10 +35,10 @@ public class MapEpisodeRules extends BaseEpisodeRules {
         if (!episodeStarted) {
             // Create main renderable
             renderable = new MapEpisodeRenderable(0.0f, 0.0f, appInfo.getScreenWidth(), appInfo.getScreenHeight(),
-                    "mapEpisodeRenderable", locationController.getLocations(), gameInfo.getNextAllowedLocation());
+                    "mapEpisodeRenderable", locationController.getLocations(), gameInfo.getNextAllowedLocation(),
+                    gameInfo.getCurrentLocation());
 
             // Get main properties from game state and apply to renderable
-            renderable.setCurrentLocation(gameInfo.getCurrentLocation());
             renderable.setLocationSelected(false);
 
             // Add important children (taking into account current location,etc.)

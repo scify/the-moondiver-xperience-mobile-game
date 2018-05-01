@@ -69,4 +69,9 @@ public class Location {
 
         return getName().equals(((Location)obj).getName());
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s. x %d y %d, mission: %s", getName(), getPosX(), getPosY(), getMission());
+    }
 }

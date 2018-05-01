@@ -5,9 +5,13 @@ import org.scify.engine.EpisodeEndState;
 import org.scify.engine.EpisodeEndStateCode;
 import org.scify.engine.Scenario;
 import org.scify.moonwalker.app.game.GameInfo;
+import org.scify.moonwalker.app.game.Location;
 import org.scify.moonwalker.app.game.LocationController;
 import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.game.episodes.*;
+
+import java.util.List;
+import java.util.Random;
 
 public class MoonWalkerScenario extends Scenario {
 
@@ -63,12 +67,16 @@ public class MoonWalkerScenario extends Scenario {
 
     protected Episode createTestingScenario() {
         if (true) {
+            Random rRnd = new Random();
+
             Episode mapEpisode = new MapEpisode();
             setFirstEpisode(mapEpisode);
             GameInfo info = GameInfo.getInstance();
             LocationController lc = LocationController.getInstance();
-            info.setCurrentLocation(lc.getLocations().get(0));
-            info.setNextAllowedLocation(lc.getLocations().get(1));
+            int iSize = lc.getLocations().size();
+            List<Location> llLocations = lc.getLocations();
+            info.setCurrentLocation(llLocations.get(rRnd.nextInt(iSize)));
+            info.setNextAllowedLocation(llLocations.get(rRnd.nextInt(iSize)));
             return mapEpisode;
         } else {
             Episode playground = new EffectPlaygroundEpisode();

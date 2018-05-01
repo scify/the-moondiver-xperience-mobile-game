@@ -6,15 +6,15 @@ public class RotateEffect extends BaseEffect {
     public static final String PARAM_FROM_ANGLE = "PARAM_FROM_ANGLE";
     public static final String PARAM_TO_ANGLE = "PARAM_TO_ANGLE";
     public static final String INFO_CURRENT_ANGLE = "INFO_CURRENT_ANGLE";
+    public final static String PARAM_ORIGIN_X = "PARAM_ORIGIN_X";
+    public final static String PARAM_ORIGIN_Y = "PARAM_ORIGIN_Y";
+
 
     /**
      * Creates a fade-in effect, from 0.0 to 360.0 degrees, taking place within 1 second progressively.
      */
     public RotateEffect() {
-        super(1000, false, true);
-
-        setNumericParameter(PARAM_FROM_ANGLE, 0.0);
-        setNumericParameter(PARAM_TO_ANGLE, 360.0);
+        this(0.0, 360.0, 1000);
     }
 
     public RotateEffect(Effect eSource) {
@@ -67,5 +67,10 @@ public class RotateEffect extends BaseEffect {
 
     protected double projectionFunction(double dStart, double dEnd, double dPercentage) {
         return dStart + (dEnd - dStart) * dPercentage;
+    }
+
+    public void setOriginPoint(double dX, double dY) {
+        setNumericParameter(PARAM_ORIGIN_X, dX);
+        setNumericParameter(PARAM_ORIGIN_Y, dY);
     }
 }

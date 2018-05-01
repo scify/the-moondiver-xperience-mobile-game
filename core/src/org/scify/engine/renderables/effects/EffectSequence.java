@@ -21,12 +21,11 @@ public class EffectSequence extends BaseEffect {
     }
 
     public EffectSequence() {
-        super(0.0, false, true);
+        this(new ArrayList<Effect>());
+    }
 
-        // Initialize list
-        setObjectParameter(PARAM_SERIES_OF_EFFECTS, new LinkedList<>());
-        resetCurrent();
-        updateDuration();
+    public EffectSequence(Effect eSource) {
+        super(eSource);
     }
 
     public EffectSequence(List<Effect> oneAfterTheOther) {

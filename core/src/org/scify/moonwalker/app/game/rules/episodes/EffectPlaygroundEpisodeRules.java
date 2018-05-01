@@ -6,7 +6,7 @@ import org.scify.engine.UserAction;
 import org.scify.engine.renderables.ActionButtonRenderable;
 import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.Renderable;
-import org.scify.engine.renderables.effects.PointRouteSinglePointTypeEffect;
+import org.scify.engine.renderables.effects.RotateEffect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,15 +82,19 @@ public class EffectPlaygroundEpisodeRules extends SimpleTimedImageEpisodeRules {
             // Point route with single item type alternative
             List<Vector2> lvPoints = new ArrayList<>();
             ImageRenderable rPl = new ImageRenderable(10,10,50,50,"pointType", "img/close.png");
-            rPl.setVisible(false);
-            // Create points
-            for (int iCnt=0; iCnt < 5; iCnt++) {
-                Vector2 vCur = new Vector2();
-                vCur.set(50 + 50 * iCnt, (float)(50.0 + 20 * Math.sin(2.0 * Math.PI * (float)iCnt / 100.0)));
-                lvPoints.add(vCur);
-            }
-            PointRouteSinglePointTypeEffect pRoute = new PointRouteSinglePointTypeEffect(lvPoints, 3.0, 2.0, 5000);
-            rPl.addEffect(pRoute);
+            rPl.setVisible(true);
+//            // Create points
+//            for (int iCnt=0; iCnt < 5; iCnt++) {
+//                Vector2 vCur = new Vector2();
+//                vCur.set(50 + 50 * iCnt, (float)(50.0 + 20 * Math.sin(2.0 * Math.PI * (float)iCnt / 100.0)));
+//                lvPoints.add(vCur);
+//            }
+//            PointRouteSinglePointTypeEffect pRoute = new PointRouteSinglePointTypeEffect(lvPoints, 3.0, 2.0, 5000);
+//            rPl.addEffect(pRoute);
+            RotateEffect rEffect = new RotateEffect(0.0, 360.0, 6000);
+            rEffect.setOriginPoint(15.0, 15.0);
+            rPl.addEffect(rEffect);
+
             currentState.addRenderable(rPl);
 
 //            EffectSequence elConPar = new EffectSequence();

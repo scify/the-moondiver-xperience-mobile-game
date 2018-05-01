@@ -7,9 +7,6 @@ import org.scify.engine.renderables.effects.Effect;
 import org.scify.engine.renderables.effects.RotateEffect;
 
 public class RotateLGDXEffect extends RotateEffect implements LGDXEffect {
-    public final static String PARAM_ORIGIN_X = "PARAM_ORIGIN_X";
-    public final static String PARAM_ORIGIN_Y = "PARAM_ORIGIN_Y";
-
     public RotateLGDXEffect(double dFromAngle, double dToAngle, double dDurationMSec) {
         super(dFromAngle, dToAngle, dDurationMSec);
 
@@ -28,8 +25,18 @@ public class RotateLGDXEffect extends RotateEffect implements LGDXEffect {
 
         // Reset origin to sprite center
         // TODO: Check if we should use actor center and when
-        setOriginX(aTarget.getWidth() / 2.0);
-        setOriginY(aTarget.getHeight() / 2.0);
+        if (getNumericParameter(PARAM_ORIGIN_X) == null) {
+            setOriginX(aTarget.getWidth() / 2.0);
+        }
+        else {
+            setOriginX(getNumericParameter(PARAM_ORIGIN_X));
+        }
+        if (getNumericParameter(PARAM_ORIGIN_Y) == null) {
+            setOriginY(aTarget.getHeight() / 2.0);
+        }
+        else {
+            setOriginY(getNumericParameter(PARAM_ORIGIN_Y));
+        }
 
         // DEBUG LINES
 //        System.err.println("Target alpha: " + String.valueOf(dTargetAngle));
@@ -46,8 +53,18 @@ public class RotateLGDXEffect extends RotateEffect implements LGDXEffect {
 
         // Reset origin to sprite center
         // TODO: Check if we should use sprite center and when
-        setOriginX(sTarget.getWidth() / 2.0);
-        setOriginY(sTarget.getHeight() / 2.0);
+        if (getNumericParameter(PARAM_ORIGIN_X) == null) {
+            setOriginX(sTarget.getWidth() / 2.0);
+        }
+        else {
+            setOriginX(getNumericParameter(PARAM_ORIGIN_X));
+        }
+        if (getNumericParameter(PARAM_ORIGIN_Y) == null) {
+            setOriginY(sTarget.getHeight() / 2.0);
+        }
+        else {
+            setOriginY(getNumericParameter(PARAM_ORIGIN_Y));
+        }
 
         // Update target rotation, also using origin
         sTarget.setOrigin((float)getOriginX(), (float)getOriginY());

@@ -2,6 +2,8 @@ package org.scify.moonwalker.app.ui.actors;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Align;
+import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.game.Location;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.ui.LGDXRenderableBookKeeper;
@@ -12,6 +14,7 @@ public class MapEpisodeActor extends ActorWithEffects implements Updateable<MapE
     protected AppInfo appInfo = AppInfo.getInstance();
     protected LGDXRenderableBookKeeper bookKeeper = LGDXRenderableBookKeeper.getInstance();
     protected MapEpisodeRenderable renderable;
+    protected boolean bSelectedOnce = false;
 
 
     public MapEpisodeActor(Skin skin, MapEpisodeRenderable rRenderable) {
@@ -35,14 +38,33 @@ public class MapEpisodeActor extends ActorWithEffects implements Updateable<MapE
     @Override
     public void update(MapEpisodeRenderable renderable) {
         // If location is selected
-        if (renderable.isLocationSelected()) {
+        if (renderable.isLocationSelected() && !bSelectedOnce) {
+            bSelectedOnce = true;
             Location lTarget = renderable.getNextAllowedLocation();
             // Update HUD
-            getLocationNameHUD().setText(lTarget.getName());
+            Label lCur = getLocationNameHUD();
+            lCur.setAlignment(Align.center);
+            lCur.setText(lTarget.getName());
+            centerRenderableByActorSize(renderable.getLocationNameHUD(), lCur);
             // Update distance
-            getDistanceHUD().setText(String.valueOf(lTarget.getDistanceFromLocation(renderable.getCurrentLocation())));
+            lCur = getDistanceHUD();
+            lCur.setAlignment(Align.center);
+            lCur.setText(String.valueOf(lTarget.getDistanceFromLocation(renderable.getCurrentLocation())) + "KM");
+            centerRenderableByActorSize(renderable.getDistanceHUD(), lCur);
             // Update mission
-            getMissionHUD().setText(lTarget.getMission());
+            lCur = getMissionHUD();
+            lCur.setAlignment(Align.center);
+            lCur.setText(lTarget.getMission());
+            centerRenderableByActorSize(renderable.getMissionHUD(), lCur);
         }
+    }
+
+    protected void centerRenderableByActorSize(Renderable rToMove, Label lLabel) {
+//        double dNewX = rToMove.getxPos() - lLabel.getWidth() / 2.0;
+//        double dNewY = rToMove.getyPos() + lLabel.getHeight() / 2.0;
+//
+//        rToMove.setxPos((float) dNewX);
+//        rToMove.setyPos((float) dNewY);
+//        rToMove.renderableWasUpdated();
     }
 }
