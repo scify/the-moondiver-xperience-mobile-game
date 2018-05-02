@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ZIndexedStage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.scify.engine.RenderingEngine;
@@ -22,7 +22,7 @@ import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 public class GameLauncher implements Screen {
 
     private final MoonWalker app;
-    private Stage stage;
+    private ZIndexedStage stage;
     private SpriteBatch batch;
     private Viewport gameViewport;
     private OrthographicCamera mainCamera;
@@ -43,7 +43,7 @@ public class GameLauncher implements Screen {
 
         gameViewport = new StretchViewport(width, height,
                 mainCamera);
-        stage = new Stage(gameViewport, batch);
+        stage = new ZIndexedStage(gameViewport, batch);
     }
 
     @Override
