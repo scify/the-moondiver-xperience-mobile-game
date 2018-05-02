@@ -85,13 +85,13 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
     }
 
     protected void setCockpitButtons() {
-        ActionButtonRenderable navigateBtn = createCockpitButton("navigation_button", "img/cockpit/navigate.png", UserActionCode.FINISH_EPISODE);
-        ActionButtonRenderable launchBtn = createCockpitButton("launch_button", "img/cockpit/launch.png", UserActionCode.FINISH_EPISODE);
-        ActionButtonRenderable spaceshipPartsButton = createCockpitButton("spaceship_parts_button", "img/cockpit/spaceship.png", UserActionCode.SPACESHIP_PARTS_EPISODE);
-        ActionButtonRenderable mapBtn = createCockpitButton("map_button", "img/cockpit/map.png", UserActionCode.MAP_EPISODE);
-        ActionButtonRenderable chargeBtn = createCockpitButton("charge_button", "img/cockpit/charge.png", UserActionCode.CHARGE_SPACESHIP_EPISODE);
-        ActionButtonRenderable contactBtnSimple = createCockpitButton("contact_button_simple", "img/cockpit/contact.png", UserActionCode.CONTACT_SCREEN_EPISODE);
-        ActionButtonRenderable contactBtnLighted = createCockpitButton("contact_button_lighted", "img/cockpit/contact_lighted.png", UserActionCode.CONTACT_SCREEN_EPISODE);
+        ActionButtonRenderable navigateBtn = createCockpitButton("navigation_button", "img/episode_cockpit/navigate.png", UserActionCode.FINISH_EPISODE);
+        ActionButtonRenderable launchBtn = createCockpitButton("launch_button", "img/episode_cockpit/launch.png", UserActionCode.FINISH_EPISODE);
+        ActionButtonRenderable spaceshipPartsButton = createCockpitButton("spaceship_parts_button", "img/episode_cockpit/spaceship.png", UserActionCode.SPACESHIP_PARTS_EPISODE);
+        ActionButtonRenderable mapBtn = createCockpitButton("map_button", "img/episode_cockpit/map.png", UserActionCode.MAP_EPISODE);
+        ActionButtonRenderable chargeBtn = createCockpitButton("charge_button", "img/episode_cockpit/charge.png", UserActionCode.CHARGE_SPACESHIP_EPISODE);
+        ActionButtonRenderable contactBtnSimple = createCockpitButton("contact_button_simple", "img/episode_cockpit/contact.png", UserActionCode.CONTACT_SCREEN_EPISODE);
+        ActionButtonRenderable contactBtnLighted = createCockpitButton("contact_button_lighted", "img/episode_cockpit/contact_lighted.png", UserActionCode.CONTACT_SCREEN_EPISODE);
 
 
         renderable.setNavigateButton(navigateBtn);
