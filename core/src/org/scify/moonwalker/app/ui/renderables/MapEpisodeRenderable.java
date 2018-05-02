@@ -25,7 +25,7 @@ public class MapEpisodeRenderable extends Renderable {
     public static final String CITY_DOT_IMG_PATH = "img/episode_map/city_dot.png";
     public static final String PIN_IMG_PATH = "img/episode_map/pin.png";
     public static final String SPACESHIP_IMG_PATH = "img/episode_map/spaceship.png";
-    public static final String STAR_IMG_PATH = "img/episode_map/star_red2.png";
+    public static final String STAR_IMG_PATH = "img/episode_map/star_red1.png";
 
 
     protected Location currentLocation;
@@ -33,7 +33,7 @@ public class MapEpisodeRenderable extends Renderable {
     protected boolean locationSelected;
     protected List<Location> locations;
     protected List<Renderable> locationPoints;
-    protected List<Renderable> locationNames;
+    protected Map<Location, Renderable> renderablePerLocation;
 
     protected ActionButtonRenderable closeButton;
     protected TextLabelRenderable missionHUD;
@@ -54,7 +54,6 @@ public class MapEpisodeRenderable extends Renderable {
         this.nextAllowedLocation = nextAllowedLocation;
         this.currentLocation = currentLocation;
 
-
         initSubRenderables();
     }
 
@@ -69,7 +68,6 @@ public class MapEpisodeRenderable extends Renderable {
         allRenderables.addAll(getHUDLabels());
 
         allRenderables.addAll(getLocationPoints());
-        allRenderables.addAll(getLocationNameLabels());
         allRenderables.add(getBackground());
     }
 
@@ -160,7 +158,7 @@ public class MapEpisodeRenderable extends Renderable {
         if (locationNameHUD == null) {
             locationNameHUD = new TextLabelRenderable(appInfo.convertX(250f),appInfo.convertY(1080 - 275f), appInfo.convertX(0), appInfo.convertY(0), Renderable.ACTOR_ROTATABLE_LABEL, "locationNameHUD");
             locationNameHUD.setLabel("");
-//            locationNameHUD.setPositionDrawable(false);
+            missionHUD.setZIndex(5);
             locationNameHUD.setVisible(false);
         }
 
@@ -172,7 +170,7 @@ public class MapEpisodeRenderable extends Renderable {
         if (distanceHUD == null) {
             distanceHUD = new TextLabelRenderable(appInfo.convertX(250f),appInfo.convertY(1080 - 525f), appInfo.convertX(0), appInfo.convertY(0), Renderable.ACTOR_ROTATABLE_LABEL, "distanceHUD");
             distanceHUD.setLabel("");
-//            distanceHUD.setPositionDrawable(false);
+            missionHUD.setZIndex(5);
             distanceHUD.setVisible(false);
         }
 
@@ -183,7 +181,7 @@ public class MapEpisodeRenderable extends Renderable {
         if (missionHUD == null) {
             missionHUD = new TextLabelRenderable(appInfo.convertX(250f),appInfo.convertY(1080 - 875f), appInfo.convertX(0), appInfo.convertY(0), Renderable.ACTOR_ROTATABLE_LABEL, "missionHUD");
             missionHUD.setLabel("");
-//            missionHUD.setPositionDrawable(false);
+            missionHUD.setZIndex(5);
             missionHUD.setVisible(false);
         }
 
@@ -193,9 +191,11 @@ public class MapEpisodeRenderable extends Renderable {
     public List<Renderable> getLocationPoints() {
         if (locationPoints == null) {
             locationPoints = new ArrayList<>();
+            renderablePerLocation = new HashMap<>();
 
             // For each location (point)
             for (Location lCur : getLocations()) {
+                // Create appropriate renderable
                 Renderable btn;
                 if (lCur.equals(nextAllowedLocation)) {
                     btn = createNextAllowedLocationRenderable(lCur);
@@ -207,10 +207,16 @@ public class MapEpisodeRenderable extends Renderable {
                     btn = createCityPointRenderable(lCur);
                 }
 
+                // Set z-index high (to show on top)
                 btn.setZIndex(5);
+                // Set invisible (to support fade-in smoothly)
                 btn.setVisible(false);
 
+                // Keep mapping between location and renderable
+                renderablePerLocation.put(lCur, btn);
 
+
+                // Add to return list
                 locationPoints.add(btn);
 
             }
@@ -219,7 +225,7 @@ public class MapEpisodeRenderable extends Renderable {
         return locationPoints;
     }
 
-    private ActionButtonRenderable createCityPointRenderable(Location lCur) {
+    protected ActionButtonRenderable createCityPointRenderable(Location lCur) {
         ActionButtonRenderable btn;
         btn = new ActionButtonRenderable( appInfo.convertX(lCur.getPosX() - 8), appInfo.convertY(lCur.getPosY() - 8),
                 appInfo.convertX(16), appInfo.convertY(16),  Renderable.ACTOR_IMAGE_BUTTON, "point" + lCur.getName());
@@ -227,34 +233,36 @@ public class MapEpisodeRenderable extends Renderable {
         return btn;
     }
 
-    private ImageRenderable createCurrentLocationRenderable(Location lCur) {
+    protected ImageRenderable createCurrentLocationRenderable(Location lCur) {
         ImageRenderable btn;
         btn = new ImageRenderable( appInfo.convertX(lCur.getPosX() - 33), appInfo.convertY(lCur.getPosY() - 72),
                 appInfo.convertX(66), appInfo.convertY(36),  "currentPoint", SPACESHIP_IMG_PATH);
         btn.setImgPath(SPACESHIP_IMG_PATH);
 
+        EffectSequence esCur = new EffectSequence();
+        esCur.addEffect(new DelayEffect(2000));
         RotateEffect rEffect = new RotateEffect(0.0, 360.0, 2000);
         rEffect.setOriginPoint(16, 16);
-        btn.addEffect(rEffect);
+        esCur.addEffect(rEffect);
+        btn.addEffect(esCur);
 
         return btn;
     }
 
-    private ActionButtonRenderable createNextAllowedLocationRenderable(Location lCur) {
+    protected ActionButtonRenderable createNextAllowedLocationRenderable(Location lCur) {
         ActionButtonRenderable btn;
         btn = new ActionButtonRenderable( appInfo.convertX(lCur.getPosX() - 45), appInfo.convertY(lCur.getPosY() + 5),
                 appInfo.convertX(40), appInfo.convertY(60),  Renderable.ACTOR_IMAGE_BUTTON, "nextAllowedPoint");
         btn.setImgPath(PIN_IMG_PATH);
+
         btn.setUserAction(new UserAction(MAP_SELECT_ACTION, lCur));
 
         // and highlighted
         EffectSequence eConstant = new EffectSequence();
         eConstant.addEffect(new DelayEffect(3000)); // Await normal fade in
-//            eConstant.addEffect(new FadeEffect(1.0, 0.0, 1000));
-//            eConstant.addEffect(new FadeEffect(0.0, 1.0, 1000));
-        eConstant.addEffect(new BounceEffect(0, 20, 1000));
-        eConstant.addEffect(new BounceEffect(0, 20, 1000));
+        eConstant.addEffect(new BounceEffect(0, 20, 2000));
         btn.addEffect(eConstant);
+
         return btn;
     }
 
@@ -265,29 +273,12 @@ public class MapEpisodeRenderable extends Renderable {
         return ir;
     }
 
-    public List<Renderable> getLocationNameLabels() {
-        if (locationNames == null) {
-            List<Renderable> lRes = new ArrayList<>();
-
-            // For each location (name)
-            for (Location lCur : getLocations()) {
-                // Create corresponding image with effect
-                ImageRenderable irCur = new ImageRenderable("NameLabel" + lCur.getName(), lCur.getImgPath());
-                irCur.setxPos(lCur.getPosX());
-                irCur.setyPos(lCur.getPosY());
-                lRes.add(irCur);
-            }
-
-            locationNames = lRes;
-        }
-
-        return locationNames;
-    }
-
+//    public void fadeIn(Runnable rAfterFadeIn) {
     public void fadeIn() {
-        Effect eFadeIn = getDefaultFadeInEffect();
-        for (Renderable r: getAllRenderables()) {
-            r.addEffect(eFadeIn);
+        // Apply to all except close button (see below)
+        EffectSequence eFadeIn = getDefaultFadeInEffect();
+        for (Renderable rCur: getAllRenderables()) {
+                rCur.addEffect(eFadeIn);
         }
     }
 
@@ -304,8 +295,11 @@ public class MapEpisodeRenderable extends Renderable {
         // DEBUG LINES
         System.err.println("Location selected: " + newLocation.toString());
         //////////////
+
+
         renderableWasUpdated();
     }
+
 
     public EffectSequence getDefaultFadeInEffect() {
         EffectSequence fadeInEffects = new EffectSequence();
@@ -323,6 +317,10 @@ public class MapEpisodeRenderable extends Renderable {
         fadeOutEffects.addEffect(new FadeEffect(1.0, 0.0, 2000));
         fadeOutEffects.addEffect(new VisibilityEffect(false));
         return fadeOutEffects;
+    }
+
+    public Renderable getRenderableForLocation(Location lToLoopUp) {
+        return renderablePerLocation.get(lToLoopUp);
     }
 
 }
