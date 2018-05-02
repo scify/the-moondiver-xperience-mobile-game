@@ -4,12 +4,12 @@ public class ImageRenderable extends Renderable {
     protected String imgPath;
 
     public ImageRenderable(float xPos, float yPos, float width, float height, String id, String sImgPath) {
-        super(xPos, yPos, width, height, SPRITE_IMAGE, id);
+        super(xPos, yPos, width, height, ACTOR_IMAGE, id);
         imgPath = sImgPath;
     }
 
     public ImageRenderable(String id, String sImgPath) {
-        super(SPRITE_IMAGE, id);
+        super(ACTOR_IMAGE, id);
         imgPath = sImgPath;
     }
 
