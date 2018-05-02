@@ -7,8 +7,17 @@ import java.util.List;
 public class PointRouteSinglePointTypeEffect extends EffectSequence {
 
     public static final String POINT_LIST = "POINT_LIST";
-    public static final String PARAM_FADE_IN_STEP_PERCENTAGE = "PARAM_FADE_IN_STEP_PERCENTAGE";
-    public static final String PARAM_FADE_OUT_STEP_PERCENTAGE = "PARAM_FADE_OUT_STEP_PERCENTAGE";
+    public static final String PARAM_FADE_IN_STEP_WEIGHT = "PARAM_FADE_IN_STEP_WEIGHT";
+    public static final String PARAM_FADE_OUT_STEP_WEIGHT = "PARAM_FADE_OUT_STEP_WEIGHT";
+    public static final String PARAM_VISIBLE_STEP_WEIGHT = "PARAM_VISIBLE_STEP_WEIGHT";
+
+    /**
+     * Constructor which sets the delay between fade-in and fade-out to zero.
+     */
+    public PointRouteSinglePointTypeEffect(List<Vector2> lvPointList, double dFadeInStepDurationWeight, double dFadeOutStepDurationWeight,
+                                           double dTotalDuration) {
+        this(lvPointList, dFadeInStepDurationWeight, dFadeOutStepDurationWeight, 0.0, dTotalDuration);
+    }
 
     /**
      * Creates an effect which causes the {@link org.scify.engine.renderables.Renderable} to fade in and then fade out
@@ -19,16 +28,20 @@ public class PointRouteSinglePointTypeEffect extends EffectSequence {
      * @param dTotalDuration The duration of the whole effect
      * @param dFadeInStepDurationWeight The weight of the time will be used for fading in.
      * @param dFadeOutStepDurationWeight The weight of the time will be used for fading out.
+     * @param dVisibleStateDurationWeight The weight of the time will be used for remaining visible (between fades).
      */
-    public PointRouteSinglePointTypeEffect(List<Vector2> lvPointList, double dFadeInStepDurationWeight, double dFadeOutStepDurationWeight, double dTotalDuration) {
+    public PointRouteSinglePointTypeEffect(List<Vector2> lvPointList, double dFadeInStepDurationWeight, double dFadeOutStepDurationWeight,
+                                           double dVisibleStateDurationWeight, double dTotalDuration) {
         super();
 
         setObjectParameter(POINT_LIST, lvPointList);
-        setNumericParameter(PARAM_FADE_IN_STEP_PERCENTAGE, dFadeInStepDurationWeight);
-        setNumericParameter(PARAM_FADE_OUT_STEP_PERCENTAGE, dFadeOutStepDurationWeight);
+        setNumericParameter(PARAM_FADE_IN_STEP_WEIGHT, dFadeInStepDurationWeight);
+        setNumericParameter(PARAM_FADE_OUT_STEP_WEIGHT, dFadeOutStepDurationWeight);
+        setNumericParameter(PARAM_VISIBLE_STEP_WEIGHT, dVisibleStateDurationWeight);
 
-        double dFadeInStepPercentage = (dFadeInStepDurationWeight / (dFadeInStepDurationWeight + dFadeOutStepDurationWeight));
-        double dFadeOutStepPercentage = (dFadeOutStepDurationWeight / (dFadeInStepDurationWeight + dFadeOutStepDurationWeight));
+        double dFadeInStepPercentage = (dFadeInStepDurationWeight / (dFadeInStepDurationWeight + dFadeOutStepDurationWeight + dVisibleStateDurationWeight));
+        double dFadeOutStepPercentage = (dFadeOutStepDurationWeight / (dFadeInStepDurationWeight + dFadeOutStepDurationWeight + dVisibleStateDurationWeight));
+        double dVisibilityStepPercentage = (dVisibleStateDurationWeight / (dFadeInStepDurationWeight + dFadeOutStepDurationWeight + dVisibleStateDurationWeight));
 
         // Estimate single step duration
         double dStepDuration = dTotalDuration / lvPointList.size();
@@ -45,9 +58,13 @@ public class PointRouteSinglePointTypeEffect extends EffectSequence {
 
             // Move to new position
             addEffect(new MoveEffect(vCur.x, vCur.y, 0.0));
-            // Fade in (in 2/3s of the step time)
+            // Fade in
             addEffect(new FadeEffect(0.0, 1.0, dFadeInStepPercentage * dStepDuration));
-            // Fade out (in 1/3s of the step time)
+            // Wait (stay visible), if requested
+            if (dVisibilityStepPercentage > 0.0) {
+                addEffect(new DelayEffect(dVisibilityStepPercentage * dStepDuration));
+            }
+            // Fade out
             addEffect(new FadeEffect(1.0, 0.0, dFadeOutStepPercentage * dStepDuration));
         }
 
