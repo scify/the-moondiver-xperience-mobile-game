@@ -17,7 +17,7 @@ public class MoveEffect extends BaseEffect {
      * Creates a fade-in effect, from alpha 0.0 to 1.0, taking place within 1 second progressively.
      */
     public MoveEffect(double dToX, double dToY, double dDuration) {
-        this(Double.MIN_VALUE, Double.MIN_VALUE, dToX, dToY, 1000.0);
+        this(Double.MIN_VALUE, Double.MIN_VALUE, dToX, dToY, dDuration);
     }
 
     public MoveEffect(double dFromX, double dFromY, double dToX, double dToY, double dDuration) {
