@@ -43,16 +43,19 @@ public class MapEpisodeRenderable extends Renderable {
 
     protected Set<Renderable> allRenderables;
 
+    protected boolean travelOnly;
+
     public Set<Renderable> getAllRenderables() {
         return allRenderables;
     }
 
     public MapEpisodeRenderable(float xPos, float yPos, float width, float height, String id, List<Location> lLocations,
-                                Location nextAllowedLocation, Location currentLocation) {
+                                Location nextAllowedLocation, Location currentLocation, boolean bTravelOnly) {
         super(xPos, yPos, width, height, Renderable.ACTOR_EPISODE_MAP_LOCATION, id);
         locations = lLocations;
         this.nextAllowedLocation = nextAllowedLocation;
         this.currentLocation = currentLocation;
+        this.travelOnly = bTravelOnly;
 
         initSubRenderables();
     }
@@ -244,7 +247,7 @@ public class MapEpisodeRenderable extends Renderable {
         RotateEffect rEffect = new RotateEffect(0.0, 360.0, 2000);
         rEffect.setOriginPoint(16, 16);
         esCur.addEffect(rEffect);
-        btn.addEffect(esCur);
+        btn.addEffect(rEffect);
 
         return btn;
     }
@@ -273,13 +276,26 @@ public class MapEpisodeRenderable extends Renderable {
         return ir;
     }
 
-//    public void fadeIn(Runnable rAfterFadeIn) {
-    public void fadeIn() {
+    public void fadeIn(Runnable rAfterFadeIn) {
         // Apply to all except close button (see below)
         EffectSequence eFadeIn = getDefaultFadeInEffect();
         for (Renderable rCur: getAllRenderables()) {
+            if (rCur != closeButton) {
                 rCur.addEffect(eFadeIn);
+            }
         }
+
+
+        // Create separate effect for close button
+        EffectSequence eAfterFadeIn = getDefaultFadeInEffect();
+        // If we should run something after fade in
+        if (eAfterFadeIn != null) {
+            // append it the the close button effect
+            eAfterFadeIn.addEffect(new FunctionEffect(rAfterFadeIn));
+        }
+        // add the effect to the renderable
+        closeButton.addEffect(eAfterFadeIn);
+
     }
 
     public void fadeOut() {
