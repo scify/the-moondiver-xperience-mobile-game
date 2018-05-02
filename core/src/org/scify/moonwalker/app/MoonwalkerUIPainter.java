@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ZIndexedStage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -24,7 +24,7 @@ import java.util.Set;
  * This class can paint all types of actors and sprites for a given stage.
  */
 public class MoonwalkerUIPainter {
-    protected Stage stage;
+    protected ZIndexedStage stage;
     protected Label fpsLabel;
     protected Skin skin;
     protected BitmapFont font;
@@ -41,7 +41,7 @@ public class MoonwalkerUIPainter {
         this.overallBackground = overallBackground;
     }
 
-    public MoonwalkerUIPainter(Stage sStage, CameraController ccCameraController) {
+    public MoonwalkerUIPainter(ZIndexedStage sStage, CameraController ccCameraController) {
         stage = sStage;
         batch = (SpriteBatch)stage.getBatch();
         cameraController = ccCameraController;
@@ -97,7 +97,6 @@ public class MoonwalkerUIPainter {
         // Update position, when appropriate
         if (renderable.isPositionDrawable())
             aToDraw.setPosition(renderable.getxPos(), renderable.getyPos());
-
         // Apply effects
         applyActorEffects(aToDraw, renderable); // Deal with effects
 
@@ -114,7 +113,7 @@ public class MoonwalkerUIPainter {
             // If actor does not have a parent
             if (aToDraw.getParent() == null) {
                 // we should add it to the stage
-                stage.addActor(aToDraw);
+                stage.addActorForRenderable(aToDraw, renderable);
             }
         }
     }
@@ -191,9 +190,8 @@ public class MoonwalkerUIPainter {
 
         // update the z index of the actor, according to the renderable's z index
         // Take into account also the z-index rule (<0 means invisible)
-        if (renderable.getZIndex() >= 0)
-            aToDraw.setZIndex(renderable.getZIndex());
-        else {
+        if (renderable.getZIndex() < 0)
+        {
             // TODO: Check in the future if it needs to be removed
             aToDraw.setVisible(false);
         }
