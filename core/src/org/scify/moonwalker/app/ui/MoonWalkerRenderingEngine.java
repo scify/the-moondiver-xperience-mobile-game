@@ -137,21 +137,8 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     protected void drawRenderables(MoonWalkerGameState currentState) {
         if (!bDisposalOngoing) {
             synchronized (currentState.getRenderableList()) {
-                List<Renderable> lRenderables = currentState.getRenderableList();
-                Collections.sort(lRenderables, new Comparator<Renderable>() {
-                    @Override
-                    public int compare(Renderable o1, Renderable o2) {
-                        // Start with z-index
-                        int iRes = o1.getZIndex() - o2.getZIndex();
-                        if (iRes == 0) {
-                            // Continue with area
-                            iRes = (int)((o1.getWidth() * o1.getHeight()) -
-                                    (o2.getWidth() * o2.getHeight()));
-                        }
-
-                        return iRes;
-                    }
-                });
+                // Get renderable list snapshot (to avoid concurrent modification)
+                List<Renderable> lRenderables = new ArrayList<>(currentState.getRenderableList());
 
                 for (Renderable renderable : lRenderables) {
                         drawRenderable(renderable);
