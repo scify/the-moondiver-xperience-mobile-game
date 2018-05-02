@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ZIndexedStage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -49,14 +49,14 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     protected ThemeController themeController;
     protected UserInputHandlerImpl userInputHandler;
     protected Batch batch;
-    protected Stage stage;
+    protected ZIndexedStage stage;
     protected Viewport gameViewport;
     protected ResourceLocator resourceLocator;
     protected boolean bDisposalOngoing;
     protected boolean audioEnabled;
     protected MoonwalkerUIPainter painter;
 
-    public MoonWalkerRenderingEngine(UserInputHandler userInputHandler, SpriteBatch batch, Stage stage) {
+    public MoonWalkerRenderingEngine(UserInputHandler userInputHandler, SpriteBatch batch, ZIndexedStage stage) {
         this.resourceLocator = new ResourceLocator();
         cameraController = new CameraController();
         cameraController.initCamera(stage);
