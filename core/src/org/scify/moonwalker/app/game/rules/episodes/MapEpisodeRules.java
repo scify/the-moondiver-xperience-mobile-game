@@ -1,13 +1,16 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
+import com.badlogic.gdx.math.Vector2;
 import org.scify.engine.*;
-import org.scify.engine.renderables.effects.EffectSequence;
-import org.scify.engine.renderables.effects.FunctionEffect;
+import org.scify.engine.renderables.ImageRenderable;
+import org.scify.engine.renderables.Renderable;
+import org.scify.engine.renderables.effects.*;
 import org.scify.moonwalker.app.game.Location;
 import org.scify.moonwalker.app.game.LocationController;
 import org.scify.moonwalker.app.ui.renderables.MapEpisodeRenderable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /* Guide:
@@ -31,12 +34,12 @@ public class MapEpisodeRules extends BaseEpisodeRules {
     }
 
     @Override
-    protected void episodeStartedEvents(GameState currentState) {
+    protected void episodeStartedEvents(final GameState currentState) {
         if (!episodeStarted) {
             // Create main renderable
             renderable = new MapEpisodeRenderable(0.0f, 0.0f, appInfo.getScreenWidth(), appInfo.getScreenHeight(),
                     "mapEpisodeRenderable", locationController.getLocations(), gameInfo.getNextAllowedLocation(),
-                    gameInfo.getCurrentLocation());
+                    gameInfo.getCurrentLocation(), travelOnly);
 
             // Get main properties from game state and apply to renderable
             renderable.setLocationSelected(false);
@@ -46,7 +49,18 @@ public class MapEpisodeRules extends BaseEpisodeRules {
             // and main renderable
             currentState.addRenderable(renderable);
 
-            renderable.fadeIn();
+            if (!travelOnly) {
+                renderable.fadeIn(null);
+            } else {
+                renderable.fadeIn(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Apply user action for selection
+                        handleUserAction(currentState, new UserAction(MapEpisodeRenderable.MAP_SELECT_ACTION,
+                                renderable.getNextAllowedLocation()));
+                    }
+                });
+            }
 
             super.episodeStartedEvents(currentState);
         }
@@ -77,6 +91,8 @@ public class MapEpisodeRules extends BaseEpisodeRules {
                 renderable.setNextLocation((Location)userAction.getActionPayload());
                 // Also update game info
                 gameInfo.setNextLocation((Location)userAction.getActionPayload());
+                // And show appropriate effect
+                createSpaceshipMovementEffect(gsCurrent);
                 break;
             case UserActionCode.QUIT:
                 EffectSequence eFadeOutAndEnd = renderable.getDefaultFadeOutEffect();
@@ -97,6 +113,69 @@ public class MapEpisodeRules extends BaseEpisodeRules {
     @Override
     public EpisodeEndState determineEndState(GameState currentState) {
         return new EpisodeEndState(EpisodeEndStateCode.TEMP_EPISODE_FINISHED, currentState);
+    }
+
+    protected void createSpaceshipMovementEffect(final GameState gsCurrent) {
+        Renderable rCurLocation = renderable.getRenderableForLocation(renderable.getCurrentLocation());
+        Renderable rNextLocation = renderable.getRenderableForLocation(renderable.getNextAllowedLocation());
+        final float dStartX = rCurLocation.getxPos();
+        final float dStartY = rCurLocation.getyPos();
+        final float dEndX = rNextLocation.getxPos();
+        final float dEndY = rNextLocation.getyPos();
+
+        if (!travelOnly) {
+            // Add movement effect to spaceship
+            Renderable rStar = new ImageRenderable("star_route_img", MapEpisodeRenderable.STAR_IMG_PATH);
+            rStar.setVisible(false);
+            rStar.setZIndex(10);
+
+            EffectSequence esRes = new EffectSequence();
+            // Create points
+            List<Vector2> lvPoints = new ArrayList<>();
+
+            int iNumOfSteps = 10;
+            for (int iCnt = 1; iCnt < iNumOfSteps; iCnt++) {
+                Vector2 vCur = new Vector2();
+                vCur.set(dStartX + (dEndX - dStartX) * ((float) iCnt / iNumOfSteps), dStartY + (dEndY - dStartY) * ((float) iCnt / iNumOfSteps));
+                lvPoints.add(vCur);
+            }
+            // Perform route effect
+            PointRouteSinglePointTypeEffect pRoute = new PointRouteSinglePointTypeEffect(lvPoints, 1.0,
+                    4.0, 4.0, 5000);
+            esRes.addEffect(pRoute);
+
+            rStar.addEffect(esRes);
+            // Add star to renderables
+            gsCurrent.addRenderable(rStar);
+        }
+
+
+        // If only travel
+        if (travelOnly) {
+            final double dTransitionTime = 3000.0;
+
+            EffectSequence esRes = new EffectSequence();
+            // Add movement effect to spaceship
+            esRes.addEffect(new FunctionEffect(new Runnable() {
+                @Override
+                public void run() {
+                    renderable.getRenderableForLocation(renderable.getCurrentLocation()).addEffect(new MoveEffect(
+                            dStartX, dStartY, dEndX, dEndY, dTransitionTime
+                    ));
+                }
+            }));
+            // make sure you quit after a while
+            esRes.addEffect(new DelayEffect(dTransitionTime));
+            esRes.addEffect(new FunctionEffect(new Runnable() {
+                @Override
+                public void run() {
+                    handleUserAction(gsCurrent, new UserAction(UserActionCode.QUIT));
+                    gameInfo.setCurrentLocation(renderable.getNextAllowedLocation());
+                }
+            }));
+            rCurLocation.addEffect(esRes);
+        }
+
     }
 
 }
