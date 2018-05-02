@@ -258,13 +258,15 @@ public class MapEpisodeRenderable extends Renderable {
                 appInfo.convertX(40), appInfo.convertY(60),  Renderable.ACTOR_IMAGE_BUTTON, "nextAllowedPoint");
         btn.setImgPath(PIN_IMG_PATH);
 
-        btn.setUserAction(new UserAction(MAP_SELECT_ACTION, lCur));
+        if (!travelOnly) {
+            btn.setUserAction(new UserAction(MAP_SELECT_ACTION, lCur));
 
-        // and highlighted
-        EffectSequence eConstant = new EffectSequence();
-        eConstant.addEffect(new DelayEffect(3000)); // Await normal fade in
-        eConstant.addEffect(new BounceEffect(0, 20, 2000));
-        btn.addEffect(eConstant);
+            // and highlighted
+            EffectSequence eConstant = new EffectSequence();
+            eConstant.addEffect(new DelayEffect(3000)); // Await normal fade in
+            eConstant.addEffect(new BounceEffect(0, 20, 2000));
+            btn.addEffect(eConstant);
+        }
 
         return btn;
     }
