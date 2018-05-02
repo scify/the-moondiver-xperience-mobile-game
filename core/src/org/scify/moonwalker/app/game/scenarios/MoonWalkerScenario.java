@@ -16,8 +16,12 @@ import java.util.Random;
 public class MoonWalkerScenario extends Scenario {
 
     public MoonWalkerScenario() {
-//        createBasicScenario();
-        createTestingScenario();
+        if (false) {
+            createBasicScenario();
+        }
+        else {
+            createTestingScenario();
+        }
     }
 
     @Override
@@ -35,7 +39,7 @@ public class MoonWalkerScenario extends Scenario {
                 addTemporaryEpisode(new ContactScreenEpisode());
                 break;
             case EpisodeEndStateCode.MAP_EPISODE_STARTED:
-                addTemporaryEpisode(new MapEpisode());
+                addTemporaryEpisode(new MapEpisode(false));
                 break;
             case EpisodeEndStateCode.SPACESHIP_CHARGER_EPISODE_STARTED:
                 addTemporaryEpisode(new SpaceshipChargerEpisode());
@@ -67,22 +71,49 @@ public class MoonWalkerScenario extends Scenario {
 
     protected Episode createTestingScenario() {
         if (true) {
-            Random rRnd = new Random();
-
-            Episode mapEpisode = new MapEpisode();
-            setFirstEpisode(mapEpisode);
-            GameInfo info = GameInfo.getInstance();
-            LocationController lc = LocationController.getInstance();
-            int iSize = lc.getLocations().size();
-            List<Location> llLocations = lc.getLocations();
-            info.setCurrentLocation(llLocations.get(rRnd.nextInt(iSize)));
-            info.setNextAllowedLocation(llLocations.get(rRnd.nextInt(iSize)));
-            return mapEpisode;
+//            return getCockpitEpisode();
+            return getMapEpisode();
         } else {
-            Episode playground = new EffectPlaygroundEpisode();
-            setFirstEpisode(playground);
-            return playground;
+            return getPlaygroundEpisode();
         }
 
+    }
+
+    private Episode getKnightEpisode() {
+        Episode knight = new KnightRaceEpisode();
+        setFirstEpisode(knight);
+        return knight;
+    }
+
+    private Episode getCockpitEpisode() {
+        Episode cockpit = new CockpitEpisode();
+        setFirstEpisode(cockpit);
+        return cockpit;
+    }
+
+    private Episode getPlaygroundEpisode() {
+        Episode playground = new EffectPlaygroundEpisode();
+        setFirstEpisode(playground);
+        return playground;
+    }
+
+    private Episode getMapEpisode() {
+        Random rRnd = new Random();
+
+        Episode mapEpisode = new MapEpisode(false);
+        setFirstEpisode(mapEpisode);
+        GameInfo info = GameInfo.getInstance();
+        LocationController lc = LocationController.getInstance();
+        int iSize = lc.getLocations().size();
+        List<Location> llLocations = lc.getLocations();
+        int iFrom = rRnd.nextInt(iSize);
+        info.setCurrentLocation(llLocations.get(iFrom));
+        int iTo = rRnd.nextInt(iSize);
+        while (iTo == iFrom) {
+            iTo = rRnd.nextInt(iSize);
+        }
+
+        info.setNextAllowedLocation(llLocations.get(iTo));
+        return mapEpisode;
     }
 }
