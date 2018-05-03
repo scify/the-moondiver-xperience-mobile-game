@@ -1,6 +1,8 @@
-package org.scify.moonwalker.app.ui.actors;
+package org.scify.moonwalker.app.ui.actors.episode;
 
 import org.scify.engine.renderables.Renderable;
+import org.scify.moonwalker.app.ui.actors.TableActor;
+import org.scify.moonwalker.app.ui.actors.Updateable;
 import org.scify.moonwalker.app.ui.renderables.ContactScreenRenderable;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 

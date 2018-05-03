@@ -21,6 +21,8 @@ public class UserActionCode {
     public static final String GIRL_SELECTED = "GIRL_SELECTED";
     public static final String BACK = "BACK";
     public static final String CALCULATOR_EPISODE = "CALCULATOR_EPISODE";
+    public static final String LAUNCH = "LAUNCH";
+    public static final String TRAVEL = "TRAVEL";
     public static final String MAP_EPISODE = "MAP_EPISODE";
     public static final String CONTACT_SCREEN_EPISODE = "CONTACT_SCREEN_EPISODE";
     public static final String CHARGE_SPACESHIP_EPISODE = "CHARGE_SPACESHIP_EPISODE";

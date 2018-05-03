@@ -1,14 +1,52 @@
 package org.scify.moonwalker.app.ui.renderables;
 
+import org.scify.engine.UserAction;
+import org.scify.engine.UserActionCode;
 import org.scify.engine.renderables.ActionButtonRenderable;
+import org.scify.engine.renderables.Renderable;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class CockpitRenderable extends FadingTableRenderable {
+    //renderable image paths
+    protected final static String BG_IMG_PATH = "img/episode_cockpit/bg.png";
+    protected final static String MOTOR_EFFICIENCY_IMG_PATH = "img/cockpit/motor_efficiency.png";
+    protected final static String REMAINING_ENERGY_IMG_PATH = "img/cockpit/remaining_energy.png";
+    protected final static String DESTINATION_DISTANCE_IMG_PATH = "img/cockpit/destination_distance.png";
+    protected final static String LOCATION_IMG_PATH = "img/cockpit/currentLocation.png";
+    protected final static String DAYS_LEFT_IMG_PATH = "img/cockpit/days_left.png";
+    protected final static String TRAVEL_BUTTON_DEFAULT_IMG_PATH = "img/episode_cockpit/travel.png";
+    protected final static String TRAVEL_BUTTON_LIGHTED_IMG_PATH = "img/episode_cockpit/travel_lighted.png";
+    protected final static String LAUNCH_BUTTON_DEFAULT_IMG_PATH = "img/episode_cockpit/launch.png";
+    protected final static String LAUNCH_BUTTON_LIGHTED_IMG_PATH = "img/episode_cockpit/launch_lighted.png";
+    protected final static String CONTACT_BUTTON_DEFAULT_IMG_PATH = "img/episode_cockpit/contact.png";
+    protected final static String CONTACT_BUTTON_LIGHTED_IMG_PATH = "img/episode_cockpit/contact_lighted.png";
+    protected final static String MAP_BUTTON_DEFAULT_IMG_PATH = "img/episode_cockpit/map.png";
+    protected final static String MAP_BUTTON_LIGHTED_IMG_PATH = "img/episode_cockpit/map_lighted.png";
+    protected final static String CHARGE_BUTTON_DEFAULT_IMG_PATH = "img/episode_cockpit/charge.png";
+    protected final static String CHARGE_BUTTON_LIGHTED_IMG_PATH = "img/episode_cockpit/charge_lighted.png";
+    protected final static String SPACESHIP_INVENTORY_BUTTON_DEFAULT_IMG_PATH = "img/episode_cockpit/spaceship.png";
+    protected final static String SPACESHIP_INVENTORY_BUTTON_LIGHTED_IMG_PATH = "img/episode_cockpit/spaceship_lighted.png";
 
-    public final String MOTOR_EFFICIENCY_IMG_PATH = "img/cockpit/motor_efficiency.png";
-    public final String REMAINING_ENERGY_IMG_PATH = "img/cockpit/remaining_energy.png";
-    public final String DESTINATION_DISTANCE_IMG_PATH = "img/cockpit/destination_distance.png";
-    public final String POSITION_LABEL_IMG_PATH = "img/cockpit/currentLocation.png";
-    public final String DAYS_LEFT_IMG_PATH = "img/cockpit/days_left.png";
+    //renderable ids
+    protected final static String MOTOR_EFFICIENCY_ID = "motor_efficiency";
+    protected final static String REMAINING_ENERGY_ID = "remaining_energy";
+    protected final static String DESTINATION_DISTANCE_ID = "destination_distance";
+    protected final static String LOCATION_ID = "location";
+    protected final static String DAYS_LEFT_ID = "days_left";
+    protected final static String TRAVEL_BUTTON_DEFAULT_ID = "travel_button";
+    protected final static String TRAVEL_BUTTON_LIGHTED_ID = "travel_button_lighted";
+    protected final static String LAUNCH_BUTTON_DEFAULT_ID = "launch_button";
+    protected final static String LAUNCH_BUTTON_LIGHTED_ID = "launch_button_lighted";
+    protected final static String CONTACT_BUTTON_DEFAULT_ID = "contact_button";
+    protected final static String CONTACT_BUTTON_LIGHTED_ID = "contact_button_lighted";
+    protected final static String MAP_BUTTON_DEFAULT_ID = "map_button";
+    protected final static String MAP_BUTTON_LIGHTED_ID = "map_button_lighted";
+    protected final static String CHARGE_BUTTON_DEFAULT_ID = "charge_button";
+    protected final static String CHARGE_BUTTON_LIGHTED_ID = "charge_button_lighted";
+    protected final static String SPACESHIP_INVENTORY_BUTTON_DEFAULT_ID = "spaceship_button";
+    protected final static String SPACESHIP_INVENTORY_BUTTON_LIGHTED_ID = "spaceship_button_lighted";
 
     protected String motorEfficiencyValue;
     protected String remainingEnergyValue;
@@ -16,21 +54,73 @@ public class CockpitRenderable extends FadingTableRenderable {
     protected String positionValue;
     protected String daysLeftValue;
 
-    protected ActionButtonRenderable navigateButton;
+    protected ActionButtonRenderable travelButton;
+    protected ActionButtonRenderable travelLightedButton;
     protected ActionButtonRenderable launchButton;
+    protected ActionButtonRenderable launchLightedButton;
     protected ActionButtonRenderable chargeButton;
-    protected ActionButtonRenderable spaceshipPartsButton;
+    protected ActionButtonRenderable chargeLighedButton;
+    protected ActionButtonRenderable spaceshipInventoryButton;
+    protected ActionButtonRenderable spaceshipInventoryLightedButton;
     protected ActionButtonRenderable mapButton;
+    protected ActionButtonRenderable mapLightedButton;
+    protected ActionButtonRenderable contactButton;
+    protected ActionButtonRenderable contactLightedButton;
 
     protected boolean contactButtonIsLighted;
-    protected ActionButtonRenderable contactButtonSimple;
-    protected ActionButtonRenderable contactButtonLighted;
+    protected Set<Renderable> allRenderables;
 
+    public Set<Renderable> getAllRenderables() {
+        return allRenderables;
+    }
 
     public CockpitRenderable(float xPos, float yPos, float width, float height, String type, String id) {
-        super(xPos, yPos, width, height, type, id, "");
-        setImgPath("img/cockpit/bg.png");
+        super(xPos, yPos, width, height, type, id, BG_IMG_PATH);
         contactButtonIsLighted = false;
+        initSubRenderables();
+    }
+
+    private void initSubRenderables() {
+        allRenderables = new HashSet<>();
+
+        travelButton = createImageButton(TRAVEL_BUTTON_DEFAULT_ID, TRAVEL_BUTTON_DEFAULT_IMG_PATH, UserActionCode.TRAVEL, true);
+        allRenderables.add(travelButton);
+        travelLightedButton = createImageButton(TRAVEL_BUTTON_LIGHTED_ID, TRAVEL_BUTTON_LIGHTED_IMG_PATH, UserActionCode.TRAVEL, false);
+        allRenderables.add(travelLightedButton);
+
+        launchButton = createImageButton(LAUNCH_BUTTON_DEFAULT_ID, LAUNCH_BUTTON_DEFAULT_IMG_PATH, UserActionCode.LAUNCH, true);
+        allRenderables.add(launchButton);
+        launchLightedButton = createImageButton(LAUNCH_BUTTON_LIGHTED_ID, LAUNCH_BUTTON_LIGHTED_IMG_PATH, UserActionCode.LAUNCH, false);
+        allRenderables.add(launchLightedButton);
+
+        contactButton = createImageButton(CONTACT_BUTTON_DEFAULT_ID, CONTACT_BUTTON_DEFAULT_IMG_PATH, UserActionCode.CONTACT_SCREEN_EPISODE, true);
+        allRenderables.add(contactButton);
+        contactLightedButton = createImageButton(CONTACT_BUTTON_LIGHTED_ID, CONTACT_BUTTON_LIGHTED_IMG_PATH, UserActionCode.CONTACT_SCREEN_EPISODE, false);
+        allRenderables.add(contactLightedButton);
+
+        mapButton = createImageButton(MAP_BUTTON_DEFAULT_ID, MAP_BUTTON_DEFAULT_IMG_PATH, UserActionCode.MAP_EPISODE, true);
+        allRenderables.add(mapButton);
+        mapLightedButton = createImageButton(MAP_BUTTON_LIGHTED_ID, MAP_BUTTON_LIGHTED_IMG_PATH, UserActionCode.MAP_EPISODE, false);
+        allRenderables.add(mapLightedButton);
+
+        spaceshipInventoryButton = createImageButton(SPACESHIP_INVENTORY_BUTTON_DEFAULT_ID, SPACESHIP_INVENTORY_BUTTON_DEFAULT_IMG_PATH, UserActionCode.SPACESHIP_PARTS_EPISODE, true);
+        allRenderables.add(spaceshipInventoryButton);
+        spaceshipInventoryLightedButton = createImageButton(SPACESHIP_INVENTORY_BUTTON_LIGHTED_ID, SPACESHIP_INVENTORY_BUTTON_LIGHTED_IMG_PATH, UserActionCode.SPACESHIP_PARTS_EPISODE, false);
+        allRenderables.add(spaceshipInventoryLightedButton);
+
+        chargeButton = createImageButton(CHARGE_BUTTON_DEFAULT_ID, CHARGE_BUTTON_DEFAULT_IMG_PATH, UserActionCode.CHARGE_SPACESHIP_EPISODE, true);
+        allRenderables.add(chargeButton);
+        chargeLighedButton = createImageButton(CHARGE_BUTTON_LIGHTED_ID, CHARGE_BUTTON_LIGHTED_IMG_PATH, UserActionCode.CHARGE_SPACESHIP_EPISODE, false);
+        allRenderables.add(chargeLighedButton);
+    }
+
+    protected ActionButtonRenderable createImageButton(String id, String img, String code, boolean visibility) {
+        ActionButtonRenderable ret = new ActionButtonRenderable(Renderable.ACTOR_IMAGE_BUTTON, id);
+        ret.setZIndex(1);
+        ret.setVisible(visibility);
+        ret.setPositionDrawable(false);
+        ret.setUserAction(new UserAction(code));
+        return ret;
     }
 
     public String getMotorEfficiencyValue() {
@@ -121,7 +211,7 @@ public class CockpitRenderable extends FadingTableRenderable {
     public void toogleContactButton() {
         if (contactButtonIsLighted) {
             contactButtonIsLighted = false;
-        }else {
+        } else {
             contactButtonIsLighted = true;
         }
         renderableWasUpdated();

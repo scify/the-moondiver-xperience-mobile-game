@@ -16,6 +16,7 @@ import org.scify.moonwalker.app.ui.actors.calculator.CalculatorComponent;
 import org.scify.moonwalker.app.ui.actors.conversation.MultipleChoiceConversationActor;
 import org.scify.moonwalker.app.ui.actors.conversation.SingleChoiceConversationActor;
 import org.scify.moonwalker.app.ui.actors.conversation.TwoChoiceConversationActor;
+import org.scify.moonwalker.app.ui.actors.episode.*;
 import org.scify.moonwalker.app.ui.renderables.*;
 
 public class ActorFactory extends ComponentFactory {
@@ -236,13 +237,13 @@ public class ActorFactory extends ComponentFactory {
 
     private Actor createNextConversationActor(SingleChoiceConversationRenderable renderable) {
         SingleChoiceConversationActor actor = new SingleChoiceConversationActor(skin, renderable);
-        actor.setZIndex(1);
+        actor.setZIndex(100);
         return actor;
     }
 
     private Actor createTwoChoiceConversationActor(TwoChoiceConversationRenderable renderable) {
         TwoChoiceConversationActor actor = new TwoChoiceConversationActor(skin, renderable);
-        actor.setZIndex(1);
+        actor.setZIndex(100);
         return actor;
     }
 

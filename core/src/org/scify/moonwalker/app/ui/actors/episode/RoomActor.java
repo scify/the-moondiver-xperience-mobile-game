@@ -1,10 +1,12 @@
-package org.scify.moonwalker.app.ui.actors;
+package org.scify.moonwalker.app.ui.actors.episode;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
+import org.scify.moonwalker.app.ui.actors.FadingTableActor;
+import org.scify.moonwalker.app.ui.actors.ImageWithEffect;
 import org.scify.moonwalker.app.ui.renderables.RoomRenderable;
 
-public class RoomActor extends FadingTableActor<RoomRenderable>  {
+public class RoomActor extends FadingTableActor<RoomRenderable> {
 
     protected ImageWithEffect phoneOffImage;
     protected ImageWithEffect phoneOnImage;

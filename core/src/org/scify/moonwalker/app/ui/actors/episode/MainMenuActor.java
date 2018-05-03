@@ -1,11 +1,13 @@
-package org.scify.moonwalker.app.ui.actors;
+package org.scify.moonwalker.app.ui.actors.episode;
 
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.utils.Align;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.TableRenderable;
 import org.scify.engine.renderables.effects.Effect;
 import org.scify.engine.renderables.effects.FadeEffect;
 import org.scify.moonwalker.app.ui.ThemeController;
+import org.scify.moonwalker.app.ui.actors.*;
 import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
 
 public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implements Updateable {
@@ -131,19 +133,19 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
         menuTable.add().width(width).height(height);
         stack.addActor(menuTable);
 
-        // Init renderable for countdown
+        // Countdown
         countDownTable = new TableWithEffect();
         countDownTable.defaults();
         countDownTable.center();
         countDownLabel = (Label) bookKeeper.getUIRepresentationOfRenderable(renderable.getCountDownLabel());
+        countDownLabel.setAlignment(Align.center);
         Label.LabelStyle ls = new Label.LabelStyle();
         ThemeController themeController = new ThemeController(30, "controls");
         ls.font = themeController.getFont();
         countDownLabel.setStyle(ls);
-        countDownLabel.setWidth(width);
-        countDownLabel.setHeight(height);
-        countDownTable.add(countDownLabel);
+        countDownTable.add(countDownLabel).width(width).height(height);
         stack.add(countDownTable);
+
         add(stack).width(width);
     }
 

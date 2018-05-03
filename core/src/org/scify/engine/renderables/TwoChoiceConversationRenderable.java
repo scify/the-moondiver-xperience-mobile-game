@@ -38,10 +38,10 @@ public class TwoChoiceConversationRenderable extends FadingTableRenderable {
         tableBGRenderable = new ImageRenderable("chat_bg", BG_IMG_PATH);
         conversationButtonTop = new ActionButtonRenderable(Renderable.ACTOR_TEXT_BUTTON,"button_next_top");
         conversationButtonTop.setPositionDrawable(false);
-        conversationButtonTop.setZIndex(2);
+        conversationButtonTop.setZIndex(102);
         conversationButtonBottom = new ActionButtonRenderable(Renderable.ACTOR_TEXT_BUTTON, "button_next_bottom");
         conversationButtonBottom.setPositionDrawable(false);
-        conversationButtonBottom.setZIndex(2);
+        conversationButtonBottom.setZIndex(102);
         avatar_bg = new ImageRenderable("avata_bg", AVATAR_BG_IMG_PATH);
         avatar_bg.setPositionDrawable(false);
         avatar_bg.setZIndex(2);
@@ -71,7 +71,7 @@ public class TwoChoiceConversationRenderable extends FadingTableRenderable {
 
     public void setAvatarImg (String imgPath) {
         avatar = new ImageRenderable("avatar_img", imgPath);
-        avatar.setZIndex(3);
+        avatar.setZIndex(103);
         avatar.setPositionDrawable(false);
         allRenderables.add(avatar);
     }

@@ -14,30 +14,30 @@ import java.util.Set;
 
 public class MainMenuRenderable extends FadingTableRenderable {
     //renderable image paths
-    public final static String BG_IMG_PATH = "img/episode_mainMenu/bg.png";
-    public final static String TOP_BANNER_IMG_PATH = "img/episode_mainMenu/top.png";
-    public final static String BOY_IMG_PATH = "img/episode_mainMenu/boy.png";
-    public final static String GIRL_IMG_PATH = "img/episode_mainMenu/girl.png";
-    public final static String BOY_BUTTON_IMG_PATH = "img/episode_mainMenu/boyButton.png";
-    public final static String GIRL_BUTTON_IMG_PATH = "img/episode_mainMenu/girlButton.png";
-    public final static String START_BUTTON_IMG_PATH = "img/episode_mainMenu/start.png";
-    public final static String CONTINUE_BUTTON_IMG_PATH = "img/episode_mainMenu/continue.png";
-    public final static String TOGGLE_AUDIO_BUTTON_IMG_PATH = "img/episode_mainMenu/toggleAudio.png";
-    public final static String ABOUT_BUTTON_IMG_PATH = "img/episode_mainMenu/about.png";
-    public final static String QUIT_BUTTON_IMG_PATH = "img/episode_mainMenu/quit.png";
+    protected final static String BG_IMG_PATH = "img/episode_mainMenu/bg.png";
+    protected final static String TOP_BANNER_IMG_PATH = "img/episode_mainMenu/top.png";
+    protected final static String BOY_IMG_PATH = "img/episode_mainMenu/boy.png";
+    protected final static String GIRL_IMG_PATH = "img/episode_mainMenu/girl.png";
+    protected final static String BOY_BUTTON_IMG_PATH = "img/episode_mainMenu/boyButton.png";
+    protected final static String GIRL_BUTTON_IMG_PATH = "img/episode_mainMenu/girlButton.png";
+    protected final static String START_BUTTON_IMG_PATH = "img/episode_mainMenu/start.png";
+    protected final static String CONTINUE_BUTTON_IMG_PATH = "img/episode_mainMenu/continue.png";
+    protected final static String TOGGLE_AUDIO_BUTTON_IMG_PATH = "img/episode_mainMenu/toggleAudio.png";
+    protected final static String ABOUT_BUTTON_IMG_PATH = "img/episode_mainMenu/about.png";
+    protected final static String QUIT_BUTTON_IMG_PATH = "img/episode_mainMenu/quit.png";
 
     //renderable ids
-    public static final String TOP_BANNER_ID = "top_banner";
-    public static final String BOY_BUTTON_ID = "boyButton";
-    public static final String BOY_AVATAR_BUTTON_ID = "boyAvatarButton";
-    public static final String GIRL_BUTTON_ID = "girlButton";
-    public static final String GIRL_AVATAR_BUTTON_ID = "girlAvatarButton";
-    public static final String START_BUTTON_ID = "startButton";
-    public static final String CONTINUE_BUTTON_ID = "continueButton";
-    public static final String TOGGLE_AUDIO_BUTTON_ID = "toggleAudioButton";
-    public static final String ABOUT_BUTTON_ID = "aboutButton";
-    public static final String QUIT_BUTOON_ID = "quitButton";
-    public static final String COUNTDOWN_LABEL_ID = "countDownLabel";
+    protected static final String TOP_BANNER_ID = "top_banner";
+    protected static final String BOY_BUTTON_ID = "boyButton";
+    protected static final String BOY_AVATAR_BUTTON_ID = "boyAvatarButton";
+    protected static final String GIRL_BUTTON_ID = "girlButton";
+    protected static final String GIRL_AVATAR_BUTTON_ID = "girlAvatarButton";
+    protected static final String START_BUTTON_ID = "startButton";
+    protected static final String CONTINUE_BUTTON_ID = "continueButton";
+    protected static final String TOGGLE_AUDIO_BUTTON_ID = "toggleAudioButton";
+    protected static final String ABOUT_BUTTON_ID = "aboutButton";
+    protected static final String QUIT_BUTOON_ID = "quitButton";
+    protected static final String COUNTDOWN_LABEL_ID = "countDownLabel";
 
     //AUDIO
     public final static String MAINMENU_AUDIO_PATH = "audio/episode_mainMenu/bg.mp3";
@@ -86,71 +86,31 @@ public class MainMenuRenderable extends FadingTableRenderable {
         topBannerRenderable.setZIndex(1);
         allRenderables.add(topBannerRenderable);
 
-        boyButton = new ActionButtonRenderable(Renderable.ACTOR_IMAGE_BUTTON, BOY_BUTTON_ID);
-        boyButton.setUserAction(new UserAction(UserActionCode.BOY_SELECTED));
-        boyButton.setImgPath(BOY_BUTTON_IMG_PATH);
-        boyButton.setVisible(false);
-        boyButton.setPositionDrawable(false);
-        boyButton.setZIndex(1);
+        boyButton = createImageButton(BOY_BUTTON_ID, BOY_BUTTON_IMG_PATH, UserActionCode.BOY_SELECTED, false);
         allRenderables.add(boyButton);
 
-        boyAvatarButton = new ActionButtonRenderable(Renderable.ACTOR_IMAGE_BUTTON, BOY_AVATAR_BUTTON_ID);
-        boyAvatarButton.setUserAction(new UserAction(UserActionCode.BOY_SELECTED));
-        boyAvatarButton.setImgPath(BOY_IMG_PATH);
-        boyAvatarButton.setVisible(false);
-        boyAvatarButton.setPositionDrawable(false);
-        boyAvatarButton.setZIndex(1);
+        boyAvatarButton = createImageButton(BOY_AVATAR_BUTTON_ID, BOY_IMG_PATH, UserActionCode.BOY_SELECTED, false);
         allRenderables.add(boyAvatarButton);
 
-        girlButton = new ActionButtonRenderable(Renderable.ACTOR_IMAGE_BUTTON, GIRL_BUTTON_ID);
-        girlButton.setUserAction(new UserAction(UserActionCode.GIRL_SELECTED));
-        girlButton.setImgPath(GIRL_BUTTON_IMG_PATH);
-        girlButton.setVisible(false);
-        girlButton.setPositionDrawable(false);
-        girlButton.setZIndex(1);
+        girlButton = createImageButton(GIRL_BUTTON_ID, GIRL_BUTTON_IMG_PATH, UserActionCode.GIRL_SELECTED, false);
         allRenderables.add(girlButton);
 
-        girlAvatarButton = new ActionButtonRenderable(Renderable.ACTOR_IMAGE_BUTTON, GIRL_AVATAR_BUTTON_ID);
-        girlAvatarButton.setUserAction(new UserAction(UserActionCode.GIRL_SELECTED));
-        girlAvatarButton.setImgPath(GIRL_IMG_PATH);
-        girlAvatarButton.setVisible(false);
-        girlAvatarButton.setPositionDrawable(false);
-        girlAvatarButton.setZIndex(1);
+        girlAvatarButton = createImageButton(GIRL_AVATAR_BUTTON_ID, GIRL_IMG_PATH, UserActionCode.GIRL_SELECTED, false);
         allRenderables.add(girlAvatarButton);
 
-        startGameButton = new ActionButtonRenderable(Renderable.ACTOR_IMAGE_BUTTON, START_BUTTON_ID);
-        startGameButton.setImgPath(START_BUTTON_IMG_PATH);
-        startGameButton.setUserAction(new UserAction(UserActionCode.NEW_GAME));
-        startGameButton.setPositionDrawable(false);
-        startGameButton.setZIndex(1);
+        startGameButton = createImageButton(START_BUTTON_ID, START_BUTTON_IMG_PATH, UserActionCode.NEW_GAME, false);
         allRenderables.add(startGameButton);
 
-        continueGameButton = new ActionButtonRenderable(Renderable.ACTOR_IMAGE_BUTTON, CONTINUE_BUTTON_ID);
-        continueGameButton.setImgPath(CONTINUE_BUTTON_IMG_PATH);
-        continueGameButton.setUserAction(new UserAction(UserActionCode.CONTINUE));
-        continueGameButton.setPositionDrawable(false);
-        continueGameButton.setZIndex(1);
+        continueGameButton = createImageButton(CONTINUE_BUTTON_ID, CONTINUE_BUTTON_IMG_PATH, UserActionCode.CONTINUE, false);
         allRenderables.add(continueGameButton);
 
-        toggleAudioButton = new ActionButtonRenderable(Renderable.ACTOR_IMAGE_BUTTON, TOGGLE_AUDIO_BUTTON_ID);
-        toggleAudioButton.setImgPath(TOGGLE_AUDIO_BUTTON_IMG_PATH);
-        toggleAudioButton.setUserAction(new UserAction(UserActionCode.TOGGLE_AUDIO));
-        toggleAudioButton.setPositionDrawable(false);
-        toggleAudioButton.setZIndex(1);
+        toggleAudioButton = createImageButton(TOGGLE_AUDIO_BUTTON_ID, TOGGLE_AUDIO_BUTTON_IMG_PATH, UserActionCode.TOGGLE_AUDIO, false);
         allRenderables.add(toggleAudioButton);
 
-        aboutButton = new ActionButtonRenderable(Renderable.ACTOR_IMAGE_BUTTON, ABOUT_BUTTON_ID);
-        aboutButton.setImgPath(ABOUT_BUTTON_IMG_PATH);
-        aboutButton.setUserAction(new UserAction(UserActionCode.ABOUT));
-        aboutButton.setPositionDrawable(false);
-        aboutButton.setZIndex(1);
+        aboutButton = createImageButton(ABOUT_BUTTON_ID, ABOUT_BUTTON_IMG_PATH, UserActionCode.ABOUT, false);
         allRenderables.add(aboutButton);
 
-        quitButton = new ActionButtonRenderable(Renderable.ACTOR_IMAGE_BUTTON, QUIT_BUTOON_ID);
-        quitButton.setImgPath(QUIT_BUTTON_IMG_PATH);
-        quitButton.setUserAction(new UserAction(UserActionCode.QUIT));
-        quitButton.setPositionDrawable(false);
-        quitButton.setZIndex(1);
+        quitButton = createImageButton(QUIT_BUTOON_ID, QUIT_BUTTON_IMG_PATH, UserActionCode.QUIT, false);
         allRenderables.add(quitButton);
 
         countDownLabel = new TextLabelRenderable(Renderable.ACTOR_LABEL, COUNTDOWN_LABEL_ID);
@@ -159,6 +119,15 @@ public class MainMenuRenderable extends FadingTableRenderable {
         countDownLabel.setVisible(false);
         countDownLabel.setPositionDrawable(false);
         allRenderables.add(countDownLabel);
+    }
+
+    protected ActionButtonRenderable createImageButton(String id, String img, String code, boolean visibility) {
+        ActionButtonRenderable ret = new ActionButtonRenderable (Renderable.ACTOR_IMAGE_BUTTON, id);
+        ret.setZIndex(1);
+        ret.setVisible(visibility);
+        ret.setPositionDrawable(false);
+        ret.setUserAction(new UserAction(code));
+        return ret;
     }
 
     public void enableInput() {

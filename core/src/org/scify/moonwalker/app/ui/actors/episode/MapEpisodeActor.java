@@ -1,4 +1,4 @@
-package org.scify.moonwalker.app.ui.actors;
+package org.scify.moonwalker.app.ui.actors.episode;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -7,6 +7,9 @@ import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.game.Location;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.ui.LGDXRenderableBookKeeper;
+import org.scify.moonwalker.app.ui.actors.ActorWithEffects;
+import org.scify.moonwalker.app.ui.actors.StackWithEffect;
+import org.scify.moonwalker.app.ui.actors.Updateable;
 import org.scify.moonwalker.app.ui.renderables.MapEpisodeRenderable;
 
 public class MapEpisodeActor extends ActorWithEffects implements Updateable<MapEpisodeRenderable> {

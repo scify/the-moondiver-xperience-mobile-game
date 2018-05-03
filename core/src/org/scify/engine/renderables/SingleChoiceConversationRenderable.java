@@ -37,12 +37,12 @@ public class SingleChoiceConversationRenderable extends FadingTableRenderable {
         conversationButton = new ActionButtonRenderable(Renderable.ACTOR_TEXT_BUTTON, "button_next");
         conversationButton.setTitle("Επόμενο");
         conversationButton.setPositionDrawable(false);
-        conversationButton.setZIndex(2);
+        conversationButton.setZIndex(102);
         buttonActive = true;
         tableBGRenderable = new ImageRenderable("chat_bg", BG_IMG_PATH);
         avatar_bg = new ImageRenderable("avata_bg", AVATAR_BG_IMG_PATH);
         avatar_bg.setPositionDrawable(false);
-        avatar_bg.setZIndex(2);
+        avatar_bg.setZIndex(102);
         initSubRenderables();
     }
 
@@ -54,7 +54,7 @@ public class SingleChoiceConversationRenderable extends FadingTableRenderable {
 
     public void setAvatarImg (String imgPath) {
         avatar = new ImageRenderable("avatar_img", imgPath);
-        avatar.setZIndex(3);
+        avatar.setZIndex(103);
         avatar.setPositionDrawable(false);
         allRenderables.add(avatar);
     }
@@ -68,7 +68,7 @@ public class SingleChoiceConversationRenderable extends FadingTableRenderable {
         }
         conversationButton.setUserAction(new UserAction(UserActionCode.SINGLE_CHOICE_CONVERSATION_LINE, conversationLine.getId()));
         conversationText = new TextLabelRenderable(Renderable.ACTOR_LABEL, "conversation_text_label");
-        conversationText.setZIndex(2);
+        conversationText.setZIndex(102);
         conversationText.setPositionDrawable(false);
         conversationText.setLabel(conversationLine.getText());
         allRenderables.add(conversationText);
@@ -92,13 +92,13 @@ public class SingleChoiceConversationRenderable extends FadingTableRenderable {
         }
     }
 
-    public boolean getButtonNextStatus() {
+    public boolean getConversationButtonStatus() {
         return buttonActive;
     }
 
-    /*public ConversationLine getConversationLine() {
+    public ConversationLine getConversationLine() {
         return conversationLine;
-    }*/
+    }
 
     public ActionButtonRenderable getConversationButton() {
         return conversationButton;

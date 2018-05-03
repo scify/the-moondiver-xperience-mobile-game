@@ -1,4 +1,4 @@
-package org.scify.moonwalker.app.ui.actors;
+package org.scify.moonwalker.app.ui.actors.episode;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,6 +10,8 @@ import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.ThemeController;
+import org.scify.moonwalker.app.ui.actors.TableActor;
+import org.scify.moonwalker.app.ui.actors.Updateable;
 import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 
 public class CockpitActor extends TableActor implements Updateable {
