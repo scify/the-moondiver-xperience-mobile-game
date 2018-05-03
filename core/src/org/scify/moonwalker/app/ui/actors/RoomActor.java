@@ -12,14 +12,13 @@ public class RoomActor extends FadingTableActor<RoomRenderable>  {
     public RoomActor(Skin skin, RoomRenderable renderable) {
         super(skin, renderable);
         this.renderable = renderable;
-        timestamp = this.renderable.getRenderableLastUpdated();
         setWidth(renderable.getWidth());
         setHeight(renderable.getHeight());
         addBackground(renderable.getTableBGRenderable());
         init();
     }
 
-    public void init() {
+    protected void init() {
         phoneOffImage = (ImageWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getPhoneOffRenderable());
         phoneOnImage = (ImageWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getPhoneOnRenderable());
         Stack phonesStack = new Stack();

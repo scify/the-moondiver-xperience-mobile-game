@@ -24,7 +24,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
     public static final String CONVERSATION_FINISHED = "CONVERSATION_FINISHED";
     public static final String CONVERSATION_PAUSED = "CONVERSATION_PAUSED";
     public static final String CONVERSATION_STARTED = "CONVERSATION_STARTED";
-    public static final String NEXT_CONVERSATION = "next_conversation_";
+    public static final String SINGLE_CHOICE_CONVERSATION = "single_choice_conversation";
 
     /**
      * All conversation lines that are read from the json file for
@@ -244,7 +244,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
 
         // render dialog appropriately
         if (nextLinesSize == 1) {
-            addNextConversationLine(nextLines.get(0), gameState, newSpeaker);
+            addSingleChoiceConversationLine(nextLines.get(0), gameState, newSpeaker);
         } else if (nextLinesSize == 2) {
             addTwoChoiceConversationLines(nextLines, gameState, newSpeaker);
         } else if (nextLinesSize > 1) {
@@ -255,24 +255,23 @@ public class ConversationRules extends MoonWalkerBaseRules {
 
     }
 
-    protected void addNextConversationLine(final ConversationLine conversationLine, final GameState gameState, boolean newSpeaker) {
-        SingleChoiceConversationRenderable singleChoiceConversationRenderable =
-                new SingleChoiceConversationRenderable(NEXT_CONVERSATION + conversationLine.getId());
+    protected void addSingleChoiceConversationLine(final ConversationLine conversationLine, final GameState gameState, boolean newSpeaker) {
+        SingleChoiceConversationRenderable renderable = new SingleChoiceConversationRenderable(SINGLE_CHOICE_CONVERSATION + conversationLine.getId());
         if (lastConversationRenderable != null) {
             lastConversationRenderable.addEffect(getOutroEffect(lastConversationRenderable, conversationLine, gameState, newSpeaker));
         }
-        lastConversationRenderable = singleChoiceConversationRenderable;
+        lastConversationRenderable = renderable;
         lastConversationRenderable.setVisible(false);
-        lastConversationRenderable.setZIndex(100);
-        singleChoiceConversationRenderable.setConversationLine(conversationLine);
+        lastConversationRenderable.setZIndex(2);
+        renderable.setConversationLine(conversationLine);
         // Update previous speaker
         sPrvSpeakerID = conversationLine.getSpeakerId();
-        singleChoiceConversationRenderable.setRelativeAvatarPath(getAvatar(conversationLine.getSpeakerId()));
-//        singleChoiceConversationRenderable.apply(new FadeLGDXEffect(0.0, 1.0, 1000));
-        singleChoiceConversationRenderable.addEffect(getIntroEffect(singleChoiceConversationRenderable, conversationLine, gameState, newSpeaker));
+        renderable.setAvatarImg(getAvatar(conversationLine.getSpeakerId()));
+        renderable.addEffect(getIntroEffect(renderable, conversationLine, gameState, newSpeaker));
 
-        gameState.addRenderable(singleChoiceConversationRenderable);
-        oldConversationLines.add(singleChoiceConversationRenderable);
+        gameState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
+        gameState.addRenderable(renderable);
+        oldConversationLines.add(renderable);
     }
 
     protected EffectSequence getIntroEffect(Renderable target, ConversationLine conversationLine, GameState gameState, boolean newSpeaker) {
@@ -318,7 +317,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
         //edit as above method
         MultipleChoiceConversationRenderable multipleChoiceConversationRenderable = new MultipleChoiceConversationRenderable("multiple_choice_conversation");
         lastConversationRenderable = multipleChoiceConversationRenderable;
-        lastConversationRenderable.setZIndex(100);
+        lastConversationRenderable.setZIndex(2);
         //multipleChoiceConversationRenderable.setTitle(getCurrentConversationLine(gameState).getText());
         multipleChoiceConversationRenderable.setConversationLines(nextLines);
         //multipleChoiceConversationRenderable.setRelativeAvatarImgPath(getAvatar(getCurrentConversationLine(gameState).getSpeakerId()));
@@ -333,7 +332,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
         }
         lastConversationRenderable = twoChoiceConversationRenderable;
         lastConversationRenderable.setVisible(false);
-        lastConversationRenderable.setZIndex(100);
+        lastConversationRenderable.setZIndex(2);
         twoChoiceConversationRenderable.setConversationLines(nextLines);
         // Update previous speaker
         sPrvSpeakerID = conversationLines.get(0).getSpeakerId();

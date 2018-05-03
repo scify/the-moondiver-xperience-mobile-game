@@ -14,7 +14,7 @@ import org.scify.moonwalker.app.ui.ComponentFactory;
 import org.scify.moonwalker.app.ui.UnsupportedRenderableTypeException;
 import org.scify.moonwalker.app.ui.actors.calculator.CalculatorComponent;
 import org.scify.moonwalker.app.ui.actors.conversation.MultipleChoiceConversationActor;
-import org.scify.moonwalker.app.ui.actors.conversation.NextConversationActor;
+import org.scify.moonwalker.app.ui.actors.conversation.SingleChoiceConversationActor;
 import org.scify.moonwalker.app.ui.actors.conversation.TwoChoiceConversationActor;
 import org.scify.moonwalker.app.ui.renderables.*;
 
@@ -45,6 +45,7 @@ public class ActorFactory extends ComponentFactory {
                 label.setWidth(renderable.getWidth());
                 label.setHeight(renderable.getHeight());
                 label.setWrap(true);
+                label.setText(((TextLabelRenderable)renderable).getLabel());
                 toReturn = label;
                 break;
             case Renderable.ACTOR_ROTATABLE_LABEL:
@@ -234,10 +235,16 @@ public class ActorFactory extends ComponentFactory {
     }
 
     private Actor createNextConversationActor(SingleChoiceConversationRenderable renderable) {
-        NextConversationActor actor = new NextConversationActor(skin, renderable);
+        SingleChoiceConversationActor actor = new SingleChoiceConversationActor(skin, renderable);
         actor.setZIndex(1);
-        actor.setButton(createButton(renderable.getButtonNext()));
-        actor.init(renderable.getButtonNextStatus());
+        return actor;
+    }
+
+    private Actor createTwoChoiceConversationActor(TwoChoiceConversationRenderable renderable) {
+        TwoChoiceConversationActor actor = new TwoChoiceConversationActor(skin, renderable);
+        actor.setZIndex(1);
+        java.util.List<ActionButtonRenderable> buttons = renderable.getButtons();
+        actor.init(createButton(buttons.get(0)), createButton(buttons.get(1)));
         return actor;
     }
 
@@ -249,14 +256,6 @@ public class ActorFactory extends ComponentFactory {
             actor.addButton(createButton(button), btnIndex);
             btnIndex++;
         }
-        return actor;
-    }
-
-    private Actor createTwoChoiceConversationActor(TwoChoiceConversationRenderable renderable) {
-        TwoChoiceConversationActor actor = new TwoChoiceConversationActor(skin, renderable);
-        actor.setZIndex(1);
-        java.util.List<ActionButtonRenderable> buttons = renderable.getButtons();
-        actor.init(createButton(buttons.get(0)), createButton(buttons.get(1)));
         return actor;
     }
 
