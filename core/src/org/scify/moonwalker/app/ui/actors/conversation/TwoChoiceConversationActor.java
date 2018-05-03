@@ -23,20 +23,18 @@ import org.scify.moonwalker.app.ui.actors.FadingTableActor;
  */
 public class TwoChoiceConversationActor extends FadingTableActor<TwoChoiceConversationRenderable> {
 
-    protected ResourceLocator resourceLocator;
-    protected AppInfo appInfo;
-    protected TwoChoiceConversationRenderable renderable;
+    protected Button buttonTop;
+    protected Button buttonBottom;
     protected Image avatarImage;
     protected Image avatarBG;
 
     public TwoChoiceConversationActor(Skin skin, TwoChoiceConversationRenderable renderable) {
         super(skin, renderable);
         this.renderable = renderable;
-        appInfo = AppInfo.getInstance();
-        resourceLocator = new ResourceLocator();
+        init();
     }
 
-    public void init(Button topAnswerButton, Button botAnswerButton) {
+    protected void init() {
         float width = renderable.getWidth();
         float height = renderable.getHeight();
         defaults();
@@ -49,13 +47,13 @@ public class TwoChoiceConversationActor extends FadingTableActor<TwoChoiceConver
 
         //avatar
         Stack avatarStack = new Stack();
-        Texture avatarBGTexture = new Texture(resourceLocator.getFilePath("img/avatars/bg.png"));
-        avatarBG = new Image(new TextureRegionDrawable(new TextureRegion(avatarBGTexture)));
+        //BG
+        avatarBG = (Image) bookKeeper.getUIRepresentationOfRenderable(renderable.getAvatar_bg());
         avatarBG.setWidth(0.12f * width);
         avatarBG.setScaling(Scaling.fillX);
         avatarStack.add(avatarBG);
-        Texture avatar = imgUrlToTexture(renderable.getRelativeAvatarPath());
-        avatarImage = new Image(new TextureRegionDrawable(new TextureRegion(avatar)));
+        //CHARACTER IMAGE
+        avatarImage = (Image) bookKeeper.getUIRepresentationOfRenderable(renderable.getAvatar());
         avatarImage.setWidth(0.12f * width);
         avatarImage.setScaling(Scaling.fillX);
         avatarStack.add(avatarImage);
@@ -63,33 +61,21 @@ public class TwoChoiceConversationActor extends FadingTableActor<TwoChoiceConver
 
         add().height(height).width(0.01f * width);
 
-        //closeButton
+        //Buttons
         Table buttonsTable = new Table();
         buttonsTable.defaults();
         buttonsTable.center();
         float buttonWidth = 0.85f * width;
         float buttonHeight = 0.3f * height;
-        buttonsTable.add(topAnswerButton).width(buttonWidth).height(buttonHeight);
+        buttonTop = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getConversationButtonTop());
+        buttonsTable.add(buttonTop).width(buttonWidth).height(buttonHeight);
         buttonsTable.row();
         buttonsTable.add().height(buttonHeight/2);
         buttonsTable.row();
-        buttonsTable.add(botAnswerButton).width(buttonWidth).height(buttonHeight);
+        buttonBottom = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getConversationButtonBottom());
+        buttonsTable.add(buttonBottom).width(buttonWidth).height(buttonHeight);
         add(buttonsTable).width(buttonWidth);
 
         add().height(height).width(0.01f * width);
-    }
-
-    protected float convertHeight(float initialHeight) {
-        int initialBackgroundHeight = 1080;
-        float ret = appInfo.getScreenHeight() * initialHeight;
-        ret = ret / initialBackgroundHeight;
-        return ret;
-    }
-
-    protected float convertWidth(float initialWidth) {
-        int initialBackgroundWidth = 1920;
-        float ret = appInfo.getScreenWidth() * initialWidth;
-        ret = ret / initialBackgroundWidth;
-        return ret;
     }
 }

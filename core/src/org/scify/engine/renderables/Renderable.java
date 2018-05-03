@@ -28,7 +28,7 @@ public class Renderable extends Positionable implements EffectTarget {
 
 
 
-    public static final String CONVERSATION_SINGLE_CHOICE = "next_conversation";
+    public static final String CONVERSATION_SINGLE_CHOICE = "single_choice_conversation";
     public static final String CONVERSATION_MULTIPLE_CHOICE = "multiple_choice_conversation";
     public static final String CONVERSATION_TWO_CHOICE = "two_choice_conversation";
 

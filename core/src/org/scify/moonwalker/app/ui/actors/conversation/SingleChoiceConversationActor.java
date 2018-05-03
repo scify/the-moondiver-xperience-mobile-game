@@ -5,7 +5,6 @@ import com.badlogic.gdx.utils.Scaling;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.renderables.SingleChoiceConversationRenderable;
-import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.actors.TableActor;
 
 /**
@@ -20,7 +19,6 @@ import org.scify.moonwalker.app.ui.actors.TableActor;
 public class SingleChoiceConversationActor extends TableActor<SingleChoiceConversationRenderable>  {
 
     protected Label lineLabel;
-    protected ResourceLocator resourceLocator;
     protected Button button;
     protected Image avatarImage;
     protected Image avatarBG;
@@ -28,7 +26,6 @@ public class SingleChoiceConversationActor extends TableActor<SingleChoiceConver
     public SingleChoiceConversationActor(Skin skin, SingleChoiceConversationRenderable renderable) {
         super(skin, renderable);
         this.renderable = renderable;
-        resourceLocator = new ResourceLocator();
         init();
     }
 
@@ -41,8 +38,9 @@ public class SingleChoiceConversationActor extends TableActor<SingleChoiceConver
         setHeight(height);
         addBackground(renderable.getTableBGRenderable(), width, height);
 
-        //avatar
         add().height(height).width(0.01f * width);
+
+        //avatar
         Stack avatarStack = new Stack();
         //BG
         avatarBG = (Image) bookKeeper.getUIRepresentationOfRenderable(renderable.getAvatar_bg());

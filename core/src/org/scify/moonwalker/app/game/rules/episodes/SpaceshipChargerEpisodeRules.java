@@ -43,10 +43,10 @@ public class SpaceshipChargerEpisodeRules extends TemporaryEpisodeRules {
         setMoonPhases();
         spaceshipChargerRenderable.setRemainingEnergy(gameInfo.getRemainingEnergy());
 
-        ActionButtonRenderable escape = createEscapeButton();
-        escape.setUserAction(new UserAction(UserActionCode.BACK));
+        //ActionButtonRenderable escape = createEscapeButton();
+        //escape.setUserAction(new UserAction(UserActionCode.BACK));
 
-        spaceshipChargerRenderable.setEscapeButton(escape);
+        //spaceshipChargerRenderable.setEscapeButton(escape);
         currentState.addRenderable(spaceshipChargerRenderable);
     }
 

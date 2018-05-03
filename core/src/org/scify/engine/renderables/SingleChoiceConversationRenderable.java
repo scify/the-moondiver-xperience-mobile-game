@@ -27,14 +27,14 @@ public class SingleChoiceConversationRenderable extends FadingTableRenderable {
     }
 
     public SingleChoiceConversationRenderable(String id) {
-        super(0,0,0,0,"next_conversation", id, BG_IMG_PATH);
+        super(0,0,0,0,CONVERSATION_SINGLE_CHOICE, CONVERSATION_SINGLE_CHOICE+id, BG_IMG_PATH);
         float screenWidth = appInfo.getScreenWidth();
         float screenHeight = appInfo.getScreenHeight();
         this.xPos = 0.02f * screenWidth;
         this.yPos = 0.03f *  screenHeight;
         width = 0.96f * screenWidth;
         height = 0.3f * screenHeight;
-        conversationButton = new ActionButtonRenderable("text_button", "button_next");
+        conversationButton = new ActionButtonRenderable(Renderable.ACTOR_TEXT_BUTTON, "button_next");
         conversationButton.setTitle("Επόμενο");
         conversationButton.setPositionDrawable(false);
         conversationButton.setZIndex(2);
@@ -66,7 +66,7 @@ public class SingleChoiceConversationRenderable extends FadingTableRenderable {
         if (buttonText != null) {
             conversationButton.setTitle(buttonText);
         }
-        conversationButton.setUserAction(new UserAction(UserActionCode.NEXT_CONVERSATION_LINE, conversationLine.getId()));
+        conversationButton.setUserAction(new UserAction(UserActionCode.SINGLE_CHOICE_CONVERSATION_LINE, conversationLine.getId()));
         conversationText = new TextLabelRenderable(Renderable.ACTOR_LABEL, "conversation_text_label");
         conversationText.setZIndex(2);
         conversationText.setPositionDrawable(false);

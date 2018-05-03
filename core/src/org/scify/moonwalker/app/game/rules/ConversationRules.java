@@ -24,8 +24,6 @@ public class ConversationRules extends MoonWalkerBaseRules {
     public static final String CONVERSATION_FINISHED = "CONVERSATION_FINISHED";
     public static final String CONVERSATION_PAUSED = "CONVERSATION_PAUSED";
     public static final String CONVERSATION_STARTED = "CONVERSATION_STARTED";
-    public static final String SINGLE_CHOICE_CONVERSATION = "single_choice_conversation";
-
     /**
      * All conversation lines that are read from the json file for
      * this conversation.
@@ -192,7 +190,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
 
 
     protected boolean gotAnswer(UserAction userAction) {
-        return (userAction != null && (userAction.getActionCode().equals(UserActionCode.NEXT_CONVERSATION_LINE) ||
+        return (userAction != null && (userAction.getActionCode().equals(UserActionCode.SINGLE_CHOICE_CONVERSATION_LINE) ||
                 userAction.getActionCode().equals(UserActionCode.MULTIPLE_SELECTION_ANSWER)));
     }
 
@@ -219,7 +217,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
     protected ConversationLine getSelectedConversationLine(GameState gameState, UserAction userAction) {
         ConversationLine answered = null;
         if (userAction.getActionCode().equals(UserActionCode.MULTIPLE_SELECTION_ANSWER) ||
-                userAction.getActionCode().equals(UserActionCode.NEXT_CONVERSATION_LINE)) {
+                userAction.getActionCode().equals(UserActionCode.SINGLE_CHOICE_CONVERSATION_LINE)) {
             answered = getLineById((Integer) userAction.getActionPayload());
         }
 
@@ -256,7 +254,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
     }
 
     protected void addSingleChoiceConversationLine(final ConversationLine conversationLine, final GameState gameState, boolean newSpeaker) {
-        SingleChoiceConversationRenderable renderable = new SingleChoiceConversationRenderable(SINGLE_CHOICE_CONVERSATION + conversationLine.getId());
+        SingleChoiceConversationRenderable renderable = new SingleChoiceConversationRenderable(conversationLine.getId() + "");
         if (lastConversationRenderable != null) {
             lastConversationRenderable.addEffect(getOutroEffect(lastConversationRenderable, conversationLine, gameState, newSpeaker));
         }
@@ -272,6 +270,39 @@ public class ConversationRules extends MoonWalkerBaseRules {
         gameState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
         gameState.addRenderable(renderable);
         oldConversationLines.add(renderable);
+    }
+
+    protected void addTwoChoiceConversationLines(List<ConversationLine> nextLines, GameState gameState, boolean newSpeaker) {
+        ConversationLine firstLine = nextLines.get(0);
+        TwoChoiceConversationRenderable renderable = new TwoChoiceConversationRenderable(firstLine.getId() + "");
+        if (lastConversationRenderable != null) {
+            lastConversationRenderable.addEffect(getOutroEffect(lastConversationRenderable, firstLine, gameState, newSpeaker));
+        }
+        lastConversationRenderable = renderable;
+        lastConversationRenderable.setVisible(false);
+        lastConversationRenderable.setZIndex(2);
+        renderable.setConversationLines(nextLines);
+        // Update previous speaker
+        sPrvSpeakerID = firstLine.getSpeakerId();
+        renderable.setAvatarImg(getAvatar(firstLine.getSpeakerId()));
+        renderable.addEffect(getIntroEffect(renderable, firstLine, gameState, newSpeaker));
+
+        gameState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
+        gameState.addRenderable(renderable);
+        oldConversationLines.add(renderable);
+    }
+
+    protected void addMultipleChoiceConversationLines(List<ConversationLine> nextLines, GameState gameState, boolean newSpeaker) {
+        // TODO: Fix later and include effects
+        //edit as above method
+        MultipleChoiceConversationRenderable multipleChoiceConversationRenderable = new MultipleChoiceConversationRenderable("multiple_choice_conversation");
+        lastConversationRenderable = multipleChoiceConversationRenderable;
+        lastConversationRenderable.setZIndex(2);
+        //multipleChoiceConversationRenderable.setTitle(getCurrentConversationLine(gameState).getText());
+        multipleChoiceConversationRenderable.setConversationLines(nextLines);
+        //multipleChoiceConversationRenderable.setRelativeAvatarImgPath(getAvatar(getCurrentConversationLine(gameState).getSpeakerId()));
+        gameState.addRenderable(multipleChoiceConversationRenderable);
+        oldConversationLines.add(multipleChoiceConversationRenderable);
     }
 
     protected EffectSequence getIntroEffect(Renderable target, ConversationLine conversationLine, GameState gameState, boolean newSpeaker) {
@@ -311,37 +342,6 @@ public class ConversationRules extends MoonWalkerBaseRules {
         return lRes;
     }
 
-
-    protected void addMultipleChoiceConversationLines(List<ConversationLine> nextLines, GameState gameState, boolean newSpeaker) {
-        // TODO: Fix later and include effects
-        //edit as above method
-        MultipleChoiceConversationRenderable multipleChoiceConversationRenderable = new MultipleChoiceConversationRenderable("multiple_choice_conversation");
-        lastConversationRenderable = multipleChoiceConversationRenderable;
-        lastConversationRenderable.setZIndex(2);
-        //multipleChoiceConversationRenderable.setTitle(getCurrentConversationLine(gameState).getText());
-        multipleChoiceConversationRenderable.setConversationLines(nextLines);
-        //multipleChoiceConversationRenderable.setRelativeAvatarImgPath(getAvatar(getCurrentConversationLine(gameState).getSpeakerId()));
-        gameState.addRenderable(multipleChoiceConversationRenderable);
-        oldConversationLines.add(multipleChoiceConversationRenderable);
-    }
-
-    protected void addTwoChoiceConversationLines(List<ConversationLine> nextLines, GameState gameState, boolean newSpeaker) {
-        TwoChoiceConversationRenderable twoChoiceConversationRenderable = new TwoChoiceConversationRenderable("two_choice_conversation");
-        if (lastConversationRenderable != null) {
-            lastConversationRenderable.addEffect(getOutroEffect(lastConversationRenderable, nextLines.get(0), gameState, newSpeaker));
-        }
-        lastConversationRenderable = twoChoiceConversationRenderable;
-        lastConversationRenderable.setVisible(false);
-        lastConversationRenderable.setZIndex(2);
-        twoChoiceConversationRenderable.setConversationLines(nextLines);
-        // Update previous speaker
-        sPrvSpeakerID = conversationLines.get(0).getSpeakerId();
-        twoChoiceConversationRenderable.setRelativeAvatarImgPath(getAvatar(twoChoiceConversationRenderable.getConversationLines().get(0).getSpeakerId()));
-        twoChoiceConversationRenderable.addEffect(getIntroEffect(twoChoiceConversationRenderable, nextLines.get(0), gameState, newSpeaker));
-
-        gameState.addRenderable(twoChoiceConversationRenderable);
-        oldConversationLines.add(twoChoiceConversationRenderable);
-    }
 
     protected String getAvatar(String speakerId) {
         String avatarsPath = "img/avatars/";

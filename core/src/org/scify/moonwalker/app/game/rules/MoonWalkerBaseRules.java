@@ -149,26 +149,11 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
         return gsCurrent.eventsQueueContainsEvent("PAUSE_GAME");
     }
 
-    protected ActionButtonRenderable createEscapeButton() {
-        float btnRealSize = appInfo.pixelsWithDensity(ESCAPE_BUTTON_SIZE_PIXELS);
-        ActionButtonRenderable escape = new ActionButtonRenderable(0, appInfo.getScreenHeight() - btnRealSize, btnRealSize, btnRealSize, "image_button", "escape_button");
-        escape.setPadding(appInfo.pixelsWithDensity(ESCAPE_BUTTON_PADDING_PIXELS));
-        escape.setImgPath("img/close.png");
-        return escape;
-    }
 
     protected void cleanUpGameState(GameState currentState) {
         currentState.removeAllGameEventsOwnedBy(this);
     }
 
-    protected ActionButtonRenderable createImageButton(String id, String imgPath, UserAction userAction, float widthPixels, float heightPixels) {
-        ActionButtonRenderable button = new ActionButtonRenderable("image_button", id);
-        button.setImgPath(imgPath);
-        button.setUserAction(userAction);
-        button.setWidth(appInfo.pixelsWithDensity(widthPixels));
-        button.setHeight(appInfo.pixelsWithDensity(heightPixels));
-        return button;
-    }
 
     protected void addEpisodeBackgroundImage(GameState currentState, String imgPath) {
         currentState.addGameEvent(new GameEvent(BACKGROUND_IMG_UI, imgPath));

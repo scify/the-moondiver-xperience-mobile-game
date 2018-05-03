@@ -103,7 +103,8 @@ public class CockpitEpisodeRules extends BaseEpisodeRules {
     }
 
     protected ActionButtonRenderable createCockpitButton(String id, String imgPath, String code) {
-        return createImageButton(id, imgPath, new UserAction(code), 0, 0);
+        //return createImageButton(id, imgPath, new UserAction(code), 0, 0);
+        return new ActionButtonRenderable(renderable.ACTOR_TEXT_BUTTON, id);
     }
 
     @Override

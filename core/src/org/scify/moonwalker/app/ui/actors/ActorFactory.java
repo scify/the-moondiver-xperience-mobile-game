@@ -243,8 +243,6 @@ public class ActorFactory extends ComponentFactory {
     private Actor createTwoChoiceConversationActor(TwoChoiceConversationRenderable renderable) {
         TwoChoiceConversationActor actor = new TwoChoiceConversationActor(skin, renderable);
         actor.setZIndex(1);
-        java.util.List<ActionButtonRenderable> buttons = renderable.getButtons();
-        actor.init(createButton(buttons.get(0)), createButton(buttons.get(1)));
         return actor;
     }
 

@@ -11,6 +11,7 @@ public class ForestEpisodeRules extends FadingEpisodeRules<ForestRenderable> {
     public static final String CONVERSATION_FAIL = "fail";
     public static final String CONVERSATION_FINISHED = "CONVERSATION_FINISHED";
     public static final String AUDIO_LOAD_UI = "AUDIO_LOAD_UI";
+    public static final String FOREST_ID = "forest";
     protected boolean outroInitiated;
 
     public ForestEpisodeRules() {
@@ -35,7 +36,7 @@ public class ForestEpisodeRules extends FadingEpisodeRules<ForestRenderable> {
     @Override
     public void episodeStartedEvents(final GameState currentState) {
         if (!isEpisodeStarted(currentState)) {
-            renderable = new ForestRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), "forest");
+            renderable = new ForestRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), FOREST_ID);
             renderable.addAfterFadeIn(new Runnable() {
                 @Override
                 public void run() {

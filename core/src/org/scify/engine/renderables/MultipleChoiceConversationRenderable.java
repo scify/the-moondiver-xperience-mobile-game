@@ -52,7 +52,7 @@ public class MultipleChoiceConversationRenderable extends FadingTableRenderable 
     }
 
     protected void addPossibleAnswer(ConversationLine line) {
-        ActionButtonRenderable button = new ActionButtonRenderable("text_button", "multiple_selection_answer");
+        ActionButtonRenderable button = new ActionButtonRenderable(Renderable.ACTOR_TEXT_BUTTON, "multiple_selection_answer");
         button.setTitle(line.getText());
         button.setUserAction(new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, line.getId()));
         buttons.add(button);

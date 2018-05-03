@@ -20,10 +20,10 @@ public class CalculatorEpisodeRules extends TemporaryEpisodeRules {
             addEpisodeBackgroundImage(gsCurrent, "img/calculator_episode/bg.jpg");
             org.scify.engine.renderables.Renderable calculator = new Renderable("calculator", "calculator_button");
             gsCurrent.addRenderable(calculator);
-            ActionButtonRenderable escape = createEscapeButton();
-            escape.setUserAction(new UserAction(UserActionCode.BACK));
-            gsCurrent.addRenderable(escape);
-            addRenderableEntry("calculator_finished_button", escape);
+            //ActionButtonRenderable escape = createEscapeButton();
+            //escape.setUserAction(new UserAction(UserActionCode.BACK));
+            //gsCurrent.addRenderable(escape);
+            //addRenderableEntry("calculator_finished_button", escape);
         }
     }
 }

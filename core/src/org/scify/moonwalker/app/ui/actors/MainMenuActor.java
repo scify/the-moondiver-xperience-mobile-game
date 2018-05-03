@@ -1,20 +1,14 @@
 package org.scify.moonwalker.app.ui.actors;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.TableRenderable;
 import org.scify.engine.renderables.effects.Effect;
 import org.scify.engine.renderables.effects.FadeEffect;
-import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.ui.ThemeController;
 import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
 
-import java.util.Map;
-
 public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implements Updateable {
-
-    protected AppInfo appInfo;
 
     protected Button startButton;
     protected Button continueButton;
@@ -24,7 +18,6 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
 
     protected Table menuTable;
     protected Table countDownTable;
-    protected Renderable countDownRenderable; // Local renderable
     protected Label countDownLabel;
 
     protected Button boyButton;
@@ -42,7 +35,6 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
         setWidth(renderable.getWidth());
         setHeight(renderable.getHeight());
         addBackground(renderable.getTableBGRenderable());
-        appInfo = AppInfo.getInstance();
         actorInitiated = false;
         init();
     }
@@ -59,32 +51,24 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
         row().height(heightLeft).width(screenWidth);
 
         // create actors for menu
-        setStartButton((Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getStartGameButton()));
-        setContinueButton((Button) bookKeeper.getUIRepresentationOfRenderable((renderable.getContinueGameButton())));
-        setToggleAudioButton((Button) bookKeeper.getUIRepresentationOfRenderable((renderable.getToggleAudioButton())));
-        setAboutButton((Button) bookKeeper.getUIRepresentationOfRenderable((renderable.getAboutButton())));
-        setQuitButton((Button) bookKeeper.getUIRepresentationOfRenderable((renderable.getQuitButton())));
+        startButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getStartGameButton());
+        continueButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getContinueGameButton());
+        toggleAudioButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getToggleAudioButton());
+        aboutButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getAboutButton());
+        quitButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getQuitButton());
 
         // create actors for character selection
-        setBoyButton((Button) bookKeeper.getUIRepresentationOfRenderable((renderable.getBoyButton())));
-        setBoyAvatarButton((Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getBoyAvatarButton()));
-        setGirlButton((Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getGirlButton()));
-        setGirlAvatarButton((Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getGirlAvatarButton()));
+        boyButton = (Button) bookKeeper.getUIRepresentationOfRenderable((renderable.getBoyButton()));
+        boyAvatarButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getBoyAvatarButton());
+        girlButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getGirlButton());
+        girlAvatarButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getGirlAvatarButton());
 
         // Create episode-specific background
-        //setBackground(renderable.);
         createBoySelection();
         createMenuButtons();
         createGirlSelection();
 
         actorInitiated = true;
-
-        // For every important child
-        for (Map.Entry<Actor, Renderable> mearCur : getChildrenActorsAndRenderables().entrySet()) {
-            // Share that its position is now handled by the table
-            mearCur.getValue().setPositionDrawable(false);
-        }
-        //debugAll();
     }
 
     //returns heightLeftForBottom
@@ -95,7 +79,6 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
         row().height(height).width(width);
         add(topBannerImage).maxHeight(height).maxWidth(width).colspan(3).top();
 
-        getChildrenActorsAndRenderables().put(topBannerImage, renderable.getTopBannerRenderable());
         return getHeight() - (height + heightOfTopRow);
     }
 
@@ -117,10 +100,6 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
         buttonTable.row().height(buttonHeight / 2);
         buttonTable.add();
         add(stack).width(width);
-
-        // Add to important children
-        getChildrenActorsAndRenderables().put(boyButton, renderable.getBoyButton());
-        getChildrenActorsAndRenderables().put(boyAvatarButton, renderable.getBoyAvatarButton());
     }
 
     protected void createMenuButtons() {
@@ -153,35 +132,19 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
         stack.addActor(menuTable);
 
         // Init renderable for countdown
-        countDownRenderable = new Renderable("countdown", "countdown_id");
-        countDownRenderable.setVisible(false);
-
-        // Create corresponding actor
-        Actor aTable = createCountDownTable(stack, height, width, countDownRenderable);
-
-        // Update bookkeeper (due to custom actor)
-        bookKeeper.setCustomActorForRenderable(countDownRenderable, aTable);
-
-        // Add to important children (to support effects)
-        getChildrenActorsAndRenderables().put(aTable, countDownRenderable);
-    }
-
-    protected Actor createCountDownTable(Stack stack, float height, float width, Renderable rRenderable) {
         countDownTable = new TableWithEffect();
-
         countDownTable.defaults();
         countDownTable.center();
-        countDownLabel = new Label(renderable.getCountDownValue() + "", getSkin());
+        countDownLabel = (Label) bookKeeper.getUIRepresentationOfRenderable(renderable.getCountDownLabel());
         Label.LabelStyle ls = new Label.LabelStyle();
         ThemeController themeController = new ThemeController(30, "controls");
         ls.font = themeController.getFont();
-        //ls.fontColor = Color.valueOf("912d25");
         countDownLabel.setStyle(ls);
+        countDownLabel.setWidth(width);
+        countDownLabel.setHeight(height);
         countDownTable.add(countDownLabel);
-        stack.addActor(countDownTable);
+        stack.add(countDownTable);
         add(stack).width(width);
-
-        return countDownTable;
     }
 
     protected void createGirlSelection() {
@@ -202,26 +165,6 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
         buttonTable.row().height(buttonHeight / 2);
         buttonTable.add();
         add(stack).width(width);
-
-        // Add to important children
-        getChildrenActorsAndRenderables().put(girlButton, renderable.getGirlButton());
-        getChildrenActorsAndRenderables().put(girlAvatarButton, renderable.getGirlAvatarButton());
-    }
-
-    public void updateSelectedAvatar(String selectedButtonId) {
-        if (selectedButtonId.equals("boyButton") || selectedButtonId.equals("boyAvatarButton")) {
-            Effect fadeIn = new FadeEffect(boyAvatarButton.getColor().a, 1.0, 500);
-            Effect fadeOut = new FadeEffect(girlAvatarButton.getColor().a, 0.5, 500);
-
-            renderable.getBoyAvatarButton().addEffect(fadeIn);
-            renderable.getGirlAvatarButton().addEffect(fadeOut);
-        } else if (selectedButtonId.equals("girlButton") || selectedButtonId.equals("girlAvatarButton")) {
-            Effect fadeIn = new FadeEffect(girlAvatarButton.getColor().a, 1.0, 500);
-            Effect fadeOut = new FadeEffect(boyAvatarButton.getColor().a, 0.5, 500);
-
-            renderable.getBoyAvatarButton().addEffect(fadeOut);
-            renderable.getGirlAvatarButton().addEffect(fadeIn);
-        }
     }
 
     protected Renderable lastSelectedAvatarButton = null;
@@ -235,7 +178,7 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
             // If we have selected an avatar and the countdown is not visible
             if (this.renderable.getSelectedAvatarButton() != null) {
                 // Show the count down
-                countDownRenderable.setVisible(true);
+                renderable.getCountDownLabel().setVisible(true);
                 // Get its value
                 int countDown = this.renderable.getCountDownValue();
                 // and update the label accordingly
@@ -253,49 +196,19 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
         }
     }
 
-    protected void setStartButton(Button button) {
-        startButton = button;
-        getChildrenActorsAndRenderables().put(startButton, renderable.getStartGameButton());
-    }
+    private void updateSelectedAvatar(String selectedButtonId) {
+        if (selectedButtonId.equals("boyButton") || selectedButtonId.equals("boyAvatarButton")) {
+            Effect fadeIn = new FadeEffect(boyAvatarButton.getColor().a, 1.0, 500);
+            Effect fadeOut = new FadeEffect(girlAvatarButton.getColor().a, 0.5, 500);
 
-    public void setContinueButton(Button button) {
-        continueButton = button;
-        getChildrenActorsAndRenderables().put(continueButton, renderable.getContinueGameButton());
-    }
+            renderable.getBoyAvatarButton().addEffect(fadeIn);
+            renderable.getGirlAvatarButton().addEffect(fadeOut);
+        } else if (selectedButtonId.equals("girlButton") || selectedButtonId.equals("girlAvatarButton")) {
+            Effect fadeIn = new FadeEffect(girlAvatarButton.getColor().a, 1.0, 500);
+            Effect fadeOut = new FadeEffect(boyAvatarButton.getColor().a, 0.5, 500);
 
-    public void setToggleAudioButton(Button button) {
-        toggleAudioButton = button;
-        getChildrenActorsAndRenderables().put(toggleAudioButton, renderable.getToggleAudioButton());
+            renderable.getBoyAvatarButton().addEffect(fadeOut);
+            renderable.getGirlAvatarButton().addEffect(fadeIn);
+        }
     }
-
-    public void setAboutButton(Button button) {
-        aboutButton = button;
-        getChildrenActorsAndRenderables().put(aboutButton, renderable.getAboutButton());
-    }
-
-    public void setQuitButton(Button button) {
-        quitButton = button;
-        getChildrenActorsAndRenderables().put(quitButton, renderable.getQuitButton());
-    }
-
-    public void setBoyButton(Button button) {
-        boyButton = button;
-        getChildrenActorsAndRenderables().put(boyButton, renderable.getBoyButton());
-    }
-
-    public void setBoyAvatarButton(Button button) {
-        boyAvatarButton = button;
-        getChildrenActorsAndRenderables().put(boyAvatarButton, renderable.getBoyAvatarButton());
-    }
-
-    public void setGirlButton(Button button) {
-        girlButton = button;
-        getChildrenActorsAndRenderables().put(girlButton, renderable.getGirlButton());
-    }
-
-    public void setGirlAvatarButton(Button button) {
-        girlAvatarButton = button;
-        getChildrenActorsAndRenderables().put(girlAvatarButton, renderable.getGirlAvatarButton());
-    }
-
 }

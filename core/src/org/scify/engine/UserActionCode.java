@@ -8,7 +8,7 @@ public class UserActionCode {
     public static final String DOWN = "DOWN";
     public static final String ANSWER_SELECTION = "ANSWER_SELECTION";
     public static final String ANSWER_TEXT = "ANSWER_TEXT";
-    public static final String NEXT_CONVERSATION_LINE = "NEXT_CONVERSATION_LINE";
+    public static final String SINGLE_CHOICE_CONVERSATION_LINE = "SINGLE_CHOICE_CONVERSATION_LINE";
     public static final String MULTIPLE_SELECTION_ANSWER = "MULTIPLE_SELECTION_ANSWER";
     public static final String BUTTON_PRESSED = "BUTTON_PRESSED";
     public static final String FINISH_EPISODE = "FINISH_EPISODE";

@@ -6,25 +6,53 @@ import org.scify.engine.conversation.ConversationLine;
 import org.scify.moonwalker.app.ui.renderables.FadingTableRenderable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class TwoChoiceConversationRenderable extends FadingTableRenderable {
 
     public final static String BG_IMG_PATH = "img/conversations/bg.png";
-    protected String relativeAvatarImgPath;
+    public final static String AVATAR_BG_IMG_PATH = "img/avatars/bg.png";
+    protected ImageRenderable avatar_bg;
+    protected ImageRenderable avatar;
     protected List<ConversationLine> conversationLines;
-    protected List<ActionButtonRenderable> buttons;
+
+    protected ActionButtonRenderable  conversationButtonTop;
+    protected ActionButtonRenderable  conversationButtonBottom;
+
+    protected Set<Renderable> allRenderables;
+
+    public Set<Renderable> getAllRenderables() {
+        return allRenderables;
+    }
 
     public TwoChoiceConversationRenderable(String id) {
-        super(0,0,0,0,"two_choice_conversation", id, BG_IMG_PATH);
+        super(0,0,0,0,CONVERSATION_TWO_CHOICE, CONVERSATION_TWO_CHOICE + id, BG_IMG_PATH);
         float screenWidth = appInfo.getScreenWidth();
         float screenHeight = appInfo.getScreenHeight();
         this.xPos = 0.02f * screenWidth;
         this.yPos = 0.03f *  screenHeight;
         width = 0.96f * screenWidth;
         height = 0.3f * screenHeight;
-        buttons = new ArrayList<>();
         tableBGRenderable = new ImageRenderable("chat_bg", BG_IMG_PATH);
+        conversationButtonTop = new ActionButtonRenderable(Renderable.ACTOR_TEXT_BUTTON,"button_next_top");
+        conversationButtonTop.setPositionDrawable(false);
+        conversationButtonTop.setZIndex(2);
+        conversationButtonBottom = new ActionButtonRenderable(Renderable.ACTOR_TEXT_BUTTON, "button_next_bottom");
+        conversationButtonBottom.setPositionDrawable(false);
+        conversationButtonBottom.setZIndex(2);
+        avatar_bg = new ImageRenderable("avata_bg", AVATAR_BG_IMG_PATH);
+        avatar_bg.setPositionDrawable(false);
+        avatar_bg.setZIndex(2);
+        initSubRenderables();
+    }
+
+    private void initSubRenderables() {
+        allRenderables = new HashSet<>();
+        allRenderables.add(conversationButtonTop);
+        allRenderables.add(conversationButtonBottom);
+        allRenderables.add(avatar_bg);
     }
 
     public ImageRenderable getTableBGRenderable() {
@@ -33,30 +61,35 @@ public class TwoChoiceConversationRenderable extends FadingTableRenderable {
 
     public void setConversationLines(List<ConversationLine> conversationLines) {
         this.conversationLines = conversationLines;
-        for(ConversationLine line : conversationLines)
-            addPossibleAnswer(line);
+        ConversationLine conversationLine = conversationLines.get(0);
+        conversationButtonTop.setUserAction(new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine.getId()));
+        conversationButtonTop.setTitle(conversationLine.getText());
+        conversationLine = conversationLines.get(1);
+        conversationButtonBottom.setUserAction(new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine.getId()));
+        conversationButtonBottom.setTitle(conversationLine.getText());
     }
 
-    public String getRelativeAvatarPath() {
-        return relativeAvatarImgPath;
+    public void setAvatarImg (String imgPath) {
+        avatar = new ImageRenderable("avatar_img", imgPath);
+        avatar.setZIndex(3);
+        avatar.setPositionDrawable(false);
+        allRenderables.add(avatar);
     }
 
-    public void setRelativeAvatarImgPath(String relativeAvatarImgPath) {
-        this.relativeAvatarImgPath = relativeAvatarImgPath;
+    public ImageRenderable getAvatar_bg() {
+        return avatar_bg;
     }
 
-    public List<ConversationLine> getConversationLines() {
-        return conversationLines;
+    public ImageRenderable getAvatar() {
+        return avatar;
     }
 
-    protected void addPossibleAnswer(ConversationLine line) {
-        ActionButtonRenderable button = new ActionButtonRenderable("text_button", "two_selection_answer");
-        button.setTitle(line.getText());
-        button.setUserAction(new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, line.getId()));
-        buttons.add(button);
+    public ActionButtonRenderable getConversationButtonTop() {
+        return conversationButtonTop;
     }
 
-    public List<ActionButtonRenderable> getButtons() {
-        return buttons;
+    public ActionButtonRenderable getConversationButtonBottom() {
+        return conversationButtonBottom;
     }
+
 }

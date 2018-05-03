@@ -5,6 +5,7 @@ import org.scify.engine.renderables.ActionButtonRenderable;
 import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -24,13 +25,8 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
     public static final String APP_QUIT = "APP_QUIT";
     public static final String NEW_GAME = "NEW_GAME";
 
-    public static final String BOY_BUTTON_ID = "boyButton";
-    public static final String BOY_AVATAR_BUTTON_ID = "boyAvatarButton";
-    public static final String GIRL_BUTTON_ID = "girlButton";
-    public static final String GIRL_AVATAR_BUTTON_ID = "girlAvatarButton";
     public static final String MAIN_MENU_ID = "main_menu";
 
-    protected Map<String, UserActionCode> buttonTitlesAndActionCodes;
     protected boolean mainMenuButtonsEnabled;
     protected boolean fadeInEffectsCompleted;
 
@@ -114,13 +110,8 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
     public void episodeStartedEvents(GameState currentState) {
         // If we are just starting
         if (!isEpisodeStarted(currentState)) {
-            // Create the main renderable
-            // and update rule class variable
             renderable = new MainMenuRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), MAIN_MENU_ID);
-
-            // Create contained elements
-            createAndAddMainMenuButtons();
-            createAvatarSelectionRenderable();
+            gameInfo.setSelectedPlayer(SelectedPlayer.unset);
 
             // Start sound
             currentState.addGameEvent(new GameEvent(AUDIO_START_LOOP_UI, renderable.MAINMENU_AUDIO_PATH));
@@ -134,6 +125,8 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
             });
 
             // Call parent starting process
+            currentState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
+            currentState.addRenderable(renderable);
             super.episodeStartedEvents(currentState);
         }
     }
@@ -143,51 +136,11 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
         currentState.addGameEvent(new GameEvent(AUDIO_LOAD_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
     }
 
-    protected void createAndAddMainMenuButtons() {
-        buttonTitlesAndActionCodes = new LinkedHashMap<>();
-
-        ActionButtonRenderable start = createActionButton("ΝΕΟ ΠΑΙΧΝΙΔΙ", renderable.START_BUTTON_IMG_PATH, UserActionCode.NEW_GAME);
-        renderable.setStartGameButton(start);
-
-        ActionButtonRenderable cont = createActionButton("ΣΥΝΕΧΙΣΕ", renderable.CONTINUE_BUTTON_IMG_PATH, UserActionCode.CONTINUE);
-        renderable.setContinueGameButton(cont);
-
-        ActionButtonRenderable toggle = createActionButton("ΗΧΟΣ ON/OFF", renderable.TOGGLE_AUDIO_BUTTON_IMG_PATH, UserActionCode.TOGGLE_AUDIO);
-        renderable.setToggleAudioButton(toggle);
-
-        ActionButtonRenderable about = createActionButton("ABOUT", renderable.ABOUT_BUTTON_IMG_PATH, UserActionCode.ABOUT);
-        renderable.setAboutButton(about);
-
-        ActionButtonRenderable quit = createActionButton("ΕΞΟΔΟΣ", renderable.QUIT_BUTTON_IMG_PATH, UserActionCode.QUIT);
-        renderable.setQuitButton(quit);
-    }
-
-    protected void createAvatarSelectionRenderable() {
-        ActionButtonRenderable boyButton = createActionButton(BOY_BUTTON_ID, renderable.BOY_BUTTON_IMG_PATH, UserActionCode.BOY_SELECTED);
-        ActionButtonRenderable boyAvatarButton = createActionButton(BOY_AVATAR_BUTTON_ID, renderable.BOY_IMG_PATH, UserActionCode.BOY_SELECTED);
-        renderable.setBoyButton(boyButton);
-        renderable.setBoyAvatarButton(boyAvatarButton);
-
-        ActionButtonRenderable girlButton = createActionButton(GIRL_BUTTON_ID, renderable.GIRL_BUTTON_IMG_PATH, UserActionCode.GIRL_SELECTED);
-        ActionButtonRenderable girlAvatarButton = createActionButton(GIRL_AVATAR_BUTTON_ID, renderable.GIRL_IMG_PATH, UserActionCode.GIRL_SELECTED);
-        renderable.setGirlButton(girlButton);
-        renderable.setGirlAvatarButton(girlAvatarButton);
-
-        gameInfo.setSelectedPlayer(SelectedPlayer.unset);
-    }
 
     protected void removePreviousAvatarSelectionAndAddNew(GameState currentState, String newSelection) {
         currentState.removeGameEventsWithType(AVATAR_SELECTED);
         currentState.addGameEvent(new GameEvent(AVATAR_SELECTED, newSelection, this));
     }
-
-    protected ActionButtonRenderable createActionButton(String id, String imgPath, String code) {
-        return createImageButton(id, imgPath, new UserAction(code), 0, 0);
-    }
-
-
-
-
 
     protected void initPlayerSelection(GameState gameState) {
         renderable.disableInput();
