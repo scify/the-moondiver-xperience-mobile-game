@@ -10,6 +10,7 @@ import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.game.rules.ConversationRules;
 import org.scify.moonwalker.app.ui.renderables.RoomRenderable;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
@@ -58,8 +59,9 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
                     renderable.enableChat();
                 }
             });
-
+            currentState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
             currentState.addRenderable(renderable);
+
             super.episodeStartedEvents(currentState);
             if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
                 currentState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", renderable.BOY_MUSIC_AUDIO_PATH));

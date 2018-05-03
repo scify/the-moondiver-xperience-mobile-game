@@ -16,7 +16,7 @@ import java.util.Random;
 public class MoonWalkerScenario extends Scenario {
 
     public MoonWalkerScenario() {
-        if (false) {
+        if (true) {
             createBasicScenario();
         }
         else {

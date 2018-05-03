@@ -3,6 +3,9 @@ package org.scify.moonwalker.app.ui.renderables;
 import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.Renderable;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class RoomRenderable extends FadingTableRenderable {
 
     protected ImageRenderable phoneOffRenderable;
@@ -26,6 +29,11 @@ public class RoomRenderable extends FadingTableRenderable {
     protected boolean permanentlyOn;
     protected boolean chatEnabled;
 
+    protected Set<Renderable> allRenderables;
+
+    public Set<Renderable> getAllRenderables() {
+        return allRenderables;
+    }
 
     public RoomRenderable(float xPos, float yPos, float width, float height, String id, boolean isBoy) {
         super(xPos, yPos, width, height, Renderable.ACTOR_EPISODE_ROOM, id, isBoy ? BOY_BG_IMG_PATH : GIRL_BG_IMG_PATH);
@@ -39,9 +47,19 @@ public class RoomRenderable extends FadingTableRenderable {
             phoneOnRenderable = new ImageRenderable("phone_on", GIRL_PHONE_ON_IMG_PATH);
             phoneOffRenderable = new ImageRenderable("phone_off", GIRL_PHONE_OFF_IMG_PATH);
         }
-        phoneOnRenderable.setZIndex(1);
+        phoneOnRenderable.setZIndex(2);
+        phoneOnRenderable.setPositionDrawable(false);
         phoneOnRenderable.setVisible(false);
+        phoneOffRenderable.setZIndex(1);
+        phoneOffRenderable.setPositionDrawable(false);
+        initSubRenderables();
 
+    }
+
+    private void initSubRenderables() {
+        allRenderables = new HashSet<>();
+        allRenderables.add(phoneOnRenderable);
+        allRenderables.add(phoneOffRenderable);
     }
 
     public void enableChat() {
@@ -58,7 +76,7 @@ public class RoomRenderable extends FadingTableRenderable {
                 phoneOnRenderable.setVisible(false);
             else
                 phoneOnRenderable.setVisible(true);
-            renderableWasUpdated();
+            //renderableWasUpdated();
         }
     }
 

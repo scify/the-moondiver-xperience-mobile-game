@@ -2,10 +2,9 @@ package org.scify.moonwalker.app.ui.actors;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
-import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.ui.renderables.RoomRenderable;
 
-public class RoomActor extends FadingTableActor<RoomRenderable> implements Updateable {
+public class RoomActor extends FadingTableActor<RoomRenderable>  {
 
     protected ImageWithEffect phoneOffImage;
     protected ImageWithEffect phoneOnImage;
@@ -27,15 +26,8 @@ public class RoomActor extends FadingTableActor<RoomRenderable> implements Updat
         phonesStack.add(phoneOffImage);
         phonesStack.add(phoneOnImage);
         add(phonesStack).width(convertWidth(phoneOffImage.getWidth())).height(convertHeight(phoneOffImage.getHeight()));
-        getChildrenActorsAndRenderables().put(phoneOffImage,renderable.getPhoneOffRenderable());
-        getChildrenActorsAndRenderables().put(phoneOnImage,renderable.getPhoneOnRenderable());
+        /*getChildrenActorsAndRenderables().put(phoneOffImage,renderable.getPhoneOffRenderable());
+        getChildrenActorsAndRenderables().put(phoneOnImage,renderable.getPhoneOnRenderable());*/
     }
 
-    @Override
-    public void update(Renderable renderable) {
-        if (this.renderable.getRenderableLastUpdated() > timestamp) {
-            this.renderable = (RoomRenderable) renderable;
-            this.timestamp = this.renderable.getRenderableLastUpdated();
-        }
-    }
 }
