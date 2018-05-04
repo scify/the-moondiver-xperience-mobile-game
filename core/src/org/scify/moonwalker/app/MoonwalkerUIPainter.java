@@ -166,7 +166,7 @@ public class MoonwalkerUIPainter {
     public void updateStageBG(Float delta, long lNewTime, long lLastUpdate) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.setDebugAll(true);
+        //stage.setDebugAll(true);
         if (fpsLabel != null) {
             fpsLabel.setText(String.valueOf(1000 / (lNewTime - lLastUpdate)));
             fpsLabel.draw(batch, 1);
