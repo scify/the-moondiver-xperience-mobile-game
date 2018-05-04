@@ -12,6 +12,9 @@ import java.util.*;
  * Describes an object that is used in game and has substance in terms of game logic.
  */
 public class Renderable extends Positionable implements EffectTarget {
+
+    public boolean debugMode = false;
+
     // Actors
     public static final String ACTOR_LABEL = "label";
     public static final String ACTOR_ROTATABLE_LABEL = "rotatable_label";

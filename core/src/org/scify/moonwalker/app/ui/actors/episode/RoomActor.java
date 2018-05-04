@@ -27,8 +27,6 @@ public class RoomActor extends FadingTableActor<RoomRenderable> {
         phonesStack.add(phoneOffImage);
         phonesStack.add(phoneOnImage);
         add(phonesStack).width(convertWidth(phoneOffImage.getWidth())).height(convertHeight(phoneOffImage.getHeight()));
-        /*getChildrenActorsAndRenderables().put(phoneOffImage,renderable.getPhoneOffRenderable());
-        getChildrenActorsAndRenderables().put(phoneOnImage,renderable.getPhoneOnRenderable());*/
     }
 
 }

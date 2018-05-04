@@ -1,7 +1,7 @@
 package org.scify.moonwalker.app.ui.renderables;
 
-import org.scify.engine.renderables.ImageRenderable;
-import org.scify.engine.renderables.TableRenderable;
+import org.scify.engine.UserAction;
+import org.scify.engine.renderables.*;
 import org.scify.engine.renderables.effects.EffectSequence;
 import org.scify.engine.renderables.effects.FadeEffect;
 import org.scify.engine.renderables.effects.FunctionEffect;
@@ -94,4 +94,32 @@ public class FadingTableRenderable extends TableRenderable {
         this.addEffect(fadeOutEffects);
 
     }
+
+    protected ActionButtonRenderable createImageButton(String id, String img, String code, boolean visibility, int zIndex) {
+        ActionButtonRenderable ret = new ActionButtonRenderable(Renderable.ACTOR_IMAGE_BUTTON, id);
+        ret.setZIndex(zIndex);
+        ret.setVisible(visibility);
+        ret.setPositionDrawable(false);
+        ret.setImgPath(img);
+        ret.setUserAction(new UserAction(code));
+        return ret;
+    }
+
+    protected ImageRenderable createImageRenderable(String id, String img, boolean positionDrawable, boolean visibility, int zIndex) {
+        ImageRenderable ret = new ImageRenderable(id, img);
+        ret.setZIndex(zIndex);
+        ret.setVisible(visibility);
+        ret.setPositionDrawable(positionDrawable);
+        return ret;
+    }
+
+    protected TextLabelRenderable createTextLabelRenderable(String id, String text, boolean positionDrawable, boolean visibility, int zIndex) {
+        TextLabelRenderable ret = new TextLabelRenderable(Renderable.ACTOR_LABEL, id);
+        ret.setZIndex(zIndex);
+        ret.setLabel(text);
+        ret.setVisible(visibility);
+        ret.setPositionDrawable(positionDrawable);
+        return ret;
+    }
+
 }

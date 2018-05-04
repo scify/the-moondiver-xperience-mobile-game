@@ -3,9 +3,9 @@ package org.scify.moonwalker.app.ui.actors.episode;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import org.scify.engine.renderables.Renderable;
-import org.scify.engine.renderables.TableRenderable;
 import org.scify.engine.renderables.effects.Effect;
 import org.scify.engine.renderables.effects.FadeEffect;
+import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.ui.ThemeController;
 import org.scify.moonwalker.app.ui.actors.*;
 import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
@@ -92,7 +92,8 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
         stack.addActor(boyAvatarButton);
 
         // Add closeButton
-        Table buttonTable = new TableActor<TableRenderable>(getSkin(), this.renderable);
+        //Table buttonTable = new TableActor<TableRenderable>(getSkin(), this.renderable);
+        Table buttonTable = new Table();
         buttonTable.defaults();
         buttonTable.bottom();
         float buttonWidth = convertWidth(boyButton.getWidth());
@@ -169,43 +170,42 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
         add(stack).width(width);
     }
 
-    protected Renderable lastSelectedAvatarButton = null;
-
+    protected String selectedPlayer = "";
     @Override
     public void update(Renderable rRenderable) {
         // If we have an actor and it's been some time since the last update
         if (actorInitiated && this.renderable.getRenderableLastUpdated() > timestamp) {
-            this.renderable = (MainMenuRenderable) rRenderable;
-            this.timestamp = this.renderable.getRenderableLastUpdated();
+            renderable = (MainMenuRenderable) rRenderable;
+            timestamp = renderable.getRenderableLastUpdated();
             // If we have selected an avatar and the countdown is not visible
-            if (this.renderable.getSelectedAvatarButton() != null) {
+            if (renderable.getSelectedPlayer() != "") {
                 // Show the count down
                 renderable.getCountDownLabel().setVisible(true);
                 // Get its value
-                int countDown = this.renderable.getCountDownValue();
+                int countDown = renderable.getCountDownValue();
                 // and update the label accordingly
                 if (countDown >= 0)
                     countDownLabel.setText(countDown + "");
 
                 // If we switched selection
-                if (lastSelectedAvatarButton != this.renderable.getSelectedAvatarButton()) {
+                if (selectedPlayer != renderable.getSelectedPlayer()) {
                     // Update the selected avatar
-                    lastSelectedAvatarButton = this.renderable.getSelectedAvatarButton();
+                    selectedPlayer = renderable.getSelectedPlayer();
                     // Apply effects
-                    updateSelectedAvatar(lastSelectedAvatarButton.getId());
+                    updateSelectedAvatar();
                 }
             }
         }
     }
 
-    private void updateSelectedAvatar(String selectedButtonId) {
-        if (selectedButtonId.equals("boyButton") || selectedButtonId.equals("boyAvatarButton")) {
+    private void updateSelectedAvatar() {
+        if (selectedPlayer == SelectedPlayer.boy) {
             Effect fadeIn = new FadeEffect(boyAvatarButton.getColor().a, 1.0, 500);
             Effect fadeOut = new FadeEffect(girlAvatarButton.getColor().a, 0.5, 500);
 
             renderable.getBoyAvatarButton().addEffect(fadeIn);
             renderable.getGirlAvatarButton().addEffect(fadeOut);
-        } else if (selectedButtonId.equals("girlButton") || selectedButtonId.equals("girlAvatarButton")) {
+        } else if (selectedPlayer == SelectedPlayer.girl) {
             Effect fadeIn = new FadeEffect(girlAvatarButton.getColor().a, 1.0, 500);
             Effect fadeOut = new FadeEffect(boyAvatarButton.getColor().a, 0.5, 500);
 

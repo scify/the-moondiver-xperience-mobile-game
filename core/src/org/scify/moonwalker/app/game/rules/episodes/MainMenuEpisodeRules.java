@@ -37,6 +37,31 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
     }
 
     @Override
+    public void episodeStartedEvents(GameState gameState) {
+        // If we are just starting
+        if (!isEpisodeStarted(gameState)) {
+            renderable = new MainMenuRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), MAIN_MENU_ID);
+            gameInfo.setSelectedPlayer(SelectedPlayer.unset);
+
+            // Start sound
+            gameState.addGameEvent(new GameEvent(AUDIO_START_LOOP_UI, renderable.MAINMENU_AUDIO_PATH));
+
+            // Enable input after fade in
+            renderable.addAfterFadeIn(new Runnable() {
+                @Override
+                public void run() {
+                    renderable.enableInput();
+                }
+            });
+
+            // Call parent starting process
+            gameState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
+            gameState.addRenderable(renderable);
+            super.episodeStartedEvents(gameState);
+        }
+    }
+
+    @Override
     public GameState getNextState(final GameState gameState, UserAction userAction) {
         long timestamp = new Date().getTime();
         // Examine if we have a cooldown event
@@ -95,39 +120,14 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
             gameState.removeGameEventsWithType(COOLDOWN);
         }
         if (avatarSelected != null && avatarSelected.parameters.equals(selectedPlayer)) {
-            renderable.setSelectedAvatarButton(renderable.getPlayerButton(selectedPlayer));
+            renderable.setSelectedPlayer(selectedPlayer);
             renderable.forceCountDownToZero();
             gameState.addGameEvent(new GameEvent(COOLDOWN, new Date().getTime(), false, this));
         } else {
             removePreviousAvatarSelectionAndAddNew(gameState, selectedPlayer);
-            renderable.setSelectedAvatarButton(renderable.getPlayerButton(selectedPlayer));
+            renderable.setSelectedPlayer(selectedPlayer);
             renderable.resetCountDown();
             gameState.addGameEvent(new GameEvent(COOLDOWN, new Date().getTime() + 1000, false, this));
-        }
-    }
-
-    @Override
-    public void episodeStartedEvents(GameState currentState) {
-        // If we are just starting
-        if (!isEpisodeStarted(currentState)) {
-            renderable = new MainMenuRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), MAIN_MENU_ID);
-            gameInfo.setSelectedPlayer(SelectedPlayer.unset);
-
-            // Start sound
-            currentState.addGameEvent(new GameEvent(AUDIO_START_LOOP_UI, renderable.MAINMENU_AUDIO_PATH));
-
-            // Enable input after fade in
-            renderable.addAfterFadeIn(new Runnable() {
-                @Override
-                public void run() {
-                    renderable.enableInput();
-                }
-            });
-
-            // Call parent starting process
-            currentState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
-            currentState.addRenderable(renderable);
-            super.episodeStartedEvents(currentState);
         }
     }
 

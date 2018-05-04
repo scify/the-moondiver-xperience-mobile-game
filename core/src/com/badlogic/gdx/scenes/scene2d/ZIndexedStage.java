@@ -3,6 +3,7 @@ package com.badlogic.gdx.scenes.scene2d;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.scify.engine.renderables.Renderable;
+import org.scify.moonwalker.app.ui.actors.TableActor;
 
 public class ZIndexedStage extends Stage {
     protected ZIndexedGroup orderedRoot;
@@ -40,6 +41,11 @@ public class ZIndexedStage extends Stage {
         super.addActor(actor);
     }
 
+/*    public void enableTableActorDebug(Actor actor, Stage stage) {
+
+        actor.setStage(stage);
+        //((TableActor)actor).debugAll();
+    }*/
 
     protected void replaceRootObject() {
         if (orderedRoot == null) {

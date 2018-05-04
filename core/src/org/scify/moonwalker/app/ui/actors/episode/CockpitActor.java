@@ -1,31 +1,32 @@
 package org.scify.moonwalker.app.ui.actors.episode;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Timer;
 import org.scify.engine.renderables.Renderable;
-import org.scify.moonwalker.app.helpers.AppInfo;
-import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.ThemeController;
-import org.scify.moonwalker.app.ui.actors.TableActor;
+import org.scify.moonwalker.app.ui.actors.FadingTableActor;
+import org.scify.moonwalker.app.ui.actors.ImageWithEffect;
 import org.scify.moonwalker.app.ui.actors.Updateable;
 import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 
-public class CockpitActor extends TableActor implements Updateable {
+public class CockpitActor extends FadingTableActor<CockpitRenderable> implements Updateable {
 
-    protected CockpitRenderable renderable;
     protected Table bottomTable;
-    protected Button navigateButton;
+    protected Button travelButton;
+    protected Button travelLightedButton;
     protected Button launchButton;
-    protected Button spaceshipPartsButton;
+    protected Button launchLightedButton;
+    protected Button inventoryButton;
+    protected Button inventoryLightedButton;
     protected Button mapButton;
-    protected Button contactButtonSimple;
-    protected Button contactButtonLighted;
-    protected Button chargeEpisodeButton;
-
+    protected Button mapLightedButton;
+    protected Button contactButton;
+    protected Button contactLightedButton;
+    protected Button chargeButton;
+    protected Button chargeLightedButton;
 
     /**
      * When adding values to the table, store the created cells
@@ -39,72 +40,61 @@ public class CockpitActor extends TableActor implements Updateable {
 
     public CockpitActor(Skin skin, CockpitRenderable renderable) {
         super(skin, renderable);
-        appInfo = AppInfo.getInstance();
-        resourceLocator = new ResourceLocator();
-        this.renderable = renderable;
         timestamp = this.renderable.getRenderableLastUpdated();
         setWidth(renderable.getWidth());
         setHeight(renderable.getHeight());
-        addBackground(renderable.getImgPath());
-        //debug();
+        addBackground(renderable.getTableBGRenderable());
+        init();
     }
 
-    public void addBackground(String imgPath) {
-        background = new Image(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath(imgPath)))));
-        background.setSize(getWidth(), getHeight());
-        addActor(background);
-    }
-
-    public void init() {
+    protected void init() {
         float screenHeight = getHeight();
         float screenWidth = getWidth();
         top();
 
+
         //Top Left Pad Location
         drawTopLeftPad(screenWidth, screenHeight);
         //Mid empty cell
-        add().width(0.55f * screenWidth).height(0.57f * screenHeight);
+        //add().width(0.55f * screenWidth).height(0.57f * screenHeight);
         //Top Right Pad DaysToGo
-        drawTopRightPad(screenWidth, screenHeight);
+        //drawTopRightPad(screenWidth, screenHeight);
 
-        row();
+        //row();
 
         //Central
-        drawCentral(screenWidth, screenHeight);
-        row();
-        drawBottom(screenWidth, screenHeight);
+        //drawCentral(screenWidth, screenHeight);
+        //row();
+        //drawBottom(screenWidth, screenHeight);
     }
 
     protected void drawTopLeftPad(float screenWidth, float screenHeight) {
         Stack stack = new Stack();
-        stack.setTransform(true);
-        Texture texture = imgUrlToTexture(renderable.POSITION_LABEL_IMG_PATH);
-        Image image = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
+        //stack.setTransform(true);
+        Image image = (ImageWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getLeftTablet());
         image.setAlign(Align.center);
         stack.addActor(image);
-        currentLocationLabel = new Label(renderable.getPositionValue(), getSkin());
+        /*currentLocationLabel = (Label) bookKeeper.getUIRepresentationOfRenderable(renderable.getLocationLabel());
         Label.LabelStyle ls = new Label.LabelStyle();
         ThemeController themeController = new ThemeController(20, "controls");
         ls.font = themeController.getFont();
-        //ls.font.getData().setScale(2, 2);
         ls.fontColor = Color.valueOf("2f312c");
-        currentLocationLabel.setStyle(ls);
-        Container container = new Container(currentLocationLabel);
+        currentLocationLabel.setStyle(ls);*/
+        /*Container container = new Container(currentLocationLabel);
         container.center();
         container.padBottom(screenHeight * 0.1f);
-        container.padLeft(screenWidth * 0.05f);
-        stack.add(container);
-        stack.rotateBy(4);
-        add(stack).top().left().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight()));
+        container.padLeft(screenWidth * 0.05f);*/
+        //stack.add(container);
+        //stack.rotateBy(4);
+        add(stack).top().left().maxWidth(convertWidth(image.getWidth())).maxHeight(convertHeight(image.getHeight()));
     }
 
     protected void drawTopRightPad(float screenWidth, float screenHeight) {
         Stack stack = new Stack();
         stack.setTransform(true);
-        Texture texture = imgUrlToTexture(renderable.DAYS_LEFT_IMG_PATH);
-        Image image = new Image(new TextureRegionDrawable(new TextureRegion(texture)));
+        Image image = (ImageWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getRightTablet());
         stack.add(image);
-        daysLeftLabel = new Label(renderable.getDaysLeftValue(), getSkin());
+        daysLeftLabel = (Label) bookKeeper.getUIRepresentationOfRenderable(renderable.getDaysLeftLabel());
         Label.LabelStyle ls = new Label.LabelStyle();
         ThemeController themeController = new ThemeController(25, "controls");
         ls.font = themeController.getFont();
@@ -116,31 +106,62 @@ public class CockpitActor extends TableActor implements Updateable {
         container.padTop(0.1f * screenHeight);
 
         stack.add(container);
-        add(stack).top().right().width(convertWidth(texture.getWidth())).height(convertHeight(texture.getHeight()));
+        add(stack).top().right().width(convertWidth(image.getWidth())).height(convertHeight(image.getHeight()));
     }
 
     protected void drawCentral(float screenWidth, float screenHeight) {
-        add(navigateButton).width(convertWidth(navigateButton.getWidth())).height(convertHeight(navigateButton.getHeight())).align(Align.bottom);
+        Stack travelButtons = new Stack();
+        travelButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getTravelButton());
+        travelButtons.add(travelButton);
+        travelLightedButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getTravelLightedButton());
+        travelButtons.add(travelLightedButton);
+        add(travelButtons).width(convertWidth(travelButton.getWidth())).height(convertHeight(travelButton.getHeight())).align(Align.bottom);
 
         Table centralTable = new Table();
         centralTable.defaults();
         centralTable.align(Align.top);
 
         Stack contactButtons = new Stack();
-        contactButtons.add(contactButtonSimple);
-        contactButtons.add(contactButtonLighted);
-        contactButtonLighted.setVisible(false);
-        centralTable.add(contactButtons).width(convertWidth(contactButtonSimple.getWidth())).height(convertHeight(contactButtonSimple.getHeight())).padRight(0.02f * screenWidth);
-        centralTable.add(spaceshipPartsButton).width(convertWidth(spaceshipPartsButton.getWidth())).height(convertHeight(spaceshipPartsButton.getHeight()));
+        contactButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getContactButton());
+        contactButtons.add(contactButton);
+        contactLightedButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getContactLightedButton());
+        contactButtons.add(contactLightedButton);
+        centralTable.add(contactButtons).width(convertWidth(contactButton.getWidth())).height(convertHeight(contactButton.getHeight())).padRight(0.02f * screenWidth);
+
+        Stack inventoryButtons = new Stack();
+        inventoryButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getSpaceshipInventoryButton());
+        inventoryButtons.add(inventoryButton);
+        inventoryLightedButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getSpaceshipInventoryLightedButton());
+        inventoryButtons.add(inventoryLightedButton);
+        centralTable.add(inventoryButtons).width(convertWidth(inventoryButton.getWidth())).height(convertHeight(inventoryButton.getHeight()));
+
         centralTable.row();
-        float distanceBetweenRows = convertHeight(contactButtonSimple.getHeight()* 0.8f);
+        float distanceBetweenRows = convertHeight(contactButton.getHeight()* 0.8f);
         centralTable.add().height(distanceBetweenRows);
         centralTable.row();
-        centralTable.add(chargeEpisodeButton).width(convertWidth(chargeEpisodeButton.getWidth())).height(convertHeight(chargeEpisodeButton.getHeight())).padRight(0.02f * screenWidth);
-        centralTable.add(mapButton).width(convertWidth(mapButton.getWidth())).height(convertHeight(mapButton.getHeight()));
+
+        Stack chargeButtons = new Stack();
+        chargeButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getChargeButton());
+        chargeButtons.add(chargeButton);
+        chargeLightedButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getChargeLighedButton());
+        chargeButtons.add(chargeLightedButton);
+        chargeButtons.add(chargeButtons);
+        centralTable.add(chargeButtons).width(convertWidth(chargeButton.getWidth())).height(convertHeight(chargeButton.getHeight())).padRight(0.02f * screenWidth);
+
+        Stack mapButtons = new Stack();
+        mapButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getMapButton());
+        mapButtons.add(mapButton);
+        mapLightedButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getMapLightedButton());
+        mapButtons.add(mapLightedButton);
+        centralTable.add(mapLightedButton).width(convertWidth(mapButton.getWidth())).height(convertHeight(mapButton.getHeight()));
         add(centralTable).left().height(0.24f * screenHeight).padLeft(0.03f * screenWidth);
 
-        add(launchButton).width(convertWidth(launchButton.getWidth())).height(convertHeight(launchButton.getHeight())).align(Align.bottom).padRight(0.04f * screenWidth);
+        Stack launchButtons = new Stack();
+        launchButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getLaunchButton());
+        launchButtons.add(launchButton);
+        launchLightedButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getLaunchLightedButton());
+        launchButtons.add(launchLightedButton);
+        add(launchButtons).width(convertWidth(launchButton.getWidth())).height(convertHeight(launchButton.getHeight())).align(Align.bottom).padRight(0.04f * screenWidth);
     }
 
     protected void drawBottom(float screenWidth, float screenHeight) {
@@ -154,9 +175,7 @@ public class CockpitActor extends TableActor implements Updateable {
 
         bottomTable.add().height(screenHeight * 0.167f).width(0.28f * screenWidth);
 
-
-
-        motorEfficiencyLabel = new Label(renderable.getMotorEfficiencyValue(), getSkin());
+        motorEfficiencyLabel = (Label) bookKeeper.getUIRepresentationOfRenderable(renderable.getMotorEfficiencyLabel());
         motorEfficiencyLabel.setStyle(labelStyle);
         motorEfficiencyLabel.setAlignment(Align.center);
 
@@ -165,14 +184,14 @@ public class CockpitActor extends TableActor implements Updateable {
         bottomTable.add().width(0.265f * screenWidth);
 
 
-        remainingEnergyLabel = new Label(renderable.getRemainingEnergyValue(), getSkin());
+        remainingEnergyLabel = (Label) bookKeeper.getUIRepresentationOfRenderable(renderable.getEnergyLabel());
         remainingEnergyLabel.setStyle(labelStyle);
         remainingEnergyLabel.setAlignment(Align.center);
         bottomTable.add(remainingEnergyLabel).width(0.06f *screenWidth);
 
         bottomTable.add().width(0.27f * screenWidth);
 
-        remainingDestinationLabel = new Label(renderable.getDestinationDistanceValue() + "", getSkin());
+        remainingDestinationLabel = (Label) bookKeeper.getUIRepresentationOfRenderable(renderable.getDistanceLabel());
         remainingDestinationLabel.setStyle(labelStyle);
         remainingDestinationLabel.setAlignment(Align.center);
         bottomTable.add(remainingDestinationLabel).width(0.06f *screenWidth);
@@ -186,80 +205,20 @@ public class CockpitActor extends TableActor implements Updateable {
             System.out.println("setting renderable: " + renderable.getRenderableLastUpdated() + " over: " + this.renderable.getRenderableLastUpdated());
             this.renderable = (CockpitRenderable) renderable;
             this.timestamp = this.renderable.getRenderableLastUpdated();
-            setMotorEfficiency(this.renderable.getMotorEfficiencyValue());
+
+            /*setMotorEfficiency(this.renderable.getMotorEfficiencyValue());
             setRemainingEnergy(this.renderable.getRemainingEnergyValue());
             setRemainingDestination(this.renderable.getDestinationDistanceValue() + "");
             setLocation(this.renderable.getPositionValue());
-            setDaysLeft(this.renderable.getDaysLeftValue());
-            if (this.renderable.isContactButtonLighted()) {
-                contactButtonLighted.setVisible(true);
-                contactButtonSimple.setVisible(false);
+            setDaysLeft(this.renderable.getDaysLeftValue());*/
+
+            /*if (this.renderable.isContactButtonLighted()) {
+                contactLightedButton.setVisible(true);
+                contactButton.setVisible(false);
             }else {
-                contactButtonLighted.setVisible(false);
-                contactButtonSimple.setVisible(true);
-            }
+                contactLightedButton.setVisible(false);
+                contactButton.setVisible(true);
+            }*/
         }
-    }
-
-    protected void setMotorEfficiency(String newValue) {
-        //updateInfoValueCell(motorEfficiencyValueCell, newValue);
-        motorEfficiencyLabel.setText(newValue);
-    }
-
-    protected void setRemainingEnergy(String newValue) {
-        //updateInfoValueCell(remainingEnergyValueCell, newValue);
-        remainingEnergyLabel.setText(newValue);
-    }
-
-    protected void setRemainingDestination(String newValue) {
-        //updateInfoValueCell(remainingDestinationValueCell, newValue);
-        remainingDestinationLabel.setText(newValue);
-    }
-
-    protected void setLocation(String newValue) {
-        //updateInfoValueCell(positionValueCell, newValue);
-        currentLocationLabel.setText(newValue);
-    }
-
-
-    protected void setDaysLeft(String newValue) {
-        //updateInfoValueCell(daysLeftCell, newValue);
-        daysLeftLabel.setText(newValue);
-    }
-
-    /*protected void updateInfoValueCell(Cell cell, String newValue) {
-        // we need to search for the Label type actor in the group we have stored in the cell
-        Group group = (Group) cell.getActor();
-        for (Actor actor : group.getChildren()) {
-            if (actor instanceof Label) {
-                Label label = (Label) actor;
-                label.setText(newValue);
-            }
-        }
-    }*/
-
-    public void setNavigateButton(Button navigateButton) {
-        this.navigateButton = navigateButton;
-    }
-
-    public void setLaunchButton(Button launchButton) {
-        this.launchButton = launchButton;
-    }
-
-    public void setSpaceshipPartsButton(Button spaceshipPartsButton) {
-        this.spaceshipPartsButton = spaceshipPartsButton;
-    }
-
-    public void setMapButton(Button mapButton) {
-        this.mapButton = mapButton;
-    }
-
-    public void setContactButtons(Button contactButtonSimple, Button contactButtonLighted) {
-        this.contactButtonSimple = contactButtonSimple;
-        this.contactButtonLighted = contactButtonLighted;
-    }
-
-    public void setChargeEpisodeButton(Button chargeEpisodeButton) {
-        this.chargeEpisodeButton = chargeEpisodeButton;
     }
 }
