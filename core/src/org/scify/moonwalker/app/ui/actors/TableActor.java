@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class TableActor<T extends Renderable> extends TableWithEffect implements IContainerActor<T> {
+public class TableActor<T extends Renderable> extends TableWithEffect {
 
     protected ResourceLocator resourceLocator;
     protected AppInfo appInfo;
@@ -27,13 +27,11 @@ public class TableActor<T extends Renderable> extends TableWithEffect implements
     protected Set<Effect> effects;
     protected LGDXRenderableBookKeeper bookKeeper = LGDXRenderableBookKeeper.getInstance();
     protected T renderable;
-    protected Map<Actor, Renderable> childrenActorsToRenderables;
 
     public TableActor(Skin skin, T rRenderable) {
         super(skin);
         appInfo = AppInfo.getInstance();
         resourceLocator = new ResourceLocator();
-        childrenActorsToRenderables = new HashMap<>();
         renderable = rRenderable;
         effects = new HashSet<>();
     }
@@ -117,16 +115,5 @@ public class TableActor<T extends Renderable> extends TableWithEffect implements
 //        return ret;
         return appInfo.convertX(initialWidth);
     }
-
-    @Override
-    public Map<Actor, Renderable> getChildrenActorsAndRenderables() {
-        return childrenActorsToRenderables;
-    }
-
-    @Override
-    public T getRenderable() {
-        return renderable;
-    }
-
 
 }

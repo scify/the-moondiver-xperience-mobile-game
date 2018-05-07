@@ -97,12 +97,16 @@ public class EffectPlaygroundEpisodeRules extends SimpleTimedImageEpisodeRules {
 
         EffectSequence elList = new EffectSequence();
         elList.addEffect(new FadeEffect(1.0, 0.3, 1000.0));
-        elList.addEffect(new RotateEffect(0.0, 720.0, 1000.0));
+        RotateEffect rTmp = new RotateEffect(0.0, 720.0, 1000.0);
+        rTmp.setOriginPoint(0, 0);
+        elList.addEffect(rTmp);
         elList.addEffect(new VisibilityEffect(false));
         elList.addEffect(new DelayEffect(2000));
         elList.addEffect(new VisibilityEffect(true));
         elList.addEffect(new FadeEffect(0.3, 1.0, 2000.0));
-        elList.addEffect(new RotateEffect(100.0, 0.0, 1000.0));
+        rTmp = new RotateEffect(100.0, 0.0, 1000.0);
+        rTmp.setOriginPoint(aTest2.getWidth() / 2.0, aTest2.getHeight() / 2.0);
+        elList.addEffect(rTmp);
         elList.addEffect((new BounceEffect(0.0, 100.0, 3000.0)));
         elList.addEffect(new FunctionEffect(new Runnable() {
                     @Override

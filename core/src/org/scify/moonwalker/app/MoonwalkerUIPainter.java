@@ -16,7 +16,6 @@ import org.scify.engine.renderables.effects.Effect;
 import org.scify.engine.renderables.effects.libgdx.LGDXEffect;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.ui.CameraController;
-import org.scify.moonwalker.app.ui.actors.IContainerActor;
 
 import java.util.Set;
 
@@ -174,16 +173,17 @@ public class MoonwalkerUIPainter {
     }
 
     public void applyActorVisibility(Actor aToDraw, Renderable renderable) {
-        // If a container
-        if (aToDraw instanceof IContainerActor) {
-            IContainerActor<Renderable> caToDraw = (IContainerActor) aToDraw;
-            // For every child
-            for (Actor aCur : caToDraw.getChildrenActorsAndRenderables().keySet()) {
-                // Apply effect to child
-                applyActorVisibility(aCur, caToDraw.getChildrenActorsAndRenderables().get(aCur));
-            }
-
-        }
+        // OBSOLETE:
+//        // If a container
+//        if (aToDraw instanceof IContainerActor) {
+//            IContainerActor<Renderable> caToDraw = (IContainerActor) aToDraw;
+//            // For every child
+//            for (Actor aCur : caToDraw.getChildrenActorsAndRenderables().keySet()) {
+//                // Apply effect to child
+//                applyActorVisibility(aCur, caToDraw.getChildrenActorsAndRenderables().get(aCur));
+//            }
+//
+//        }
 
         // Update visibility
         aToDraw.setVisible(renderable.isVisible());

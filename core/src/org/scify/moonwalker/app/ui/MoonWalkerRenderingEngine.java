@@ -21,7 +21,6 @@ import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.moonwalker.app.MoonwalkerUIPainter;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
-import org.scify.moonwalker.app.ui.actors.IContainerActor;
 import org.scify.moonwalker.app.ui.actors.Updateable;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 import org.scify.moonwalker.app.ui.sound.GdxAudioEngine;
@@ -156,26 +155,22 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             // Get the UI representation of the renderable
             Object uiRepresentationOfRenderable = bookKeeper.getUIRepresentationOfRenderable(renderable);
 
-            // Then draw the renderable itself, if needed (sprites always need to be updated)
-            if (renderable.needsRepaint() || !(uiRepresentationOfRenderable instanceof Actor)) {
-
-                // if the uiRepresentationOfRenderable implements the Updatable interface, pass the renderable as argument
-                // for it to be updated
+            // If needs update (then it also needs repaint)
+            if (renderable.needsUpdate()) {
+                // call update of the actor, if applicable
                 if(uiRepresentationOfRenderable instanceof Updateable) {
                     ((Updateable) uiRepresentationOfRenderable).update(renderable);
                 }
-
+                // repaint
                 painter.drawUIRenderable(uiRepresentationOfRenderable, renderable);
-                // and share that it is now updated
-                renderable.wasUpdated();
+                // NOTE: We do NOT and should NOT call wasUpdated. It is the actor's responsibility to do so.
             }
-
-            // If actor is a container
-            if (uiRepresentationOfRenderable instanceof IContainerActor) {
-                // For every contained actor
-                for (Map.Entry<Actor,Renderable> mearCur : ((IContainerActor<Renderable>)uiRepresentationOfRenderable).getChildrenActorsAndRenderables().entrySet()) {
-                    // draw it
-                    drawRenderable(mearCur.getValue());
+            // else
+            else {
+                // If needs repaint
+                if (renderable.needsRepaint()) {
+                    // repaint
+                    painter.drawUIRenderable(uiRepresentationOfRenderable, renderable);
                 }
             }
 
@@ -341,6 +336,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             } else {
                 batch = stage.getBatch();
                 synchronized (batch) {
+                    // TODO: Employ z-ordering even when combining components (added to stage) and sprites (stand-alone)
 
                     batch.begin();
 
