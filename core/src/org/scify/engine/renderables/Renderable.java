@@ -96,8 +96,12 @@ public class Renderable extends Positionable implements EffectTarget {
         renderableLastUpdated = new Date().getTime();
     }
 
-    public boolean needsUpdate() {
+    public boolean needsRepaint() {
         needsUpdate = needsUpdate || (getEffects().size() > 0);
+        return needsUpdate;
+    }
+
+    public boolean needsUpdate() {
         return needsUpdate;
     }
 

@@ -157,7 +157,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             Object uiRepresentationOfRenderable = bookKeeper.getUIRepresentationOfRenderable(renderable);
 
             // Then draw the renderable itself, if needed (sprites always need to be updated)
-            if (renderable.needsUpdate() || !(uiRepresentationOfRenderable instanceof Actor)) {
+            if (renderable.needsRepaint() || !(uiRepresentationOfRenderable instanceof Actor)) {
 
                 // if the uiRepresentationOfRenderable implements the Updatable interface, pass the renderable as argument
                 // for it to be updated

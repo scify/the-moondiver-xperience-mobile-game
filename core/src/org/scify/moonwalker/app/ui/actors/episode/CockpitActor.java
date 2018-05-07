@@ -1,11 +1,10 @@
 package org.scify.moonwalker.app.ui.actors.episode;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Timer;
 import org.scify.engine.renderables.Renderable;
+import org.scify.engine.renderables.TextLabelRenderable;
 import org.scify.engine.renderables.effects.RotateEffect;
 import org.scify.moonwalker.app.ui.ThemeController;
 import org.scify.moonwalker.app.ui.actors.FadingTableActor;
@@ -202,11 +201,12 @@ public class CockpitActor extends FadingTableActor<CockpitRenderable> implements
 
     @Override
     public void update(Renderable renderable) {
-//        System.out.println("setting renderable: " + renderable.getRenderableLastUpdated() + " over: " + this.renderable.getRenderableLastUpdated());
-
         this.renderable = (CockpitRenderable) renderable;
-        this.timestamp = this.renderable.getRenderableLastUpdated();
-        currentLocationLabel.getBasicComponent().setText(this.renderable.getLocationLabel().getLabel());
+        TextLabelRenderable location = this.renderable.getLocationLabel();
+        if (location.needsUpdate()) {
+            currentLocationLabel.getBasicComponent().setText(location.getLabel());
+            location.wasUpdated();
+        }
         renderable.wasUpdated();
 
 

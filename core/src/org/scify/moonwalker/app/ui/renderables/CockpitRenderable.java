@@ -89,9 +89,7 @@ public class CockpitRenderable extends FadingTableRenderable {
 
         leftTablet = createImageRenderable(LEFT_TABLET_ID, LEFT_TABLET_IMG_PATH, false, true, 2);
         allRenderables.add(leftTablet);
-        locationLabel = createTextRotatableLabelRenderable(LOCATION_ID, "", true, true, 100);
-        locationLabel.setxPos(appInfo.convertX(245));
-        locationLabel.setyPos(appInfo.convertX(1080 - 160));
+        locationLabel = createTextRotatableLabelRenderable(LOCATION_ID, "", false, true, 3);
         allRenderables.add(locationLabel);
 
         rightTablet = createImageRenderable(RIGHT_TABLET_ID, RIGHT_TABLET_IMG_PATH, false, true, 2);
@@ -137,29 +135,30 @@ public class CockpitRenderable extends FadingTableRenderable {
         allRenderables.add(distanceLabel);
     }
 
+    public void setLocationValue(String location) {
+        locationLabel.setLabel(location);
+        locationLabel.renderableWasUpdated();
+        renderableWasUpdated();
+    }
+
     public void setMotorEfficiencyValue(String motorEfficiency) {
         motorEfficiencyLabel.setLabel(motorEfficiency);
-        //renderableWasUpdated();
+        renderableWasUpdated();
     }
 
     public void setRemainingEnergyValue(String energy) {
         energyLabel.setLabel(energy);
-        //renderableWasUpdated();
+        renderableWasUpdated();
     }
 
     public void setDestinationDistanceValue(int distance) {
         distanceLabel.setLabel(distance + "");
-        //renderableWasUpdated();
-    }
-
-    public void setLocationValue(String location) {
-        locationLabel.setLabel(location);
         renderableWasUpdated();
     }
 
     public void setDaysLeftValue(String daysLeft) {
         daysLeftLabel.setLabel(daysLeft);
-        //renderableWasUpdated();
+        renderableWasUpdated();
     }
 
 
