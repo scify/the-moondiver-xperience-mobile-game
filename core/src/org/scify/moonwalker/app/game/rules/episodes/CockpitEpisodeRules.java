@@ -23,9 +23,10 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
             renderable = new CockpitRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), COCKPIT_ID);
             setCockpitFieldValues();
             if (gameInfo.getContactRequestFlag()) {
-                //gameState.addGameEvent(new GameEvent("TOOGLE_CONTACT_BUTTON", new Date().getTime() + 500, false, this));
-                //renderable.toogleContactButton();
+                gameState.addGameEvent(new GameEvent("TOOGLE_CONTACT_BUTTON", new Date().getTime() + 500, false, this));
+                renderable.toogleContactButton();
             }
+            renderable.setOutsideBackground(renderable.FOREST_BG_IMG_PATH);
             gameState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
             gameState.addRenderable(renderable);
             super.episodeStartedEvents(gameState);
@@ -34,25 +35,25 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
 
     @Override
     protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
-        if (gameInfo.getContactRequestFlag()) {
-            if (userAction.getActionCode().equals(UserActionCode.CONTACT_SCREEN_EPISODE)) {
-                gsCurrent.addGameEvent(new GameEvent("CONTACT_SCREEN_EPISODE_STARTED", null, this));
+        switch (userAction.getActionCode()) {
+            case UserActionCode.CONTACT_SCREEN_EPISODE:
+                if (gameInfo.getContactRequestFlag()) {
+                    renderable.fadeoutOutsideBackground();
+                    gsCurrent.addGameEvent(new GameEvent("CONTACT_SCREEN_EPISODE_STARTED", null, this));
+                    episodeEndedEvents(gsCurrent);
+                }
+                break;
+            case UserActionCode.MAP_EPISODE:
+                gsCurrent.addGameEvent(new GameEvent("MAP_EPISODE_STARTED", null, this));
                 episodeEndedEvents(gsCurrent);
-            }
-        } else {
-            switch (userAction.getActionCode()) {
-                case UserActionCode.MAP_EPISODE:
-                    gsCurrent.addGameEvent(new GameEvent("MAP_EPISODE_STARTED", null, this));
-                    episodeEndedEvents(gsCurrent);
-                    break;
-                case UserActionCode.CHARGE_SPACESHIP_EPISODE:
-                    gsCurrent.addGameEvent(new GameEvent("SPACESHIP_CHARGER_EPISODE_STARTED", null, this));
-                    episodeEndedEvents(gsCurrent);
-                    break;
-                default:
-                    super.handleUserAction(gsCurrent, userAction);
-                    break;
-            }
+                break;
+            case UserActionCode.CHARGE_SPACESHIP_EPISODE:
+                gsCurrent.addGameEvent(new GameEvent("SPACESHIP_CHARGER_EPISODE_STARTED", null, this));
+                episodeEndedEvents(gsCurrent);
+                break;
+            default:
+                super.handleUserAction(gsCurrent, userAction);
+                break;
         }
     }
 

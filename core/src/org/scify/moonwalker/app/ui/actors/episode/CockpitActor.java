@@ -67,9 +67,12 @@ public class CockpitActor extends FadingTableActor<CockpitRenderable> implements
 
         //Central
         drawCentral(screenWidth, screenHeight);
+
         row();
+
+        //bottom
         drawBottom(screenWidth, screenHeight);
-        debugAll();
+        //debugAll();
     }
 
     protected void drawTopLeftPad() {

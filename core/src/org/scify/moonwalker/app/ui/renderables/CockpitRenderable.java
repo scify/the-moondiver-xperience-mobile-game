@@ -5,6 +5,11 @@ import org.scify.engine.renderables.ActionButtonRenderable;
 import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.TextLabelRenderable;
+import org.scify.engine.renderables.effects.DelayEffect;
+import org.scify.engine.renderables.effects.EffectSequence;
+import org.scify.engine.renderables.effects.FadeEffect;
+import org.scify.engine.renderables.effects.VisibilityEffect;
+import org.scify.moonwalker.app.game.Location;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,6 +32,8 @@ public class CockpitRenderable extends FadingTableRenderable {
     protected static final String SPACESHIP_INVENTORY_BUTTON_LIGHTED_IMG_PATH = "img/episode_cockpit/spaceship_lighted.png";
     protected static final String LEFT_TABLET_IMG_PATH = "img/episode_cockpit/left_tablet.png";
     protected static final String RIGHT_TABLET_IMG_PATH = "img/episode_cockpit/right_tablet.png";
+    //OUTSIDE BackGroundsGs
+    public static final String FOREST_BG_IMG_PATH = "img/episode_cockpit/outside_bgs/forest.png";
 
     //renderable ids
     protected static final String MOTOR_EFFICIENCY_ID = "motor_efficiency";
@@ -48,6 +55,7 @@ public class CockpitRenderable extends FadingTableRenderable {
     protected static final String CHARGE_BUTTON_LIGHTED_ID = "charge_button_lighted";
     protected static final String SPACESHIP_INVENTORY_BUTTON_DEFAULT_ID = "spaceship_button";
     protected static final String SPACESHIP_INVENTORY_BUTTON_LIGHTED_ID = "spaceship_button_lighted";
+    protected static final String OUTSIDE_BACKGROUND_ID = "outside_background";
 
     protected TextLabelRenderable motorEfficiencyLabel;
     protected TextLabelRenderable energyLabel;
@@ -57,6 +65,7 @@ public class CockpitRenderable extends FadingTableRenderable {
 
     protected ImageRenderable leftTablet;
     protected ImageRenderable rightTablet;
+    protected ImageRenderable outside_background;
 
     protected ActionButtonRenderable travelButton;
     protected ActionButtonRenderable travelLightedButton;
@@ -169,8 +178,10 @@ public class CockpitRenderable extends FadingTableRenderable {
     public void toogleContactButton() {
         if (contactButtonIsLighted) {
             contactButtonIsLighted = false;
+            contactLightedButton.setVisible(false);
         } else {
             contactButtonIsLighted = true;
+            contactLightedButton.setVisible(true);
         }
         //renderableWasUpdated();
     }
@@ -251,5 +262,22 @@ public class CockpitRenderable extends FadingTableRenderable {
 
     public ActionButtonRenderable getContactLightedButton() {
         return contactLightedButton;
+    }
+
+    public void setOutsideBackground (String imgPath) {
+        outside_background = createImageRenderable(OUTSIDE_BACKGROUND_ID, imgPath, true, false, 0);
+        outside_background.setHeight(appInfo.getScreenHeight());
+        outside_background.setWidth(appInfo.getScreenWidth());
+        EffectSequence fadeInEffects = new EffectSequence();
+        fadeInEffects.addEffect(new FadeEffect(1.0, 0, 0));
+        fadeInEffects.addEffect(new VisibilityEffect(true));
+        fadeInEffects.addEffect(new DelayEffect(200));
+        fadeInEffects.addEffect(new FadeEffect(0.0, 1.0, 2500));
+        outside_background.addEffect(fadeInEffects);
+        allRenderables.add(outside_background);
+    }
+
+    public void fadeoutOutsideBackground () {
+        outside_background.addEffect(new FadeEffect(1.0, 0, 1000));
     }
 }
