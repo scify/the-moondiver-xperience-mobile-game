@@ -7,7 +7,7 @@ import org.scify.engine.renderables.effects.EffectTarget;
 import java.util.HashSet;
 import java.util.Set;
 
-public class StackWithEffect extends Stack implements EffectTarget {
+public class StackWithEffect<T> extends Stack implements EffectTarget {
     protected Set<Effect> effects = new HashSet<>();
 
     @Override
@@ -31,6 +31,10 @@ public class StackWithEffect extends Stack implements EffectTarget {
     public EffectTarget removeEffect(Effect eToRemove) {
         effects.remove(eToRemove);
         return this;
+    }
+
+    public T getBasicComponent() {
+        return (T)getChildren().get(0);
     }
 
 }

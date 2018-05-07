@@ -21,7 +21,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
         if (!isEpisodeStarted(gameState)) {
             locationController = new LocationController();
             renderable = new CockpitRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), COCKPIT_ID);
-            //setCockpitFieldValues();
+            setCockpitFieldValues();
             if (gameInfo.getContactRequestFlag()) {
                 //gameState.addGameEvent(new GameEvent("TOOGLE_CONTACT_BUTTON", new Date().getTime() + 500, false, this));
                 //renderable.toogleContactButton();
@@ -75,7 +75,6 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
             renderable.setLocationValue(gameInfo.getCurrentLocationName());
         renderable.setRemainingEnergyValue(String.valueOf(gameInfo.getRemainingEnergy()));
         renderable.setMotorEfficiencyValue(String.valueOf(gameInfo.getMotorEfficiency()));
-        renderable.setLocationValue(String.valueOf(gameInfo.getCurrentLocation().getName()));
         renderable.setDaysLeftValue("99");
         renderable.setDestinationDistanceValue(1000);
     }

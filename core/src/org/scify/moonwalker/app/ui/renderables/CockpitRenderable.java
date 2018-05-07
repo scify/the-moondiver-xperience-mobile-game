@@ -89,15 +89,17 @@ public class CockpitRenderable extends FadingTableRenderable {
 
         leftTablet = createImageRenderable(LEFT_TABLET_ID, LEFT_TABLET_IMG_PATH, false, true, 2);
         allRenderables.add(leftTablet);
-        /*locationLabel = createTextLabelRenderable(LOCATION_ID, "", false, true, 3);
-        allRenderables.add(locationLabel);*/
+        locationLabel = createTextRotatableLabelRenderable(LOCATION_ID, "", true, true, 100);
+        locationLabel.setxPos(appInfo.convertX(245));
+        locationLabel.setyPos(appInfo.convertX(1080 - 160));
+        allRenderables.add(locationLabel);
 
-        /*rightTablet = createImageRenderable(RIGHT_TABLET_ID, RIGHT_TABLET_IMG_PATH, false, true, 2);
-        allRenderables.add(rightTablet);*/
-        /*daysLeftLabel = createTextLabelRenderable(DAYS_LEFT_ID, "", false, true, 3);
-        allRenderables.add(daysLeftLabel);*/
+        rightTablet = createImageRenderable(RIGHT_TABLET_ID, RIGHT_TABLET_IMG_PATH, false, true, 2);
+        allRenderables.add(rightTablet);
+        daysLeftLabel = createTextLabelRenderable(DAYS_LEFT_ID, "", false, true, 3);
+        allRenderables.add(daysLeftLabel);
 
-        /*travelButton = createImageButton(TRAVEL_BUTTON_DEFAULT_ID, TRAVEL_BUTTON_DEFAULT_IMG_PATH, UserActionCode.TRAVEL, true, 2);
+        travelButton = createImageButton(TRAVEL_BUTTON_DEFAULT_ID, TRAVEL_BUTTON_DEFAULT_IMG_PATH, UserActionCode.TRAVEL, true, 2);
         allRenderables.add(travelButton);
         travelLightedButton = createImageButton(TRAVEL_BUTTON_LIGHTED_ID, TRAVEL_BUTTON_LIGHTED_IMG_PATH, UserActionCode.TRAVEL, false, 2);
         allRenderables.add(travelLightedButton);
@@ -132,7 +134,7 @@ public class CockpitRenderable extends FadingTableRenderable {
         energyLabel = createTextLabelRenderable(REMAINING_ENERGY_ID, "", false, true, 2);
         allRenderables.add(energyLabel);
         distanceLabel = createTextLabelRenderable(DESTINATION_DISTANCE_ID, "", false, true, 2);
-        allRenderables.add(distanceLabel);*/
+        allRenderables.add(distanceLabel);
     }
 
     public void setMotorEfficiencyValue(String motorEfficiency) {
@@ -152,7 +154,7 @@ public class CockpitRenderable extends FadingTableRenderable {
 
     public void setLocationValue(String location) {
         locationLabel.setLabel(location);
-        //renderableWasUpdated();
+        renderableWasUpdated();
     }
 
     public void setDaysLeftValue(String daysLeft) {

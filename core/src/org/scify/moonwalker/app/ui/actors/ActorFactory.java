@@ -195,7 +195,6 @@ public class ActorFactory extends ComponentFactory {
     private Actor createCockpitActor(final CockpitRenderable renderable) {
         CockpitActor actor = new CockpitActor(skin, renderable);
         actor.setZIndex(0);
-        //renderable.debugMode = true;
         return actor;
     }
 

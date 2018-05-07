@@ -341,6 +341,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             } else {
                 batch = stage.getBatch();
                 synchronized (batch) {
+
                     batch.begin();
 
                     painter.updateStageBG(delta, lNewTime, lLastUpdate);
@@ -351,6 +352,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                     cameraController.update();
                     stage.act(delta);
                     stage.draw();
+
                 }
                 cameraController.render(world);
                 cameraController.setProjectionMatrix(batch);

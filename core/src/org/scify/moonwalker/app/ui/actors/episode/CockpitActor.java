@@ -6,9 +6,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Timer;
 import org.scify.engine.renderables.Renderable;
+import org.scify.engine.renderables.effects.RotateEffect;
 import org.scify.moonwalker.app.ui.ThemeController;
 import org.scify.moonwalker.app.ui.actors.FadingTableActor;
 import org.scify.moonwalker.app.ui.actors.ImageWithEffect;
+import org.scify.moonwalker.app.ui.actors.StackWithEffect;
 import org.scify.moonwalker.app.ui.actors.Updateable;
 import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 
@@ -36,7 +38,7 @@ public class CockpitActor extends FadingTableActor<CockpitRenderable> implements
     protected Label remainingEnergyLabel;
     protected Label remainingDestinationLabel;
     protected Label daysLeftLabel;
-    protected Label currentLocationLabel;
+    protected StackWithEffect<Label> currentLocationLabel;
 
     public CockpitActor(Skin skin, CockpitRenderable renderable) {
         super(skin, renderable);
@@ -56,9 +58,9 @@ public class CockpitActor extends FadingTableActor<CockpitRenderable> implements
         //Top Left Pad Location
         drawTopLeftPad(screenWidth, screenHeight);
         //Mid empty cell
-        //add().width(0.55f * screenWidth).height(0.57f * screenHeight);
+        add().width(0.55f * screenWidth).height(0.57f * screenHeight);
         //Top Right Pad DaysToGo
-        //drawTopRightPad(screenWidth, screenHeight);
+        drawTopRightPad(screenWidth, screenHeight);
 
         //row();
 
@@ -66,27 +68,26 @@ public class CockpitActor extends FadingTableActor<CockpitRenderable> implements
         //drawCentral(screenWidth, screenHeight);
         //row();
         //drawBottom(screenWidth, screenHeight);
+        debugAll();
     }
 
     protected void drawTopLeftPad(float screenWidth, float screenHeight) {
-        Stack stack = new Stack();
-        //stack.setTransform(true);
         Image image = (ImageWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getLeftTablet());
         image.setAlign(Align.center);
-        stack.addActor(image);
-        /*currentLocationLabel = (Label) bookKeeper.getUIRepresentationOfRenderable(renderable.getLocationLabel());
+        renderable.getLeftTablet().addEffect(new RotateEffect(0.0, 4.0, 0));
+
+
+        currentLocationLabel = (StackWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getLocationLabel());
         Label.LabelStyle ls = new Label.LabelStyle();
         ThemeController themeController = new ThemeController(20, "controls");
         ls.font = themeController.getFont();
         ls.fontColor = Color.valueOf("2f312c");
-        currentLocationLabel.setStyle(ls);*/
-        /*Container container = new Container(currentLocationLabel);
-        container.center();
-        container.padBottom(screenHeight * 0.1f);
-        container.padLeft(screenWidth * 0.05f);*/
-        //stack.add(container);
-        //stack.rotateBy(4);
-        add(stack).top().left().maxWidth(convertWidth(image.getWidth())).maxHeight(convertHeight(image.getHeight()));
+        Label label = currentLocationLabel.getBasicComponent();
+        label.setStyle(ls);
+        label.setAlignment(Align.center);
+        renderable.getLocationLabel().addEffect(new RotateEffect(0.0, 4.0, 0));
+
+        add(image).top().left().maxWidth(convertWidth(image.getWidth())).maxHeight(convertHeight(image.getHeight()));
     }
 
     protected void drawTopRightPad(float screenWidth, float screenHeight) {
@@ -201,24 +202,26 @@ public class CockpitActor extends FadingTableActor<CockpitRenderable> implements
 
     @Override
     public void update(Renderable renderable) {
-        if (this.renderable.getRenderableLastUpdated() > timestamp) {
-            System.out.println("setting renderable: " + renderable.getRenderableLastUpdated() + " over: " + this.renderable.getRenderableLastUpdated());
-            this.renderable = (CockpitRenderable) renderable;
-            this.timestamp = this.renderable.getRenderableLastUpdated();
+//        System.out.println("setting renderable: " + renderable.getRenderableLastUpdated() + " over: " + this.renderable.getRenderableLastUpdated());
 
-            /*setMotorEfficiency(this.renderable.getMotorEfficiencyValue());
-            setRemainingEnergy(this.renderable.getRemainingEnergyValue());
-            setRemainingDestination(this.renderable.getDestinationDistanceValue() + "");
-            setLocation(this.renderable.getPositionValue());
-            setDaysLeft(this.renderable.getDaysLeftValue());*/
+        this.renderable = (CockpitRenderable) renderable;
+        this.timestamp = this.renderable.getRenderableLastUpdated();
+        currentLocationLabel.getBasicComponent().setText(this.renderable.getLocationLabel().getLabel());
+        renderable.wasUpdated();
 
-            /*if (this.renderable.isContactButtonLighted()) {
-                contactLightedButton.setVisible(true);
-                contactButton.setVisible(false);
-            }else {
-                contactLightedButton.setVisible(false);
-                contactButton.setVisible(true);
-            }*/
-        }
+
+        /*setMotorEfficiency(this.renderable.getMotorEfficiencyValue());
+        setRemainingEnergy(this.renderable.getRemainingEnergyValue());
+        setRemainingDestination(this.renderable.getDestinationDistanceValue() + "");
+        setLocation(this.renderable.getPositionValue());
+        setDaysLeft(this.renderable.getDaysLeftValue());*/
+
+        /*if (this.renderable.isContactButtonLighted()) {
+            contactLightedButton.setVisible(true);
+            contactButton.setVisible(false);
+        }else {
+            contactLightedButton.setVisible(false);
+            contactButton.setVisible(true);
+        }*/
     }
 }

@@ -41,16 +41,11 @@ public class ZIndexedStage extends Stage {
         super.addActor(actor);
     }
 
-/*    public void enableTableActorDebug(Actor actor, Stage stage) {
-
-        actor.setStage(stage);
-        //((TableActor)actor).debugAll();
-    }*/
-
     protected void replaceRootObject() {
         if (orderedRoot == null) {
             orderedRoot = new ZIndexedGroup();
             setRoot(orderedRoot);
+            orderedRoot.setStage(this);
         }
     }
 

@@ -16,7 +16,6 @@ public class TableRenderable extends Renderable {
     public TableRenderable(float xPos, float yPos, float width, float height, String type, String id, String bgImgPath) {
         super(xPos, yPos, width, height, type, id);
         this.bgImgPath = bgImgPath;
-
         if (bgImgPath != null) {
             tableBGRenderable = new ImageRenderable("bg", bgImgPath);
         }

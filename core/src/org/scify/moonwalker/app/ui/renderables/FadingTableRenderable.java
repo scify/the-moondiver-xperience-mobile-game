@@ -30,12 +30,13 @@ public class FadingTableRenderable extends TableRenderable {
 
     /**
      * Create a fading renderable that starts in invisible state.
-     * @param xPos The x position.
-     * @param yPos The y position.
-     * @param width The width of the renderable.
-     * @param height The height of the renderable.
-     * @param type The type of the renderable.
-     * @param id The id of the renderable.
+     *
+     * @param xPos        The x position.
+     * @param yPos        The y position.
+     * @param width       The width of the renderable.
+     * @param height      The height of the renderable.
+     * @param type        The type of the renderable.
+     * @param id          The id of the renderable.
      * @param bgImagePath The background image path.
      */
     public FadingTableRenderable(float xPos, float yPos, float width, float height, String type, String id, String bgImagePath) {
@@ -50,7 +51,7 @@ public class FadingTableRenderable extends TableRenderable {
         setVisible(bStartVisibility);
     }
 
-    public void fadeIn () {
+    public void fadeIn() {
         EffectSequence fadeInEffects = new EffectSequence();
         // Add before effects
         for (final Runnable rCur : beforeFadeIn) {
@@ -68,7 +69,6 @@ public class FadingTableRenderable extends TableRenderable {
     }
 
 
-
     public void setBeforeFadeIn(Runnable beforeFadeIn) {
         this.beforeFadeIn.add(beforeFadeIn);
     }
@@ -77,7 +77,7 @@ public class FadingTableRenderable extends TableRenderable {
         this.afterFadeIn.add(afterFadeIn);
     }
 
-    public void fadeOut () {
+    public void fadeOut() {
         EffectSequence fadeOutEffects = new EffectSequence();
         // Add before effects
         for (final Runnable rCur : beforeFadeOut) {
@@ -97,29 +97,36 @@ public class FadingTableRenderable extends TableRenderable {
 
     protected ActionButtonRenderable createImageButton(String id, String img, String code, boolean visibility, int zIndex) {
         ActionButtonRenderable ret = new ActionButtonRenderable(Renderable.ACTOR_IMAGE_BUTTON, id);
-        ret.setZIndex(zIndex);
-        ret.setVisible(visibility);
-        ret.setPositionDrawable(false);
         ret.setImgPath(img);
         ret.setUserAction(new UserAction(code));
+        setRenderableAttributes(ret, positionDrawable, visibility, zIndex);
         return ret;
     }
 
     protected ImageRenderable createImageRenderable(String id, String img, boolean positionDrawable, boolean visibility, int zIndex) {
         ImageRenderable ret = new ImageRenderable(id, img);
-        ret.setZIndex(zIndex);
-        ret.setVisible(visibility);
-        ret.setPositionDrawable(positionDrawable);
+        setRenderableAttributes(ret, positionDrawable, visibility, zIndex);
         return ret;
     }
 
     protected TextLabelRenderable createTextLabelRenderable(String id, String text, boolean positionDrawable, boolean visibility, int zIndex) {
         TextLabelRenderable ret = new TextLabelRenderable(Renderable.ACTOR_LABEL, id);
-        ret.setZIndex(zIndex);
         ret.setLabel(text);
-        ret.setVisible(visibility);
-        ret.setPositionDrawable(positionDrawable);
+        setRenderableAttributes(ret, positionDrawable, visibility, zIndex);
         return ret;
+    }
+
+    protected TextLabelRenderable createTextRotatableLabelRenderable(String id, String text, boolean positionDrawable, boolean visibility, int zIndex) {
+        TextLabelRenderable ret = new TextLabelRenderable(Renderable.ACTOR_ROTATABLE_LABEL, id);
+        ret.setLabel(text);
+        setRenderableAttributes(ret, positionDrawable, visibility, zIndex);
+        return ret;
+    }
+
+    protected void setRenderableAttributes(Renderable renderable, boolean positionDrawable, boolean visibility, int zIndex) {
+        renderable.setPositionDrawable(positionDrawable);
+        renderable.setVisible(visibility);
+        renderable.setZIndex(zIndex);
     }
 
 }
