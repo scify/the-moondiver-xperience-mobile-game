@@ -200,9 +200,7 @@ public class ActorFactory extends ComponentFactory {
 
     private Actor createContactScreenActor(final ContactScreenRenderable renderable) {
         ContactScreenActor actor = new ContactScreenActor(skin, renderable);
-
-        actor.setPosition(renderable.getxPos(), renderable.getyPos());
-        actor.init();
+        actor.setZIndex(0);
         return actor;
     }
 

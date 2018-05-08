@@ -12,7 +12,7 @@ public class ForestRenderable extends FadingTableRenderable {
     protected boolean chatEnabled;
 
     public ForestRenderable(float xPos, float yPos, float width, float height, String id) {
-        super(xPos, yPos, width, height, "forest", id, BG_IMG_PATH);
+        super(xPos, yPos, width, height, ACTOR_EPISODE_FOREST, id, BG_IMG_PATH);
         chatEnabled = false;
     }
 

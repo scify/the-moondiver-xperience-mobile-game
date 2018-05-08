@@ -11,15 +11,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable> {
-
-    public static final String AUDIO_START_UI = "AUDIO_START_UI";
-    public static final String AUDIO_START_LOOP_UI = "AUDIO_START_LOOP_UI";
-    public static final String AUDIO_LOAD_UI = "AUDIO_LOAD_UI";
-
-    public static final String AUDIO_STOP_UI = "AUDIO_STOP_UI";
-    public static final String AUDIO_DISPOSE_UI = "AUDIO_DISPOSE_UI";
-    public static final String AUDIO_TOGGLE_UI = "AUDIO_TOGGLE_UI";
-
     public static final String COOLDOWN = "COOLDOWN";
     public static final String AVATAR_SELECTED = "AVATAR_SELECTED";
     public static final String APP_QUIT = "APP_QUIT";
@@ -82,11 +73,13 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
             switch (userAction.getActionCode()) {
                 case NEW_GAME:
                     if (mainMenuButtonsEnabled) {
+                        gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
                         initPlayerSelection(gameState);
                     }
                     break;
                 case UserActionCode.TOGGLE_AUDIO:
                     if (mainMenuButtonsEnabled) {
+                        gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
                         gameState.addGameEvent(new GameEvent(AUDIO_TOGGLE_UI));
                     }
                     break;
@@ -144,7 +137,6 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
 
     protected void initPlayerSelection(GameState gameState) {
         renderable.disableInput();
-        gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
         prepareNextEpisodeAudio(gameState);
         renderable.initiatePlayerSelection();
         mainMenuButtonsEnabled = false;

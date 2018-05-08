@@ -1,0 +1,22 @@
+[
+  {"id": "1", "order":"1", "speakerId":"aunt", "text":"[#ffeeaaff]Καλώς τον! Ήρθε η ώρα να σε ενημερώσω για την αποστολή.", "prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone"},
+  {"id": "2", "order":"2", "speakerId":"aunt", "text":"[#ffeeaaff]Αυτό το πρωτότυπο σκάφος αξιοποιεί μία καινοτόμο τεχνολογία!", "prerequisites":""},
+  {"id": "3", "order":"3", "speakerId":"aunt", "text":"[#ffeeaaff]H τεχνολογία αυτή θα αλλάξει τον τρόπο που αξιοποιούμε την ενέργεια από τον Ήλιο.", "prerequisites":""},
+  {"id": "4", "order":"4", "speakerId":"aunt", "text":"[#ffeeaaff]Για πρώτη φορά, μπορούμε να έχουμε ηλιακή ενέργεια ακόμα και τη νύχτα.", "prerequisites":""},
+  {"id": "5", "order":"5", "speakerId":"player", "text":"Πώς το κάνατε αυτό;", "prerequisites":""},
+  {"id": "6", "order":"5", "speakerId":"player", "text":"Ναι, καλά τώρα...", "prerequisites":""},
+  {"id": "7", "order":"6", "speakerId":"aunt", "text":"[#ffeeaaff]Χρησιμοποιούμε την αντανάκλαση του φωτός του από τη Σελήνη.", "prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone"},
+  {"id": "8", "order":"7", "speakerId":"aunt", "text":"[#ffeeaaff]Η τεχνολογία έχει προχωρήσει πολύ και δοκιμαστεί εξαντλητικά.", "prerequisites":""},
+  {"id": "9", "order":"8", "speakerId":"aunt", "text":"[#ffeeaaff]Ήρθε η ώρα να την κάνουμε ευρέως γνωστή. Έτσι θα βρούμε χρηματοδότηση ώστε να την κάνουμε φθηνή για όλους.", "prerequisites":""},
+  {"id": "10", "order":"9", "speakerId":"player", "text":"Και πως θα γίνει αυτό; ", "prerequisites":""},
+  {"id": "11", "order":"10", "speakerId":"aunt", "text":"[#ffeeaaff]Θα στείλουμε ένα σκάφος στη Σελήνη.\nΜόνη του πηγή ενέργειας θα είναι η ηλιακή.", "prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone"},
+  {"id": "12", "order":"11", "speakerId":"aunt", "text":"[#ffeeaaff]Που θα έχει συλλεγεί όμως τη νύχτα, από τη Σελήνη!", "prerequisites":""},
+  {"id": "13", "order":"12", "speakerId":"player", "text":"Ηλιακή ενέργεια τη νύχτα; Λέγε!", "prerequisites":""},
+  {"id": "14", "order":"12", "speakerId":"player", "text":"Σα να λέμε Σεληνιακη ενέργεια! Συνέχισε...", "prerequisites":""},
+  {"id": "15", "order":"13", "speakerId":"aunt", "text":"[#ffeeaaff]Πρέπει να συλλέξεις τα απαραίτητα εξαρτήματα από διάφορα σημεία της Γης.", "prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone"},
+  {"id": "16", "order":"14", "speakerId":"aunt", "text":"[#ffeeaaff]Και τότε, μπορείς να συμμετάσχεις στο ταξίδι στη Σελήνη.", "prerequisites":""},
+  {"id": "17", "order":"15", "speakerId":"aunt", "text":"[#ffeeaaff]Αλλά πρέπει πρώτα να πείσεις τη διεθνή επιστημονική ομάδα ότι το αξίζεις.", "prerequisites":""},
+  {"id": "18", "order":"16", "speakerId":"aunt", "text":"Χε! Φυσικά και το αξίζω! Πώς ξεκινάω;", "prerequisites":""},
+  {"id": "19", "order":"16", "speakerId":"aunt", "text":"Αμφιβάλλεις; Ξεκινάμε!", "prerequisites":""},
+  {"id": "20", "order":"17", "speakerId":"aunt", "text":"[#ffeeaaff]Φόρτισε το σκάφος για να πας στον επόμενο προορισμό σου. Άνοιξε το Χάρτη.", "prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone", "onExitCurrentOrderTrigger":"end"}
+]

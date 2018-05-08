@@ -9,6 +9,14 @@ public class BaseEpisodeRules extends SinglePlayerRules {
     public static final String EPISODE_STARTED = "EPISODE_STARTED";
     public static final String CALCULATOR_STARTED = "CALCULATOR_STARTED";
 
+    //audio related
+    public static final String AUDIO_START_UI = "AUDIO_START_UI";
+    public static final String AUDIO_START_LOOP_UI = "AUDIO_START_LOOP_UI";
+    public static final String AUDIO_LOAD_UI = "AUDIO_LOAD_UI";
+    public static final String AUDIO_STOP_UI = "AUDIO_STOP_UI";
+    public static final String AUDIO_DISPOSE_UI = "AUDIO_DISPOSE_UI";
+    public static final String AUDIO_TOGGLE_UI = "AUDIO_TOGGLE_UI";
+
     protected boolean episodeStarted = false;
 
     public BaseEpisodeRules () {

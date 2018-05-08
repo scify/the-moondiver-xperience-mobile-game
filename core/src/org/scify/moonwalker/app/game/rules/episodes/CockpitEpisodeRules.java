@@ -3,6 +3,7 @@ package org.scify.moonwalker.app.game.rules.episodes;
 import org.scify.engine.*;
 import org.scify.moonwalker.app.game.LocationController;
 import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -10,21 +11,33 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
 
     public static final String COCKPIT_ID = "cockpit";
     protected LocationController locationController;
+    protected boolean buttonsEnabled;
+    protected boolean contactClickable;
 
     public CockpitEpisodeRules() {
         super();
+        buttonsEnabled = false;
+        contactClickable = false;
     }
 
     @Override
-    public void episodeStartedEvents(GameState gameState) {
+    public void episodeStartedEvents(final GameState gameState) {
         if (!isEpisodeStarted(gameState)) {
             locationController = new LocationController();
             renderable = new CockpitRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), COCKPIT_ID);
             setCockpitFieldValues();
-            if (gameInfo.getContactRequestFlag()) {
-                gameState.addGameEvent(new GameEvent("TOOGLE_CONTACT_BUTTON", new Date().getTime() + 500, false, this));
-                renderable.toogleButtonLight(renderable.getContactLightedButton());
-            }
+            renderable.addAfterFadeIn(new Runnable() {
+                @Override
+                public void run() {
+                    if (gameInfo.getContactRequestFlag()) {
+                        gameState.addGameEvent(new GameEvent("TOOGLE_CONTACT_BUTTON", new Date().getTime() + 500, false, this));
+                        renderable.toogleButtonLight(renderable.getContactLightedButton());
+                        contactClickable = true;
+                    }else {
+                        buttonsEnabled = true;
+                    }
+                }
+            });
             setOutsideBackground();
             gameState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
             gameState.addRenderable(renderable);
@@ -41,25 +54,32 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
     }
 
     @Override
-    protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
+    protected void handleUserAction(GameState gameState, UserAction userAction) {
         switch (userAction.getActionCode()) {
             case UserActionCode.CONTACT_SCREEN_EPISODE:
-                if (gameInfo.getContactRequestFlag()) {
+                if (contactClickable || buttonsEnabled) {
+                    gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
+                    contactClickable = false;
+                    renderable.turnOffLightOffAllButtons();
                     renderable.fadeoutOutsideBackground();
-                    gsCurrent.addGameEvent(new GameEvent("CONTACT_SCREEN_EPISODE_STARTED", null, this));
-                    episodeEndedEvents(gsCurrent);
+                    gameState.addGameEvent(new GameEvent("CONTACT_SCREEN_EPISODE_STARTED", null, this));
+                    episodeEndedEvents(gameState);
                 }
                 break;
             case UserActionCode.MAP_EPISODE:
-                gsCurrent.addGameEvent(new GameEvent("MAP_EPISODE_STARTED", null, this));
-                episodeEndedEvents(gsCurrent);
+                if (buttonsEnabled) {
+                    gameState.addGameEvent(new GameEvent("MAP_EPISODE_STARTED", null, this));
+                    episodeEndedEvents(gameState);
+                }
                 break;
             case UserActionCode.CHARGE_SPACESHIP_EPISODE:
-                gsCurrent.addGameEvent(new GameEvent("SPACESHIP_CHARGER_EPISODE_STARTED", null, this));
-                episodeEndedEvents(gsCurrent);
+                if (buttonsEnabled) {
+                    gameState.addGameEvent(new GameEvent("SPACESHIP_CHARGER_EPISODE_STARTED", null, this));
+                    episodeEndedEvents(gameState);
+                }
                 break;
             default:
-                super.handleUserAction(gsCurrent, userAction);
+                super.handleUserAction(gameState, userAction);
                 break;
         }
     }
@@ -94,8 +114,10 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
         GameEvent contactToggleEvent = gameState.getGameEventsWithType("TOOGLE_CONTACT_BUTTON");
         if (contactToggleEvent != null && timestamp > contactToggleEvent.delay) {
             gameState.removeGameEventsWithType("TOOGLE_CONTACT_BUTTON");
-            renderable.toogleButtonLight(renderable.getContactLightedButton());
-            gameState.addGameEvent(new GameEvent("TOOGLE_CONTACT_BUTTON", new Date().getTime() + 500, false, this));
+            if (contactClickable) {
+                renderable.toogleButtonLight(renderable.getContactLightedButton());
+                gameState.addGameEvent(new GameEvent("TOOGLE_CONTACT_BUTTON", new Date().getTime() + 500, false, this));
+            }
         }
         return super.getNextState(gameState, userAction);
     }

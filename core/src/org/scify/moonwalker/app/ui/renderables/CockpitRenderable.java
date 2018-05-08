@@ -58,6 +58,9 @@ public class CockpitRenderable extends FadingTableRenderable {
     protected static final String SPACESHIP_INVENTORY_BUTTON_LIGHTED_ID = "spaceship_button_lighted";
     protected static final String OUTSIDE_BACKGROUND_ID = "outside_background";
 
+    //audio
+    public static final String CLICK_AUDIO_PATH = "audio/button1.mp3";
+
     protected TextLabelRenderable motorEfficiencyLabel;
     protected TextLabelRenderable energyLabel;
     protected TextLabelRenderable distanceLabel;
@@ -180,6 +183,15 @@ public class CockpitRenderable extends FadingTableRenderable {
         } else {
             buttonRenderable.setVisible(true);
         }
+    }
+
+    public void turnOffLightOffAllButtons () {
+        contactLightedButton.setVisible(false);
+        mapLightedButton.setVisible(false);
+        spaceshipInventoryLightedButton.setVisible(false);
+        chargeLightedButton.setVisible(false);
+        launchLightedButton.setVisible(false);
+        travelLightedButton.setVisible(false);
     }
 
     public TextLabelRenderable getMotorEfficiencyLabel() {
