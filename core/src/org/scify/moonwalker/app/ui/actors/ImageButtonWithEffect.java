@@ -3,13 +3,14 @@ package org.scify.moonwalker.app.ui.actors;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.effects.Effect;
 import org.scify.engine.renderables.effects.EffectTarget;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class ImageButtonWithEffect extends ImageButton implements EffectTarget {
+public class ImageButtonWithEffect extends ImageButton implements EffectTarget, Updateable {
     public ImageButtonWithEffect(Skin skin) {
         super(skin);
     }
@@ -59,4 +60,8 @@ public class ImageButtonWithEffect extends ImageButton implements EffectTarget {
         return this;
     }
 
+    @Override
+    public void update(Renderable renderable) {
+        renderable.wasUpdated();
+    }
 }

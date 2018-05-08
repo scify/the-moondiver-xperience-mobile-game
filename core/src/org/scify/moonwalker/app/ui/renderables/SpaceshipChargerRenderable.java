@@ -52,17 +52,17 @@ public class SpaceshipChargerRenderable extends FadingTableRenderable {
 
     public void setCurrentMoonPhase(MoonPhase currentMoonPhase) {
         this.currentMoonPhase = currentMoonPhase;
-        renderableWasUpdated();
+        markAsNeedsUpdate();
     }
 
     public void setNextMoonPhase(MoonPhase nextMoonPhase) {
         this.nextMoonPhase = nextMoonPhase;
-        renderableWasUpdated();
+        markAsNeedsUpdate();
     }
 
     public void setPostNextMoonPhase(MoonPhase postNextMoonPhase) {
         this.postNextMoonPhase = postNextMoonPhase;
-        renderableWasUpdated();
+        markAsNeedsUpdate();
     }
 
     public void setMotorEfficiency(int motorEfficiency) {
@@ -71,17 +71,17 @@ public class SpaceshipChargerRenderable extends FadingTableRenderable {
 
     public void addEnergy(int energy) {
         this.remainingEnergy += energy;
-        renderableWasUpdated();
+        markAsNeedsUpdate();
     }
 
     public void setRemainingEnergy(int energy) {
         this.remainingEnergy = energy;
-        renderableWasUpdated();
+        markAsNeedsUpdate();
     }
 
     public void setDestinationDistance(int destinationDistance) {
         this.destinationDistance = destinationDistance;
-        renderableWasUpdated();
+        markAsNeedsUpdate();
     }
 
     public int getCurrentMoonPhaseUnits() {
@@ -126,6 +126,6 @@ public class SpaceshipChargerRenderable extends FadingTableRenderable {
 
     public void setEscapeButton(ActionButtonRenderable escapeButton) {
         this.escapeButton = escapeButton;
-        renderableWasUpdated();
+        markAsNeedsUpdate();
     }
 }

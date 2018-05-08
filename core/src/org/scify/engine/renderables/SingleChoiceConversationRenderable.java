@@ -4,14 +4,18 @@ import org.scify.engine.UserAction;
 import org.scify.engine.UserActionCode;
 import org.scify.engine.conversation.ConversationLine;
 import org.scify.moonwalker.app.ui.renderables.FadingTableRenderable;
-
 import java.util.HashSet;
 import java.util.Set;
 
 public class SingleChoiceConversationRenderable extends FadingTableRenderable {
 
-    public final static String BG_IMG_PATH = "img/conversations/bg.png";
-    public final static String AVATAR_BG_IMG_PATH = "img/avatars/bg.png";
+    public static final String BG_IMG_PATH = "img/conversations/bg.png";
+    public static final String AVATAR_BG_IMG_PATH = "img/avatars/bg.png";
+
+    public static final String SINGLE_CHOICE_BUTTON_ID = "single_choice_button";
+    public static final String AVATAR_BG_ID = "avatar_bg";
+    public static final String AVATAR_IMAGE_ID = "avatar_image";
+    public static final String CONVERSATION_TEXT_ID = "conversation_text_label";
 
     protected ConversationLine conversationLine;
     protected TextLabelRenderable conversationText;
@@ -19,6 +23,7 @@ public class SingleChoiceConversationRenderable extends FadingTableRenderable {
     protected ImageRenderable avatar;
     protected ActionButtonRenderable conversationButton;
     protected boolean buttonActive;
+    protected int conversationId;
 
     protected Set<Renderable> allRenderables;
 
@@ -26,23 +31,18 @@ public class SingleChoiceConversationRenderable extends FadingTableRenderable {
         return allRenderables;
     }
 
-    public SingleChoiceConversationRenderable(String id) {
-        super(0,0,0,0,CONVERSATION_SINGLE_CHOICE, CONVERSATION_SINGLE_CHOICE+id, BG_IMG_PATH);
+    public SingleChoiceConversationRenderable(int id) {
+        super(0, 0, 0, 0, CONVERSATION_SINGLE_CHOICE, CONVERSATION_SINGLE_CHOICE + id, BG_IMG_PATH);
+        conversationId = id;
         float screenWidth = appInfo.getScreenWidth();
         float screenHeight = appInfo.getScreenHeight();
         this.xPos = 0.02f * screenWidth;
-        this.yPos = 0.03f *  screenHeight;
+        this.yPos = 0.03f * screenHeight;
         width = 0.96f * screenWidth;
         height = 0.3f * screenHeight;
-        conversationButton = new ActionButtonRenderable(Renderable.ACTOR_TEXT_BUTTON, "button_next");
-        conversationButton.setTitle("Επόμενο");
-        conversationButton.setPositionDrawable(false);
-        conversationButton.setZIndex(102);
+        conversationButton = createTextButton(SINGLE_CHOICE_BUTTON_ID + id, "Επόμενο", new UserAction(UserActionCode.SINGLE_CHOICE_CONVERSATION_LINE, id), false, true, 102);
         buttonActive = true;
-        tableBGRenderable = new ImageRenderable("chat_bg", BG_IMG_PATH);
-        avatar_bg = new ImageRenderable("avata_bg", AVATAR_BG_IMG_PATH);
-        avatar_bg.setPositionDrawable(false);
-        avatar_bg.setZIndex(102);
+        avatar_bg = createImageRenderable(AVATAR_BG_ID + id, AVATAR_BG_IMG_PATH, false, true, 102);
         initSubRenderables();
     }
 
@@ -52,10 +52,8 @@ public class SingleChoiceConversationRenderable extends FadingTableRenderable {
         allRenderables.add(avatar_bg);
     }
 
-    public void setAvatarImg (String imgPath) {
-        avatar = new ImageRenderable("avatar_img", imgPath);
-        avatar.setZIndex(103);
-        avatar.setPositionDrawable(false);
+    public void setAvatarImg(String imgPath) {
+        avatar = createImageRenderable(AVATAR_IMAGE_ID + conversationId, imgPath,false, true, 103);
         allRenderables.add(avatar);
     }
 
@@ -66,11 +64,7 @@ public class SingleChoiceConversationRenderable extends FadingTableRenderable {
         if (buttonText != null) {
             conversationButton.setTitle(buttonText);
         }
-        conversationButton.setUserAction(new UserAction(UserActionCode.SINGLE_CHOICE_CONVERSATION_LINE, conversationLine.getId()));
-        conversationText = new TextLabelRenderable(Renderable.ACTOR_LABEL, "conversation_text_label");
-        conversationText.setZIndex(102);
-        conversationText.setPositionDrawable(false);
-        conversationText.setLabel(conversationLine.getText());
+        conversationText = createTextLabelRenderable(CONVERSATION_TEXT_ID + conversationId, conversationLine.getText(),false, true, 102);
         allRenderables.add(conversationText);
     }
 

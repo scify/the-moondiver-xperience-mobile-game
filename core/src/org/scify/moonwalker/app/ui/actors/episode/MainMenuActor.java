@@ -31,7 +31,6 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
     protected boolean actorInitiated;
 
 
-
     public MainMenuActor(Skin skin, MainMenuRenderable renderable) {
         super(skin, renderable);
         setWidth(renderable.getWidth());
@@ -171,30 +170,20 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
     }
 
     protected String selectedPlayer = "";
+
     @Override
     public void update(Renderable rRenderable) {
         // If we have an actor and it's been some time since the last update
-        if (actorInitiated && this.renderable.getRenderableLastUpdated() > timestamp) {
+        if (actorInitiated) {
             renderable = (MainMenuRenderable) rRenderable;
-            timestamp = renderable.getRenderableLastUpdated();
-            // If we have selected an avatar and the countdown is not visible
-            if (renderable.getSelectedPlayer() != "") {
-                // Show the count down
-                renderable.getCountDownLabel().setVisible(true);
-                // Get its value
-                int countDown = renderable.getCountDownValue();
-                // and update the label accordingly
-                if (countDown >= 0)
-                    countDownLabel.setText(countDown + "");
-
-                // If we switched selection
-                if (selectedPlayer != renderable.getSelectedPlayer()) {
-                    // Update the selected avatar
-                    selectedPlayer = renderable.getSelectedPlayer();
-                    // Apply effects
-                    updateSelectedAvatar();
-                }
+            // If we have selected an new avatar
+            if (renderable.getSelectedPlayer() != "" && selectedPlayer != renderable.getSelectedPlayer()) {
+                // Update the selected avatar
+                selectedPlayer = renderable.getSelectedPlayer();
+                // Apply effects
+                updateSelectedAvatar();
             }
+            renderable.wasUpdated();
         }
     }
 

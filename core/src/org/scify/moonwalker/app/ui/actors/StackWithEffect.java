@@ -1,13 +1,15 @@
 package org.scify.moonwalker.app.ui.actors;
 
+
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
+import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.effects.Effect;
 import org.scify.engine.renderables.effects.EffectTarget;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class StackWithEffect<T> extends Stack implements EffectTarget {
+public class StackWithEffect<T extends Updateable> extends Stack implements EffectTarget, Updateable {
     protected Set<Effect> effects = new HashSet<>();
 
     @Override
@@ -37,4 +39,8 @@ public class StackWithEffect<T> extends Stack implements EffectTarget {
         return (T)getChildren().get(0);
     }
 
+    @Override
+    public void update(Renderable renderable) {
+        getBasicComponent().update(renderable);
+    }
 }

@@ -76,19 +76,16 @@ public class RoomRenderable extends FadingTableRenderable {
                 phoneOnRenderable.setVisible(false);
             else
                 phoneOnRenderable.setVisible(true);
-            //renderableWasUpdated();
         }
     }
 
     public void turnOnPhone() {
         permanentlyOn = true;
         phoneOnRenderable.setVisible(true);
-        renderableWasUpdated();
     }
 
     public void turnOffPhone() {
         phoneOnRenderable.setVisible(false);
-        renderableWasUpdated();
     }
 
     public ImageRenderable getTableBGRenderable() {

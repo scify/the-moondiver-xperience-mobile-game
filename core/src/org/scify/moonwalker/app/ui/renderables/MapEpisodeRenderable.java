@@ -114,17 +114,17 @@ public class MapEpisodeRenderable extends Renderable {
 
     public void setCurrentLocation(Location currentLocation) {
         this.currentLocation = currentLocation;
-        renderableWasUpdated();
+        markAsNeedsUpdate();
     }
 
     public void setNextAllowedLocation(Location nextAllowedLocation) {
         this.nextAllowedLocation = nextAllowedLocation;
-        renderableWasUpdated();
+        markAsNeedsUpdate();
     }
 
     public void setLocationSelected(boolean locationSelected) {
         this.locationSelected = locationSelected;
-        renderableWasUpdated();
+        markAsNeedsUpdate();
     }
 
     public Location getCurrentLocation() {
@@ -315,7 +315,7 @@ public class MapEpisodeRenderable extends Renderable {
         //////////////
 
 
-        renderableWasUpdated();
+        markAsNeedsUpdate();
     }
 
 

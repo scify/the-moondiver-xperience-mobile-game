@@ -42,7 +42,7 @@ public class ActorFactory extends ComponentFactory {
         Actor toReturn;
         switch (renderable.getType()) {
             case Renderable.ACTOR_LABEL:
-                Label label = new LabelWithEffect("", skin);
+                Label label = new ActorLabelWithEffect("", skin);
                 label.setWidth(renderable.getWidth());
                 label.setHeight(renderable.getHeight());
                 label.setWrap(true);
@@ -50,9 +50,9 @@ public class ActorFactory extends ComponentFactory {
                 toReturn = label;
                 break;
             case Renderable.ACTOR_ROTATABLE_LABEL:
-                Stack gParent = new StackWithEffect();
+                Stack gParent = new StackWithEffect<ActorLabelWithEffect>();
                 gParent.setTransform(true);
-                label = new Label(((TextLabelRenderable)renderable).getLabel(), skin);
+                label = new ActorLabelWithEffect(((TextLabelRenderable)renderable).getLabel(), skin);
                 gParent.setWidth(renderable.getWidth());
                 gParent.setHeight(renderable.getHeight());
                 label.setWrap(true);
@@ -62,20 +62,8 @@ public class ActorFactory extends ComponentFactory {
             case Renderable.ACTOR_IMAGE:
                 toReturn = createImage(renderable.getImgPath(), renderable);
                 break;
-            case Renderable.ACTOR_EPISODE_MAIN_MENU:
-                toReturn = createMainMenuActor((MainMenuRenderable) renderable);
-                break;
-            case Renderable.ACTOR_EPISODE_ROOM:
-                toReturn = createRoomActor((RoomRenderable) renderable);
-                break;
-            case Renderable.ACTOR_EPISODE_FOREST:
-                toReturn = createForestActor((ForestRenderable) renderable);
-                break;
-            case Renderable.ACTOR_EPISODE_COCKPIT:
-                toReturn = createCockpitActor((CockpitRenderable) renderable);
-                break;
             case Renderable.ACTOR_ROTATABLE_TEXT_BUTTON:
-                gParent = new StackWithEffect();
+                gParent = new StackWithEffect<TextButtonWithEffect>();
                 gParent.setTransform(true);
                 TextButton tbBtn =  createTextButton((ActionButtonRenderable) renderable);
                 tbBtn.setWidth(renderable.getWidth());
@@ -88,6 +76,18 @@ public class ActorFactory extends ComponentFactory {
                 break;
             case Renderable.ACTOR_IMAGE_BUTTON:
                 toReturn = createImageButton((ActionButtonRenderable) renderable);
+                break;
+            case Renderable.ACTOR_EPISODE_MAIN_MENU:
+                toReturn = createMainMenuActor((MainMenuRenderable) renderable);
+                break;
+            case Renderable.ACTOR_EPISODE_ROOM:
+                toReturn = createRoomActor((RoomRenderable) renderable);
+                break;
+            case Renderable.ACTOR_EPISODE_FOREST:
+                toReturn = createForestActor((ForestRenderable) renderable);
+                break;
+            case Renderable.ACTOR_EPISODE_COCKPIT:
+                toReturn = createCockpitActor((CockpitRenderable) renderable);
                 break;
             case Renderable.ACTOR_EPISODE_CALCULATOR:
                 toReturn = new CalculatorComponent(skin);

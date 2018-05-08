@@ -23,6 +23,7 @@ public class TextLabelRenderable extends Renderable {
 
     public void setLabel(String label) {
         this.label = label;
+        markAsNeedsUpdate();
     }
 
     public UserAction getUserAction() {

@@ -162,6 +162,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                     ((Updateable) uiRepresentationOfRenderable).update(renderable);
                 }
                 // repaint
+                ///
                 painter.drawUIRenderable(uiRepresentationOfRenderable, renderable);
                 // NOTE: We do NOT and should NOT call wasUpdated. It is the actor's responsibility to do so.
             }

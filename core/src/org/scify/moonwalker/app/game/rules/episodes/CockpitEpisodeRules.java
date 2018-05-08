@@ -3,7 +3,6 @@ package org.scify.moonwalker.app.game.rules.episodes;
 import org.scify.engine.*;
 import org.scify.moonwalker.app.game.LocationController;
 import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
-
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -24,12 +23,20 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
             setCockpitFieldValues();
             if (gameInfo.getContactRequestFlag()) {
                 gameState.addGameEvent(new GameEvent("TOOGLE_CONTACT_BUTTON", new Date().getTime() + 500, false, this));
-                renderable.toogleContactButton();
+                renderable.toogleButtonLight(renderable.getContactLightedButton());
             }
-            renderable.setOutsideBackground(renderable.FOREST_BG_IMG_PATH);
+            setOutsideBackground();
             gameState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
             gameState.addRenderable(renderable);
             super.episodeStartedEvents(gameState);
+        }
+    }
+
+    protected void setOutsideBackground() {
+        if (gameInfo.getCurrentDay() == 1) {
+            renderable.setOutsideBackground(renderable.FOREST_BG_IMG_PATH);
+        } else {
+            renderable.setOutsideBackground(renderable.getBG_IMG_PATH(gameInfo.getCurrentLocation()));
         }
     }
 
@@ -87,7 +94,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
         GameEvent contactToggleEvent = gameState.getGameEventsWithType("TOOGLE_CONTACT_BUTTON");
         if (contactToggleEvent != null && timestamp > contactToggleEvent.delay) {
             gameState.removeGameEventsWithType("TOOGLE_CONTACT_BUTTON");
-            renderable.toogleContactButton();
+            renderable.toogleButtonLight(renderable.getContactLightedButton());
             gameState.addGameEvent(new GameEvent("TOOGLE_CONTACT_BUTTON", new Date().getTime() + 500, false, this));
         }
         return super.getNextState(gameState, userAction);

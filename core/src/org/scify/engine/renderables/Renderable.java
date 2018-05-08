@@ -91,7 +91,7 @@ public class Renderable extends Positionable implements EffectTarget {
         needsUpdate = true;
     }
 
-    public void renderableWasUpdated() {
+    public void markAsNeedsUpdate() {
         needsUpdate = true;
         renderableLastUpdated = new Date().getTime();
     }

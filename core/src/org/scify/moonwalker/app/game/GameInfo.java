@@ -35,7 +35,7 @@ public class GameInfo {
 
     private GameInfo() {
         moonPhasesController = new MoonPhasesController();
-        currentDay = 0;
+        currentDay = 1;
         motorEfficiency = 10;
         remainingEnergy = 0;
         daysLeftForDestination = 90;

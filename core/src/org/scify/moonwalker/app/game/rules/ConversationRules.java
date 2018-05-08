@@ -254,7 +254,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
     }
 
     protected void addSingleChoiceConversationLine(final ConversationLine conversationLine, final GameState gameState, boolean newSpeaker) {
-        SingleChoiceConversationRenderable renderable = new SingleChoiceConversationRenderable(conversationLine.getId() + "");
+        SingleChoiceConversationRenderable renderable = new SingleChoiceConversationRenderable(conversationLine.getId());
         if (lastConversationRenderable != null) {
             lastConversationRenderable.addEffect(getOutroEffect(lastConversationRenderable, conversationLine, gameState, newSpeaker));
         }
@@ -274,7 +274,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
 
     protected void addTwoChoiceConversationLines(List<ConversationLine> nextLines, GameState gameState, boolean newSpeaker) {
         ConversationLine firstLine = nextLines.get(0);
-        TwoChoiceConversationRenderable renderable = new TwoChoiceConversationRenderable(firstLine.getId() + "");
+        TwoChoiceConversationRenderable renderable = new TwoChoiceConversationRenderable(firstLine.getId());
         if (lastConversationRenderable != null) {
             lastConversationRenderable.addEffect(getOutroEffect(lastConversationRenderable, firstLine, gameState, newSpeaker));
         }

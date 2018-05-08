@@ -7,13 +7,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Scaling;
+import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.effects.Effect;
 import org.scify.engine.renderables.effects.EffectTarget;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class ImageWithEffect extends Image implements EffectTarget {
+public class ImageWithEffect extends Image implements EffectTarget, Updateable {
     public ImageWithEffect() {
         super();
     }
@@ -71,4 +72,8 @@ public class ImageWithEffect extends Image implements EffectTarget {
         return this;
     }
 
+    @Override
+    public void update(Renderable renderable) {
+        renderable.wasUpdated();
+    }
 }

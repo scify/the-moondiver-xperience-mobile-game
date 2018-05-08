@@ -95,10 +95,18 @@ public class FadingTableRenderable extends TableRenderable {
 
     }
 
-    protected ActionButtonRenderable createImageButton(String id, String img, String code, boolean visibility, int zIndex) {
+    protected ActionButtonRenderable createImageButton(String id, String img, UserAction userAction, boolean positionDrawable, boolean visibility, int zIndex) {
         ActionButtonRenderable ret = new ActionButtonRenderable(Renderable.ACTOR_IMAGE_BUTTON, id);
         ret.setImgPath(img);
-        ret.setUserAction(new UserAction(code));
+        ret.setUserAction(userAction);
+        setRenderableAttributes(ret, positionDrawable, visibility, zIndex);
+        return ret;
+    }
+
+    protected ActionButtonRenderable createTextButton(String id, String text, UserAction userAction, boolean positionDrawable, boolean visibility, int zIndex) {
+        ActionButtonRenderable ret = new ActionButtonRenderable(Renderable.ACTOR_TEXT_BUTTON, id);
+        ret.setTitle(text);
+        ret.setUserAction(userAction);
         setRenderableAttributes(ret, positionDrawable, visibility, zIndex);
         return ret;
     }

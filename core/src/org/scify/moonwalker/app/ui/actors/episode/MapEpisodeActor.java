@@ -68,6 +68,6 @@ public class MapEpisodeActor extends ActorWithEffects implements Updateable<MapE
 //
 //        rToMove.setxPos((float) dNewX);
 //        rToMove.setyPos((float) dNewY);
-//        rToMove.renderableWasUpdated();
+//        rToMove.markAsNeedsUpdate();
     }
 }

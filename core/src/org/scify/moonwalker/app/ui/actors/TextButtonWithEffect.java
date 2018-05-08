@@ -2,13 +2,15 @@ package org.scify.moonwalker.app.ui.actors;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import org.scify.engine.renderables.ActionButtonRenderable;
+import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.effects.Effect;
 import org.scify.engine.renderables.effects.EffectTarget;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class TextButtonWithEffect extends TextButton implements EffectTarget {
+public class TextButtonWithEffect extends TextButton implements EffectTarget, Updateable {
     public TextButtonWithEffect(String text, Skin skin) {
         super(text, skin);
     }
@@ -46,4 +48,11 @@ public class TextButtonWithEffect extends TextButton implements EffectTarget {
         return this;
     }
 
+    @Override
+    public void update(Renderable renderable) {
+        String text = ((ActionButtonRenderable)renderable).getTitle();
+        if (!text.equals(getText()))
+            setText(text);
+        renderable.wasUpdated();
+    }
 }

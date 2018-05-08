@@ -1,12 +1,12 @@
 package org.scify.moonwalker.app.ui.renderables;
 
+import org.scify.engine.UserAction;
 import org.scify.engine.UserActionCode;
 import org.scify.engine.renderables.ActionButtonRenderable;
 import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.TextLabelRenderable;
 import org.scify.engine.renderables.effects.*;
-import org.scify.moonwalker.app.game.SelectedPlayer;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -83,31 +83,33 @@ public class MainMenuRenderable extends FadingTableRenderable {
         topBannerRenderable = createImageRenderable(TOP_BANNER_ID, TOP_BANNER_IMG_PATH, false, false, 1);
         allRenderables.add(topBannerRenderable);
 
-        startGameButton = createImageButton(START_BUTTON_ID, START_BUTTON_IMG_PATH, UserActionCode.NEW_GAME, true, 1);
+        startGameButton = createImageButton(START_BUTTON_ID, START_BUTTON_IMG_PATH, new UserAction(UserActionCode.NEW_GAME), false, true, 1);
         allRenderables.add(startGameButton);
 
-        continueGameButton = createImageButton(CONTINUE_BUTTON_ID, CONTINUE_BUTTON_IMG_PATH, UserActionCode.CONTINUE, true, 1);
+        continueGameButton = createImageButton(CONTINUE_BUTTON_ID, CONTINUE_BUTTON_IMG_PATH, new UserAction(UserActionCode.CONTINUE), false, true, 1);
         allRenderables.add(continueGameButton);
 
-        toggleAudioButton = createImageButton(TOGGLE_AUDIO_BUTTON_ID, TOGGLE_AUDIO_BUTTON_IMG_PATH, UserActionCode.TOGGLE_AUDIO, true, 1);
+        toggleAudioButton = createImageButton(TOGGLE_AUDIO_BUTTON_ID, TOGGLE_AUDIO_BUTTON_IMG_PATH, new UserAction(UserActionCode.TOGGLE_AUDIO), false, true, 1);
         allRenderables.add(toggleAudioButton);
 
-        aboutButton = createImageButton(ABOUT_BUTTON_ID, ABOUT_BUTTON_IMG_PATH, UserActionCode.ABOUT, true, 1);
+        aboutButton = createImageButton(ABOUT_BUTTON_ID, ABOUT_BUTTON_IMG_PATH, new UserAction(UserActionCode.ABOUT), false, true, 1);
         allRenderables.add(aboutButton);
 
-        quitButton = createImageButton(QUIT_BUTOON_ID, QUIT_BUTTON_IMG_PATH, UserActionCode.QUIT, true, 1);
+        quitButton = createImageButton(QUIT_BUTOON_ID, QUIT_BUTTON_IMG_PATH, new UserAction(UserActionCode.QUIT), false, true, 1);
         allRenderables.add(quitButton);
 
-        boyButton = createImageButton(BOY_BUTTON_ID, BOY_BUTTON_IMG_PATH, UserActionCode.BOY_SELECTED, false, 1);
+        UserAction boySelectedUserAction = new UserAction(UserActionCode.BOY_SELECTED);
+        boyButton = createImageButton(BOY_BUTTON_ID, BOY_BUTTON_IMG_PATH, boySelectedUserAction, false, false, 1);
         allRenderables.add(boyButton);
 
-        boyAvatarButton = createImageButton(BOY_AVATAR_BUTTON_ID, BOY_IMG_PATH, UserActionCode.BOY_SELECTED, false, 1);
+        boyAvatarButton = createImageButton(BOY_AVATAR_BUTTON_ID, BOY_IMG_PATH, boySelectedUserAction, false, false, 1);
         allRenderables.add(boyAvatarButton);
 
-        girlButton = createImageButton(GIRL_BUTTON_ID, GIRL_BUTTON_IMG_PATH, UserActionCode.GIRL_SELECTED, false, 1);
+        UserAction girlSelectedUserAction = new UserAction(UserActionCode.GIRL_SELECTED);
+        girlButton = createImageButton(GIRL_BUTTON_ID, GIRL_BUTTON_IMG_PATH, girlSelectedUserAction, false, false, 1);
         allRenderables.add(girlButton);
 
-        girlAvatarButton = createImageButton(GIRL_AVATAR_BUTTON_ID, GIRL_IMG_PATH, UserActionCode.GIRL_SELECTED, false, 1);
+        girlAvatarButton = createImageButton(GIRL_AVATAR_BUTTON_ID, GIRL_IMG_PATH, girlSelectedUserAction, false, false, 1);
         allRenderables.add(girlAvatarButton);
 
         countDownLabel = createTextLabelRenderable(COUNTDOWN_LABEL_ID, countDownValue + "", false, false, 1);
@@ -136,18 +138,22 @@ public class MainMenuRenderable extends FadingTableRenderable {
 
     public void resetCountDown() {
         countDownValue = 5;
-        renderableWasUpdated();
+        countDownLabel.setLabel(countDownValue + "");
+        countDownLabel.setVisible(true);
+        markAsNeedsUpdate();
     }
 
     public void forceCountDownToZero() {
         countDownValue = 0;
-        renderableWasUpdated();
+        countDownLabel.setLabel(countDownValue + "");
     }
 
     public void decreaseCountDown() {
         countDownValue--;
-        if (countDownValue >= 0)
-            renderableWasUpdated();
+        if (countDownValue >= 0) {
+            countDownLabel.setLabel(countDownValue + "");
+            markAsNeedsUpdate();
+        }
     }
 
     public int getCountDownValue() {
@@ -188,18 +194,7 @@ public class MainMenuRenderable extends FadingTableRenderable {
             getAboutButton().addEffect(fadeOutEffect);
             getQuitButton().addEffect(fadeOutEffect);
 
-            renderableWasUpdated();
-        }
-    }
-
-    public ActionButtonRenderable getPlayerButton(String btnName) {
-        switch (btnName) {
-            case SelectedPlayer.boy:
-                return boyButton;
-            case SelectedPlayer.girl:
-                return girlButton;
-            default:
-                return null;
+            markAsNeedsUpdate();
         }
     }
 
@@ -211,11 +206,12 @@ public class MainMenuRenderable extends FadingTableRenderable {
      * 0 none
      * -1 left boy
      * 1 right girl
+     *
      * @param selectedPlayer
      */
     public void setSelectedPlayer(String selectedPlayer) {
         this.selectedPlayer = selectedPlayer;
-        renderableWasUpdated();
+        markAsNeedsUpdate();
     }
 
     public ActionButtonRenderable getStartGameButton() {

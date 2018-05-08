@@ -3,19 +3,11 @@ package org.scify.moonwalker.app.ui.actors.episode;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
-import org.scify.engine.renderables.Renderable;
-import org.scify.engine.renderables.TextLabelRenderable;
-import org.scify.engine.renderables.effects.MoveEffect;
-import org.scify.engine.renderables.effects.RotateEffect;
-import org.scify.engine.renderables.effects.SlideEffect;
 import org.scify.moonwalker.app.ui.ThemeController;
-import org.scify.moonwalker.app.ui.actors.FadingTableActor;
-import org.scify.moonwalker.app.ui.actors.ImageWithEffect;
-import org.scify.moonwalker.app.ui.actors.StackWithEffect;
-import org.scify.moonwalker.app.ui.actors.Updateable;
+import org.scify.moonwalker.app.ui.actors.*;
 import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 
-public class CockpitActor extends FadingTableActor<CockpitRenderable> implements Updateable {
+public class CockpitActor extends FadingTableActor<CockpitRenderable> {
 
     protected Table bottomTable;
     protected Button travelButton;
@@ -39,7 +31,7 @@ public class CockpitActor extends FadingTableActor<CockpitRenderable> implements
     protected Label remainingEnergyLabel;
     protected Label remainingDestinationLabel;
     protected Label daysLeftLabel;
-    protected StackWithEffect<Label> currentLocationLabel;
+    protected StackWithEffect<ActorLabelWithEffect> currentLocationLabel;
 
     public CockpitActor(Skin skin, CockpitRenderable renderable) {
         super(skin, renderable);
@@ -176,7 +168,7 @@ public class CockpitActor extends FadingTableActor<CockpitRenderable> implements
         Stack chargeButtons = new Stack();
         chargeButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getChargeButton());
         chargeButtons.add(chargeButton);
-        chargeLightedButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getChargeLighedButton());
+        chargeLightedButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getChargeLightedButton());
         chargeButtons.add(chargeLightedButton);
         innerTable.add(chargeButtons).width(convertWidth(chargeButton.getWidth())).height(convertHeight(chargeButton.getHeight()));
 
@@ -239,32 +231,5 @@ public class CockpitActor extends FadingTableActor<CockpitRenderable> implements
         bottomTable.add(remainingDestinationLabel).width(0.06f * screenWidth);
         bottomTable.add().expandX();
         add(bottomTable).colspan(3).left();
-    }
-
-
-    @Override
-    public void update(Renderable renderable) {
-        this.renderable = (CockpitRenderable) renderable;
-        TextLabelRenderable location = this.renderable.getLocationLabel();
-        if (location.needsUpdate()) {
-            currentLocationLabel.getBasicComponent().setText(location.getLabel());
-            location.wasUpdated();
-        }
-        renderable.wasUpdated();
-
-
-        /*setMotorEfficiency(this.renderable.getMotorEfficiencyValue());
-        setRemainingEnergy(this.renderable.getRemainingEnergyValue());
-        setRemainingDestination(this.renderable.getDestinationDistanceValue() + "");
-        setLocation(this.renderable.getPositionValue());
-        setDaysLeft(this.renderable.getDaysLeftValue());*/
-
-        /*if (this.renderable.isContactButtonLighted()) {
-            contactLightedButton.setVisible(true);
-            contactButton.setVisible(false);
-        }else {
-            contactLightedButton.setVisible(false);
-            contactButton.setVisible(true);
-        }*/
     }
 }
