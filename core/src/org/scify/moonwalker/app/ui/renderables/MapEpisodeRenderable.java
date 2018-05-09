@@ -30,6 +30,9 @@ public class MapEpisodeRenderable extends Renderable {
 
     protected Location currentLocation;
     protected Location nextAllowedLocation;
+    protected Location originLocation;
+    protected Location targetLocation;
+
     protected boolean locationSelected;
     protected List<Location> locations;
     protected List<Renderable> locationPoints;
@@ -341,4 +344,19 @@ public class MapEpisodeRenderable extends Renderable {
         return renderablePerLocation.get(lToLoopUp);
     }
 
+    public Location getOriginLocation() {
+        return originLocation;
+    }
+
+    public Location getTargetLocation() {
+        return targetLocation;
+    }
+
+    public void setOriginLocation(Location originLocation) {
+        this.originLocation = originLocation;
+    }
+
+    public void setTargetLocation(Location targetLocation) {
+        this.targetLocation = targetLocation;
+    }
 }

@@ -22,9 +22,14 @@ import java.util.List;
 */
 
 public class MapEpisodeRules extends BaseEpisodeRules {
+    public static final String STH_MESH_TOY_POYTHENA = "STH_MESH_TOY_POYTHENA";
     protected LocationController locationController;
     protected boolean travelOnly;
     protected MapEpisodeRenderable renderable;
+    protected Location originMiddleOfNowhere;
+    protected Location targetMiddleOfNowhere;
+    protected Location originLocation;
+    protected Location targetLocation;
 
 
     public MapEpisodeRules(boolean bTravelOnly) {
@@ -36,10 +41,21 @@ public class MapEpisodeRules extends BaseEpisodeRules {
     @Override
     protected void episodeStartedEvents(final GameState currentState) {
         if (!episodeStarted) {
+            // Check where we start
+            initOriginLocation();
+
+            // Check where we can reach
+            initTargetLocation();
+
+            // Check if we need to add "middle of nowhere" locations and add them to the normal list
+            List<Location> llLocations = getFullLocationList();
+
             // Create main renderable
             renderable = new MapEpisodeRenderable(0.0f, 0.0f, appInfo.getScreenWidth(), appInfo.getScreenHeight(),
-                    "mapEpisodeRenderable", locationController.getLocations(), gameInfo.getNextAllowedLocation(),
-                    gameInfo.getCurrentLocation(), travelOnly);
+                    "mapEpisodeRenderable", llLocations, gameInfo.getNextAllowedLocation(),
+                    originLocation, travelOnly);
+            renderable.setOriginLocation(originLocation);
+            renderable.setTargetLocation(targetLocation);
 
             // Get main properties from game state and apply to renderable
             renderable.setLocationSelected(false);
@@ -66,6 +82,53 @@ public class MapEpisodeRules extends BaseEpisodeRules {
         }
     }
 
+    protected List<Location> getFullLocationList() {
+        List<Location> llLocations = new ArrayList<>(locationController.getLocations());
+        if (originMiddleOfNowhere != null) {
+            llLocations.add(originMiddleOfNowhere);
+        }
+        if (targetMiddleOfNowhere != null) {
+            llLocations.add(targetMiddleOfNowhere);
+        }
+        return llLocations;
+    }
+
+    protected void initTargetLocation() {
+        double dPercentageOfNextMovePossible = gameInfo.getNextTravelPercentagePossible();
+        if (dPercentageOfNextMovePossible < 100.0) {
+            // Create "middle of nowhere" location for target
+            double dMoNX = gameInfo.getCurrentLocation().getPosX() + (gameInfo.getNextAllowedLocation().getPosX() - gameInfo.getCurrentLocation().getPosX()) * dPercentageOfNextMovePossible;
+            double dMoNY = gameInfo.getCurrentLocation().getPosY() + (gameInfo.getNextAllowedLocation().getPosY() - gameInfo.getCurrentLocation().getPosY()) * dPercentageOfNextMovePossible;
+            targetMiddleOfNowhere = new Location(STH_MESH_TOY_POYTHENA, "", (int)dMoNX, (int)dMoNY, "<None>");
+            targetLocation = originMiddleOfNowhere;
+        }
+        else {
+            // else we should not use "middle of nowhere"
+            targetMiddleOfNowhere = null;
+            targetLocation = gameInfo.getNextAllowedLocation();
+        }
+        // Update distance from origin, if origin in the middle of nowhere
+        if (originMiddleOfNowhere != null) {
+            targetLocation.setDistanceToLocation(originLocation, (int)(gameInfo.getNextAllowedLocation().getDistanceFromLocation(gameInfo.getCurrentLocation()) *
+                    gameInfo.getPreviousTravelPercentageComplete() / 100));
+        }
+    }
+
+    protected void initOriginLocation() {
+        double dPercentageOfPreviousMoveComplete = gameInfo.getPreviousTravelPercentageComplete();
+        if (dPercentageOfPreviousMoveComplete < 100.0) {
+            // Create "middle of nowhere" location for origin
+            double dMoNX = gameInfo.getCurrentLocation().getPosX() + (gameInfo.getNextAllowedLocation().getPosX() - gameInfo.getCurrentLocation().getPosX()) * dPercentageOfPreviousMoveComplete / 100.0;
+            double dMoNY = gameInfo.getCurrentLocation().getPosY() + (gameInfo.getNextAllowedLocation().getPosY() - gameInfo.getCurrentLocation().getPosY()) * dPercentageOfPreviousMoveComplete / 100.0;
+            originMiddleOfNowhere = new Location(STH_MESH_TOY_POYTHENA, "", (int)dMoNX, (int)dMoNY, "<None>");
+            originLocation = originMiddleOfNowhere;
+        }
+        else {
+            // else we should not use "middle of nowhere"
+            originMiddleOfNowhere = null;
+            originLocation = gameInfo.getCurrentLocation();
+        }
+    }
 
 
     @Override
@@ -116,8 +179,8 @@ public class MapEpisodeRules extends BaseEpisodeRules {
     }
 
     protected void createSpaceshipMovementEffect(final GameState gsCurrent) {
-        Renderable rCurLocation = renderable.getRenderableForLocation(renderable.getCurrentLocation());
-        Renderable rNextLocation = renderable.getRenderableForLocation(renderable.getNextAllowedLocation());
+        Renderable rCurLocation = renderable.getRenderableForLocation(renderable.getOriginLocation());
+        Renderable rNextLocation = renderable.getRenderableForLocation(renderable.getTargetLocation());
         final float dStartX = rCurLocation.getxPos();
         final float dStartY = rCurLocation.getyPos();
         final float dEndX = rNextLocation.getxPos();
@@ -170,7 +233,11 @@ public class MapEpisodeRules extends BaseEpisodeRules {
                 @Override
                 public void run() {
                     handleUserAction(gsCurrent, new UserAction(UserActionCode.QUIT));
-                    gameInfo.setCurrentLocation(renderable.getNextAllowedLocation());
+                    // If we actually reached the destination
+                    if (gameInfo.getPreviousTravelPercentageComplete() == 100.0) {
+                        // Update the current location
+                        gameInfo.setCurrentLocation(renderable.getNextAllowedLocation());
+                    }
                 }
             }));
             rCurLocation.addEffect(esRes);

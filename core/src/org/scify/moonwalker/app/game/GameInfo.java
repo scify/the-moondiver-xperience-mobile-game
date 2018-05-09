@@ -9,6 +9,17 @@ public class GameInfo {
     protected Location nextLocation;
     protected Location nextAllowedLocation;
 
+    /**
+     * The travel percentage complete in the LAST travel
+     */
+    protected double previousTravelPercentageComplete;
+
+    /**
+     * The travel percentage we will reach in the NEXT travel
+     */
+    protected double nextTravelPercentagePossible;
+
+
     public Location getNextAllowedLocation() {
         return nextAllowedLocation;
     }
@@ -133,4 +144,22 @@ public class GameInfo {
     public String getSelectedPlayer() {
         return selectedPlayer;
     }
+
+    public double getPreviousTravelPercentageComplete() {
+        return previousTravelPercentageComplete;
+    }
+
+    public void setPreviousTravelPercentageComplete(double previousTravelPercentageComplete) {
+        this.previousTravelPercentageComplete = previousTravelPercentageComplete;
+    }
+
+    public double getNextTravelPercentagePossible() {
+        return nextTravelPercentagePossible;
+    }
+
+    public void setNextTravelPercentagePossible(double nextTravelPercentagePossible) {
+        this.nextTravelPercentagePossible = nextTravelPercentagePossible;
+    }
+
+
 }

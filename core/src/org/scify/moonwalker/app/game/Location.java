@@ -74,4 +74,8 @@ public class Location {
     public String toString() {
         return String.format("%s. x %d y %d, mission: %s", getName(), getPosX(), getPosY(), getMission());
     }
+
+    public void setDistanceToLocation(Location l, int distanceInKilometers) {
+        distanceFromOtherLocations.put(l, distanceInKilometers);
+    }
 }
