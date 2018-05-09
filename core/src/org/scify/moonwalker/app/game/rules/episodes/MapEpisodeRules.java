@@ -22,7 +22,10 @@ import java.util.List;
 */
 
 public class MapEpisodeRules extends BaseEpisodeRules {
-    public static final String STH_MESH_TOY_POYTHENA = "STH_MESH_TOY_POYTHENA";
+    public static final String ORIGIN_MIDDLE_OF_NOWHERE = "Μέση του\nΠουθενά";
+    public static final String TARGET_MIDDLE_OF_NOWHERE = "Άκρη του\nΠουθενά";
+
+    public static final String NO_MISSION = "(Καμία)";
     protected LocationController locationController;
     protected boolean travelOnly;
     protected MapEpisodeRenderable renderable;
@@ -97,20 +100,27 @@ public class MapEpisodeRules extends BaseEpisodeRules {
         double dPercentageOfNextMovePossible = gameInfo.getNextTravelPercentagePossible();
         if (dPercentageOfNextMovePossible < 100.0) {
             // Create "middle of nowhere" location for target
-            double dMoNX = gameInfo.getCurrentLocation().getPosX() + (gameInfo.getNextAllowedLocation().getPosX() - gameInfo.getCurrentLocation().getPosX()) * dPercentageOfNextMovePossible;
-            double dMoNY = gameInfo.getCurrentLocation().getPosY() + (gameInfo.getNextAllowedLocation().getPosY() - gameInfo.getCurrentLocation().getPosY()) * dPercentageOfNextMovePossible;
-            targetMiddleOfNowhere = new Location(STH_MESH_TOY_POYTHENA, "", (int)dMoNX, (int)dMoNY, "<None>");
-            targetLocation = originMiddleOfNowhere;
+            double dMoNX = gameInfo.getCurrentLocation().getPosX() + (gameInfo.getNextAllowedLocation().getPosX() - gameInfo.getCurrentLocation().getPosX()) * dPercentageOfNextMovePossible / 100;
+            double dMoNY = gameInfo.getCurrentLocation().getPosY() + (gameInfo.getNextAllowedLocation().getPosY() - gameInfo.getCurrentLocation().getPosY()) * dPercentageOfNextMovePossible / 100;
+            targetMiddleOfNowhere = new Location(ORIGIN_MIDDLE_OF_NOWHERE, "", (int)dMoNX, (int)dMoNY, NO_MISSION);
+            targetLocation = targetMiddleOfNowhere;
         }
         else {
             // else we should not use "middle of nowhere"
             targetMiddleOfNowhere = null;
             targetLocation = gameInfo.getNextAllowedLocation();
         }
-        // Update distance from origin, if origin in the middle of nowhere
-        if (originMiddleOfNowhere != null) {
-            targetLocation.setDistanceToLocation(originLocation, (int)(gameInfo.getNextAllowedLocation().getDistanceFromLocation(gameInfo.getCurrentLocation()) *
-                    gameInfo.getPreviousTravelPercentageComplete() / 100));
+        // Update distance from target, if origin or target in the middle of nowhere
+        if ((originMiddleOfNowhere != null) || (targetMiddleOfNowhere != null)) {
+            double dRemaining;
+            // Calculate how much distance percentage we have remaining
+            if (gameInfo.getPreviousTravelPercentageComplete() > gameInfo.getNextTravelPercentagePossible())
+                dRemaining = gameInfo.getNextTravelPercentagePossible();
+            else
+                dRemaining = gameInfo.getNextTravelPercentagePossible() - gameInfo.getPreviousTravelPercentageComplete();
+
+                        targetLocation.setDistanceToLocation(originLocation, (int)(gameInfo.getNextAllowedLocation().getDistanceFromLocation(gameInfo.getCurrentLocation()) *
+                    dRemaining / 100));
         }
     }
 
@@ -120,7 +130,7 @@ public class MapEpisodeRules extends BaseEpisodeRules {
             // Create "middle of nowhere" location for origin
             double dMoNX = gameInfo.getCurrentLocation().getPosX() + (gameInfo.getNextAllowedLocation().getPosX() - gameInfo.getCurrentLocation().getPosX()) * dPercentageOfPreviousMoveComplete / 100.0;
             double dMoNY = gameInfo.getCurrentLocation().getPosY() + (gameInfo.getNextAllowedLocation().getPosY() - gameInfo.getCurrentLocation().getPosY()) * dPercentageOfPreviousMoveComplete / 100.0;
-            originMiddleOfNowhere = new Location(STH_MESH_TOY_POYTHENA, "", (int)dMoNX, (int)dMoNY, "<None>");
+            originMiddleOfNowhere = new Location(TARGET_MIDDLE_OF_NOWHERE, "", (int)dMoNX, (int)dMoNY, NO_MISSION);
             originLocation = originMiddleOfNowhere;
         }
         else {
@@ -218,13 +228,30 @@ public class MapEpisodeRules extends BaseEpisodeRules {
             final double dTransitionTime = 3000.0;
 
             EffectSequence esRes = new EffectSequence();
-            // Add movement effect to spaceship
+
+            // Add rotation and movement effect to spaceship
             esRes.addEffect(new FunctionEffect(new Runnable() {
                 @Override
                 public void run() {
-                    renderable.getRenderableForLocation(renderable.getCurrentLocation()).addEffect(new MoveEffect(
-                            dStartX, dStartY, dEndX, dEndY, dTransitionTime
-                    ));
+                    EffectSequence esRotateAndMove = new EffectSequence();
+                    esRotateAndMove.addEffect(getRotateToTargetEffect());
+                    esRotateAndMove.addEffect(new MoveEffect(dStartX, dStartY, dEndX, dEndY, dTransitionTime));
+                    renderable.getRenderableForLocation(renderable.getCurrentLocation()).addEffect(esRotateAndMove);
+                }
+
+                private Effect getRotateToTargetEffect() {
+                    Effect eRes;
+                    double dTargetX = renderable.getNextAllowedLocation().getPosX();
+                    double dTargetY = renderable.getNextAllowedLocation().getPosY();
+                    double dOriginX = renderable.getCurrentLocation().getPosX();
+                    double dOriginY = renderable.getCurrentLocation().getPosY();
+                    double dTargetAngle = Math.atan((dTargetY - dOriginY) / (dTargetX - dOriginX));
+                    // Convert to degrees
+                    dTargetAngle = (dTargetAngle * (180 / Math.PI));
+                    if (dTargetX < dOriginX) dTargetAngle += 180; // Make sure you always move head on to the destination
+                    eRes = new RotateEffect(0.0, dTargetAngle, 500);
+
+                    return eRes;
                 }
             }));
             // make sure you quit after a while

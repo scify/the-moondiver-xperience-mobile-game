@@ -8,6 +8,7 @@ import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.TextLabelRenderable;
 import org.scify.engine.renderables.effects.*;
 import org.scify.moonwalker.app.game.Location;
+import org.scify.moonwalker.app.game.rules.episodes.MapEpisodeRules;
 
 import java.util.*;
 
@@ -26,6 +27,7 @@ public class MapEpisodeRenderable extends Renderable {
     public static final String PIN_IMG_PATH = "img/episode_map/pin.png";
     public static final String SPACESHIP_IMG_PATH = "img/episode_map/spaceship.png";
     public static final String STAR_IMG_PATH = "img/episode_map/star_red1.png";
+    public static final String STAR2_IMG_PATH = "img/episode_map/star_grey1.png";
 
 
     protected Location currentLocation;
@@ -162,7 +164,12 @@ public class MapEpisodeRenderable extends Renderable {
 
     public TextLabelRenderable getLocationNameHUD() {
         if (locationNameHUD == null) {
-            locationNameHUD = new TextLabelRenderable(appInfo.convertX(250f),appInfo.convertY(1080 - 275f), appInfo.convertX(0), appInfo.convertY(0), Renderable.ACTOR_ROTATABLE_LABEL, "locationNameHUD");
+            locationNameHUD = new TextLabelRenderable(appInfo.convertX(250f),appInfo.convertY(1080 - 275f), appInfo.convertX(0), appInfo.convertY(0), Renderable.ACTOR_ROTATABLE_LABEL, "locationNameHUD") {
+                @Override
+                public boolean needsRepaint() {
+                    return true;
+                }
+            };
             locationNameHUD.setLabel("");
             missionHUD.setZIndex(5);
             locationNameHUD.setVisible(false);
@@ -174,7 +181,12 @@ public class MapEpisodeRenderable extends Renderable {
 
     public TextLabelRenderable getDistanceHUD() {
         if (distanceHUD == null) {
-            distanceHUD = new TextLabelRenderable(appInfo.convertX(250f),appInfo.convertY(1080 - 525f), appInfo.convertX(0), appInfo.convertY(0), Renderable.ACTOR_ROTATABLE_LABEL, "distanceHUD");
+            distanceHUD = new TextLabelRenderable(appInfo.convertX(250f),appInfo.convertY(1080 - 525f), appInfo.convertX(0), appInfo.convertY(0), Renderable.ACTOR_ROTATABLE_LABEL, "distanceHUD") {
+                @Override
+                public boolean needsRepaint() {
+                    return true;
+                }
+            };
             distanceHUD.setLabel("");
             missionHUD.setZIndex(5);
             distanceHUD.setVisible(false);
@@ -185,7 +197,12 @@ public class MapEpisodeRenderable extends Renderable {
 
     public Renderable getMissionHUD() {
         if (missionHUD == null) {
-            missionHUD = new TextLabelRenderable(appInfo.convertX(250f),appInfo.convertY(1080 - 875f), appInfo.convertX(0), appInfo.convertY(0), Renderable.ACTOR_ROTATABLE_LABEL, "missionHUD");
+            missionHUD = new TextLabelRenderable(appInfo.convertX(250f),appInfo.convertY(1080 - 875f), appInfo.convertX(0), appInfo.convertY(0), Renderable.ACTOR_ROTATABLE_LABEL, "missionHUD") {
+                @Override
+                public boolean needsRepaint() {
+                    return true;
+                }
+            };
             missionHUD.setLabel("");
             missionHUD.setZIndex(5);
             missionHUD.setVisible(false);
@@ -209,6 +226,10 @@ public class MapEpisodeRenderable extends Renderable {
                 else if (lCur.equals(currentLocation)) {
                     btn = createCurrentLocationRenderable(lCur);
                 }
+                else if (lCur.getName().equals(MapEpisodeRules.TARGET_MIDDLE_OF_NOWHERE) ||
+                        lCur.getName().equals(MapEpisodeRules.ORIGIN_MIDDLE_OF_NOWHERE)){
+                    btn = createMiddleOfNowhereRenderable(lCur);
+                }
                 else {
                     btn = createCityPointRenderable(lCur);
                 }
@@ -229,6 +250,14 @@ public class MapEpisodeRenderable extends Renderable {
         }
 
         return locationPoints;
+    }
+
+    protected  Renderable createMiddleOfNowhereRenderable(Location lCur) {
+        ActionButtonRenderable btn = new ActionButtonRenderable(appInfo.convertX(lCur.getPosX() - 50), appInfo.convertY(lCur.getPosY() - 50),
+                appInfo.convertX(100), appInfo.convertY(100),  Renderable.ACTOR_IMAGE_BUTTON, "point" + lCur.getName());
+        btn.setImgPath(STAR2_IMG_PATH);
+        return btn;
+
     }
 
     protected ActionButtonRenderable createCityPointRenderable(Location lCur) {
