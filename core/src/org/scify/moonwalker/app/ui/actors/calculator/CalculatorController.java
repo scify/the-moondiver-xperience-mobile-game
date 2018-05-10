@@ -1,6 +1,22 @@
 package org.scify.moonwalker.app.ui.actors.calculator;
 
 public class CalculatorController {
+    public static final String ADD = "add";
+    public static final String SUBTRACT = "subtract";
+    public static final String MULTIPLY = "multiply";
+    public static final String DIVIDE = "divide";
+    public static final String RESULT = "result";
+    public static final String DOT = "dot";
+    public static final String ZERO = "0";
+    public static final String NINE = "9";
+    public static final String EIGHT = "8";
+    public static final String SEVEN = "7";
+    public static final String SIX = "6";
+    public static final String FIVE = "5";
+    public static final String FOUR = "4";
+    public static final String THREE = "3";
+    public static final String TWO = "2";
+    public static final String ONE = "1";
 
     protected String operator1;
     protected String operator2;
@@ -11,7 +27,7 @@ public class CalculatorController {
     }
 
     public void addOperator(String operator) {
-        if(!operator.equals("dot")) {
+        if(!operator.equals(DOT)) {
             if(operation.equals("") || operator1.endsWith("."))
                 operator1 += operator;
             else
@@ -67,13 +83,13 @@ public class CalculatorController {
 
     public String operationToSign() {
         switch (operation) {
-            case "add":
+            case ADD:
                 return "+";
-            case "subtract":
+            case SUBTRACT:
                 return "-";
-            case "multiply":
+            case MULTIPLY:
                 return "*";
-            case "divide":
+            case DIVIDE:
                 return "/";
         }
         return "";

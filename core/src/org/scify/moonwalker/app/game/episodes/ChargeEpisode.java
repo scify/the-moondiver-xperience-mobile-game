@@ -2,7 +2,7 @@ package org.scify.moonwalker.app.game.episodes;
 
 import org.scify.engine.*;
 import org.scify.engine.EpisodeWithEndState;
-import org.scify.moonwalker.app.game.rules.episodes.CalculatorEpisodeRules;
+import org.scify.moonwalker.app.game.rules.episodes.ChargeEpisodeRules;
 
 /**
  * This is a self-contained episode (meaning that it usually gets invoked
@@ -11,8 +11,8 @@ import org.scify.moonwalker.app.game.rules.episodes.CalculatorEpisodeRules;
  * in order to set the already defined (in another episode) game state
  * to the rules.
  */
-public class CalculatorEpisode extends EpisodeWithEndState {
-    public CalculatorEpisode() {
-        super(new CalculatorEpisodeRules());
+public class ChargeEpisode extends EpisodeWithEndState {
+    public ChargeEpisode() {
+        super(new ChargeEpisodeRules());
     }
 }

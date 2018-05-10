@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.scify.engine.renderables.*;
 import org.scify.moonwalker.app.ui.ComponentFactory;
 import org.scify.moonwalker.app.ui.UnsupportedRenderableTypeException;
-import org.scify.moonwalker.app.ui.actors.calculator.CalculatorComponent;
+import org.scify.moonwalker.app.ui.actors.calculator.ChargeEpisodeActor;
 import org.scify.moonwalker.app.ui.actors.conversation.MultipleChoiceConversationActor;
 import org.scify.moonwalker.app.ui.actors.conversation.SingleChoiceConversationActor;
 import org.scify.moonwalker.app.ui.actors.conversation.TwoChoiceConversationActor;
@@ -90,7 +90,7 @@ public class ActorFactory extends ComponentFactory {
                 toReturn = createCockpitActor((CockpitRenderable) renderable);
                 break;
             case Renderable.ACTOR_EPISODE_CALCULATOR:
-                toReturn = new CalculatorComponent(skin);
+                toReturn = createChargeEpisodeActor((ChargeEpisodeRenderable) renderable);
                 break;
             case Renderable.ACTOR_EPISODE_SPACESHIP_CHARGER:
                 toReturn = createSpaceshipControllerActor((SpaceshipChargerRenderable) renderable);
@@ -119,7 +119,11 @@ public class ActorFactory extends ComponentFactory {
         return toReturn;
     }
 
-    private Actor createTableActor(TableRenderable renderable) {
+    protected ChargeEpisodeActor createChargeEpisodeActor(ChargeEpisodeRenderable renderable) {
+        return new ChargeEpisodeActor(skin, renderable);
+    }
+
+    protected Actor createTableActor(TableRenderable renderable) {
         TableActor taRes = new TableActor<>(skin, renderable);
 
         return taRes;
