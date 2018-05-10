@@ -32,13 +32,10 @@ public class ContactScreenActor extends FadingTableActor<ContactScreenRenderable
         createSecondColumn();
 
         createThirdColumn();
-
-        debugAll();
     }
 
     protected void createFirstColumn() {
         float screenHeight = getHeight();
-        float screenWidth = getWidth();
         Table table = new Table();
         table.top().right();
         contactDescription = (ImageWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getContactDescription());
@@ -55,7 +52,6 @@ public class ContactScreenActor extends FadingTableActor<ContactScreenRenderable
 
     protected void createSecondColumn() {
         float screenHeight = getHeight();
-        float screenWidth = getWidth();
         Table table = new Table();
         table.top();
         contactAvatar = (ImageWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getContactAvatar());
@@ -69,7 +65,6 @@ public class ContactScreenActor extends FadingTableActor<ContactScreenRenderable
 
     protected void createThirdColumn() {
         float screenHeight = getHeight();
-        float screenWidth = getWidth();
         Table table = new Table();
         table.top().right();
         exitButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getExitButton());

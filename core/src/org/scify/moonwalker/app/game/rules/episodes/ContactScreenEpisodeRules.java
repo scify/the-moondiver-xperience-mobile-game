@@ -10,21 +10,19 @@ import java.util.Set;
 
 public class ContactScreenEpisodeRules extends FadingEpisodeRules<ContactScreenRenderable> {
 
-    protected boolean outroInitiated;
-    public static final String CONTACT_ID = "contact";
-    public static final String CONVERSATION_FINISHED = "CONVERSATION_FINISHED";
+    protected static final String CONTACT_ID = "contact";
+    protected boolean exitButtonEnabled;
 
     public ContactScreenEpisodeRules() {
         super();
         renderable = null;
-        outroInitiated = false;
+        exitButtonEnabled = false;
     }
 
     @Override
     public GameState getNextState(final GameState gsCurrent, UserAction userAction) {
-        if (conversationRules != null && conversationRules.isFinished() && !outroInitiated) {
-            outroInitiated = true;
-            endEpisodeAndAddEventWithType(gsCurrent, "");
+        if (conversationRules != null && conversationRules.isFinished()) {
+            exitButtonEnabled = true;
         } else if (renderable != null && renderable.isChatEnabled()) {
             // Initialize conversation
             if (gameInfo.getCurrentDay() == 1)
@@ -55,26 +53,33 @@ public class ContactScreenEpisodeRules extends FadingEpisodeRules<ContactScreenR
     public EpisodeEndState determineEndState(GameState gsCurrent) {
         String code = EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS;
         conversationRules.cleanUpState(gsCurrent);
-        return new EpisodeEndState(code, cleanUpState(gsCurrent));
-    }
-
-    protected GameState cleanUpState(GameState currentState) {
-        currentState.removeAllGameEventsOwnedBy(this);
-        currentState.removeGameEventsWithType("CONVERSATION_STARTED");
-        currentState.removeGameEventsWithType(CONVERSATION_FINISHED);
-        return currentState;
+        return new EpisodeEndState(code, cleanUpGameState(gsCurrent));
     }
 
     @Override
     protected void onEnterConversationOrder(GameState gsCurrent, ConversationLine lineEntered) {
         Set<String> eventTrigger;
         if (gsCurrent.eventsQueueContainsEvent(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT)) {
-            eventTrigger = (Set<String>) gsCurrent.getGameEventsWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
+            eventTrigger = (Set<String>) gsCurrent.getGameEventWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
             if (eventTrigger.contains("ring_phone")) {
-                gsCurrent.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.MOBILE_AUDIO_PATH));
+                gsCurrent.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.MOBILE_AUDIO_PATH));
             }
         }
 
         super.onEnterConversationOrder(gsCurrent, lineEntered);
+    }
+
+    @Override
+    protected void handleUserAction(GameState gameState, UserAction userAction) {
+        switch (userAction.getActionCode()) {
+            case EPISODE_BACK:
+                if (exitButtonEnabled) {
+                    endEpisodeAndAddEventWithType(gameState, "");
+                }else {
+                    gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
+                }
+                break;
+        }
+        super.handleUserAction(gameState, userAction);
     }
 }

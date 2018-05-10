@@ -63,12 +63,12 @@ public class SpaceshipChargerEpisodeRules extends TemporaryEpisodeRules {
     @Override
     public EpisodeEndState determineEndState(GameState currentState) {
         if(currentState.eventsQueueContainsEventOwnedBy("CALCULATOR_STARTED", this))
-            return new EpisodeEndState(EpisodeEndStateCode.CALCULATOR_STARTED, cleanUpState(currentState));
+            return new EpisodeEndState(EpisodeEndStateCode.CALCULATOR_STARTED, cleanUpGameState(currentState));
         if(currentState.eventsQueueContainsEventOwnedBy("SIMPLE_TIMED_IMAGE_EPISODE_STARTED", this))
-            return new EpisodeEndState(EpisodeEndStateCode.SIMPLE_TIMED_IMAGE_EPISODE, cleanUpState(currentState));
+            return new EpisodeEndState(EpisodeEndStateCode.SIMPLE_TIMED_IMAGE_EPISODE, cleanUpGameState(currentState));
         EpisodeEndState endStateFromParent = super.determineEndState(currentState);
         if(endStateFromParent != null)
             return endStateFromParent;
-        return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE, cleanUpState(currentState));
+        return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE, cleanUpGameState(currentState));
     }
 }

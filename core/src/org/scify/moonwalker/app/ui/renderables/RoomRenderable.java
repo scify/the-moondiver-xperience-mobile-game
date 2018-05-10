@@ -26,6 +26,8 @@ public class RoomRenderable extends FadingTableRenderable {
     public final static String GIRL_MUSIC_AUDIO_PATH = "audio/episode_room/girl_music.mp3";
     public final static String MOBILE_AUDIO_PATH = "audio/message.mp3";
 
+    public final static String FOREST_AUDIO_PATH = "audio/episode_forest/bg.mp3";
+
     protected boolean permanentlyOn;
     protected boolean chatEnabled;
 

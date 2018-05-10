@@ -115,10 +115,6 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
         }
     }
 
-    protected void disposeConversation() {
-        conversationRules = null;
-    }
-
     @Override
     public void disposeResources() {
         physics.disposeResources();
@@ -149,9 +145,13 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
         return gsCurrent.eventsQueueContainsEvent("PAUSE_GAME");
     }
 
-
-    protected void cleanUpGameState(GameState currentState) {
+    protected GameState cleanUpGameState(GameState currentState) {
         currentState.removeAllGameEventsOwnedBy(this);
+        if (conversationRules != null) {
+            conversationRules.cleanAllConversationEvents(currentState);
+            conversationRules = null;
+        }
+        return currentState;
     }
 
 

@@ -4,8 +4,11 @@ import org.scify.engine.renderables.ImageRenderable;
 
 public class ForestRenderable extends FadingTableRenderable {
 
+    //Images
     public final static String BG_IMG_PATH = "img/episode_forest/bg.png";
+    //Audio
     public final static String FOREST_AUDIO_PATH = "audio/episode_forest/bg.mp3";
+    public final static String BORING_MUSIC_AUDIO_PATH = "audio/episode_forest/boring_music.mp3";
     public final static String MOBILE_AUDIO_PATH = "audio/message.mp3";
     public final static String MAINMENU_AUDIO_PATH = "audio/episode_mainMenu/bg.mp3";
 

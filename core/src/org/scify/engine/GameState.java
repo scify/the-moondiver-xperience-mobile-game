@@ -97,7 +97,7 @@ public abstract class GameState {
      * @param type
      * @return the first event found with that type
      */
-    public GameEvent getGameEventsWithType(String type) {
+    public GameEvent getGameEventWithType(String type) {
         synchronized (eventQueue) {
             ListIterator<GameEvent> listIterator = eventQueue.listIterator();
             while (listIterator.hasNext()) {
@@ -144,8 +144,10 @@ public abstract class GameState {
             ListIterator<GameEvent> listIterator = eventQueue.listIterator();
             while (listIterator.hasNext()) {
                 GameEvent currentGameEvent = listIterator.next();
-                if(currentGameEvent.owner != null && currentGameEvent.owner.equals(owner))
+                if(currentGameEvent.owner != null && currentGameEvent.owner.equals(owner)) {
+                    System.out.println(currentGameEvent.type);
                     listIterator.remove();
+                }
             }
         }
     }

@@ -2,15 +2,16 @@ package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
 import org.scify.engine.conversation.ConversationLine;
+import org.scify.engine.renderables.effects.DelayEffect;
+import org.scify.engine.renderables.effects.EffectSequence;
+import org.scify.engine.renderables.effects.FunctionEffect;
 import org.scify.moonwalker.app.game.rules.ConversationRules;
 import org.scify.moonwalker.app.ui.renderables.ForestRenderable;
 
 import java.util.Set;
 
 public class ForestEpisodeRules extends FadingEpisodeRules<ForestRenderable> {
-    public static final String CONVERSATION_FAIL = "fail";
-    public static final String CONVERSATION_FINISHED = "CONVERSATION_FINISHED";
-    public static final String AUDIO_LOAD_UI = "AUDIO_LOAD_UI";
+
     public static final String FOREST_ID = "forest";
     protected boolean outroInitiated;
 
@@ -22,15 +23,36 @@ public class ForestEpisodeRules extends FadingEpisodeRules<ForestRenderable> {
 
 
     @Override
-    public GameState getNextState(final GameState gsCurrent, UserAction userAction) {
+    public GameState getNextState(final GameState gameState, UserAction userAction) {
         if (conversationRules != null && conversationRules.isFinished() && !outroInitiated) {
             outroInitiated = true;
-            endEpisodeAndAddEventWithType(gsCurrent, "");
+            renderable.addBeforeFadeOut(new Runnable() {
+                @Override
+                public void run() {
+                    gameState.addGameEvent(new GameEvent(AUDIO_DISPOSE_UI, renderable.FOREST_AUDIO_PATH));
+                    gameState.addGameEvent(new GameEvent(AUDIO_DISPOSE_UI, renderable.BORING_MUSIC_AUDIO_PATH));
+                }
+            });
+            if (gameState.getGameEventWithType(conversationRules.CONVERSATION_FAILED)  != null) {
+                EffectSequence effects = new EffectSequence();
+                effects.addEffect(new DelayEffect(3000));
+                effects.addEffect(new FunctionEffect(new Runnable() {
+                    @Override
+                    public void run() {
+                        gameState.addGameEvent(new GameEvent(AUDIO_STOP_UI, renderable.BORING_MUSIC_AUDIO_PATH));
+                        endEpisodeAndAddEventWithType(gameState, "");
+                    }
+                }));
+                renderable.addEffect(effects);
+            }else {
+                gameState.addGameEvent(new GameEvent(AUDIO_STOP_UI, renderable.FOREST_AUDIO_PATH));
+                endEpisodeAndAddEventWithType(gameState, "");
+            }
         } else if (renderable != null && renderable.isChatEnabled()) {
             // Initialize conversation
-            createConversation(gsCurrent, "conversations/episode_forest.json");
+            createConversation(gameState, "conversations/episode_forest.json");
         }
-        return super.getNextState(gsCurrent, userAction);
+        return super.getNextState(gameState, userAction);
     }
 
     @Override
@@ -44,7 +66,8 @@ public class ForestEpisodeRules extends FadingEpisodeRules<ForestRenderable> {
                 }
             });
             currentState.addRenderable(renderable);
-            currentState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", renderable.FOREST_AUDIO_PATH));
+            currentState.addGameEvent(new GameEvent(AUDIO_START_LOOP_UI, renderable.FOREST_AUDIO_PATH));
+            currentState.addGameEvent(new GameEvent(AUDIO_LOAD_UI, renderable.BORING_MUSIC_AUDIO_PATH));
             super.episodeStartedEvents(currentState);
         }
     }
@@ -53,9 +76,9 @@ public class ForestEpisodeRules extends FadingEpisodeRules<ForestRenderable> {
     protected void onEnterConversationOrder(GameState gsCurrent, ConversationLine lineEntered) {
         Set<String> eventTrigger;
         if (gsCurrent.eventsQueueContainsEvent(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT)) {
-            eventTrigger = (Set<String>) gsCurrent.getGameEventsWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
+            eventTrigger = (Set<String>) gsCurrent.getGameEventWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
             if (eventTrigger.contains("ring_phone")) {
-                gsCurrent.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.MOBILE_AUDIO_PATH));
+                gsCurrent.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.MOBILE_AUDIO_PATH));
             }
         }
 
@@ -68,9 +91,12 @@ public class ForestEpisodeRules extends FadingEpisodeRules<ForestRenderable> {
 
         // If we received a conversation "fail" event
         if (gsCurrent.eventsQueueContainsEvent(ConversationRules.ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT)) {
-            eventTrigger = (Set<String>) gsCurrent.getGameEventsWithType(ConversationRules.ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
-            if (eventTrigger.contains(CONVERSATION_FAIL)) {
-                gsCurrent.addGameEvent(new GameEvent(CONVERSATION_FAIL));
+            eventTrigger = (Set<String>) gsCurrent.getGameEventWithType(ConversationRules.ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
+            if (eventTrigger.contains(conversationRules.TAG_FAIL)) {
+                gsCurrent.addGameEvent(new GameEvent(AUDIO_LOAD_UI, renderable.MAINMENU_AUDIO_PATH));
+                gsCurrent.addGameEvent(new GameEvent(AUDIO_STOP_UI, renderable.FOREST_AUDIO_PATH));
+                gsCurrent.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.BORING_MUSIC_AUDIO_PATH));
+                gsCurrent.addGameEvent(new GameEvent(conversationRules.CONVERSATION_FAILED));
             }
         }
 
@@ -78,27 +104,15 @@ public class ForestEpisodeRules extends FadingEpisodeRules<ForestRenderable> {
     }
 
     @Override
-    public EpisodeEndState determineEndState(GameState gsCurrent) {
+    public EpisodeEndState determineEndState(GameState gameState) {
         String code = "";
         // Handle failed conversation
-        if (gsCurrent.eventsQueueContainsEvent(CONVERSATION_FAIL)) {
-            gsCurrent.addGameEvent(new GameEvent(AUDIO_LOAD_UI, renderable.MAINMENU_AUDIO_PATH));
+        if (gameState.eventsQueueContainsEvent(conversationRules.CONVERSATION_FAILED))
             code = EpisodeEndStateCode.SCENARIO_NEEDS_RESTART;
-            gsCurrent.removeGameEventsWithType(CONVERSATION_FAIL);
-        } else if (gsCurrent.eventsQueueContainsEvent(CONVERSATION_FINISHED)) {
+        else if (gameState.eventsQueueContainsEvent(conversationRules.CONVERSATION_FINISHED))
             code = EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS;
-        }
-        conversationRules.cleanUpState(gsCurrent);
 
-        return new EpisodeEndState(code, cleanUpState(gsCurrent));
-    }
-
-    protected GameState cleanUpState(GameState currentState) {
-        currentState.removeAllGameEventsOwnedBy(this);
-        currentState.addGameEvent(new GameEvent("AUDIO_STOP_UI", renderable.FOREST_AUDIO_PATH));
-        currentState.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", renderable.FOREST_AUDIO_PATH));
-        currentState.removeGameEventsWithType("CONVERSATION_STARTED");
-        currentState.removeGameEventsWithType(CONVERSATION_FINISHED);
-        return currentState;
+        conversationRules.cleanUpState(gameState);
+        return new EpisodeEndState(code, cleanUpGameState(gameState));
     }
 }

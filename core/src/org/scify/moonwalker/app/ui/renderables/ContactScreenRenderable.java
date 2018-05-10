@@ -21,6 +21,7 @@ public class ContactScreenRenderable extends FadingTableRenderable {
     protected final static String EXIT_BUTTON_ID = "exit_button";
     //audio
     public final static String MOBILE_AUDIO_PATH = "audio/message.mp3";
+    public final static String WRONG_BUTTON_AUDIO_PATH = "audio/wrong.mp3";
 
     protected ImageRenderable contactDescription;
     protected ImageRenderable contactAvatar;

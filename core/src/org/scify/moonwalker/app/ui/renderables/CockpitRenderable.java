@@ -60,6 +60,7 @@ public class CockpitRenderable extends FadingTableRenderable {
 
     //audio
     public static final String CLICK_AUDIO_PATH = "audio/button1.mp3";
+    public static final String SPACESHIP_BG_AUDIO_PATH = "audio/spaceship_bg.mp3";
 
     protected TextLabelRenderable motorEfficiencyLabel;
     protected TextLabelRenderable energyLabel;

@@ -39,6 +39,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                 }
             });
             setOutsideBackground();
+            gameState.addGameEvent(new GameEvent(AUDIO_START_LOOP_UI, renderable.SPACESHIP_BG_AUDIO_PATH));
             gameState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
             gameState.addRenderable(renderable);
             super.episodeStartedEvents(gameState);
@@ -90,12 +91,12 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
         if (endStateFromParent != null)
             return endStateFromParent;
         else if (currentState.eventsQueueContainsEventOwnedBy("CONTACT_SCREEN_EPISODE_STARTED", this))
-            return new EpisodeEndState(EpisodeEndStateCode.CONTACT_SCREEN_EPISODE_STARTED, cleanUpState(currentState));
+            return new EpisodeEndState(EpisodeEndStateCode.CONTACT_SCREEN_EPISODE_STARTED, cleanUpGameState(currentState));
         else if (currentState.eventsQueueContainsEventOwnedBy("MAP_EPISODE_STARTED", this))
-            return new EpisodeEndState(EpisodeEndStateCode.MAP_EPISODE_STARTED, cleanUpState(currentState));
+            return new EpisodeEndState(EpisodeEndStateCode.MAP_EPISODE_STARTED, cleanUpGameState(currentState));
         else if (currentState.eventsQueueContainsEventOwnedBy("SPACESHIP_CHARGER_EPISODE_STARTED", this))
-            return new EpisodeEndState(EpisodeEndStateCode.SPACESHIP_CHARGER_EPISODE_STARTED, cleanUpState(currentState));
-        return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE, cleanUpState(currentState));
+            return new EpisodeEndState(EpisodeEndStateCode.SPACESHIP_CHARGER_EPISODE_STARTED, cleanUpGameState(currentState));
+        return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE, cleanUpGameState(currentState));
     }
 
     protected void setCockpitFieldValues() {
@@ -111,7 +112,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
     @Override
     public GameState getNextState(GameState gameState, UserAction userAction) {
         long timestamp = new Date().getTime();
-        GameEvent contactToggleEvent = gameState.getGameEventsWithType("TOOGLE_CONTACT_BUTTON");
+        GameEvent contactToggleEvent = gameState.getGameEventWithType("TOOGLE_CONTACT_BUTTON");
         if (contactToggleEvent != null && timestamp > contactToggleEvent.delay) {
             gameState.removeGameEventsWithType("TOOGLE_CONTACT_BUTTON");
             if (contactClickable) {

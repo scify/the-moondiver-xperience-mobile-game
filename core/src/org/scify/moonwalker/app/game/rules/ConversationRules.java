@@ -24,6 +24,9 @@ public class ConversationRules extends MoonWalkerBaseRules {
     public static final String CONVERSATION_FINISHED = "CONVERSATION_FINISHED";
     public static final String CONVERSATION_PAUSED = "CONVERSATION_PAUSED";
     public static final String CONVERSATION_STARTED = "CONVERSATION_STARTED";
+    public static final String CONVERSATION_FAILED = "CONVERSATION_FAILED";
+    public static final String TAG_FAIL = "fail";
+    public static final String TAG_END = "end";
     /**
      * All conversation lines that are read from the json file for
      * this conversation.
@@ -32,6 +35,8 @@ public class ConversationRules extends MoonWalkerBaseRules {
     private Json json;
     protected ResourceLocator resourceLocator;
     protected Renderable lastConversationRenderable;
+
+
 
     public boolean isStarted() {
         return started;
@@ -163,7 +168,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
         Set<String> sAllEvents = lineExited.getOnExitCurrentOrderTrigger();
 
         // Examine what the trigger is and handle it
-        if (sAllEvents.contains("end")) {
+        if (sAllEvents.contains(TAG_END)) {
             setFinished(true);
             gsCurrent.addGameEvent(new GameEvent(CONVERSATION_FINISHED, null, this));
         }
@@ -432,17 +437,18 @@ public class ConversationRules extends MoonWalkerBaseRules {
         }
     }
 
-    public void finish(GameState gameState) {
-        finished = true;
-        if (gameState != null) {
-            gameState.addGameEvent(new GameEvent(CONVERSATION_FINISHED, null, this));
-        }
-
-    }
-
     public GameState cleanUpState(GameState currentState) {
         currentState.removeAllGameEventsOwnedBy(this);
+        return currentState;
+    }
 
+    public GameState cleanAllConversationEvents(GameState currentState) {
+        currentState.removeGameEventsWithType(ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT);
+        currentState.removeGameEventsWithType(ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT);
+        currentState.removeGameEventsWithType(CONVERSATION_FINISHED);
+        currentState.removeGameEventsWithType(CONVERSATION_PAUSED);
+        currentState.removeGameEventsWithType(CONVERSATION_STARTED);
+        currentState.removeGameEventsWithType(CONVERSATION_FAILED);
         return currentState;
     }
 }

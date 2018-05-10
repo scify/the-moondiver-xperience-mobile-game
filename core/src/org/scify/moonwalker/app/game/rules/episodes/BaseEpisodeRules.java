@@ -7,6 +7,7 @@ public class BaseEpisodeRules extends SinglePlayerRules {
 
     public static final String EPISODE_FINISHED = "EPISODE_FINISHED";
     public static final String EPISODE_STARTED = "EPISODE_STARTED";
+    public static final String EPISODE_BACK = "BACK";
     public static final String CALCULATOR_STARTED = "CALCULATOR_STARTED";
 
     //audio related
@@ -39,10 +40,6 @@ public class BaseEpisodeRules extends SinglePlayerRules {
             case UserActionCode.FINISH_EPISODE:
                 episodeEndedEvents(gsCurrent);
                 break;
-            case UserActionCode.BACK:
-                gsCurrent.addGameEvent(new GameEvent("BACK", null, this));
-                episodeEndedEvents(gsCurrent);
-                break;
         }
     }
 
@@ -58,7 +55,7 @@ public class BaseEpisodeRules extends SinglePlayerRules {
     @Override
     public EpisodeEndState determineEndState(GameState currentState) {
         if(currentState.eventsQueueContainsEventOwnedBy(CALCULATOR_STARTED, this))
-            return new EpisodeEndState(EpisodeEndStateCode.CALCULATOR_STARTED, cleanUpState(currentState));
+            return new EpisodeEndState(EpisodeEndStateCode.CALCULATOR_STARTED, cleanUpGameState(currentState));
         return null;
     }
 
@@ -73,8 +70,9 @@ public class BaseEpisodeRules extends SinglePlayerRules {
         currentState.addGameEvent(new GameEvent(EPISODE_FINISHED, null, this));
     }
 
-    protected GameState cleanUpState(GameState currentState) {
-        currentState.removeAllGameEventsOwnedBy(this);
+    @Override
+    protected GameState cleanUpGameState(GameState currentState) {
+        super.cleanUpGameState(currentState);
         currentState.clearRendereablesList();
         return currentState;
     }

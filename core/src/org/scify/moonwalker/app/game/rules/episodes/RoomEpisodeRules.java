@@ -3,9 +3,6 @@ package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
 import org.scify.engine.conversation.ConversationLine;
-import org.scify.engine.renderables.effects.EffectSequence;
-import org.scify.engine.renderables.effects.FadeEffect;
-import org.scify.engine.renderables.effects.FunctionEffect;
 import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.game.rules.ConversationRules;
 import org.scify.moonwalker.app.ui.renderables.RoomRenderable;
@@ -15,7 +12,6 @@ import java.util.Set;
 
 public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
     public static final String RING_PHONE = "ring_phone";
-    public static final String CONVERSATION_FINISHED = "CONVERSATION_FINISHED";
     public static final String TOGGLE = "toggle";
     public static final String ROOM_ID = "room";
     protected boolean outroInitiated;
@@ -32,12 +28,13 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
             outroInitiated = true;
             renderable.turnOffPhone();
             if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
-                gsCurrent.addGameEvent(new GameEvent("AUDIO_STOP_UI", renderable.BOY_MUSIC_AUDIO_PATH));
-                gsCurrent.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", renderable.BOY_MUSIC_AUDIO_PATH));
+                gsCurrent.addGameEvent(new GameEvent(AUDIO_STOP_UI, renderable.BOY_MUSIC_AUDIO_PATH));
+                gsCurrent.addGameEvent(new GameEvent(AUDIO_DISPOSE_UI, renderable.BOY_MUSIC_AUDIO_PATH));
             } else {
-                gsCurrent.addGameEvent(new GameEvent("AUDIO_STOP_UI", renderable.GIRL_MUSIC_AUDIO_PATH));
-                gsCurrent.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", renderable.GIRL_MUSIC_AUDIO_PATH));
+                gsCurrent.addGameEvent(new GameEvent(AUDIO_STOP_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
+                gsCurrent.addGameEvent(new GameEvent(AUDIO_DISPOSE_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
             }
+            gsCurrent.addGameEvent(new GameEvent(AUDIO_LOAD_UI, renderable.FOREST_AUDIO_PATH));
             //THIS HOW WE END AN EPISODE AND INITIATE FADE-OUT-EFFECT
             endEpisodeAndAddEventWithType(gsCurrent, "");
 
@@ -65,12 +62,11 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
 
             super.episodeStartedEvents(currentState);
             if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
-                currentState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", renderable.BOY_MUSIC_AUDIO_PATH));
-                currentState.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", renderable.GIRL_MUSIC_AUDIO_PATH));
+                currentState.addGameEvent(new GameEvent(AUDIO_START_LOOP_UI, renderable.BOY_MUSIC_AUDIO_PATH));
+                currentState.addGameEvent(new GameEvent(AUDIO_DISPOSE_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
             } else {
-                currentState.addGameEvent(new GameEvent("AUDIO_START_LOOP_UI", renderable.GIRL_MUSIC_AUDIO_PATH));
-                currentState.addGameEvent(new GameEvent("AUDIO_DISPOSE_UI", renderable.BOY_MUSIC_AUDIO_PATH));
-
+                currentState.addGameEvent(new GameEvent(AUDIO_START_LOOP_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
+                currentState.addGameEvent(new GameEvent(AUDIO_DISPOSE_UI, renderable.BOY_MUSIC_AUDIO_PATH));
             }
         }
     }
@@ -78,9 +74,9 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
     @Override
     protected void onEnterConversationOrder(GameState gsCurrent, ConversationLine lineEntered) {
         Set<String> eventTrigger;
-        eventTrigger = (Set<String>) gsCurrent.getGameEventsWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
+        eventTrigger = (Set<String>) gsCurrent.getGameEventWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
         if (eventTrigger.contains(RING_PHONE)) {
-            gsCurrent.addGameEvent(new GameEvent("AUDIO_START_UI", renderable.MOBILE_AUDIO_PATH));
+            gsCurrent.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.MOBILE_AUDIO_PATH));
             renderable.togglePhone();
         }
         if (eventTrigger.contains(TOGGLE)) {
@@ -92,19 +88,10 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
     @Override
     public EpisodeEndState determineEndState(GameState gsCurrent) {
         String code = EpisodeEndStateCode.EPISODE_FINISHED_FAILURE;
-        if (gsCurrent.eventsQueueContainsEvent(CONVERSATION_FINISHED)) {
+        if (gsCurrent.eventsQueueContainsEvent(conversationRules.CONVERSATION_FINISHED)) {
             code = EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS;
             conversationRules.cleanUpState(gsCurrent);
         }
-        return new EpisodeEndState(code, cleanUpState(gsCurrent));
-    }
-
-    protected GameState cleanUpState(GameState currentState) {
-        currentState.removeAllGameEventsOwnedBy(this);
-        currentState.removeGameEventsWithType("CONVERSATION_READY_TO_FINISH");
-        currentState.removeGameEventsWithType("CONVERSATION_FINISHED");
-        currentState.removeGameEventsWithType("CONVERSATION_STARTED");
-        currentState.removeGameEventsWithType(CONVERSATION_FINISHED);
-        return currentState;
+        return new EpisodeEndState(code, cleanUpGameState(gsCurrent));
     }
 }

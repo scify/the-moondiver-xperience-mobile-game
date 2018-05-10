@@ -1,14 +1,11 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
-import org.scify.engine.renderables.ActionButtonRenderable;
 import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.ui.renderables.MainMenuRenderable;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable> {
     public static final String COOLDOWN = "COOLDOWN";
@@ -56,7 +53,7 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
     public GameState getNextState(final GameState gameState, UserAction userAction) {
         long timestamp = new Date().getTime();
         // Examine if we have a cooldown event
-        GameEvent coolDownEvent = gameState.getGameEventsWithType(COOLDOWN);
+        GameEvent coolDownEvent = gameState.getGameEventWithType(COOLDOWN);
         // If we do and we should update the cooldown counter (e.g. 1sec has passed)
         if (coolDownEvent != null && timestamp > coolDownEvent.delay) {
             doCountdown(gameState, timestamp);
@@ -106,8 +103,8 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
         GameEvent avatarSelected;
         gameInfo.setSelectedPlayer(selectedPlayer);
 
-        coolDownEvent = gameState.getGameEventsWithType(COOLDOWN);
-        avatarSelected = gameState.getGameEventsWithType(AVATAR_SELECTED);
+        coolDownEvent = gameState.getGameEventWithType(COOLDOWN);
+        avatarSelected = gameState.getGameEventWithType(AVATAR_SELECTED);
         gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
         if (coolDownEvent != null) {
             gameState.removeGameEventsWithType(COOLDOWN);
