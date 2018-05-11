@@ -36,12 +36,12 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     public static final String SCREEN_FADE_IN = "SCREEN_FADE_IN";
     public static final String BORDER_UI = "BORDER_UI";
     public static final String EPISODE_SUCCESS_UI = "EPISODE_SUCCESS_UI";
-    public static final String AUDIO_TOGGLE_UI = "AUDIO_TOGGLE_UI";
-    public static final String AUDIO_LOAD_UI = "AUDIO_LOAD_UI";
-    public static final String AUDIO_DISPOSE_UI = "AUDIO_DISPOSE_UI";
-    public static final String AUDIO_START_UI = "AUDIO_START_UI";
-    public static final String AUDIO_START_LOOP_UI = "AUDIO_START_LOOP_UI";
-    public static final String AUDIO_STOP_UI = "AUDIO_STOP_UI";
+    public static final String AUDIO_TOGGLE_UI = "GAME_EVENT_AUDIO_TOGGLE_UI";
+    public static final String AUDIO_LOAD_UI = "GAME_EVENT_AUDIO_LOAD_UI";
+    public static final String AUDIO_DISPOSE_UI = "GAME_EVENT_AUDIO_DISPOSE_UI";
+    public static final String AUDIO_START_UI = "GAME_EVENT_AUDIO_START_UI";
+    public static final String AUDIO_START_LOOP_UI = "GAME_EVENT_AUDIO_START_LOOP_UI";
+    public static final String AUDIO_STOP_UI = "GAME_EVENT_AUDIO_STOP_UI";
     public static final String UPDATE_LABEL_TEXT_UI = "UPDATE_LABEL_TEXT_UI";
     public static final String SOUND_BUMP_PATH = "audio/bump.wav";
     public static final String SOUND_SUCCESS_PATH = "audio/success.wav";
@@ -69,6 +69,8 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     protected boolean bDisposalOngoing;
     protected boolean audioEnabled;
     protected MoonwalkerUIPainter painter;
+
+    protected int lowerUpdatedZIndex = Integer.MAX_VALUE;
 
     public MoonWalkerRenderingEngine(UserInputHandler userInputHandler, SpriteBatch batch, ZIndexedStage stage) {
         this.resourceLocator = new ResourceLocator();
@@ -142,6 +144,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     @Override
     public void drawGameState(MoonWalkerGameState currentState) {
         if (!bDisposalOngoing) {
+            lowerUpdatedZIndex = Integer.MAX_VALUE; // Nothing updated yet
             List<GameEvent> eventsList = currentState.getEventQueue();
             handleGameEvents(eventsList);
             drawRenderables(currentState);
@@ -153,6 +156,28 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             synchronized (currentState.getRenderableList()) {
                 // Get renderable list snapshot (to avoid concurrent modification)
                 List<Renderable> lRenderables = new ArrayList<>(currentState.getRenderableList());
+                // Sort renderables
+                Collections.sort(lRenderables, new Comparator<Renderable>() {
+                    @Override
+                    public int compare(Renderable o1, Renderable o2) {
+                        if (o1 == o2) {
+                            return 0;
+                        }
+
+                        // Start with z-index
+                        int iRes = o1.getZIndex() - o2.getZIndex();
+                        if (iRes == 0) {
+                            // Continue with area (smaller gets higher zorder
+                            iRes = -(int)((o1.getWidth() * o1.getHeight()) -
+                                    (o2.getWidth() * o2.getHeight()));
+                        }
+                        if (iRes == 0) {
+                            iRes = (int)(o1.toString().hashCode() - o2.toString().hashCode());
+                        }
+
+                        return -iRes; // Order from lower to upper
+                    }
+                });
 
                 for (Renderable renderable : lRenderables) {
                     drawRenderable(renderable);
@@ -181,13 +206,19 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 ///
                 painter.drawUIRenderable(uiRepresentationOfRenderable, renderable);
                 // NOTE: We do NOT and should NOT call wasUpdated. It is the actor's responsibility to do so.
+
+                // Update lowest updated layer
+                lowerUpdatedZIndex = Math.min(lowerUpdatedZIndex, renderable.getZIndex());
             }
             // else
             else {
-                // If needs repaint
-                if (renderable.needsRepaint()) {
+                // If needs repaint in itself, or something below it was painted
+                if (renderable.needsRepaint() || (renderable.getZIndex() >= lowerUpdatedZIndex)) {
                     // repaint
                     painter.drawUIRenderable(uiRepresentationOfRenderable, renderable);
+
+                    // Update lowest updated layer
+                    lowerUpdatedZIndex = Math.min(lowerUpdatedZIndex, renderable.getZIndex());
                 }
             }
 
@@ -293,7 +324,10 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         }
         // Update texture
         worldImgTexture = new Texture(resourceLocator.getFilePath(imgPath));
-        return new Image(worldImgTexture);
+        Image iRes = new Image(worldImgTexture);
+        // Apply app size to image (stretch it to fit the app stage)
+        iRes.setSize(appInfo.getScreenWidth(), appInfo.getScreenHeight());
+        return iRes;
     }
 
     private void updateLabelText(HashMap.SimpleEntry<Renderable, String> parameters) {
@@ -349,7 +383,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         if (!bDisposalOngoing && currentGameState != null) {
             this.world = currentGameState.world;
             long lNewTime = new Date().getTime();
-            if (lNewTime - lLastUpdate < 10L) {// If no less than 1/5 sec has passed
+            if (lNewTime - lLastUpdate < 10L) {// If a trivial time has not passed
                 Thread.yield();
                 return; // Do nothing
             } else {
@@ -361,14 +395,15 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
 
                     painter.updateStageBG(delta, lNewTime, lLastUpdate);
 
-                    drawGameState(currentGameState);
-
                     batch.end();
 
                     cameraController.update();
                     stage.act(delta);
                     stage.draw();
 
+                    batch.begin();
+                    drawGameState(currentGameState);
+                    batch.end();
                 }
                 cameraController.render(world);
                 cameraController.setProjectionMatrix(batch);

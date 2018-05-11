@@ -61,7 +61,7 @@ public class SpaceshipInventoryEpisodeRules extends FadingEpisodeRules<Spaceship
     @Override
     protected void handleUserAction(GameState gameState, UserAction userAction) {
         switch (userAction.getActionCode()) {
-            case EPISODE_BACK: {
+            case GAME_EVENT_EPISODE_BACK: {
                 endEpisodeAndAddEventWithType(gameState, "");
                 break;
             }

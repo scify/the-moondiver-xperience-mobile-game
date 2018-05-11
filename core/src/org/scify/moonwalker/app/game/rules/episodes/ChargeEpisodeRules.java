@@ -20,17 +20,17 @@ public class ChargeEpisodeRules extends TemporaryEpisodeRules {
     CalculatorController controller;
 
     public ChargeEpisodeRules() {
-        this.controller = new CalculatorController();
+        controller = new CalculatorController();
     }
 
     @Override
     public void episodeStartedEvents(GameState gsCurrent) {
         if (!isEpisodeStarted(gsCurrent)) {
             super.episodeStartedEvents(gsCurrent);
+            calculator =  new ChargeEpisodeRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), Renderable.ACTOR_EPISODE_CHARGER, CALCULATOR_BUTTON_ID,
+                    IMG_EPISODE_CHARGE_BG_PATH);
             addEpisodeBackgroundImage(gsCurrent, IMG_EPISODE_CHARGE_BG_PATH);
 
-            calculator =  new ChargeEpisodeRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), Renderable.ACTOR_EPISODE_CALCULATOR, CALCULATOR_BUTTON_ID,
-                    IMG_EPISODE_CHARGE_BG_PATH);
             gsCurrent.addRenderables(calculator.getAllRenderables());
             gsCurrent.addRenderable(calculator);
         }

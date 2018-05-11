@@ -90,10 +90,7 @@ public class ActorFactory extends ComponentFactory {
             case Renderable.ACTOR_EPISODE_COCKPIT:
                 toReturn = createCockpitActor((CockpitRenderable) renderable);
                 break;
-            case Renderable.ACTOR_EPISODE_CALCULATOR:
-                toReturn = createChargeEpisodeActor((ChargeEpisodeRenderable) renderable);
-                break;
-            case Renderable.ACTOR_EPISODE_SPACESHIP_CHARGER:
+            case Renderable.ACTOR_EPISODE_CHARGER:
                 toReturn = createChargeEpisodeActor((ChargeEpisodeRenderable) renderable);
                 break;
             case Renderable.ACTOR_EPISODE_SPACESHIP_INVENTORY:
@@ -171,6 +168,7 @@ public class ActorFactory extends ComponentFactory {
     protected void setCommonAttrsAndListener(Button btn, ActionButtonRenderable actionButtonRenderable) {
         setButtonDimensions(actionButtonRenderable, btn);
         btn.setName(actionButtonRenderable.getId());
+        btn.setZIndex(actionButtonRenderable.getZIndex());
         addButtonListener(btn, actionButtonRenderable);
     }
 

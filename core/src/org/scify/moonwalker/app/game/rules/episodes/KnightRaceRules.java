@@ -27,8 +27,8 @@ public class KnightRaceRules extends SinglePlayerRules {
     }
 
     public void gameStartedEvents(GameState gsCurrent) {
-        if(!gsCurrent.eventsQueueContainsEvent("EPISODE_STARTED")) {
-            gsCurrent.addGameEvent(new GameEvent("EPISODE_STARTED"));
+        if(!gsCurrent.eventsQueueContainsEvent("GAME_EVENT_EPISODE_STARTED")) {
+            gsCurrent.addGameEvent(new GameEvent("GAME_EVENT_EPISODE_STARTED"));
             gsCurrent.addGameEvent(new GameEvent("BACKGROUND_IMG_UI", "img/episode_1/bg.png"));
             float labelWidth = appInfo.getScreenWidth() * 0.2f;
             float labelHeight = appInfo.getScreenHeight()* 0.5f;
@@ -89,7 +89,7 @@ public class KnightRaceRules extends SinglePlayerRules {
 
     @Override
     public boolean isEpisodeFinished(GameState gsCurrent) {
-        return episodeFinished(gsCurrent) && gsCurrent.eventsQueueContainsEvent("EPISODE_FINISHED");
+        return episodeFinished(gsCurrent) && gsCurrent.eventsQueueContainsEvent("GAME_EVENT_EPISODE_FINISHED");
     }
 
     @Override

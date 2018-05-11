@@ -30,12 +30,12 @@ public abstract class TemporaryEpisodeRules extends BaseEpisodeRules {
 
     @Override
     protected void episodeEndedEvents(GameState gsCurrent) {
-        gsCurrent.addGameEvent(new GameEvent("EPISODE_FINISHED", null, this));
-        gsCurrent.addGameEvent(new GameEvent("PREVIOUS_EPISODE", null, this));
+        gsCurrent.addGameEvent(new GameEvent(BaseEpisodeRules.GAME_EVENT_EPISODE_FINISHED, null, this));
+        gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_PREVIOUS_EPISODE, null, this));
     }
 
     @Override
     public boolean isEpisodeFinished(GameState gsCurrent) {
-        return gsCurrent.eventsQueueContainsEventOwnedBy("PREVIOUS_EPISODE", this);
+        return gsCurrent.eventsQueueContainsEventOwnedBy(GAME_EVENT_PREVIOUS_EPISODE, this);
     }
 }

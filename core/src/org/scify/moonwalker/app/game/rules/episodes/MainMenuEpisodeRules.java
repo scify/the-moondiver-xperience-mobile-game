@@ -32,7 +32,7 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
             gameInfo.setSelectedPlayer(SelectedPlayer.unset);
 
             // Start sound
-            gameState.addGameEvent(new GameEvent(AUDIO_START_LOOP_UI, renderable.MAINMENU_AUDIO_PATH));
+            gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.MAINMENU_AUDIO_PATH));
 
             // Enable input after fade in
             renderable.addAfterFadeIn(new Runnable() {
@@ -44,7 +44,6 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
 
             // Call parent starting process
             gameState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
-            gameState.addRenderable(renderable);
             super.episodeStartedEvents(gameState);
         }
     }
@@ -70,19 +69,19 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
             switch (userAction.getActionCode()) {
                 case NEW_GAME:
                     if (mainMenuButtonsEnabled) {
-                        gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
+                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
                         initPlayerSelection(gameState);
                     }
                     break;
                 case UserActionCode.TOGGLE_AUDIO:
                     if (mainMenuButtonsEnabled) {
-                        gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
-                        gameState.addGameEvent(new GameEvent(AUDIO_TOGGLE_UI));
+                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
+                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_TOGGLE_UI));
                     }
                     break;
                 case UserActionCode.QUIT:
                     if (mainMenuButtonsEnabled) {
-                        gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
+                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
                         endEpisode(gameState, APP_QUIT);
                     }
                     break;
@@ -105,7 +104,7 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
 
         coolDownEvent = gameState.getGameEventWithType(COOLDOWN);
         avatarSelected = gameState.getGameEventWithType(AVATAR_SELECTED);
-        gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
+        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
         if (coolDownEvent != null) {
             gameState.removeGameEventsWithType(COOLDOWN);
         }
@@ -122,8 +121,8 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
     }
 
     private void prepareNextEpisodeAudio(GameState currentState) {
-        currentState.addGameEvent(new GameEvent(AUDIO_LOAD_UI, renderable.BOY_MUSIC_AUDIO_PATH));
-        currentState.addGameEvent(new GameEvent(AUDIO_LOAD_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
+        currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.BOY_MUSIC_AUDIO_PATH));
+        currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
     }
 
 
@@ -149,7 +148,7 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
             endEpisode(gameState, NEW_GAME);
         } else {
             // inform UI to update the cooldown
-            gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
+            gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
             gameState.addGameEvent(new GameEvent(COOLDOWN, timestamp + 1000, false, this));
         }
 
@@ -172,8 +171,8 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
         renderable.addBeforeFadeOut(new Runnable() {
             @Override
             public void run() {
-                gameState.addGameEvent(new GameEvent(AUDIO_STOP_UI, renderable.MAINMENU_AUDIO_PATH));
-                gameState.addGameEvent(new GameEvent(AUDIO_DISPOSE_UI, renderable.MAINMENU_AUDIO_PATH));
+                gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.MAINMENU_AUDIO_PATH));
+                gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.MAINMENU_AUDIO_PATH));
             }
         });
 

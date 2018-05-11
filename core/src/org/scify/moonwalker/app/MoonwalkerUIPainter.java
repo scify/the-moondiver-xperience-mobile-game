@@ -77,6 +77,7 @@ public class MoonwalkerUIPainter {
             drawSpriteFromRenderable(renderable, sToDraw);
         } else {
             Actor aToDraw = (Actor) uiRenderable;
+            // Draw it
             drawActorFromRenderable(renderable, aToDraw);
         }
     }
@@ -104,16 +105,13 @@ public class MoonwalkerUIPainter {
 
 
         // if actor does not have a stage, it means that
-        // it is the first time that it is added to the stage.
+        // it is the first time that it is drawn.
         if (aToDraw.getStage() == null) {
             //System.out.println("new actor with name: " + renderable.getId());
             aToDraw.setName(renderable.getId());
 
-            // If actor does not have a parent
-            if (aToDraw.getParent() == null) {
-                // we should add it to the stage
-                stage.addActorForRenderable(aToDraw, renderable);
-            }
+            // we should add it to the stage (which will undertake the actual drawing)
+            stage.addActorForRenderable(aToDraw, renderable);
         }
     }
 

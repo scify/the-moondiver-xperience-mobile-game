@@ -57,7 +57,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                 }
             });
             setOutsideBackground();
-            gameState.addGameEvent(new GameEvent(AUDIO_START_LOOP_UI, renderable.SPACESHIP_BG_AUDIO_PATH));
+            gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.SPACESHIP_BG_AUDIO_PATH));
             gameState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
             gameState.addRenderable(renderable);
             super.episodeStartedEvents(gameState);
@@ -75,7 +75,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
     protected void goToEpisode(GameState gameState, GameEvent gameEvent) {
         buttonsEnabled = false;
         gameState.removeGameEventsWithType(TOGGLE_BUTTON);
-        gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
+        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
         renderable.turnOffLightOffAllButtons();
         renderable.fadeoutOutsideBackground();
         gameState.addGameEvent(gameEvent);
@@ -89,37 +89,37 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                 if (buttonsEnabled && contactClickable)
                     goToEpisode(gameState, new GameEvent(CONTACT_SCREEN_EPISODE_STARTED, null, this));
                 else
-                    gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
+                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
                 break;
             case UserActionCode.MAP_EPISODE:
                 if (buttonsEnabled && !contactClickable && mapClickable)
                     goToEpisode(gameState, new GameEvent(SELECT_LOCATION_ON_MAP_EPISODE, null, this));
                 else
-                    gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
+                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
                 break;
             case UserActionCode.CHARGE_SPACESHIP_EPISODE:
                 if (buttonsEnabled && !contactClickable && chargeClickable)
                     goToEpisode(gameState, new GameEvent(SPACESHIP_CHARGER_EPISODE_STARTED, null, this));
                 else
-                    gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
+                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
                 break;
             case UserActionCode.SPACESHIP_INVENTORY_EPISODE:
                 if (buttonsEnabled && !contactClickable && inventoryClickable) {
                     goToEpisode(gameState, new GameEvent(SPACESHIP_INVENTORY_EPISODE_STARTED, null, this));
                 } else
-                    gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
+                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
                 break;
             case UserActionCode.TRAVEL:
                 if (buttonsEnabled && !contactClickable && travelClickable) {
 
                 } else
-                    gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
+                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
                 break;
             case UserActionCode.LAUNCH:
                 if (buttonsEnabled && !contactClickable && launchClickable) {
 
                 } else
-                    gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
+                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
                 break;
             default:
                 super.handleUserAction(gameState, userAction);

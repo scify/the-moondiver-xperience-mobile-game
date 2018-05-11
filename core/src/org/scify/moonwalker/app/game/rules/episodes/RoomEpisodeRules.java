@@ -28,13 +28,13 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
             outroInitiated = true;
             renderable.turnOffPhone();
             if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
-                gsCurrent.addGameEvent(new GameEvent(AUDIO_STOP_UI, renderable.BOY_MUSIC_AUDIO_PATH));
-                gsCurrent.addGameEvent(new GameEvent(AUDIO_DISPOSE_UI, renderable.BOY_MUSIC_AUDIO_PATH));
+                gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.BOY_MUSIC_AUDIO_PATH));
+                gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.BOY_MUSIC_AUDIO_PATH));
             } else {
-                gsCurrent.addGameEvent(new GameEvent(AUDIO_STOP_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
-                gsCurrent.addGameEvent(new GameEvent(AUDIO_DISPOSE_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
+                gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
+                gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
             }
-            gsCurrent.addGameEvent(new GameEvent(AUDIO_LOAD_UI, renderable.FOREST_AUDIO_PATH));
+            gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.FOREST_AUDIO_PATH));
             //THIS HOW WE END AN EPISODE AND INITIATE FADE-OUT-EFFECT
             endEpisodeAndAddEventWithType(gsCurrent, "");
 
@@ -62,11 +62,11 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
 
             super.episodeStartedEvents(currentState);
             if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
-                currentState.addGameEvent(new GameEvent(AUDIO_START_LOOP_UI, renderable.BOY_MUSIC_AUDIO_PATH));
-                currentState.addGameEvent(new GameEvent(AUDIO_DISPOSE_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
+                currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.BOY_MUSIC_AUDIO_PATH));
+                currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
             } else {
-                currentState.addGameEvent(new GameEvent(AUDIO_START_LOOP_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
-                currentState.addGameEvent(new GameEvent(AUDIO_DISPOSE_UI, renderable.BOY_MUSIC_AUDIO_PATH));
+                currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
+                currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.BOY_MUSIC_AUDIO_PATH));
             }
         }
     }
@@ -76,7 +76,7 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
         Set<String> eventTrigger;
         eventTrigger = (Set<String>) gsCurrent.getGameEventWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
         if (eventTrigger.contains(RING_PHONE)) {
-            gsCurrent.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.MOBILE_AUDIO_PATH));
+            gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.MOBILE_AUDIO_PATH));
             renderable.togglePhone();
         }
         if (eventTrigger.contains(TOGGLE)) {
