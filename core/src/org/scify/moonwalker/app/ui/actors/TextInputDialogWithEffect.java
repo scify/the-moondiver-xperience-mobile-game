@@ -21,7 +21,7 @@ public class TextInputDialogWithEffect extends ActionDialogWithEffect {
         table.setSkin(skin);
         table.setFillParent(true);
         stage.addActor(table);
-        table.add(question.getBody()).padBottom(10f);
+        //table.add(question.getBody()).padBottom(10f);
         table.row();
         table.add(textField).padBottom(10f);
         table.row();
