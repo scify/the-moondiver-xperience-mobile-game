@@ -1,0 +1,15 @@
+[
+  {"id": "1", "order":"1", "speakerId":"scientist_london", "text":"Buongiorno! Καλώς όρισες στο όμορφο Μιλάνο!", "prerequisites":""},
+  {"id": "2", "order":"2", "speakerId":"scientist_london", "text":"Είμαι η Stella Laluna,\nεπικεφαλής του Ιταλικού Ερευνητικού Ινστιτούτου Διαστήματος.", "prerequisites":""},
+  {"id": "3", "order":"3", "speakerId":"scientist_london", "text":"Οι \"πράκτορές\" μου λένε πως τα πας καλά ως τώρα.", "prerequisites":""},
+  {"id": "4", "order":"4", "speakerId":"scientist_london", "text":"Εμείς θέλουμε να δούμε αν ξέρεις τουλάχιστον τη γειτονιά μας.\nΤο ηλιακό μας σύστημα!", "prerequisites":""},
+  {"id": "5", "order":"5", "speakerId":"player", "text":"Θα αστειεύεστε, την ξέρω πολύ καλά!", "prerequisites":""},
+  {"id": "5", "order":"5", "speakerId":"player", "text":"Για να δούμε...", "prerequisites":""},
+  {"id": "6", "order":"6", "speakerId":"scientist_london", "text":"Εντάξει λοιπόν, ας δούμε τι ξέρεις\nτώρα για το ηλιακό μας σύστημα...", "prerequisites":"", "onExitCurrentOrderTrigger":"load_questions"},
+  {"id": "7", "order":"7", "speakerId":"scientist_madrid", "text":"Μπράβο! τα κατάφερες!", "prerequisites":"player_has_3_correct"},
+  {"id": "8", "order":"8", "speakerId":"scientist_madrid", "text":"Σου προσφέρω λοιπόν το επόμενο εξάρτημα\nπου θα χρειαστείς για το ταξίδι σου:", "prerequisites":"player_has_3_correct"},
+  {"id": "9", "order":"9", "speakerId":"scientist_madrid", "text":"Άλλος ένας εξελιγμένος συλλέκτης\nηλιακής ακτινοβολίας είναι δικός σου!", "prerequisites":"player_has_3_correct"},
+  {"id": "10", "order":"10", "speakerId":"scientist_madrid", "text":"Αξιοποιεί το φως που αντανακλάται στη Σελήνη.", "prerequisites":"player_has_3_correct"},
+  {"id": "11", "order":"11", "speakerId":"scientist_madrid", "text":"Καλή επιτυχία!", "prerequisites":"player_has_3_correct", "onExitCurrentOrderTrigger":"end"},
+  {"id": "12", "order":"12", "speakerId":"scientist_madrid", "text":"Χμ... Δεν είσαι {{έτοιμος/έτοιμη}} ακόμα.\nΈλα πίσω ξανά αύριο.", "prerequisites":"player_has_3_wrong", "onExitCurrentOrderTrigger":"end"}
+]
