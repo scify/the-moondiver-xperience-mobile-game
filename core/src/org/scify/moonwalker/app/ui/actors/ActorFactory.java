@@ -94,7 +94,7 @@ public class ActorFactory extends ComponentFactory {
                 toReturn = createChargeEpisodeActor((ChargeEpisodeRenderable) renderable);
                 break;
             case Renderable.ACTOR_EPISODE_SPACESHIP_CHARGER:
-                toReturn = createSpaceshipChargerControllerActor((SpaceshipChargerRenderable) renderable);
+                toReturn = createChargeEpisodeActor((ChargeEpisodeRenderable) renderable);
                 break;
             case Renderable.ACTOR_EPISODE_SPACESHIP_INVENTORY:
                 toReturn = createSpaceshipInventoryControllerActor((SpaceshipInventoryRenderable) renderable);
@@ -211,15 +211,6 @@ public class ActorFactory extends ComponentFactory {
         ContactScreenActor actor = new ContactScreenActor(skin, renderable);
         actor.setZIndex(0);
         return actor;
-    }
-
-    protected Actor createSpaceshipChargerControllerActor(final SpaceshipChargerRenderable renderable) {
-        SpaceshipChargerActor spaceshipControllerActor = new SpaceshipChargerActor(skin, renderable);
-        spaceshipControllerActor.setCalculatorButton(createButton(renderable.getCalculatorButton()));
-        spaceshipControllerActor.setChargeButton(createButton(renderable.getChargeButton()));
-        spaceshipControllerActor.setEscapeButton(createButton(renderable.getEscapeButton()));
-        spaceshipControllerActor.addSubTables();
-        return spaceshipControllerActor;
     }
 
     protected Actor createSpaceshipInventoryControllerActor(final SpaceshipInventoryRenderable renderable) {
