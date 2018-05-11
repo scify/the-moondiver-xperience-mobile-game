@@ -13,7 +13,7 @@ import java.util.Set;
 public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
     public static final String RING_PHONE = "ring_phone";
     public static final String TOGGLE = "toggle";
-    public static final String ROOM_ID = "room";
+    public static final String RENDERABLE_ID = "room";
     protected boolean outroInitiated;
 
 
@@ -48,9 +48,9 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
     public void episodeStartedEvents(GameState currentState) {
         if (!isEpisodeStarted(currentState)) {
             if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy)
-                renderable = new RoomRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), ROOM_ID, true);
+                renderable = new RoomRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID, true);
             else
-                renderable = new RoomRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), ROOM_ID, false);
+                renderable = new RoomRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID, false);
             renderable.addAfterFadeIn(new Runnable() {
                 @Override
                 public void run() {

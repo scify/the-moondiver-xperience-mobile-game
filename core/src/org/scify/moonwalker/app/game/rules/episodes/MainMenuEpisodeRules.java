@@ -13,7 +13,7 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
     public static final String APP_QUIT = "APP_QUIT";
     public static final String NEW_GAME = "NEW_GAME";
 
-    public static final String MAIN_MENU_ID = "main_menu";
+    public static final String RENDERABLE_ID = "main_menu";
 
     protected boolean mainMenuButtonsEnabled;
     protected boolean fadeInEffectsCompleted;
@@ -28,7 +28,7 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
     public void episodeStartedEvents(GameState gameState) {
         // If we are just starting
         if (!isEpisodeStarted(gameState)) {
-            renderable = new MainMenuRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), MAIN_MENU_ID);
+            renderable = new MainMenuRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID);
             gameInfo.setSelectedPlayer(SelectedPlayer.unset);
 
             // Start sound

@@ -8,9 +8,7 @@ import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static org.scify.engine.EpisodeEndStateCode.CONTACT_SCREEN_EPISODE_STARTED;
-import static org.scify.engine.EpisodeEndStateCode.SELECT_LOCATION_ON_MAP_EPISODE;
-import static org.scify.engine.EpisodeEndStateCode.SPACESHIP_CHARGER_EPISODE_STARTED;
+import static org.scify.engine.EpisodeEndStateCode.*;
 
 public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
 
@@ -105,9 +103,9 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                 else
                     gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
                 break;
-            case UserActionCode.SPACESHIP_PARTS_EPISODE:
+            case UserActionCode.SPACESHIP_INVENTORY_EPISODE:
                 if (buttonsEnabled && !contactClickable && inventoryClickable) {
-
+                    goToEpisode(gameState, new GameEvent(SPACESHIP_INVENTORY_EPISODE_STARTED, null, this));
                 } else
                     gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
                 break;
@@ -140,6 +138,8 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
             return new EpisodeEndState(SELECT_LOCATION_ON_MAP_EPISODE, cleanUpGameState(currentState));
         else if (currentState.eventsQueueContainsEventOwnedBy(SPACESHIP_CHARGER_EPISODE_STARTED, this))
             return new EpisodeEndState(SPACESHIP_CHARGER_EPISODE_STARTED, cleanUpGameState(currentState));
+        else if (currentState.eventsQueueContainsEventOwnedBy(SPACESHIP_INVENTORY_EPISODE_STARTED, this))
+            return new EpisodeEndState(SPACESHIP_INVENTORY_EPISODE_STARTED, cleanUpGameState(currentState));
         return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE, cleanUpGameState(currentState));
     }
 

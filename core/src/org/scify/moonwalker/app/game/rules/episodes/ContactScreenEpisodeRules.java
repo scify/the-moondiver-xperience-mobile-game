@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class ContactScreenEpisodeRules extends FadingEpisodeRules<ContactScreenRenderable> {
 
-    protected static final String CONTACT_ID = "contact";
+    protected static final String RENDERABLE_ID = "contact";
     protected boolean outroInitiated;
 
     public ContactScreenEpisodeRules() {
@@ -39,7 +39,7 @@ public class ContactScreenEpisodeRules extends FadingEpisodeRules<ContactScreenR
     @Override
     public void episodeStartedEvents(final GameState gameState) {
         if (!isEpisodeStarted(gameState)) {
-            renderable = new ContactScreenRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), CONTACT_ID);
+            renderable = new ContactScreenRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID);
             renderable.addAfterFadeIn(new Runnable() {
                 @Override
                 public void run() {

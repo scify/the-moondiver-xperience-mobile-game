@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class ForestEpisodeRules extends FadingEpisodeRules<ForestRenderable> {
 
-    public static final String FOREST_ID = "forest";
+    public static final String RENDERABLE_ID = "forest";
     protected boolean outroInitiated;
 
     public ForestEpisodeRules() {
@@ -58,7 +58,7 @@ public class ForestEpisodeRules extends FadingEpisodeRules<ForestRenderable> {
     @Override
     public void episodeStartedEvents(final GameState currentState) {
         if (!isEpisodeStarted(currentState)) {
-            renderable = new ForestRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), FOREST_ID);
+            renderable = new ForestRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID);
             renderable.addAfterFadeIn(new Runnable() {
                 @Override
                 public void run() {

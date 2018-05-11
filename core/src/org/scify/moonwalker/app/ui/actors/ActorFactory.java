@@ -93,7 +93,10 @@ public class ActorFactory extends ComponentFactory {
                 toReturn = createChargeEpisodeActor((ChargeEpisodeRenderable) renderable);
                 break;
             case Renderable.ACTOR_EPISODE_SPACESHIP_CHARGER:
-                toReturn = createSpaceshipControllerActor((SpaceshipChargerRenderable) renderable);
+                toReturn = createSpaceshipChargerControllerActor((SpaceshipChargerRenderable) renderable);
+                break;
+            case Renderable.ACTOR_EPISODE_SPACESHIP_INVENTORY:
+                toReturn = createSpaceshipInventoryControllerActor((SpaceshipInventoryRenderable) renderable);
                 break;
             case Renderable.ACTOR_EPISODE_MAP_LOCATION:
                 toReturn = createMapEpisodeActor((MapEpisodeRenderable) renderable);
@@ -208,13 +211,19 @@ public class ActorFactory extends ComponentFactory {
         return actor;
     }
 
-    protected Actor createSpaceshipControllerActor(final SpaceshipChargerRenderable renderable) {
+    protected Actor createSpaceshipChargerControllerActor(final SpaceshipChargerRenderable renderable) {
         SpaceshipChargerActor spaceshipControllerActor = new SpaceshipChargerActor(skin, renderable);
         spaceshipControllerActor.setCalculatorButton(createButton(renderable.getCalculatorButton()));
         spaceshipControllerActor.setChargeButton(createButton(renderable.getChargeButton()));
         spaceshipControllerActor.setEscapeButton(createButton(renderable.getEscapeButton()));
         spaceshipControllerActor.addSubTables();
         return spaceshipControllerActor;
+    }
+
+    protected Actor createSpaceshipInventoryControllerActor(final SpaceshipInventoryRenderable renderable) {
+        SpaceshipInventoryActor actor = new SpaceshipInventoryActor(skin, renderable);
+        actor.setZIndex(0);
+        return actor;
     }
 
     private Actor createMapEpisodeActor(MapEpisodeRenderable renderable) {

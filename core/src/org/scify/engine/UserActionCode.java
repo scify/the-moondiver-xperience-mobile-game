@@ -26,6 +26,6 @@ public class UserActionCode {
     public static final String MAP_EPISODE = "MAP_EPISODE";
     public static final String CONTACT_SCREEN_EPISODE = "CONTACT_SCREEN_EPISODE";
     public static final String CHARGE_SPACESHIP_EPISODE = "CHARGE_SPACESHIP_EPISODE";
-    public static final String SPACESHIP_PARTS_EPISODE = "SPACESHIP_PARTS_EPISODE";
+    public static final String SPACESHIP_INVENTORY_EPISODE = "SPACESHIP_INVENTORY_EPISODE";
     public static final String CHARGE_SPACESHIP_PASS_DAY = "CHARGE_SPACESHIP_PASS_DAY";
 }
