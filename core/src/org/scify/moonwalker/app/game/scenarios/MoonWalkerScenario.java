@@ -32,21 +32,24 @@ public class MoonWalkerScenario extends Scenario {
                 clear();
                 GameInfo.getInstance().setSelectedPlayer(SelectedPlayer.unset);
                 return createBasicScenario();
-            case EpisodeEndStateCode.CALCULATOR_STARTED:
+            /*case EpisodeEndStateCode.CALCULATOR_STARTED:
                 addTemporaryEpisode(new CalculatorEpisode());
-                break;
+                break;*/
             case EpisodeEndStateCode.CONTACT_SCREEN_EPISODE_STARTED:
-                addTemporaryEpisode(new ContactScreenEpisode());
+                Episode newCurrentEpisode = null;
+                if (currentEpisode instanceof CockpitEpisode)
+                    newCurrentEpisode = new CockpitEpisode();
+                addTemporaryEpisode(new ContactScreenEpisode(), newCurrentEpisode);
                 break;
             case EpisodeEndStateCode.MAP_EPISODE_STARTED:
-                addTemporaryEpisode(new MapEpisode(false));
+                addTemporaryEpisode(new MapEpisode(false), new CockpitEpisode());
                 break;
             case EpisodeEndStateCode.SPACESHIP_CHARGER_EPISODE_STARTED:
-                addTemporaryEpisode(new SpaceshipChargerEpisode());
+                addTemporaryEpisode(new SpaceshipChargerEpisode(), new CockpitEpisode());
                 break;
-            case EpisodeEndStateCode.SIMPLE_TIMED_IMAGE_EPISODE:
+            /*case EpisodeEndStateCode.SIMPLE_TIMED_IMAGE_EPISODE:
                 addTemporaryEpisode(new SimpleTimedImageEpisode());
-                break;
+                break;*/
             case EpisodeEndStateCode.TEMP_EPISODE_FINISHED:
                 break;
             case EpisodeEndStateCode.PREVIOUS_EPISODE:

@@ -6,6 +6,11 @@ import org.scify.moonwalker.app.ui.renderables.FadingTableRenderable;
 public class FadingEpisodeRules<T extends FadingTableRenderable> extends BaseEpisodeRules {
     protected T renderable;
 
+    public FadingEpisodeRules () {
+        super();
+        renderable = null;
+    }
+
     public void setRenderable(T mainRenderable) {
         this.renderable = mainRenderable;
     }

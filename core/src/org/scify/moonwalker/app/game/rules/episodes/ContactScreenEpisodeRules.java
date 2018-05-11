@@ -74,6 +74,10 @@ public class ContactScreenEpisodeRules extends FadingEpisodeRules<ContactScreenR
         switch (userAction.getActionCode()) {
             case EPISODE_BACK:
                 if (exitButtonEnabled) {
+                    if (gameInfo.getCurrentDay() == 1) {
+                        gameInfo.setMapRequestFlag(true);
+                    }
+                    gameInfo.setContactRequestFlag(false);
                     endEpisodeAndAddEventWithType(gameState, "");
                 }else {
                     gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));

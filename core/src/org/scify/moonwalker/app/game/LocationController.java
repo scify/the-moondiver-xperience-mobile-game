@@ -6,16 +6,18 @@ import java.util.List;
 public class LocationController {
 
     protected List<Location> locations;
+    protected Location greece;
+    protected Location germany;
 
     public LocationController() {
         locations = new LinkedList<>();
-        Location greece = new Location("Αθήνα", "img/episode_map/athens.png", 1600, 1080 - 950, "Πάρε το\nεξάρτημα G");
+        greece = new Location("Αθήνα", "img/episode_map/athens.png", 1600, 1080 - 950, "Πάρε το\nεξάρτημα G");
         Location uk = new Location("Λονδίνο", "img/episode_map/london.png", 900, 1080 - 420, "Πάρε το\nεξάρτημα U");
         Location france = new Location("Παρίσι", "img/episode_map/paris.png", 965, 1080 - 540, "Πάρε το\nεξάρτημα F");
 //        Location poland = new Location("Πολωνία", "img/globe.png", 510, 190, "PolishItem");
         Location spain = new Location("Μαδρίτη", "img/episode_map/madrid.png", 725, 1080 - 870, "Πάρε το\nεξάρτημα S");
         Location italy = new Location("Μιλάνο", "img/episode_map/milan.png", 1130, 1080 - 680, "Πάρε το\nεξάρτημα I");
-        Location germany = new Location("Βερολίνο", "img/episode_map/berlin.png", 1220, 1080 - 400, "Πάρε το\nεξάρτημα D");
+        germany = new Location("Βερολίνο", "img/episode_map/berlin.png", 1220, 1080 - 400, "Πάρε το\nεξάρτημα D");
         Location norway = new Location("Όσλο", "img/episode_map/oslo.png", 1170, 1080 - 90, "Πάρε το\nεξάρτημα N");
         
         greece.addOtherLocationAndDistance(uk, 2500);
@@ -97,6 +99,7 @@ public class LocationController {
     }
 
     protected static LocationController instance;
+
     public static LocationController getInstance() {
         if (instance == null) {
             instance = new LocationController();
@@ -104,5 +107,13 @@ public class LocationController {
 
         return instance;
 
+    }
+
+    public Location getInitialLocation () {
+        return greece;
+    }
+
+    public Location getInitialDestination () {
+        return greece;
     }
 }

@@ -35,6 +35,7 @@ public class GameInfo {
     protected MoonPhasesController moonPhasesController;
     protected String selectedPlayer;
     protected boolean contactRequestFlag;
+    protected boolean mapRequestFlag;
 
     private static GameInfo instance;
 
@@ -55,6 +56,9 @@ public class GameInfo {
         setMoonPhases();
         selectedPlayer = SelectedPlayer.unset;
         contactRequestFlag = true;
+        mapRequestFlag = false;
+        setCurrentLocation(lc.getInitialLocation());
+        setNextAllowedLocation(lc.getInitialDestination());
     }
 
     public boolean getContactRequestFlag () { return contactRequestFlag; }
@@ -161,5 +165,12 @@ public class GameInfo {
         this.nextTravelPercentagePossible = nextTravelPercentagePossible;
     }
 
+    public boolean getMapRequestFlag() {
+        return mapRequestFlag;
+    }
+
+    public void setMapRequestFlag(boolean mapRequestFlag) {
+        this.mapRequestFlag = mapRequestFlag;
+    }
 
 }
