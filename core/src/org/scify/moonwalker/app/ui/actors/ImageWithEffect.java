@@ -74,6 +74,7 @@ public class ImageWithEffect extends Image implements EffectTarget, Updateable {
 
     @Override
     public void update(Renderable renderable) {
+        setZIndex(renderable.getZIndex());
         renderable.wasUpdated();
     }
 }

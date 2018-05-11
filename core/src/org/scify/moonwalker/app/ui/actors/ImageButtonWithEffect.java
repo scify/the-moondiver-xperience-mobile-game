@@ -62,6 +62,7 @@ public class ImageButtonWithEffect extends ImageButton implements EffectTarget, 
 
     @Override
     public void update(Renderable renderable) {
+        setZIndex(renderable.getZIndex());
         renderable.wasUpdated();
     }
 }

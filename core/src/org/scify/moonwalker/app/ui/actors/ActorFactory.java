@@ -55,6 +55,7 @@ public class ActorFactory extends ComponentFactory {
                 label = new ActorLabelWithEffect(((TextLabelRenderable)renderable).getLabel(), skin);
                 gParent.setWidth(renderable.getWidth());
                 gParent.setHeight(renderable.getHeight());
+                gParent.setZIndex(renderable.getZIndex());
                 label.setWrap(true);
                 gParent.add(label);
                 toReturn = gParent;
@@ -142,6 +143,7 @@ public class ActorFactory extends ComponentFactory {
             renderable.setHeight(img.getHeight());
         }
         img.setSize(renderable.getWidth(), renderable.getHeight());
+        img.setZIndex(renderable.getZIndex());
         return img;
     }
 

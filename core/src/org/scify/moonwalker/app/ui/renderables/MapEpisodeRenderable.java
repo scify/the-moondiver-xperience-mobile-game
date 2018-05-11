@@ -152,6 +152,7 @@ public class MapEpisodeRenderable extends Renderable {
             closeButton.setImgPath(QUIT_BUTTON_IMG_PATH);
             closeButton.setUserAction(new UserAction(UserActionCode.QUIT, null));
             closeButton.setVisible(false);
+            closeButton.setZIndex(100); // On top of the world
         }
 
         return closeButton;

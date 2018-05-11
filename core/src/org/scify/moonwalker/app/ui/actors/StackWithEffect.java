@@ -41,6 +41,7 @@ public class StackWithEffect<T extends Updateable> extends Stack implements Effe
 
     @Override
     public void update(Renderable renderable) {
+        setZIndex(renderable.getZIndex());
         getBasicComponent().update(renderable);
     }
 }

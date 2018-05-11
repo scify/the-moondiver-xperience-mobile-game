@@ -53,6 +53,7 @@ public class TextButtonWithEffect extends TextButton implements EffectTarget, Up
         String text = ((ActionButtonRenderable)renderable).getTitle();
         if (!text.equals(getText()))
             setText(text);
+        setZIndex(renderable.getZIndex());
         renderable.wasUpdated();
     }
 }
