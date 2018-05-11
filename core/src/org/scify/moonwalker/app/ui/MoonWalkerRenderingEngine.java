@@ -31,6 +31,21 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
 
 public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGameState> {
+    public static final String BACKGROUND_IMG_UI = "BACKGROUND_IMG_UI";
+    public static final String SCREEN_FADE_OUT = "SCREEN_FADE_OUT";
+    public static final String SCREEN_FADE_IN = "SCREEN_FADE_IN";
+    public static final String BORDER_UI = "BORDER_UI";
+    public static final String EPISODE_SUCCESS_UI = "EPISODE_SUCCESS_UI";
+    public static final String AUDIO_TOGGLE_UI = "AUDIO_TOGGLE_UI";
+    public static final String AUDIO_LOAD_UI = "AUDIO_LOAD_UI";
+    public static final String AUDIO_DISPOSE_UI = "AUDIO_DISPOSE_UI";
+    public static final String AUDIO_START_UI = "AUDIO_START_UI";
+    public static final String AUDIO_START_LOOP_UI = "AUDIO_START_LOOP_UI";
+    public static final String AUDIO_STOP_UI = "AUDIO_STOP_UI";
+    public static final String UPDATE_LABEL_TEXT_UI = "UPDATE_LABEL_TEXT_UI";
+    public static final String SOUND_BUMP_PATH = "audio/bump.wav";
+    public static final String SOUND_SUCCESS_PATH = "audio/success.wav";
+    public static final String SOUND_EPISODE_MAIN_MENU_BG_PATH = "audio/episode_main_menu/bg.mp3";
     /**
      * The rendering engine processes the game events, one at a time.
      * The currently processed {@link GameEvent} may block any UI input.
@@ -85,7 +100,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         bookKeeper.setStage(stage);
 
         audioEngine.pauseCurrentlyPlayingAudios();
-        audioEngine.loadSound("audio/episode_main_menu/bg.mp3");
+        audioEngine.loadSound(SOUND_EPISODE_MAIN_MENU_BG_PATH);
         audioEngine.loadSound("audio/button1.mp3");
         audioEngine.loadSound("audio/message.mp3");
         audioEngine.loadSound("audio/wrong.mp3");
@@ -198,72 +213,72 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private void handleCurrentGameEvent(GameEvent gameEvent, ListIterator<GameEvent> listIterator) {
         String eventType = gameEvent.type;
         switch (eventType) {
-            case "BACKGROUND_IMG_UI":
+            case BACKGROUND_IMG_UI:
                 String imgPath = (String) gameEvent.parameters;
                 painter.setOverallBackground(createBackgroundCustomImg(imgPath));
                 listIterator.remove();
                 break;
-            case "SCREEN_FADE_OUT":
+            case SCREEN_FADE_OUT:
                 listIterator.remove();
                 Action fadeOut = fadeOut((Float) gameEvent.parameters);
                 stage.getRoot().addAction(fadeOut);
                 break;
-            case "SCREEN_FADE_IN":
+            case SCREEN_FADE_IN:
                 stage.getRoot().getColor().a = 0;
                 Action action = fadeIn((Float) gameEvent.parameters);
                 stage.getRoot().addAction(action);
                 listIterator.remove();
                 break;
-            case "BORDER_UI":
-                audioEngine.playSound("audio/bump.wav");
+            case BORDER_UI:
+                audioEngine.playSound(SOUND_BUMP_PATH);
                 listIterator.remove();
                 break;
-            case "EPISODE_SUCCESS_UI":
-                audioEngine.playSound("audio/success.wav");
+            case EPISODE_SUCCESS_UI:
+                audioEngine.playSound(SOUND_SUCCESS_PATH);
                 listIterator.remove();
                 break;
-            case "AUDIO_TOGGLE_UI":
+            case AUDIO_TOGGLE_UI:
                 if (audioEnabled) {
                     audioEnabled = false;
-                    audioEngine.stopSound("audio/episode_main_menu/bg.mp3");
+                    audioEngine.stopSound(SOUND_EPISODE_MAIN_MENU_BG_PATH);
                 } else {
                     audioEnabled = true;
-                    audioEngine.playSoundLoop("audio/episode_main_menu/bg.mp3");
+                    audioEngine.playSoundLoop(SOUND_EPISODE_MAIN_MENU_BG_PATH);
                 }
                 listIterator.remove();
                 break;
-            case "AUDIO_LOAD_UI":
+            case AUDIO_LOAD_UI:
                 audioEngine.loadSound((String) gameEvent.parameters);
                 listIterator.remove();
                 break;
-            case "AUDIO_DISPOSE_UI":
+            case AUDIO_DISPOSE_UI:
                 if (new Date().getTime() > gameEvent.delay) {
                     audioEngine.disposeSound((String) gameEvent.parameters);
                     listIterator.remove();
                 }
                 break;
-            case "AUDIO_START_UI":
+            case AUDIO_START_UI:
                 if (new Date().getTime() > gameEvent.delay) {
                     if (audioEnabled)
                         audioEngine.playSound((String) gameEvent.parameters);
                     listIterator.remove();
                 }
                 break;
-            case "AUDIO_START_LOOP_UI":
+            case AUDIO_START_LOOP_UI:
                 if (new Date().getTime() > gameEvent.delay) {
                     if (audioEnabled)
                         audioEngine.playSoundLoop((String) gameEvent.parameters);
                     listIterator.remove();
                 }
                 break;
-            case "AUDIO_STOP_UI":
+            case AUDIO_STOP_UI:
                 if (new Date().getTime() > gameEvent.delay) {
                     if (audioEnabled)
                         audioEngine.stopSound((String) gameEvent.parameters);
                     listIterator.remove();
                 }
                 break;
-            case "UPDATE_LABEL_TEXT_UI":
+            case UPDATE_LABEL_TEXT_UI:
                 updateLabelText((HashMap.SimpleEntry<org.scify.engine.renderables.Renderable, String>) currentGameEvent.parameters);
                 listIterator.remove();
                 break;
