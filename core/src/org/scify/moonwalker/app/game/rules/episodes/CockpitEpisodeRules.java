@@ -76,6 +76,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
 
     protected void goToEpisode(GameState gameState, GameEvent gameEvent) {
         buttonsEnabled = false;
+        gameState.removeGameEventsWithType(TOGGLE_BUTTON);
         gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
         renderable.turnOffLightOffAllButtons();
         renderable.fadeoutOutsideBackground();

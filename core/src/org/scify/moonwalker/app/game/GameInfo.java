@@ -57,8 +57,8 @@ public class GameInfo {
         selectedPlayer = SelectedPlayer.unset;
         contactRequestFlag = true;
         mapRequestFlag = false;
-        setCurrentLocation(lc.getInitialLocation());
-        setNextAllowedLocation(lc.getInitialDestination());
+        setCurrentLocation(lc.greece);
+        setNextAllowedLocation(lc.germany);
         setPreviousTravelPercentageComplete(0);
         setNextTravelPercentagePossible(100);
     }

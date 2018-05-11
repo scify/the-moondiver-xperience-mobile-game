@@ -108,12 +108,4 @@ public class LocationController {
         return instance;
 
     }
-
-    public Location getInitialLocation () {
-        return greece;
-    }
-
-    public Location getInitialDestination () {
-        return germany;
-    }
 }

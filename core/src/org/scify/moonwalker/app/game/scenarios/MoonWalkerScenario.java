@@ -41,8 +41,11 @@ public class MoonWalkerScenario extends Scenario {
                     newCurrentEpisode = new CockpitEpisode();
                 addTemporaryEpisode(new ContactScreenEpisode(), newCurrentEpisode);
                 break;
-            case EpisodeEndStateCode.MAP_EPISODE_STARTED:
+            case EpisodeEndStateCode.SELECT_LOCATION_ON_MAP_EPISODE:
                 addTemporaryEpisode(new MapEpisode(false), new CockpitEpisode());
+                break;
+            case EpisodeEndStateCode.TRAVEL_ON_MAP_EPISODE:
+                addTemporaryEpisode(new MapEpisode(true), new CockpitEpisode());
                 break;
             case EpisodeEndStateCode.SPACESHIP_CHARGER_EPISODE_STARTED:
                 addTemporaryEpisode(new SpaceshipChargerEpisode(), new CockpitEpisode());
