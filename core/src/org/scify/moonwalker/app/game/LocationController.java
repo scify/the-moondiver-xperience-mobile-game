@@ -114,6 +114,6 @@ public class LocationController {
     }
 
     public Location getInitialDestination () {
-        return greece;
+        return germany;
     }
 }

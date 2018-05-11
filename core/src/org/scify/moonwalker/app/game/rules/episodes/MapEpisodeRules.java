@@ -114,19 +114,19 @@ public class MapEpisodeRules extends BaseEpisodeRules {
         if ((originMiddleOfNowhere != null) || (targetMiddleOfNowhere != null)) {
             double dRemaining;
             // Calculate how much distance percentage we have remaining
-            if (gameInfo.getPreviousTravelPercentageComplete() > gameInfo.getNextTravelPercentagePossible())
-                dRemaining = gameInfo.getNextTravelPercentagePossible();
-            else
-                dRemaining = gameInfo.getNextTravelPercentagePossible() - gameInfo.getPreviousTravelPercentageComplete();
+//            if (gameInfo.getPreviousTravelPercentageComplete() > gameInfo.getNextTravelPercentagePossible())
+//                dRemaining = gameInfo.getNextTravelPercentagePossible();
+//            else
+            dRemaining = gameInfo.getNextTravelPercentagePossible() - gameInfo.getPreviousTravelPercentageComplete();
 
-                        targetLocation.setDistanceToLocation(originLocation, (int)(gameInfo.getNextAllowedLocation().getDistanceFromLocation(gameInfo.getCurrentLocation()) *
+            targetLocation.setDistanceToLocation(originLocation, (int)(gameInfo.getNextAllowedLocation().getDistanceFromLocation(gameInfo.getCurrentLocation()) *
                     dRemaining / 100));
         }
     }
 
     protected void initOriginLocation() {
         double dPercentageOfPreviousMoveComplete = gameInfo.getPreviousTravelPercentageComplete();
-        if (dPercentageOfPreviousMoveComplete < 100.0) {
+        if (dPercentageOfPreviousMoveComplete != 0.0) {
             // Create "middle of nowhere" location for origin
             double dMoNX = gameInfo.getCurrentLocation().getPosX() + (gameInfo.getNextAllowedLocation().getPosX() - gameInfo.getCurrentLocation().getPosX()) * dPercentageOfPreviousMoveComplete / 100.0;
             double dMoNY = gameInfo.getCurrentLocation().getPosY() + (gameInfo.getNextAllowedLocation().getPosY() - gameInfo.getCurrentLocation().getPosY()) * dPercentageOfPreviousMoveComplete / 100.0;

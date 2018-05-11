@@ -59,6 +59,8 @@ public class GameInfo {
         mapRequestFlag = false;
         setCurrentLocation(lc.getInitialLocation());
         setNextAllowedLocation(lc.getInitialDestination());
+        setPreviousTravelPercentageComplete(0);
+        setNextTravelPercentagePossible(100);
     }
 
     public boolean getContactRequestFlag () { return contactRequestFlag; }

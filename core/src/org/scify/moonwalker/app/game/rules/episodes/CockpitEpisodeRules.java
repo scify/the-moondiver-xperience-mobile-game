@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static org.scify.engine.EpisodeEndStateCode.CONTACT_SCREEN_EPISODE_STARTED;
-import static org.scify.engine.EpisodeEndStateCode.MAP_EPISODE_STARTED;
+import static org.scify.engine.EpisodeEndStateCode.SELECT_LOCATION_ON_MAP_EPISODE;
 import static org.scify.engine.EpisodeEndStateCode.SPACESHIP_CHARGER_EPISODE_STARTED;
 
 public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
@@ -94,7 +94,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                 break;
             case UserActionCode.MAP_EPISODE:
                 if (buttonsEnabled && !contactClickable && mapClickable)
-                    goToEpisode(gameState, new GameEvent(MAP_EPISODE_STARTED, null, this));
+                    goToEpisode(gameState, new GameEvent(SELECT_LOCATION_ON_MAP_EPISODE, null, this));
                 else
                     gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
                 break;
@@ -135,8 +135,8 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
             return endStateFromParent;
         else if (currentState.eventsQueueContainsEventOwnedBy(CONTACT_SCREEN_EPISODE_STARTED, this))
             return new EpisodeEndState(CONTACT_SCREEN_EPISODE_STARTED, cleanUpGameState(currentState));
-        else if (currentState.eventsQueueContainsEventOwnedBy(MAP_EPISODE_STARTED, this))
-            return new EpisodeEndState(MAP_EPISODE_STARTED, cleanUpGameState(currentState));
+        else if (currentState.eventsQueueContainsEventOwnedBy(SELECT_LOCATION_ON_MAP_EPISODE, this))
+            return new EpisodeEndState(SELECT_LOCATION_ON_MAP_EPISODE, cleanUpGameState(currentState));
         else if (currentState.eventsQueueContainsEventOwnedBy(SPACESHIP_CHARGER_EPISODE_STARTED, this))
             return new EpisodeEndState(SPACESHIP_CHARGER_EPISODE_STARTED, cleanUpGameState(currentState));
         return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE, cleanUpGameState(currentState));
