@@ -4,13 +4,9 @@ import java.util.List;
 
 public class Question {
     protected String title;
-    protected String body;
     protected List<Answer> answers;
     public QuestionType type;
-
-    public String getBody(){
-        return this.body;
-    }
+    protected int categoryId;
 
     public String getTitle() {
         return title;
@@ -23,18 +19,11 @@ public class Question {
     public Question() {
     }
 
-    public Question(String title, String body, List<Answer> answers, QuestionType type) {
+    public Question(String title, List<Answer> answers, QuestionType type, int categoryId) {
         this.title = title;
-        this.body = body;
         this.answers = answers;
         this.type = type;
-    }
-
-    public Question(String body, List<Answer> answers, QuestionType type){
-        this.body = body;
-        this.answers = answers;
-        this.type = type;
-        this.title = "Ερώτηση";
+        this.categoryId = categoryId;
     }
 
     public boolean checkIfCorrectAnswer(Answer answer){
