@@ -1,1178 +1,1210 @@
-[
-  {
-    "id": 1,
-    "title": "Όταν παρατηρούμε ένα αστέρι στον ουρανό, βλέπουμε...",
-    "categoryId": 1,
-    "answers": [
-      {
-        "text": "Το παρελθόν του",
-        "isCorrect": true
-      },
-      {
-        "text": "Το παρόν του",
-        "isCorrect": false
-      },
-      {
-        "text": "Το μέλλον του",
-        "isCorrect": false
-      },
-      {
-        "text": "Το μέλλον μας",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 2,
-    "title": "Σε τι μετράμε συνήθως τις πολύ \nμεγάλες αποστάσεις στο διάστημα;",
-    "categoryId": 1,
-    "answers": [
-      {
-        "text": "Σε πόδια",
-        "isCorrect": false
-      },
-      {
-        "text": "Σε ίντσες",
-        "isCorrect": false
-      },
-      {
-        "text": "Σε έτη φωτός",
-        "isCorrect": true
-      },
-      {
-        "text": "Σε ΜΒytes",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 3,
-    "title": "Πόση απόσταση διανύει το φως σε ένα δευτερόλεπτο;",
-    "categoryId": 1,
-    "answers": [
-      {
-        "text": "3.000 μίλια",
-        "isCorrect": false
-      },
-      {
-        "text": "300.000 km",
-        "isCorrect": true
-      },
-      {
-        "text": "Όσο να πας Αθήνα-Θεσ/νίκη",
-        "isCorrect": false
-      },
-      {
-        "text": "30.000 km",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 4,
-    "title": "Πόση απόσταση διανύει το φως σε ένα χρόνο;",
-    "categoryId": 1,
-    "answers": [
-      {
-        "text": "Ένα μεγαχιλιόμετρο",
-        "isCorrect": false
-      },
-      {
-        "text": "Ένα φωτόσπαθο",
-        "isCorrect": false
-      },
-      {
-        "text": "Ένα έτος φωτός",
-        "isCorrect": false
-      },
-      {
-        "text": "Ένα φωτόμετρο",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 5,
-    "title": "Πόση ώρα κάνει το φως του Ήλιου να φθάσει στη Γη;",
-    "categoryId": 1,
-    "answers": [
-      {
-        "text": "8 λεπτά",
-        "isCorrect": true
-      },
-      {
-        "text": "8 δευτερόλεπτα",
-        "isCorrect": false
-      },
-      {
-        "text": "8 ώρες",
-        "isCorrect": false
-      },
-      {
-        "text": "Μια αιωνιότητα",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 6,
-    "title": "Ο Γαλαξίας μας (Milky Way) έχει διάμετρο τουλάχιστον...",
-    "categoryId": 1,
-    "answers": [
-      {
-        "text": "100.000 έτη φωτός",
-        "isCorrect": true
-      },
-      {
-        "text": "100.000 χιλιόμετρα",
-        "isCorrect": false
-      },
-      {
-        "text": "100 έτη φωτός",
-        "isCorrect": false
-      },
-      {
-        "text": "100.000 μίλια",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 7,
-    "title": "Πόσο χρόνο χρειάζεται το φως του Ήλιου για να φτάσει στον Ποσειδώνα,\nτον τελευταίο πλανήτη του ηλιακού μας συστήματος;",
-    "categoryId": 1,
-    "answers": [
-      {
-        "text": "4 ώρες",
-        "isCorrect": true
-      },
-      {
-        "text": "4 ημέρες",
-        "isCorrect": false
-      },
-      {
-        "text": "4 χρόνια",
-        "isCorrect": false
-      },
-      {
-        "text": "4 τέταρτα",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 8,
-    "title": "Ποιό από τα παρακάτω φαινόμενα δεν σχετίζεται με τη σελήνη;",
-    "categoryId": 2,
-    "answers": [
-      {
-        "text": "Εναλλαγή ημέρας / νύχτας",
-        "isCorrect": true
-      },
-      {
-        "text": "Παλίρροια",
-        "isCorrect": false
-      },
-      {
-        "text": "Ηλιακή Έκλειψη",
-        "isCorrect": false
-      },
-      {
-        "text": "Νυχτερινό φως στον ουρανό",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 9,
-    "title": "Σε ποια σειρά πρέπει να μπουν τα παρακάτω \nουράνια σώματα για να γίνει έκλειψη Σελήνης;",
-    "categoryId": 2,
-    "answers": [
-      {
-        "text": "Ήλιος-Γη-Σελήνη",
-        "isCorrect": true
-      },
-      {
-        "text": "Ήλιος-Σελήνη-Γη",
-        "isCorrect": false
-      },
-      {
-        "text": "Ήλιος-Γη-Άρης",
-        "isCorrect": false
-      },
-      {
-        "text": "Σελήνη - Αφροδίτη - Γη",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 10,
-    "title": "Σε ποια σειρά πρέπει να μπουν τα παρακάτω \nουράνια σώματα για να γίνει έκλειψη Ηλίου;",
-    "categoryId": 2,
-    "answers": [
-      {
-        "text": "Ήλιος-Σελήνη-Γη",
-        "isCorrect": true
-      },
-      {
-        "text": "Ήλιος-Γη-Σελήνη",
-        "isCorrect": false
-      },
-      {
-        "text": "Ήλιος-Γη-Άρης",
-        "isCorrect": false
-      },
-      {
-        "text": "Ήλιος - Αφροδίτη - Γη",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 11,
-    "title": "Ποια από τις παρακάτω δεν είναι θάλασσα της Σελήνης;",
-    "categoryId": 2,
-    "answers": [
-      {
-        "text": "Μεσόγειος",
-        "isCorrect": true
-      },
-      {
-        "text": "Γονιμότητας",
-        "isCorrect": false
-      },
-      {
-        "text": "Ψύχους",
-        "isCorrect": false
-      },
-      {
-        "text": "Νέκταρ",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 11,
-    "title": "Τι δεν έχουν οι θάλασσες της Σελήνης; ",
-    "categoryId": 2,
-    "answers": [
-      {
-        "text": "Νερό",
-        "isCorrect": true
-      },
-      {
-        "text": "Λάβα",
-        "isCorrect": false
-      },
-      {
-        "text": "Σίδηρο",
-        "isCorrect": false
-      },
-      {
-        "text": "Βυθό",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 12,
-    "title": "Ποια από τις παρακάτω δεν είναι λίμνη της Σελήνης;",
-    "categoryId": 2,
-    "answers": [
-      {
-        "text": "Τιτικάκα",
-        "isCorrect": true
-      },
-      {
-        "text": "Θανάτου",
-        "isCorrect": false
-      },
-      {
-        "text": "Χαράς",
-        "isCorrect": false
-      },
-      {
-        "text": "Φόβου",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 13,
-    "title": "Ποια από τις παρακάτω δεν είναι λίμνη της Σελήνης;",
-    "categoryId": 2,
-    "answers": [
-      {
-        "text": "Βόλβη",
-        "isCorrect": true
-      },
-      {
-        "text": "Ερημιάς",
-        "isCorrect": false
-      },
-      {
-        "text": "Πολυτέλειας",
-        "isCorrect": false
-      },
-      {
-        "text": "Απαλότητας",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 14,
-    "title": "Σε πόσες μέρες η Σελήνη συμπληρώνει μια περιστροφή γύρω από τον άξονα της;",
-    "categoryId": 2,
-    "answers": [
-      {
-        "text": "27",
-        "isCorrect": true
-      },
-      {
-        "text": "30",
-        "isCorrect": false
-      },
-      {
-        "text": "29",
-        "isCorrect": false
-      },
-      {
-        "text": "12",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 15,
-    "title": "Ποιός είναι ο πιο κοντινός πλανήτης στον Ήλιο;",
-    "categoryId": 3,
-    "answers": [
-      {
-        "text": "Ερμής",
-        "isCorrect": true
-      },
-      {
-        "text": "Άρης",
-        "isCorrect": false
-      },
-      {
-        "text": "Αφροδίτη",
-        "isCorrect": false
-      },
-      {
-        "text": "Δίας",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 16,
-    "title": "Ποιός είναι ο πιο κοντινός πλανήτης στη Γη;",
-    "categoryId": 3,
-    "answers": [
-      {
-        "text": "Αφροδίτη",
-        "isCorrect": true
-      },
-      {
-        "text": "Ποσειδώνας",
-        "isCorrect": false
-      },
-      {
-        "text": "Δίας",
-        "isCorrect": false
-      },
-      {
-        "text": "Κρόνος",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 17,
-    "title": "Ποιός είναι ο πιο μακρινός πλανήτης από τον Ποσειδώνα στο ηλιακό μας σύστημα;",
-    "categoryId": 3,
-    "answers": [
-      {
-        "text": "Ερμής",
-        "isCorrect": true
-      },
-      {
-        "text": "Ουρανός",
-        "isCorrect": false
-      },
-      {
-        "text": "Γη",
-        "isCorrect": false
-      },
-      {
-        "text": "Ήλιος",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 18,
-    "title": "Ποιός είναι ο πιο κοντινός πλανήτης στη Σελήνη;",
-    "categoryId": 3,
-    "answers": [
-      {
-        "text": "Γη",
-        "isCorrect": true
-      },
-      {
-        "text": "Ερμής",
-        "isCorrect": false
-      },
-      {
-        "text": "Ουρανός",
-        "isCorrect": false
-      },
-      {
-        "text": "Δίας",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 19,
-    "title": "Ποιος είναι ο πιο μεγάλος Πλανήτης στο \nηλιακό μας σύστημα (χωράει 1.300 φορές τη Γη);",
-    "categoryId": 3,
-    "answers": [
-      {
-        "text": "Δίας",
-        "isCorrect": true
-      },
-      {
-        "text": "Ερμής",
-        "isCorrect": false
-      },
-      {
-        "text": "Ουρανός",
-        "isCorrect": false
-      },
-      {
-        "text": "Ποσειδώνας",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 20,
-    "title": "Ποιος είναι ο πιο θερμός πλανήτης στο ηλιακό μας σύστημα\n (με θερμοκρασίες πάνω από 400 βαθμούς Κελσίου);",
-    "categoryId": 3,
-    "answers": [
-      {
-        "text": "Αφροδίτη",
-        "isCorrect": true
-      },
-      {
-        "text": "Ουρανός",
-        "isCorrect": false
-      },
-      {
-        "text": "Γη",
-        "isCorrect": false
-      },
-      {
-        "text": "Ποσειδώνας",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 21,
-    "title": "Πόσοι πλανήτες στο ηλιακό μας σύστημα έχουν δακτυλίους;",
-    "categoryId": 3,
-    "answers": [
-      {
-        "text": "Τέσσερις",
-        "isCorrect": true
-      },
-      {
-        "text": "Κανένας",
-        "isCorrect": false
-      },
-      {
-        "text": "Όλοι",
-        "isCorrect": false
-      },
-      {
-        "text": "Ένας",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 22,
-    "title": "Ποιος είναι o μικρότερος πλανήτης στο ηλιακό μας σύστημα;",
-    "categoryId": 3,
-    "answers": [
-      {
-        "text": "Ο Ερμής",
-        "isCorrect": true
-      },
-      {
-        "text": "Ο Δίας",
-        "isCorrect": false
-      },
-      {
-        "text": "Η Γη",
-        "isCorrect": false
-      },
-      {
-        "text": "Ο Νάνος",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 23,
-    "title": "Πότε έγινε η πρώτη στελεχωμένη αποστολή \nστη σελήνη (πρόγραμμα Απόλλων);",
-    "categoryId": 4,
-    "answers": [
-      {
-        "text": "1969",
-        "isCorrect": true
-      },
-      {
-        "text": "1982",
-        "isCorrect": false
-      },
-      {
-        "text": "1950",
-        "isCorrect": false
-      },
-      {
-        "text": "Δεν έγινε, είναι ψέμματα",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 24,
-    "title": "Σε πόσες αποστολές άνθρωποι κατάφεραν να περπατήσουν στη Σελήνη;",
-    "categoryId": 4,
-    "answers": [
-      {
-        "text": "6",
-        "isCorrect": true
-      },
-      {
-        "text": "16",
-        "isCorrect": false
-      },
-      {
-        "text": "26",
-        "isCorrect": false
-      },
-      {
-        "text": "Καμία",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 25,
-    "title": "Πόσοι άνθρωποι έχουν περπατήσει στη Σελήνη;",
-    "categoryId": 4,
-    "answers": [
-      {
-        "text": "12",
-        "isCorrect": true
-      },
-      {
-        "text": "22",
-        "isCorrect": false
-      },
-      {
-        "text": "32",
-        "isCorrect": false
-      },
-      {
-        "text": "Κανένας",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 26,
-    "title": "Πότε ήταν η τελευταία φορά που άνθωποι περπάτησαν στη Σελήνη;",
-    "categoryId": 4,
-    "answers": [
-      {
-        "text": "1972",
-        "isCorrect": true
-      },
-      {
-        "text": "1992",
-        "isCorrect": false
-      },
-      {
-        "text": "2002",
-        "isCorrect": false
-      },
-      {
-        "text": "Ποτέ δεν έγινε",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 27,
-    "title": "Σχεδιάζονται κι άλλες αποστολές στη Σελήνη. \nΣτις περισσότερες θα στείλουμε...",
-    "categoryId": 4,
-    "answers": [
-      {
-        "text": "Ρομποτικά μηχανήματα",
-        "isCorrect": true
-      },
-      {
-        "text": "Ανθρώπους",
-        "isCorrect": false
-      },
-      {
-        "text": "Ζώα",
-        "isCorrect": false
-      },
-      {
-        "text": "Χαιρετίσματα",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 28,
-    "title": "Ανακοινώθηκε αποστολή στη Σελήνη για εγκατάσταση\nΔικτύων 4G εντός του 2019. Από ποιον;",
-    "categoryId": 4,
-    "answers": [
-      {
-        "text": "Από τη Vodafone",
-        "isCorrect": true
-      },
-      {
-        "text": "Από κανέναν",
-        "isCorrect": false
-      },
-      {
-        "text": "Από την Κύπρο",
-        "isCorrect": false
-      },
-      {
-        "text": "Από τη Μέσα Ραχούλα",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 29,
-    "title": "Πόσες χώρες έχουν καταφέρει να στείλουν αστροναύτες που περπάτησαν στη Σελήνη;",
-    "categoryId": 4,
-    "answers": [
-      {
-        "text": "Μία, οι ΗΠΑ",
-        "isCorrect": true
-      },
-      {
-        "text": "Μία, η τέως ΕΣΣΔ",
-        "isCorrect": false
-      },
-      {
-        "text": "Μία, η Ελλάδα",
-        "isCorrect": false
-      },
-      {
-        "text": "Τρεις",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 30,
-    "title": "To ουράνιο σώμα που πέφτει στην επιφάνεια της Γης λέγεται;",
-    "categoryId": 5,
-    "answers": [
-      {
-        "text": "Μετεωρίτης",
-        "isCorrect": true
-      },
-      {
-        "text": "Κομήτης",
-        "isCorrect": false
-      },
-      {
-        "text": "Δορυφόρος",
-        "isCorrect": false
-      },
-      {
-        "text": "Ντουπ",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 31,
-    "title": "Κάθε πόσα χρόνια φτάνει στην επιφάνεια της Γης ένας \nμετωρίτης στο μέγεθος περίπου ενός γηπέδου ποδοσφαίρου;",
-    "categoryId": 5,
-    "answers": [
-      {
-        "text": "2.000",
-        "isCorrect": true
-      },
-      {
-        "text": "50",
-        "isCorrect": false
-      },
-      {
-        "text": "100",
-        "isCorrect": false
-      },
-      {
-        "text": "Ποτέ δεν έγινε",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 32,
-    "title": "Τα \"πεφταστέρια\" που βλέπουμε το βράδυ στον ουρανό, έχουν συνήθως το μέγεθος...",
-    "categoryId": 5,
-    "answers": [
-      {
-        "text": "Κόκκου άμμου",
-        "isCorrect": true
-      },
-      {
-        "text": "Αεροπλάνου",
-        "isCorrect": false
-      },
-      {
-        "text": "Αυτοκινήτου",
-        "isCorrect": false
-      },
-      {
-        "text": "Λόφου",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 33,
-    "title": "Όταν ένας μετεωρίτης χτυπάει το έδαφος, \nαφήνει μία τρύπα στο έδαφος που λέγεται...",
-    "categoryId": 5,
-    "answers": [
-      {
-        "text": "Κρατήρας",
-        "isCorrect": true
-      },
-      {
-        "text": "Μετέωρο",
-        "isCorrect": false
-      },
-      {
-        "text": "Λακούβα",
-        "isCorrect": false
-      },
-      {
-        "text": "Βραστήρας",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 34,
-    "title": "Οι κομήτες αποτελούνται κυρίως από...",
-    "categoryId": 5,
-    "answers": [
-      {
-        "text": "Πάγο",
-        "isCorrect": true
-      },
-      {
-        "text": "Φωτιά",
-        "isCorrect": false
-      },
-      {
-        "text": "Σίδηρο",
-        "isCorrect": false
-      },
-      {
-        "text": "Μαλλιά",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 35,
-    "title": "Μελετήσαμε τους κομήτες με τηλεσκόπιο για πρώτη φορά...",
-    "categoryId": 5,
-    "answers": [
-      {
-        "text": "τον 17ο αιώνα",
-        "isCorrect": true
-      },
-      {
-        "text": "τον 7ο αιώνα",
-        "isCorrect": false
-      },
-      {
-        "text": "τον 2ο αιώνα π.Χ.",
-        "isCorrect": false
-      },
-      {
-        "text": "το 1960",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 36,
-    "title": "Πόσοι πλανήτες στο μέγεθος της Γης θα\n χωρούσαν μέσα στον Ήλιο;",
-    "categoryId": 6,
-    "answers": [
-      {
-        "text": "1,3 εκατομμύρια",
-        "isCorrect": true
-      },
-      {
-        "text": "1.300",
-        "isCorrect": false
-      },
-      {
-        "text": "130",
-        "isCorrect": false
-      },
-      {
-        "text": "13",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 37,
-    "title": "Η θερμοκρασία στην επιφάνεια του Ήλιου είναι περίπου ...",
-    "categoryId": 6,
-    "answers": [
-      {
-        "text": "5.500 Βαθμοί Κελσίου",
-        "isCorrect": true
-      },
-      {
-        "text": "550 Βαθμοί Κελσίου",
-        "isCorrect": false
-      },
-      {
-        "text": "5,5 εκατ. Βαθμοί Κελσίου",
-        "isCorrect": false
-      },
-      {
-        "text": "55 Βαθμοί Κελσίου",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 38,
-    "title": "Η θερμοκρασία στον πυρήνα του Ήλιου είναι περίπου ...",
-    "categoryId": 6,
-    "answers": [
-      {
-        "text": "15,5 εκατ. Βαθμοί Κελσίου",
-        "isCorrect": true
-      },
-      {
-        "text": "5.500 Βαθμοί Κελσίου",
-        "isCorrect": false
-      },
-      {
-        "text": "1 εκατ. Βαθμοί Κελσίου",
-        "isCorrect": false
-      },
-      {
-        "text": "550 Βαθμοί Κελσίου",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 39,
-    "title": "Ανάμεσα στον Ήλιο και τη Γη υπάρχουν...",
-    "categoryId": 6,
-    "answers": [
-      {
-        "text": "2 πλανήτες",
-        "isCorrect": true
-      },
-      {
-        "text": "1 πλανήτης",
-        "isCorrect": false
-      },
-      {
-        "text": "3 πλανήτες",
-        "isCorrect": false
-      },
-      {
-        "text": "Κανένας πλανήτης",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 40,
-    "title": "Ο πρώτος που πρότεινε τη θεωρία ότι οι \nπλανήτες περιστρέφονται γύρω από τον Ήλιο ήταν...",
-    "categoryId": 6,
-    "answers": [
-      {
-        "text": "ο Αρίσταρχος ο Σάμιος",
-        "isCorrect": true
-      },
-      {
-        "text": "ο Κοπέρνικος",
-        "isCorrect": false
-      },
-      {
-        "text": "ο Νεύτωνας",
-        "isCorrect": false
-      },
-      {
-        "text": "ο Ντόναλντ Ντακ",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 41,
-    "title": "Ο Ήλιος αποτελείται κυρίως από...",
-    "categoryId": 6,
-    "answers": [
-      {
-        "text": "Υδρογόνο",
-        "isCorrect": true
-      },
-      {
-        "text": "Ήλιο",
-        "isCorrect": false
-      },
-      {
-        "text": "Σίδηρο",
-        "isCorrect": false
-      },
-      {
-        "text": "Κάρβουνο",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 42,
-    "title": "Από τη μάζα του ηλιακού μας συστήματος, ο Ήλιος αποτελεί το...",
-    "categoryId": 6,
-    "answers": [
-      {
-        "text": "99%",
-        "isCorrect": true
-      },
-      {
-        "text": "20%",
-        "isCorrect": false
-      },
-      {
-        "text": "10%",
-        "isCorrect": false
-      },
-      {
-        "text": "2%",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 43,
-    "title": "Τι άφησαν οι αστροναύτες στη Σελήνη για να \nμετράμε την απόστασή της από τη Γη με laser;",
-    "categoryId": 7,
-    "answers": [
-      {
-        "text": "Κάτοπτρα",
-        "isCorrect": true
-      },
-      {
-        "text": "Κεραίες",
-        "isCorrect": false
-      },
-      {
-        "text": "Σημαίες",
-        "isCorrect": false
-      },
-      {
-        "text": "Ακτινοπίστολα",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 44,
-    "title": "Πόσα κιλά σεληνιακών πετρωμάτων έφεραν στη Γη \nτα προγράμματα Apollo για μελέτη?",
-    "categoryId": 7,
-    "answers": [
-      {
-        "text": "380",
-        "isCorrect": true
-      },
-      {
-        "text": "2",
-        "isCorrect": false
-      },
-      {
-        "text": "10",
-        "isCorrect": false
-      },
-      {
-        "text": "Λένε ψέμματα, είναι γήινα",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 45,
-    "title": "Τα πετρώματα που συλλέξαμε από τη Σελήνη \nείναι παλαιότερα από τα γήινα κατά...",
-    "categoryId": 7,
-    "answers": [
-      {
-        "text": "200 εκατ. χρόνια",
-        "isCorrect": true
-      },
-      {
-        "text": "1.000 χρόνια",
-        "isCorrect": false
-      },
-      {
-        "text": "5.000 χρόνια",
-        "isCorrect": false
-      },
-      {
-        "text": "Λένε ψέμματα, είναι γήινα",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 46,
-    "title": "Πότε είδαμε για πρώτη φορά εικόνες από \nτην αθέατη πλευρά της Σελήνης;",
-    "categoryId": 7,
-    "answers": [
-      {
-        "text": "1960",
-        "isCorrect": true
-      },
-      {
-        "text": "1900",
-        "isCorrect": false
-      },
-      {
-        "text": "1980",
-        "isCorrect": false
-      },
-      {
-        "text": "Δεν την έχουμε δει",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 47,
-    "title": "Ποιος υπολόγισε πρώτος την περίμετρο της Γης, 300 χρόνια π.X.,\n χωρίς να μετακινηθεί καν από την Αίγυπτο όπου βρισκόταν;",
-    "categoryId": 7,
-    "answers": [
-      {
-        "text": "Ο Ερατοσθένης",
-        "isCorrect": true
-      },
-      {
-        "text": "Ο Καποδίστριας",
-        "isCorrect": false
-      },
-      {
-        "text": "Ο Αριστοτέλης",
-        "isCorrect": false
-      },
-      {
-        "text": "Ο Φαραώ",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
-    "id": 48,
-    "title": "Ποιος παρέθεσε πρώτος επιχειρήματα υποστηρίζοντας\n ότι η Γη έχει σχήμα περίπου σφαιρικό;",
-    "categoryId": 7,
-    "answers": [
-      {
-        "text": "Ο Αριστοτέλης",
-        "isCorrect": true
-      },
-      {
-        "text": "Ο Κοπέρνικος",
-        "isCorrect": false
-      },
-      {
-        "text": "Ο Γαλιλαίος",
-        "isCorrect": false
-      },
-      {
-        "text": "Ο Messi",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  }
-]
+{
+  "questions": [
+    {
+      "id": 1,
+      "title": "Όταν παρατηρούμε ένα αστέρι στον ουρανό, βλέπουμε...",
+      "categoryId": 1,
+      "answers": [
+        {
+          "text": "Το παρελθόν του",
+          "isCorrect": true
+        },
+        {
+          "text": "Το παρόν του",
+          "isCorrect": false
+        },
+        {
+          "text": "Το μέλλον του",
+          "isCorrect": false
+        },
+        {
+          "text": "Το μέλλον μας",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 2,
+      "title": "Σε τι μετράμε συνήθως τις πολύ \nμεγάλες αποστάσεις στο διάστημα;",
+      "categoryId": 1,
+      "answers": [
+        {
+          "text": "Σε πόδια",
+          "isCorrect": false
+        },
+        {
+          "text": "Σε ίντσες",
+          "isCorrect": false
+        },
+        {
+          "text": "Σε έτη φωτός",
+          "isCorrect": true
+        },
+        {
+          "text": "Σε ΜΒytes",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 3,
+      "title": "Πόση απόσταση διανύει το φως σε ένα δευτερόλεπτο;",
+      "categoryId": 1,
+      "answers": [
+        {
+          "text": "3.000 μίλια",
+          "isCorrect": false
+        },
+        {
+          "text": "300.000 km",
+          "isCorrect": true
+        },
+        {
+          "text": "Όσο να πας Αθήνα-Θεσ/νίκη",
+          "isCorrect": false
+        },
+        {
+          "text": "30.000 km",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 4,
+      "title": "Πόση απόσταση διανύει το φως σε ένα χρόνο;",
+      "categoryId": 1,
+      "answers": [
+        {
+          "text": "Ένα μεγαχιλιόμετρο",
+          "isCorrect": false
+        },
+        {
+          "text": "Ένα φωτόσπαθο",
+          "isCorrect": false
+        },
+        {
+          "text": "Ένα έτος φωτός",
+          "isCorrect": false
+        },
+        {
+          "text": "Ένα φωτόμετρο",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 5,
+      "title": "Πόση ώρα κάνει το φως του Ήλιου να φθάσει στη Γη;",
+      "categoryId": 1,
+      "answers": [
+        {
+          "text": "8 λεπτά",
+          "isCorrect": true
+        },
+        {
+          "text": "8 δευτερόλεπτα",
+          "isCorrect": false
+        },
+        {
+          "text": "8 ώρες",
+          "isCorrect": false
+        },
+        {
+          "text": "Μια αιωνιότητα",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 6,
+      "title": "Ο Γαλαξίας μας (Milky Way) έχει διάμετρο τουλάχιστον...",
+      "categoryId": 1,
+      "answers": [
+        {
+          "text": "100.000 έτη φωτός",
+          "isCorrect": true
+        },
+        {
+          "text": "100.000 χιλιόμετρα",
+          "isCorrect": false
+        },
+        {
+          "text": "100 έτη φωτός",
+          "isCorrect": false
+        },
+        {
+          "text": "100.000 μίλια",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 7,
+      "title": "Πόσο χρόνο χρειάζεται το φως του Ήλιου για να φτάσει στον Ποσειδώνα,\nτον τελευταίο πλανήτη του ηλιακού μας συστήματος;",
+      "categoryId": 1,
+      "answers": [
+        {
+          "text": "4 ώρες",
+          "isCorrect": true
+        },
+        {
+          "text": "4 ημέρες",
+          "isCorrect": false
+        },
+        {
+          "text": "4 χρόνια",
+          "isCorrect": false
+        },
+        {
+          "text": "4 τέταρτα",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 8,
+      "title": "Ποιό από τα παρακάτω φαινόμενα δεν σχετίζεται με τη σελήνη;",
+      "categoryId": 2,
+      "answers": [
+        {
+          "text": "Εναλλαγή ημέρας / νύχτας",
+          "isCorrect": true
+        },
+        {
+          "text": "Παλίρροια",
+          "isCorrect": false
+        },
+        {
+          "text": "Ηλιακή Έκλειψη",
+          "isCorrect": false
+        },
+        {
+          "text": "Νυχτερινό φως στον ουρανό",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 9,
+      "title": "Σε ποια σειρά πρέπει να μπουν τα παρακάτω \nουράνια σώματα για να γίνει έκλειψη Σελήνης;",
+      "categoryId": 2,
+      "answers": [
+        {
+          "text": "Ήλιος-Γη-Σελήνη",
+          "isCorrect": true
+        },
+        {
+          "text": "Ήλιος-Σελήνη-Γη",
+          "isCorrect": false
+        },
+        {
+          "text": "Ήλιος-Γη-Άρης",
+          "isCorrect": false
+        },
+        {
+          "text": "Σελήνη - Αφροδίτη - Γη",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 10,
+      "title": "Σε ποια σειρά πρέπει να μπουν τα παρακάτω \nουράνια σώματα για να γίνει έκλειψη Ηλίου;",
+      "categoryId": 2,
+      "answers": [
+        {
+          "text": "Ήλιος-Σελήνη-Γη",
+          "isCorrect": true
+        },
+        {
+          "text": "Ήλιος-Γη-Σελήνη",
+          "isCorrect": false
+        },
+        {
+          "text": "Ήλιος-Γη-Άρης",
+          "isCorrect": false
+        },
+        {
+          "text": "Ήλιος - Αφροδίτη - Γη",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 11,
+      "title": "Ποια από τις παρακάτω δεν είναι θάλασσα της Σελήνης;",
+      "categoryId": 2,
+      "answers": [
+        {
+          "text": "Μεσόγειος",
+          "isCorrect": true
+        },
+        {
+          "text": "Γονιμότητας",
+          "isCorrect": false
+        },
+        {
+          "text": "Ψύχους",
+          "isCorrect": false
+        },
+        {
+          "text": "Νέκταρ",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 11,
+      "title": "Τι δεν έχουν οι θάλασσες της Σελήνης; ",
+      "categoryId": 2,
+      "answers": [
+        {
+          "text": "Νερό",
+          "isCorrect": true
+        },
+        {
+          "text": "Λάβα",
+          "isCorrect": false
+        },
+        {
+          "text": "Σίδηρο",
+          "isCorrect": false
+        },
+        {
+          "text": "Βυθό",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 12,
+      "title": "Ποια από τις παρακάτω δεν είναι λίμνη της Σελήνης;",
+      "categoryId": 2,
+      "answers": [
+        {
+          "text": "Τιτικάκα",
+          "isCorrect": true
+        },
+        {
+          "text": "Θανάτου",
+          "isCorrect": false
+        },
+        {
+          "text": "Χαράς",
+          "isCorrect": false
+        },
+        {
+          "text": "Φόβου",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 13,
+      "title": "Ποια από τις παρακάτω δεν είναι λίμνη της Σελήνης;",
+      "categoryId": 2,
+      "answers": [
+        {
+          "text": "Βόλβη",
+          "isCorrect": true
+        },
+        {
+          "text": "Ερημιάς",
+          "isCorrect": false
+        },
+        {
+          "text": "Πολυτέλειας",
+          "isCorrect": false
+        },
+        {
+          "text": "Απαλότητας",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 14,
+      "title": "Σε πόσες μέρες η Σελήνη συμπληρώνει μια περιστροφή γύρω από τον άξονα της;",
+      "categoryId": 2,
+      "answers": [
+        {
+          "text": "27",
+          "isCorrect": true
+        },
+        {
+          "text": "30",
+          "isCorrect": false
+        },
+        {
+          "text": "29",
+          "isCorrect": false
+        },
+        {
+          "text": "12",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 15,
+      "title": "Ποιός είναι ο πιο κοντινός πλανήτης στον Ήλιο;",
+      "categoryId": 3,
+      "answers": [
+        {
+          "text": "Ερμής",
+          "isCorrect": true
+        },
+        {
+          "text": "Άρης",
+          "isCorrect": false
+        },
+        {
+          "text": "Αφροδίτη",
+          "isCorrect": false
+        },
+        {
+          "text": "Δίας",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 16,
+      "title": "Ποιός είναι ο πιο κοντινός πλανήτης στη Γη;",
+      "categoryId": 3,
+      "answers": [
+        {
+          "text": "Αφροδίτη",
+          "isCorrect": true
+        },
+        {
+          "text": "Ποσειδώνας",
+          "isCorrect": false
+        },
+        {
+          "text": "Δίας",
+          "isCorrect": false
+        },
+        {
+          "text": "Κρόνος",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 17,
+      "title": "Ποιός είναι ο πιο μακρινός πλανήτης από τον Ποσειδώνα στο ηλιακό μας σύστημα;",
+      "categoryId": 3,
+      "answers": [
+        {
+          "text": "Ερμής",
+          "isCorrect": true
+        },
+        {
+          "text": "Ουρανός",
+          "isCorrect": false
+        },
+        {
+          "text": "Γη",
+          "isCorrect": false
+        },
+        {
+          "text": "Ήλιος",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 18,
+      "title": "Ποιός είναι ο πιο κοντινός πλανήτης στη Σελήνη;",
+      "categoryId": 3,
+      "answers": [
+        {
+          "text": "Γη",
+          "isCorrect": true
+        },
+        {
+          "text": "Ερμής",
+          "isCorrect": false
+        },
+        {
+          "text": "Ουρανός",
+          "isCorrect": false
+        },
+        {
+          "text": "Δίας",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 19,
+      "title": "Ποιος είναι ο πιο μεγάλος Πλανήτης στο \nηλιακό μας σύστημα (χωράει 1.300 φορές τη Γη);",
+      "categoryId": 3,
+      "answers": [
+        {
+          "text": "Δίας",
+          "isCorrect": true
+        },
+        {
+          "text": "Ερμής",
+          "isCorrect": false
+        },
+        {
+          "text": "Ουρανός",
+          "isCorrect": false
+        },
+        {
+          "text": "Ποσειδώνας",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 20,
+      "title": "Ποιος είναι ο πιο θερμός πλανήτης στο ηλιακό μας σύστημα\n (με θερμοκρασίες πάνω από 400 βαθμούς Κελσίου);",
+      "categoryId": 3,
+      "answers": [
+        {
+          "text": "Αφροδίτη",
+          "isCorrect": true
+        },
+        {
+          "text": "Ουρανός",
+          "isCorrect": false
+        },
+        {
+          "text": "Γη",
+          "isCorrect": false
+        },
+        {
+          "text": "Ποσειδώνας",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 21,
+      "title": "Πόσοι πλανήτες στο ηλιακό μας σύστημα έχουν δακτυλίους;",
+      "categoryId": 3,
+      "answers": [
+        {
+          "text": "Τέσσερις",
+          "isCorrect": true
+        },
+        {
+          "text": "Κανένας",
+          "isCorrect": false
+        },
+        {
+          "text": "Όλοι",
+          "isCorrect": false
+        },
+        {
+          "text": "Ένας",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 22,
+      "title": "Ποιος είναι o μικρότερος πλανήτης στο ηλιακό μας σύστημα;",
+      "categoryId": 3,
+      "answers": [
+        {
+          "text": "Ο Ερμής",
+          "isCorrect": true
+        },
+        {
+          "text": "Ο Δίας",
+          "isCorrect": false
+        },
+        {
+          "text": "Η Γη",
+          "isCorrect": false
+        },
+        {
+          "text": "Ο Νάνος",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 23,
+      "title": "Πότε έγινε η πρώτη στελεχωμένη αποστολή \nστη σελήνη (πρόγραμμα Απόλλων);",
+      "categoryId": 4,
+      "answers": [
+        {
+          "text": "1969",
+          "isCorrect": true
+        },
+        {
+          "text": "1982",
+          "isCorrect": false
+        },
+        {
+          "text": "1950",
+          "isCorrect": false
+        },
+        {
+          "text": "Δεν έγινε, είναι ψέμματα",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 24,
+      "title": "Σε πόσες αποστολές άνθρωποι κατάφεραν να περπατήσουν στη Σελήνη;",
+      "categoryId": 4,
+      "answers": [
+        {
+          "text": "6",
+          "isCorrect": true
+        },
+        {
+          "text": "16",
+          "isCorrect": false
+        },
+        {
+          "text": "26",
+          "isCorrect": false
+        },
+        {
+          "text": "Καμία",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 25,
+      "title": "Πόσοι άνθρωποι έχουν περπατήσει στη Σελήνη;",
+      "categoryId": 4,
+      "answers": [
+        {
+          "text": "12",
+          "isCorrect": true
+        },
+        {
+          "text": "22",
+          "isCorrect": false
+        },
+        {
+          "text": "32",
+          "isCorrect": false
+        },
+        {
+          "text": "Κανένας",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 26,
+      "title": "Πότε ήταν η τελευταία φορά που άνθωποι περπάτησαν στη Σελήνη;",
+      "categoryId": 4,
+      "answers": [
+        {
+          "text": "1972",
+          "isCorrect": true
+        },
+        {
+          "text": "1992",
+          "isCorrect": false
+        },
+        {
+          "text": "2002",
+          "isCorrect": false
+        },
+        {
+          "text": "Ποτέ δεν έγινε",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 27,
+      "title": "Σχεδιάζονται κι άλλες αποστολές στη Σελήνη. \nΣτις περισσότερες θα στείλουμε...",
+      "categoryId": 4,
+      "answers": [
+        {
+          "text": "Ρομποτικά μηχανήματα",
+          "isCorrect": true
+        },
+        {
+          "text": "Ανθρώπους",
+          "isCorrect": false
+        },
+        {
+          "text": "Ζώα",
+          "isCorrect": false
+        },
+        {
+          "text": "Χαιρετίσματα",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 28,
+      "title": "Ανακοινώθηκε αποστολή στη Σελήνη για εγκατάσταση\nΔικτύων 4G εντός του 2019. Από ποιον;",
+      "categoryId": 4,
+      "answers": [
+        {
+          "text": "Από τη Vodafone",
+          "isCorrect": true
+        },
+        {
+          "text": "Από κανέναν",
+          "isCorrect": false
+        },
+        {
+          "text": "Από την Κύπρο",
+          "isCorrect": false
+        },
+        {
+          "text": "Από τη Μέσα Ραχούλα",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 29,
+      "title": "Πόσες χώρες έχουν καταφέρει να στείλουν αστροναύτες που περπάτησαν στη Σελήνη;",
+      "categoryId": 4,
+      "answers": [
+        {
+          "text": "Μία, οι ΗΠΑ",
+          "isCorrect": true
+        },
+        {
+          "text": "Μία, η τέως ΕΣΣΔ",
+          "isCorrect": false
+        },
+        {
+          "text": "Μία, η Ελλάδα",
+          "isCorrect": false
+        },
+        {
+          "text": "Τρεις",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 30,
+      "title": "To ουράνιο σώμα που πέφτει στην επιφάνεια της Γης λέγεται;",
+      "categoryId": 5,
+      "answers": [
+        {
+          "text": "Μετεωρίτης",
+          "isCorrect": true
+        },
+        {
+          "text": "Κομήτης",
+          "isCorrect": false
+        },
+        {
+          "text": "Δορυφόρος",
+          "isCorrect": false
+        },
+        {
+          "text": "Ντουπ",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 31,
+      "title": "Κάθε πόσα χρόνια φτάνει στην επιφάνεια της Γης ένας \nμετωρίτης στο μέγεθος περίπου ενός γηπέδου ποδοσφαίρου;",
+      "categoryId": 5,
+      "answers": [
+        {
+          "text": "2.000",
+          "isCorrect": true
+        },
+        {
+          "text": "50",
+          "isCorrect": false
+        },
+        {
+          "text": "100",
+          "isCorrect": false
+        },
+        {
+          "text": "Ποτέ δεν έγινε",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 32,
+      "title": "Τα \"πεφταστέρια\" που βλέπουμε το βράδυ στον ουρανό, έχουν συνήθως το μέγεθος...",
+      "categoryId": 5,
+      "answers": [
+        {
+          "text": "Κόκκου άμμου",
+          "isCorrect": true
+        },
+        {
+          "text": "Αεροπλάνου",
+          "isCorrect": false
+        },
+        {
+          "text": "Αυτοκινήτου",
+          "isCorrect": false
+        },
+        {
+          "text": "Λόφου",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 33,
+      "title": "Όταν ένας μετεωρίτης χτυπάει το έδαφος, \nαφήνει μία τρύπα στο έδαφος που λέγεται...",
+      "categoryId": 5,
+      "answers": [
+        {
+          "text": "Κρατήρας",
+          "isCorrect": true
+        },
+        {
+          "text": "Μετέωρο",
+          "isCorrect": false
+        },
+        {
+          "text": "Λακούβα",
+          "isCorrect": false
+        },
+        {
+          "text": "Βραστήρας",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 34,
+      "title": "Οι κομήτες αποτελούνται κυρίως από...",
+      "categoryId": 5,
+      "answers": [
+        {
+          "text": "Πάγο",
+          "isCorrect": true
+        },
+        {
+          "text": "Φωτιά",
+          "isCorrect": false
+        },
+        {
+          "text": "Σίδηρο",
+          "isCorrect": false
+        },
+        {
+          "text": "Μαλλιά",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 35,
+      "title": "Μελετήσαμε τους κομήτες με τηλεσκόπιο για πρώτη φορά...",
+      "categoryId": 5,
+      "answers": [
+        {
+          "text": "τον 17ο αιώνα",
+          "isCorrect": true
+        },
+        {
+          "text": "τον 7ο αιώνα",
+          "isCorrect": false
+        },
+        {
+          "text": "τον 2ο αιώνα π.Χ.",
+          "isCorrect": false
+        },
+        {
+          "text": "το 1960",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 36,
+      "title": "Πόσοι πλανήτες στο μέγεθος της Γης θα\n χωρούσαν μέσα στον Ήλιο;",
+      "categoryId": 6,
+      "answers": [
+        {
+          "text": "1,3 εκατομμύρια",
+          "isCorrect": true
+        },
+        {
+          "text": "1.300",
+          "isCorrect": false
+        },
+        {
+          "text": "130",
+          "isCorrect": false
+        },
+        {
+          "text": "13",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 37,
+      "title": "Η θερμοκρασία στην επιφάνεια του Ήλιου είναι περίπου ...",
+      "categoryId": 6,
+      "answers": [
+        {
+          "text": "5.500 Βαθμοί Κελσίου",
+          "isCorrect": true
+        },
+        {
+          "text": "550 Βαθμοί Κελσίου",
+          "isCorrect": false
+        },
+        {
+          "text": "5,5 εκατ. Βαθμοί Κελσίου",
+          "isCorrect": false
+        },
+        {
+          "text": "55 Βαθμοί Κελσίου",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 38,
+      "title": "Η θερμοκρασία στον πυρήνα του Ήλιου είναι περίπου ...",
+      "categoryId": 6,
+      "answers": [
+        {
+          "text": "15,5 εκατ. Βαθμοί Κελσίου",
+          "isCorrect": true
+        },
+        {
+          "text": "5.500 Βαθμοί Κελσίου",
+          "isCorrect": false
+        },
+        {
+          "text": "1 εκατ. Βαθμοί Κελσίου",
+          "isCorrect": false
+        },
+        {
+          "text": "550 Βαθμοί Κελσίου",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 39,
+      "title": "Ανάμεσα στον Ήλιο και τη Γη υπάρχουν...",
+      "categoryId": 6,
+      "answers": [
+        {
+          "text": "2 πλανήτες",
+          "isCorrect": true
+        },
+        {
+          "text": "1 πλανήτης",
+          "isCorrect": false
+        },
+        {
+          "text": "3 πλανήτες",
+          "isCorrect": false
+        },
+        {
+          "text": "Κανένας πλανήτης",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 40,
+      "title": "Ο πρώτος που πρότεινε τη θεωρία ότι οι \nπλανήτες περιστρέφονται γύρω από τον Ήλιο ήταν...",
+      "categoryId": 6,
+      "answers": [
+        {
+          "text": "ο Αρίσταρχος ο Σάμιος",
+          "isCorrect": true
+        },
+        {
+          "text": "ο Κοπέρνικος",
+          "isCorrect": false
+        },
+        {
+          "text": "ο Νεύτωνας",
+          "isCorrect": false
+        },
+        {
+          "text": "ο Ντόναλντ Ντακ",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 41,
+      "title": "Ο Ήλιος αποτελείται κυρίως από...",
+      "categoryId": 6,
+      "answers": [
+        {
+          "text": "Υδρογόνο",
+          "isCorrect": true
+        },
+        {
+          "text": "Ήλιο",
+          "isCorrect": false
+        },
+        {
+          "text": "Σίδηρο",
+          "isCorrect": false
+        },
+        {
+          "text": "Κάρβουνο",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 42,
+      "title": "Από τη μάζα του ηλιακού μας συστήματος, ο Ήλιος αποτελεί το...",
+      "categoryId": 6,
+      "answers": [
+        {
+          "text": "99%",
+          "isCorrect": true
+        },
+        {
+          "text": "20%",
+          "isCorrect": false
+        },
+        {
+          "text": "10%",
+          "isCorrect": false
+        },
+        {
+          "text": "2%",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 43,
+      "title": "Τι άφησαν οι αστροναύτες στη Σελήνη για να \nμετράμε την απόστασή της από τη Γη με laser;",
+      "categoryId": 7,
+      "answers": [
+        {
+          "text": "Κάτοπτρα",
+          "isCorrect": true
+        },
+        {
+          "text": "Κεραίες",
+          "isCorrect": false
+        },
+        {
+          "text": "Σημαίες",
+          "isCorrect": false
+        },
+        {
+          "text": "Ακτινοπίστολα",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 44,
+      "title": "Πόσα κιλά σεληνιακών πετρωμάτων έφεραν στη Γη \nτα προγράμματα Apollo για μελέτη?",
+      "categoryId": 7,
+      "answers": [
+        {
+          "text": "380",
+          "isCorrect": true
+        },
+        {
+          "text": "2",
+          "isCorrect": false
+        },
+        {
+          "text": "10",
+          "isCorrect": false
+        },
+        {
+          "text": "Λένε ψέμματα, είναι γήινα",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 45,
+      "title": "Τα πετρώματα που συλλέξαμε από τη Σελήνη \nείναι παλαιότερα από τα γήινα κατά...",
+      "categoryId": 7,
+      "answers": [
+        {
+          "text": "200 εκατ. χρόνια",
+          "isCorrect": true
+        },
+        {
+          "text": "1.000 χρόνια",
+          "isCorrect": false
+        },
+        {
+          "text": "5.000 χρόνια",
+          "isCorrect": false
+        },
+        {
+          "text": "Λένε ψέμματα, είναι γήινα",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 46,
+      "title": "Πότε είδαμε για πρώτη φορά εικόνες από \nτην αθέατη πλευρά της Σελήνης;",
+      "categoryId": 7,
+      "answers": [
+        {
+          "text": "1960",
+          "isCorrect": true
+        },
+        {
+          "text": "1900",
+          "isCorrect": false
+        },
+        {
+          "text": "1980",
+          "isCorrect": false
+        },
+        {
+          "text": "Δεν την έχουμε δει",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 47,
+      "title": "Ποιος υπολόγισε πρώτος την περίμετρο της Γης, 300 χρόνια π.X.,\n χωρίς να μετακινηθεί καν από την Αίγυπτο όπου βρισκόταν;",
+      "categoryId": 7,
+      "answers": [
+        {
+          "text": "Ο Ερατοσθένης",
+          "isCorrect": true
+        },
+        {
+          "text": "Ο Καποδίστριας",
+          "isCorrect": false
+        },
+        {
+          "text": "Ο Αριστοτέλης",
+          "isCorrect": false
+        },
+        {
+          "text": "Ο Φαραώ",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    },
+    {
+      "id": 48,
+      "title": "Ποιος παρέθεσε πρώτος επιχειρήματα υποστηρίζοντας\n ότι η Γη έχει σχήμα περίπου σφαιρικό;",
+      "categoryId": 7,
+      "answers": [
+        {
+          "text": "Ο Αριστοτέλης",
+          "isCorrect": true
+        },
+        {
+          "text": "Ο Κοπέρνικος",
+          "isCorrect": false
+        },
+        {
+          "text": "Ο Γαλιλαίος",
+          "isCorrect": false
+        },
+        {
+          "text": "Ο Messi",
+          "isCorrect": false
+        }
+      ],
+      "type": "MULTIPLE_CHOICE"
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "name": "Φως και ταχύτητα"
+    },
+    {
+      "id": 2,
+      "name": "Σελήνη"
+    },
+    {
+      "id": 3,
+      "name": "Πλανήτες Ηλιακού Συστήματος"
+    },
+    {
+      "id": 4,
+      "name": "Αποστολές στη Σελήνη (Στελεχωμένες)"
+    },
+    {
+      "id": 5,
+      "name": "Μετεωρίτες, Κομήτες"
+    },
+    {
+      "id": 6,
+      "name": "Ήλιος"
+    },
+    {
+      "id": 7,
+      "name": "Κατάρριψη αντιεπιστημονικών θεωριών"
+    }
+  ]
+}
