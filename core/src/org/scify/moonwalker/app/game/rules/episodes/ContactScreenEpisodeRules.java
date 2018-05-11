@@ -11,24 +11,29 @@ import java.util.Set;
 public class ContactScreenEpisodeRules extends FadingEpisodeRules<ContactScreenRenderable> {
 
     protected static final String CONTACT_ID = "contact";
-    protected boolean exitButtonEnabled;
+    protected boolean outroInitiated;
 
     public ContactScreenEpisodeRules() {
         super();
         renderable = null;
-        exitButtonEnabled = false;
+        outroInitiated = false;
     }
 
     @Override
-    public GameState getNextState(final GameState gsCurrent, UserAction userAction) {
-        if (conversationRules != null && conversationRules.isFinished()) {
-            exitButtonEnabled = true;
+    public GameState getNextState(final GameState gameState, UserAction userAction) {
+        if (conversationRules != null && conversationRules.isFinished() && !outroInitiated) {
+            outroInitiated = true;
+            if (gameInfo.getCurrentDay() == 1) {
+                gameInfo.setMapRequestFlag(true);
+            }
+            gameInfo.setContactRequestFlag(false);
+            endEpisodeAndAddEventWithType(gameState, "");
         } else if (renderable != null && renderable.isChatEnabled()) {
             // Initialize conversation
             if (gameInfo.getCurrentDay() == 1)
-                createConversation(gsCurrent, "conversations/episode_contact_screen1.json");
+                createConversation(gameState, "conversations/episode_contact_screen1.json");
         }
-        return super.getNextState(gsCurrent, userAction);
+        return super.getNextState(gameState, userAction);
     }
 
     @Override
@@ -67,19 +72,5 @@ public class ContactScreenEpisodeRules extends FadingEpisodeRules<ContactScreenR
         }
 
         super.onEnterConversationOrder(gsCurrent, lineEntered);
-    }
-
-    @Override
-    protected void handleUserAction(GameState gameState, UserAction userAction) {
-        switch (userAction.getActionCode()) {
-            case EPISODE_BACK:
-                if (exitButtonEnabled) {
-                    endEpisodeAndAddEventWithType(gameState, "");
-                }else {
-                    gameState.addGameEvent(new GameEvent(AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
-                }
-                break;
-        }
-        super.handleUserAction(gameState, userAction);
     }
 }

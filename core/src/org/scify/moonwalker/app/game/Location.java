@@ -78,4 +78,11 @@ public class Location {
     public void setDistanceToLocation(Location l, int distanceInKilometers) {
         distanceFromOtherLocations.put(l, distanceInKilometers);
     }
+
+    @Override
+    public int hashCode() {
+        return getName().hashCode();
+    }
+
+
 }

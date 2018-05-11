@@ -18,19 +18,20 @@ public class BaseEpisodeRules extends SinglePlayerRules {
     public static final String AUDIO_DISPOSE_UI = "AUDIO_DISPOSE_UI";
     public static final String AUDIO_TOGGLE_UI = "AUDIO_TOGGLE_UI";
 
-    protected boolean episodeStarted = false;
+    protected boolean episodeStarted;
 
-    public BaseEpisodeRules () {
+    public BaseEpisodeRules() {
         super();
+        episodeStarted = false;
     }
 
     @Override
     public GameState getNextState(GameState gsCurrent, UserAction userAction) {
         gsCurrent = super.getNextState(gsCurrent, userAction);
-        if(isGamePaused(gsCurrent))
+        if (isGamePaused(gsCurrent))
             return gsCurrent;
         episodeStartedEvents(gsCurrent);
-        if(userAction != null)
+        if (userAction != null)
             handleUserAction(gsCurrent, userAction);
         return gsCurrent;
     }
@@ -54,7 +55,7 @@ public class BaseEpisodeRules extends SinglePlayerRules {
 
     @Override
     public EpisodeEndState determineEndState(GameState currentState) {
-        if(currentState.eventsQueueContainsEventOwnedBy(CALCULATOR_STARTED, this))
+        if (currentState.eventsQueueContainsEventOwnedBy(CALCULATOR_STARTED, this))
             return new EpisodeEndState(EpisodeEndStateCode.CALCULATOR_STARTED, cleanUpGameState(currentState));
         return null;
     }

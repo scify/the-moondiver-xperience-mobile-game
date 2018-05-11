@@ -1,5 +1,8 @@
 package org.scify.engine;
 
+import org.scify.moonwalker.app.game.episodes.CockpitEpisode;
+import org.scify.moonwalker.app.game.episodes.ContactScreenEpisode;
+
 import java.util.*;
 
 /**
@@ -226,10 +229,10 @@ public abstract class Scenario {
         System.out.println("\n\n");
     }
 
-    protected void addTemporaryEpisode(Episode temp) {
+    protected void addTemporaryEpisode(Episode temp, Episode newCurrentEpisode) {
         try {
             // Create duplicate of current episode, keeping all the possible next ones.
-            Episode clone = cloneCurrentEpisodeWithCandidateLinks();
+            Episode clone = cloneCurrentEpisodeWithCandidateLinks(newCurrentEpisode);
             // Make the temporary episode point to the duplicate as its successor.
             initListForEpisode(temp);
             episodeListMap.get(temp).add(clone);
@@ -245,18 +248,20 @@ public abstract class Scenario {
      * @return The cloned episode.
      * @throws CloneNotSupportedException
      */
-    protected Episode cloneCurrentEpisodeWithCandidateLinks() throws CloneNotSupportedException {
+    protected Episode cloneCurrentEpisodeWithCandidateLinks(Episode newCurrentEpisode) throws CloneNotSupportedException {
         // make sure that the episodeBefore has a list of candidate episodes
         initListForEpisode(currentEpisode);
         // Clone the episode
-        Episode newEpisode = (Episode) currentEpisode.clone();
+        //TODO: Test Without clone
+        //Episode newEpisode = (Episode) currentEpisode.clone();
+
         // initializes a list of candidate episodes after the cloned episode
-        initListForEpisode(newEpisode);
+        initListForEpisode(newCurrentEpisode);
         // Make sure that the cloned episode has the same "next episode" list as the original
         // by getting all the candidate episodes that the original episode had
         // and set them as candidate episodes for the cloned episode.
-        episodeListMap.get(newEpisode).addAll(episodeListMap.get(currentEpisode));
+        episodeListMap.get(newCurrentEpisode).addAll(episodeListMap.get(currentEpisode));
 
-        return newEpisode;
+        return newCurrentEpisode;
     }
 }

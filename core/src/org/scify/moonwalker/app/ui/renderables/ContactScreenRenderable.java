@@ -1,7 +1,5 @@
 package org.scify.moonwalker.app.ui.renderables;
 
-import org.scify.engine.UserAction;
-import org.scify.engine.UserActionCode;
 import org.scify.engine.renderables.ActionButtonRenderable;
 import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.Renderable;
@@ -14,11 +12,9 @@ public class ContactScreenRenderable extends FadingTableRenderable {
     protected final static String BG_IMG_PATH = "img/episode_contact_screen/bg.png";
     protected final static String AUNT_TEXT_IMG_PATH = "img/episode_contact_screen/aunt_text.png";
     protected final static String AUNT_AVATAR_IMG_PATH = "img/episode_contact_screen/aunt_avatar.png";
-    protected final static String EXIT_BUTTON_IMG_PATH = "img/episode_contact_screen/exit.png";
     //renderable ids
     protected final static String AUNT_TEXT_ID = "aunt_text";
     protected final static String AUNT_AVATAR_ID = "aunt_avatar";
-    protected final static String EXIT_BUTTON_ID = "exit_button";
     //audio
     public final static String MOBILE_AUDIO_PATH = "audio/message.mp3";
     public final static String WRONG_BUTTON_AUDIO_PATH = "audio/wrong.mp3";
@@ -49,8 +45,6 @@ public class ContactScreenRenderable extends FadingTableRenderable {
         contactAvatar = createImageRenderable(AUNT_AVATAR_ID, AUNT_AVATAR_IMG_PATH, false, true, 1);
         allRenderables.add(contactAvatar);
 
-        exitButton = createImageButton(EXIT_BUTTON_ID, EXIT_BUTTON_IMG_PATH, new UserAction(UserActionCode.BACK), false, true, 1);
-        allRenderables.add(exitButton);
     }
 
     public boolean isChatEnabled() {
@@ -73,7 +67,4 @@ public class ContactScreenRenderable extends FadingTableRenderable {
         return contactAvatar;
     }
 
-    public ActionButtonRenderable getExitButton() {
-        return exitButton;
-    }
 }
