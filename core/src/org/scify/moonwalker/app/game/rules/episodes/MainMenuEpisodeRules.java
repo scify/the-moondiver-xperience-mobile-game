@@ -43,8 +43,10 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
             });
 
             // Call parent starting process
-            gameState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
             super.episodeStartedEvents(gameState);
+            // Add all children
+            gameState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
+
         }
     }
 

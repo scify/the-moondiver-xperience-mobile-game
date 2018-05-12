@@ -84,13 +84,13 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
     }
 
     protected void createBoySelection() {
-        Stack stack = new Stack();
+        Stack stack = new StackWithEffect<>();
 
         //Add Image
         float width = convertWidth(boyAvatarButton.getWidth());
         stack.addActor(boyAvatarButton);
 
-        // Add closeButton
+        // Add button
         //Table buttonTable = new TableActor<TableRenderable>(getSkin(), this.renderable);
         Table buttonTable = new Table();
         buttonTable.defaults();

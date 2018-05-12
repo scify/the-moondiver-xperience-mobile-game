@@ -54,6 +54,21 @@ public class Renderable extends Positionable implements EffectTarget {
     protected String imgPath;
     protected AppInfo appInfo;
     protected boolean needsUpdate;
+
+    protected Renderable parent;
+
+    public Renderable getParent() {
+        return parent;
+    }
+
+    public void setParent(Renderable parent) {
+        this.parent = parent;
+    }
+
+    public boolean hasParent() {
+        return parent != null;
+    }
+
     /**
      * timestamp describing when the component was last updated
      */

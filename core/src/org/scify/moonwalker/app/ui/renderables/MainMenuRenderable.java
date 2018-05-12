@@ -99,14 +99,14 @@ public class MainMenuRenderable extends FadingTableRenderable {
         allRenderables.add(quitButton);
 
         UserAction boySelectedUserAction = new UserAction(UserActionCode.BOY_SELECTED);
-        boyButton = createImageButton(BOY_BUTTON_ID, BOY_BUTTON_IMG_PATH, boySelectedUserAction, false, false, 1);
+        boyButton = createImageButton(BOY_BUTTON_ID, BOY_BUTTON_IMG_PATH, boySelectedUserAction, false, false, 2);
         allRenderables.add(boyButton);
 
         boyAvatarButton = createImageButton(BOY_AVATAR_BUTTON_ID, BOY_IMG_PATH, boySelectedUserAction, false, false, 1);
         allRenderables.add(boyAvatarButton);
 
         UserAction girlSelectedUserAction = new UserAction(UserActionCode.GIRL_SELECTED);
-        girlButton = createImageButton(GIRL_BUTTON_ID, GIRL_BUTTON_IMG_PATH, girlSelectedUserAction, false, false, 1);
+        girlButton = createImageButton(GIRL_BUTTON_ID, GIRL_BUTTON_IMG_PATH, girlSelectedUserAction, false, false, 2);
         allRenderables.add(girlButton);
 
         girlAvatarButton = createImageButton(GIRL_AVATAR_BUTTON_ID, GIRL_IMG_PATH, girlSelectedUserAction, false, false, 1);
@@ -114,6 +114,11 @@ public class MainMenuRenderable extends FadingTableRenderable {
 
         countDownLabel = createTextLabelRenderable(COUNTDOWN_LABEL_ID, countDownValue + "", false, false, 1);
         allRenderables.add(countDownLabel);
+
+        // Indicate all children as parented
+        for (Renderable rCur : allRenderables) {
+            rCur.setParent(this);
+        }
     }
 
     public void enableInput() {

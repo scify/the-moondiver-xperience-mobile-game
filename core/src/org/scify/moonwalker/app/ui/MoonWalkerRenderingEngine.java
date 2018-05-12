@@ -144,7 +144,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     @Override
     public void drawGameState(MoonWalkerGameState currentState) {
         if (!bDisposalOngoing) {
-            lowerUpdatedZIndex = Integer.MAX_VALUE; // Nothing updated yet
             List<GameEvent> eventsList = currentState.getEventQueue();
             handleGameEvents(eventsList);
             drawRenderables(currentState);
@@ -179,6 +178,8 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                     }
                 });
 
+
+                lowerUpdatedZIndex = Integer.MAX_VALUE; // Nothing updated yet
                 for (Renderable renderable : lRenderables) {
                     drawRenderable(renderable);
                 }

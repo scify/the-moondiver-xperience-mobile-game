@@ -110,8 +110,11 @@ public class MoonwalkerUIPainter {
             //System.out.println("new actor with name: " + renderable.getId());
             aToDraw.setName(renderable.getId());
 
-            // we should add it to the stage (which will undertake the actual drawing)
-            stage.addActorForRenderable(aToDraw, renderable);
+            // If the renderable is not contained elsewhere
+            if (!renderable.hasParent()) {
+                // we should add it to the stage (which will undertake the actual drawing)
+                stage.addActorForRenderable(aToDraw, renderable);
+            }
         }
     }
 
