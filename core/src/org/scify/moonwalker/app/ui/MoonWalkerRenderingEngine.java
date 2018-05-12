@@ -159,19 +159,22 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 Collections.sort(lRenderables, new Comparator<Renderable>() {
                     @Override
                     public int compare(Renderable o1, Renderable o2) {
-                        if (o1 == o2) {
+                        if (o1.equals(o2)) {
                             return 0;
                         }
 
                         // Start with z-index
                         int iRes = o1.getZIndex() - o2.getZIndex();
                         if (iRes == 0) {
-                            // Continue with area (smaller gets higher zorder
+                            // Continue with area (smaller gets higher zorder)
                             iRes = -(int)((o1.getWidth() * o1.getHeight()) -
                                     (o2.getWidth() * o2.getHeight()));
                         }
+
+                        // If still the same
                         if (iRes == 0) {
-                            iRes = (int)(o1.toString().hashCode() - o2.toString().hashCode());
+                            // use hash value of id to order
+                            iRes = (int)(o1.getId().hashCode() - o2.getId().hashCode());
                         }
 
                         return -iRes; // Order from lower to upper

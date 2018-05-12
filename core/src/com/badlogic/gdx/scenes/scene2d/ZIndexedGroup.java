@@ -35,7 +35,7 @@ public class ZIndexedGroup extends Group {
         getChildren().sort(new Comparator<Actor>() {
             @Override
             public int compare(Actor o1, Actor o2) {
-                if (o1 == o2) {
+                if (o1.equals(o2)) {
                     return 0;
                 }
 
@@ -47,7 +47,7 @@ public class ZIndexedGroup extends Group {
                             (o2.getWidth() * o2.getHeight()));
                 }
                 if (iRes == 0) {
-                    iRes = (int)(o1.toString().hashCode() - o2.toString().hashCode());
+                    iRes = (int)(o1.hashCode() - o2.hashCode());
                 }
 
                 return iRes;
