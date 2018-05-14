@@ -12,12 +12,14 @@ public class QuestionServiceJSON implements QuestionService {
     private static QuestionServiceJSON instance;
     private Json json;
     private List<Question> allQuestions;
+    private List<QuestionCategory> allQuestionCategories;
     protected ResourceLocator resourceLocator;
 
     private QuestionServiceJSON() {
         json = new Json();
         resourceLocator = new ResourceLocator();
         allQuestions = getQuestionsFromDB();
+        allQuestionCategories = getQuestionCategoriesFromDB();
     }
 
     public static QuestionServiceJSON getInstance() {
@@ -31,7 +33,26 @@ public class QuestionServiceJSON implements QuestionService {
         return allQuestions;
     }
 
+    @Override
+    public List<QuestionCategory> getQuestionCategories() {
+        return allQuestionCategories;
+    }
+
+    @Override
+    public List<Question> getQuestionsForQuestionCategory(QuestionCategory category) {
+        List<Question> questionsForCategory = new ArrayList<>();
+        for(Question question: allQuestions) {
+            if(question.categoryId == category.getId())
+                questionsForCategory.add(question);
+        }
+        return questionsForCategory;
+    }
+
     private List<Question> getQuestionsFromDB() {
-        return json.fromJson(ArrayList.class, Question.class, Gdx.files.internal(resourceLocator.getFilePath("json_DB/questions.json")));
+        return json.fromJson(ArrayList.class, Question.class, Gdx.files.internal(resourceLocator.getFilePath("questions/questions.json")));
+    }
+
+    private List<QuestionCategory> getQuestionCategoriesFromDB() {
+        return json.fromJson(ArrayList.class, QuestionCategory.class, Gdx.files.internal(resourceLocator.getFilePath("questions/categories.json")));
     }
 }

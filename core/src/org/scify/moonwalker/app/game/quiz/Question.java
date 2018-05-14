@@ -3,6 +3,8 @@ package org.scify.moonwalker.app.game.quiz;
 import java.util.List;
 
 public class Question {
+
+    protected int id;
     protected String title;
     protected List<Answer> answers;
     public QuestionType type;
@@ -19,7 +21,8 @@ public class Question {
     public Question() {
     }
 
-    public Question(String title, List<Answer> answers, QuestionType type, int categoryId) {
+    public Question(int id, String title, List<Answer> answers, QuestionType type, int categoryId) {
+        this.id = id;
         this.title = title;
         this.answers = answers;
         this.type = type;

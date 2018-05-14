@@ -7,12 +7,12 @@ import org.scify.engine.renderables.Renderable;
 import org.scify.engine.rules.Rules;
 import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.moonwalker.app.game.GameInfo;
-import org.scify.moonwalker.app.game.quiz.Answer;
-import org.scify.moonwalker.app.game.quiz.Question;
+import org.scify.moonwalker.app.game.quiz.*;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.ui.MoonWalkerRenderingEngine;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction, EpisodeEndState> {
@@ -27,6 +27,8 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
     protected MoonWalkerPhysicsRules physics;
     protected GameState initialGameState;
     protected GameInfo gameInfo;
+    protected QuestionService questionService;
+    List<QuestionCategory> questionCategories;
 
     public MoonWalkerBaseRules() {
         idToRenderable = new HashMap<>();
@@ -35,6 +37,8 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
         worldX = appInfo.getScreenWidth();
         worldY = appInfo.getScreenHeight();
         physics = new MoonWalkerPhysicsRules(worldX, worldY);
+        questionService = QuestionServiceJSON.getInstance();
+        questionCategories = questionService.getQuestionCategories();
     }
 
     public void setInitialState(GameState initialGameState) {
