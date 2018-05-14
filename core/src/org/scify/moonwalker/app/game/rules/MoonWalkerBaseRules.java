@@ -28,7 +28,9 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
     protected GameState initialGameState;
     protected GameInfo gameInfo;
     protected QuestionService questionService;
-    List<QuestionCategory> questionCategories;
+    protected List<QuestionCategory> questionCategories;
+    protected List<Question> questionsForEpisode;
+    protected int questionIndex = 0;
 
     public MoonWalkerBaseRules() {
         idToRenderable = new HashMap<>();
@@ -196,5 +198,13 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
 
     protected void onExitConversationOrder(GameState gsCurrent, ConversationLine lineExited) {
 
+    }
+
+    protected Question nextQuestion() {
+        if(questionIndex == questionsForEpisode.size())
+            questionIndex = 0;
+        Question question = questionsForEpisode.get(questionIndex);
+        questionIndex++;
+        return question;
     }
 }
