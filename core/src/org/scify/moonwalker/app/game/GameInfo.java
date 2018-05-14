@@ -36,6 +36,8 @@ public class GameInfo {
     protected String selectedPlayer;
     protected boolean contactRequestFlag;
     protected boolean mapRequestFlag;
+    protected int inventoryItemsCounter;
+    protected boolean inventoryIncreased;
 
     private static GameInfo instance;
 
@@ -61,6 +63,8 @@ public class GameInfo {
         setNextAllowedLocation(lc.germany);
         setPreviousTravelPercentageComplete(0);
         setNextTravelPercentagePossible(100);
+        inventoryItemsCounter = 0;
+        inventoryIncreased = true;
     }
 
     public boolean getContactRequestFlag () { return contactRequestFlag; }
@@ -175,4 +179,25 @@ public class GameInfo {
         this.mapRequestFlag = mapRequestFlag;
     }
 
+    public int getInventoryItemsCounter() {
+        return inventoryItemsCounter;
+    }
+
+    public void setInventoryItemsCounter(int numberOfItems) {
+        inventoryItemsCounter = numberOfItems;
+    }
+
+    public int increaseInventoryItemsCounter() {
+        inventoryItemsCounter ++;
+        inventoryIncreased = false;
+        return inventoryItemsCounter;
+    }
+
+    public boolean isInventoryIncreased() {
+        return inventoryIncreased;
+    }
+
+    public void addNextInventoryItem() {
+        inventoryIncreased = true;
+    }
 }

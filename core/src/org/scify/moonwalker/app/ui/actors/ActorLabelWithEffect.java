@@ -60,6 +60,7 @@ public class ActorLabelWithEffect extends Label implements EffectTarget, Updatea
     @Override
     public void update(Renderable renderable) {
         setText(((TextLabelRenderable) renderable).getLabel());
+        setZIndex(renderable.getZIndex());
         renderable.wasUpdated();
     }
 }

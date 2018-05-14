@@ -5,18 +5,19 @@ import org.scify.moonwalker.app.game.rules.SinglePlayerRules;
 
 public class BaseEpisodeRules extends SinglePlayerRules {
 
-    public static final String EPISODE_FINISHED = "EPISODE_FINISHED";
-    public static final String EPISODE_STARTED = "EPISODE_STARTED";
-    public static final String EPISODE_BACK = "BACK";
-    public static final String CALCULATOR_STARTED = "CALCULATOR_STARTED";
+    public static final String GAME_EVENT_EPISODE_FINISHED = "GAME_EVENT_EPISODE_FINISHED";
+    public static final String GAME_EVENT_EPISODE_STARTED = "GAME_EVENT_EPISODE_STARTED";
+    public static final String GAME_EVENT_EPISODE_BACK = "BACK";
+    public static final String GAME_EVENT_CALCULATOR_STARTED = "GAME_EVENT_CALCULATOR_STARTED";
 
     //audio related
-    public static final String AUDIO_START_UI = "AUDIO_START_UI";
-    public static final String AUDIO_START_LOOP_UI = "AUDIO_START_LOOP_UI";
-    public static final String AUDIO_LOAD_UI = "AUDIO_LOAD_UI";
-    public static final String AUDIO_STOP_UI = "AUDIO_STOP_UI";
-    public static final String AUDIO_DISPOSE_UI = "AUDIO_DISPOSE_UI";
-    public static final String AUDIO_TOGGLE_UI = "AUDIO_TOGGLE_UI";
+    public static final String GAME_EVENT_AUDIO_START_UI = "GAME_EVENT_AUDIO_START_UI";
+    public static final String GAME_EVENT_AUDIO_START_LOOP_UI = "GAME_EVENT_AUDIO_START_LOOP_UI";
+    public static final String GAME_EVENT_AUDIO_LOAD_UI = "GAME_EVENT_AUDIO_LOAD_UI";
+    public static final String GAME_EVENT_AUDIO_STOP_UI = "GAME_EVENT_AUDIO_STOP_UI";
+    public static final String GAME_EVENT_AUDIO_DISPOSE_UI = "GAME_EVENT_AUDIO_DISPOSE_UI";
+    public static final String GAME_EVENT_AUDIO_TOGGLE_UI = "GAME_EVENT_AUDIO_TOGGLE_UI";
+    public static final String GAME_EVENT_PREVIOUS_EPISODE = "GAME_EVENT_PREVIOUS_EPISODE";
 
     protected boolean episodeStarted;
 
@@ -46,29 +47,29 @@ public class BaseEpisodeRules extends SinglePlayerRules {
 
     @Override
     public boolean isEpisodeFinished(GameState gsCurrent) {
-        return gsCurrent.eventsQueueContainsEventOwnedBy(EPISODE_FINISHED, this);
+        return gsCurrent.eventsQueueContainsEventOwnedBy(GAME_EVENT_EPISODE_FINISHED, this);
     }
 
     protected boolean isEpisodeStarted(GameState gsCurrent) {
-        return gsCurrent.eventsQueueContainsEventOwnedBy(EPISODE_STARTED, this);
+        return gsCurrent.eventsQueueContainsEventOwnedBy(GAME_EVENT_EPISODE_STARTED, this);
     }
 
     @Override
     public EpisodeEndState determineEndState(GameState currentState) {
-        if (currentState.eventsQueueContainsEventOwnedBy(CALCULATOR_STARTED, this))
+        if (currentState.eventsQueueContainsEventOwnedBy(GAME_EVENT_CALCULATOR_STARTED, this))
             return new EpisodeEndState(EpisodeEndStateCode.CALCULATOR_STARTED, cleanUpGameState(currentState));
         return null;
     }
 
     protected void episodeStartedEvents(GameState currentState) {
         if (!episodeStarted) {
-            currentState.addGameEvent(new GameEvent(EPISODE_STARTED, null, this));
+            currentState.addGameEvent(new GameEvent(GAME_EVENT_EPISODE_STARTED, null, this));
             episodeStarted = true;
         }
     }
 
     protected void episodeEndedEvents(GameState currentState) {
-        currentState.addGameEvent(new GameEvent(EPISODE_FINISHED, null, this));
+        currentState.addGameEvent(new GameEvent(GAME_EVENT_EPISODE_FINISHED, null, this));
     }
 
     @Override

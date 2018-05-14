@@ -39,7 +39,8 @@ public class Renderable extends Positionable implements EffectTarget {
     public static final String ACTOR_EPISODE_FOREST = "forest";
     public static final String ACTOR_EPISODE_COCKPIT = "cockpit";
     public static final String ACTOR_EPISODE_CALCULATOR = "calculator";
-    public static final String ACTOR_EPISODE_SPACESHIP_CHARGER = "spaceship_charger";
+    public static final String ACTOR_EPISODE_CHARGER = "spaceship_charger";
+    public static final String ACTOR_EPISODE_SPACESHIP_INVENTORY = "spaceship_inventory";
     public static final String ACTOR_EPISODE_MAP_LOCATION = "map_location";
     public static final String ACTOR_EPISODE_CONTACT_SCREEN = "contact_screen";
 
@@ -53,6 +54,21 @@ public class Renderable extends Positionable implements EffectTarget {
     protected String imgPath;
     protected AppInfo appInfo;
     protected boolean needsUpdate;
+
+    protected Renderable parent;
+
+    public Renderable getParent() {
+        return parent;
+    }
+
+    public void setParent(Renderable parent) {
+        this.parent = parent;
+    }
+
+    public boolean hasParent() {
+        return parent != null;
+    }
+
     /**
      * timestamp describing when the component was last updated
      */
@@ -135,7 +151,7 @@ public class Renderable extends Positionable implements EffectTarget {
 
     @Override
     public String toString() {
-        return "Type: " + type + " id: " + id + " x: " + xPos + " y: " + yPos;
+        return "Type: " + type + " id: " + id + " x: " + xPos + " y: " + yPos + " z: " + zIndex;
     }
 
     public long getRenderableLastUpdated() {

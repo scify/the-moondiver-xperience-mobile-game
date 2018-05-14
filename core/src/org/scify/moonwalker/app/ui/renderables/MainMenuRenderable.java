@@ -13,17 +13,17 @@ import java.util.Set;
 
 public class MainMenuRenderable extends FadingTableRenderable {
     //renderable image paths
-    protected static final String BG_IMG_PATH = "img/episode_mainMenu/bg.png";
-    protected static final String TOP_BANNER_IMG_PATH = "img/episode_mainMenu/top.png";
-    protected static final String BOY_IMG_PATH = "img/episode_mainMenu/boy.png";
-    protected static final String GIRL_IMG_PATH = "img/episode_mainMenu/girl.png";
-    protected static final String BOY_BUTTON_IMG_PATH = "img/episode_mainMenu/boyButton.png";
-    protected static final String GIRL_BUTTON_IMG_PATH = "img/episode_mainMenu/girlButton.png";
-    protected static final String START_BUTTON_IMG_PATH = "img/episode_mainMenu/start.png";
-    protected static final String CONTINUE_BUTTON_IMG_PATH = "img/episode_mainMenu/continue.png";
-    protected static final String TOGGLE_AUDIO_BUTTON_IMG_PATH = "img/episode_mainMenu/toggleAudio.png";
-    protected static final String ABOUT_BUTTON_IMG_PATH = "img/episode_mainMenu/about.png";
-    protected static final String QUIT_BUTTON_IMG_PATH = "img/episode_mainMenu/quit.png";
+    protected static final String BG_IMG_PATH = "img/episode_main_menu/bg.png";
+    protected static final String TOP_BANNER_IMG_PATH = "img/episode_main_menu/top.png";
+    protected static final String BOY_IMG_PATH = "img/episode_main_menu/boy.png";
+    protected static final String GIRL_IMG_PATH = "img/episode_main_menu/girl.png";
+    protected static final String BOY_BUTTON_IMG_PATH = "img/episode_main_menu/boyButton.png";
+    protected static final String GIRL_BUTTON_IMG_PATH = "img/episode_main_menu/girlButton.png";
+    protected static final String START_BUTTON_IMG_PATH = "img/episode_main_menu/start.png";
+    protected static final String CONTINUE_BUTTON_IMG_PATH = "img/episode_main_menu/continue.png";
+    protected static final String TOGGLE_AUDIO_BUTTON_IMG_PATH = "img/episode_main_menu/toggleAudio.png";
+    protected static final String ABOUT_BUTTON_IMG_PATH = "img/episode_main_menu/about.png";
+    protected static final String QUIT_BUTTON_IMG_PATH = "img/episode_main_menu/quit.png";
 
     //renderable ids
     protected static final String TOP_BANNER_ID = "top_banner";
@@ -39,7 +39,7 @@ public class MainMenuRenderable extends FadingTableRenderable {
     protected static final String COUNTDOWN_LABEL_ID = "countDownLabel";
 
     //AUDIO
-    public static final String MAINMENU_AUDIO_PATH = "audio/episode_mainMenu/bg.mp3";
+    public static final String MAINMENU_AUDIO_PATH = "audio/episode_main_menu/bg.mp3";
     public static final String CLICK_AUDIO_PATH = "audio/button1.mp3";
     //AUDIO BUFFERING FOR NEXT EPISODE
     public static final String BOY_MUSIC_AUDIO_PATH = "audio/episode_room/boy_music.mp3";
@@ -99,14 +99,14 @@ public class MainMenuRenderable extends FadingTableRenderable {
         allRenderables.add(quitButton);
 
         UserAction boySelectedUserAction = new UserAction(UserActionCode.BOY_SELECTED);
-        boyButton = createImageButton(BOY_BUTTON_ID, BOY_BUTTON_IMG_PATH, boySelectedUserAction, false, false, 1);
+        boyButton = createImageButton(BOY_BUTTON_ID, BOY_BUTTON_IMG_PATH, boySelectedUserAction, false, false, 2);
         allRenderables.add(boyButton);
 
         boyAvatarButton = createImageButton(BOY_AVATAR_BUTTON_ID, BOY_IMG_PATH, boySelectedUserAction, false, false, 1);
         allRenderables.add(boyAvatarButton);
 
         UserAction girlSelectedUserAction = new UserAction(UserActionCode.GIRL_SELECTED);
-        girlButton = createImageButton(GIRL_BUTTON_ID, GIRL_BUTTON_IMG_PATH, girlSelectedUserAction, false, false, 1);
+        girlButton = createImageButton(GIRL_BUTTON_ID, GIRL_BUTTON_IMG_PATH, girlSelectedUserAction, false, false, 2);
         allRenderables.add(girlButton);
 
         girlAvatarButton = createImageButton(GIRL_AVATAR_BUTTON_ID, GIRL_IMG_PATH, girlSelectedUserAction, false, false, 1);
@@ -114,6 +114,11 @@ public class MainMenuRenderable extends FadingTableRenderable {
 
         countDownLabel = createTextLabelRenderable(COUNTDOWN_LABEL_ID, countDownValue + "", false, false, 1);
         allRenderables.add(countDownLabel);
+
+        // Indicate all children as parented
+        for (Renderable rCur : allRenderables) {
+            rCur.setParent(this);
+        }
     }
 
     public void enableInput() {

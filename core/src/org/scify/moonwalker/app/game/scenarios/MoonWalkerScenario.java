@@ -32,7 +32,7 @@ public class MoonWalkerScenario extends Scenario {
                 clear();
                 GameInfo.getInstance().setSelectedPlayer(SelectedPlayer.unset);
                 return createBasicScenario();
-            /*case EpisodeEndStateCode.CALCULATOR_STARTED:
+            /*case EpisodeEndStateCode.GAME_EVENT_CALCULATOR_STARTED:
                 addTemporaryEpisode(new CalculatorEpisode());
                 break;*/
             case EpisodeEndStateCode.CONTACT_SCREEN_EPISODE_STARTED:
@@ -48,7 +48,10 @@ public class MoonWalkerScenario extends Scenario {
                 addTemporaryEpisode(new MapEpisode(true), new CockpitEpisode());
                 break;
             case EpisodeEndStateCode.SPACESHIP_CHARGER_EPISODE_STARTED:
-                addTemporaryEpisode(new SpaceshipChargerEpisode(), new CockpitEpisode());
+                addTemporaryEpisode(new ChargeEpisode(), new CockpitEpisode());
+                break;
+            case EpisodeEndStateCode.SPACESHIP_INVENTORY_EPISODE_STARTED:
+                addTemporaryEpisode(new SpaceshipInventoryEpisode(), new CockpitEpisode());
                 break;
             /*case EpisodeEndStateCode.SIMPLE_TIMED_IMAGE_EPISODE:
                 addTemporaryEpisode(new SimpleTimedImageEpisode());
@@ -66,14 +69,13 @@ public class MoonWalkerScenario extends Scenario {
     protected Episode createBasicScenario () {
         Episode mainMenu = new MainMenuEpisode();
         setFirstEpisode(mainMenu);
-        /*
         Episode room = new RoomEpisode();
         addEpisodeAfter(mainMenu, room);
         Episode forest = new ForestEpisode();
-        addEpisodeAfter(room, forest);*/
+        addEpisodeAfter(room, forest);
         Episode cockpit = new CockpitEpisode();
-//        addEpisodeAfter(forest, cockpit);
-        addEpisodeAfter(mainMenu, cockpit);
+        addEpisodeAfter(forest, cockpit);
+//        addEpisodeAfter(mainMenu, cockpit);
         return mainMenu;
     }
 
@@ -85,6 +87,12 @@ public class MoonWalkerScenario extends Scenario {
             return getPlaygroundEpisode();
         }
 
+    }
+
+    private Episode getChargeEpisode() {
+        Episode charger = new ChargeEpisode();
+        setFirstEpisode(charger);
+        return charger;
     }
 
     private Episode getKnightEpisode() {
@@ -108,7 +116,7 @@ public class MoonWalkerScenario extends Scenario {
     private Episode getMapEpisode() {
         Random rRnd = new Random();
 
-        Episode mapEpisode = new MapEpisode(false);
+        Episode mapEpisode = new MapEpisode(true);
         setFirstEpisode(mapEpisode);
         GameInfo info = GameInfo.getInstance();
         LocationController lc = LocationController.getInstance();
@@ -122,6 +130,8 @@ public class MoonWalkerScenario extends Scenario {
         }
 
         info.setNextAllowedLocation(llLocations.get(iTo));
+        info.setPreviousTravelPercentageComplete(25);
+        info.setNextTravelPercentagePossible(75);
         return mapEpisode;
     }
 }

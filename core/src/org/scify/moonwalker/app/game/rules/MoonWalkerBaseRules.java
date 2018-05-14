@@ -2,25 +2,21 @@ package org.scify.moonwalker.app.game.rules;
 
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import org.scify.engine.*;
-import org.scify.engine.EpisodeEndState;
 import org.scify.engine.conversation.ConversationLine;
-import org.scify.engine.renderables.ActionButtonRenderable;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.rules.Rules;
 import org.scify.moonwalker.app.MoonWalkerGameState;
-import org.scify.engine.GameState;
 import org.scify.moonwalker.app.game.GameInfo;
 import org.scify.moonwalker.app.game.quiz.Answer;
-import org.scify.engine.UserAction;
 import org.scify.moonwalker.app.game.quiz.Question;
 import org.scify.moonwalker.app.helpers.AppInfo;
+import org.scify.moonwalker.app.ui.MoonWalkerRenderingEngine;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction, EpisodeEndState> {
 
-    public static final String BACKGROUND_IMG_UI = "BACKGROUND_IMG_UI";
     public static final String TIMED_EPISODE_IMG_PATH = "timed_episode_img_path";
     public static final String TIMED_EPISODE_MILLISECONDS = "timed_episode_milliseconds";
     protected int worldX;
@@ -154,7 +150,7 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
 
 
     protected void addEpisodeBackgroundImage(GameState currentState, String imgPath) {
-        currentState.addGameEvent(new GameEvent(BACKGROUND_IMG_UI, imgPath));
+        currentState.addGameEvent(new GameEvent(MoonWalkerRenderingEngine.BACKGROUND_IMG_UI, imgPath));
     }
 
 

@@ -18,7 +18,6 @@ import java.util.Set;
 public class CockpitRenderable extends FadingTableRenderable {
     //renderable image paths
     protected static final String BG_IMG_PATH = "img/episode_cockpit/bg.png";
-    protected static final String DAYS_LEFT_IMG_PATH = "img/cockpit/days_left.png";
     protected static final String TRAVEL_BUTTON_DEFAULT_IMG_PATH = "img/episode_cockpit/travel.png";
     protected static final String TRAVEL_BUTTON_LIGHTED_IMG_PATH = "img/episode_cockpit/travel_lighted.png";
     protected static final String LAUNCH_BUTTON_DEFAULT_IMG_PATH = "img/episode_cockpit/launch.png";
@@ -134,7 +133,7 @@ public class CockpitRenderable extends FadingTableRenderable {
         mapLightedButton = createImageButton(MAP_BUTTON_LIGHTED_ID, MAP_BUTTON_LIGHTED_IMG_PATH, mapUserAction, false, false, 2);
         allRenderables.add(mapLightedButton);
 
-        UserAction inventoryUserAction = new UserAction(UserActionCode.SPACESHIP_PARTS_EPISODE);
+        UserAction inventoryUserAction = new UserAction(UserActionCode.SPACESHIP_INVENTORY_EPISODE);
         spaceshipInventoryButton = createImageButton(SPACESHIP_INVENTORY_BUTTON_DEFAULT_ID, SPACESHIP_INVENTORY_BUTTON_DEFAULT_IMG_PATH, inventoryUserAction, false, true, 2);
         allRenderables.add(spaceshipInventoryButton);
         spaceshipInventoryLightedButton = createImageButton(SPACESHIP_INVENTORY_BUTTON_LIGHTED_ID, SPACESHIP_INVENTORY_BUTTON_LIGHTED_IMG_PATH, inventoryUserAction, false, false, 2);

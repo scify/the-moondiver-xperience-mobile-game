@@ -38,8 +38,8 @@ public class KnightQuestionsRules extends SinglePlayerRules {
     }
 
     public void gameEndedEvents(GameState gsCurrent) {
-        if(!gsCurrent.eventsQueueContainsEvent("EPISODE_FINISHED")) {
-            gsCurrent.getEventQueue().add(new GameEvent("EPISODE_FINISHED"));
+        if(!gsCurrent.eventsQueueContainsEvent("GAME_EVENT_EPISODE_FINISHED")) {
+            gsCurrent.getEventQueue().add(new GameEvent("GAME_EVENT_EPISODE_FINISHED"));
             gsCurrent.getEventQueue().add(new GameEvent("DISPOSE_RESOURCES_UI"));
         }
     }
@@ -54,7 +54,7 @@ public class KnightQuestionsRules extends SinglePlayerRules {
 
     @Override
     public boolean isEpisodeFinished(GameState gsCurrent) {
-        return rulesFinished(gsCurrent) && gsCurrent.eventsQueueContainsEvent("EPISODE_FINISHED");
+        return rulesFinished(gsCurrent) && gsCurrent.eventsQueueContainsEvent("GAME_EVENT_EPISODE_FINISHED");
     }
 
     @Override

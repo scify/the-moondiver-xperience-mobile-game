@@ -55,6 +55,7 @@ public class ActorFactory extends ComponentFactory {
                 label = new ActorLabelWithEffect(((TextLabelRenderable)renderable).getLabel(), skin);
                 gParent.setWidth(renderable.getWidth());
                 gParent.setHeight(renderable.getHeight());
+                gParent.setZIndex(renderable.getZIndex());
                 label.setWrap(true);
                 gParent.add(label);
                 toReturn = gParent;
@@ -89,11 +90,11 @@ public class ActorFactory extends ComponentFactory {
             case Renderable.ACTOR_EPISODE_COCKPIT:
                 toReturn = createCockpitActor((CockpitRenderable) renderable);
                 break;
-            case Renderable.ACTOR_EPISODE_CALCULATOR:
+            case Renderable.ACTOR_EPISODE_CHARGER:
                 toReturn = createChargeEpisodeActor((ChargeEpisodeRenderable) renderable);
                 break;
-            case Renderable.ACTOR_EPISODE_SPACESHIP_CHARGER:
-                toReturn = createSpaceshipControllerActor((SpaceshipChargerRenderable) renderable);
+            case Renderable.ACTOR_EPISODE_SPACESHIP_INVENTORY:
+                toReturn = createSpaceshipInventoryControllerActor((SpaceshipInventoryRenderable) renderable);
                 break;
             case Renderable.ACTOR_EPISODE_MAP_LOCATION:
                 toReturn = createMapEpisodeActor((MapEpisodeRenderable) renderable);
@@ -139,6 +140,7 @@ public class ActorFactory extends ComponentFactory {
             renderable.setHeight(img.getHeight());
         }
         img.setSize(renderable.getWidth(), renderable.getHeight());
+        img.setZIndex(renderable.getZIndex());
         return img;
     }
 
@@ -166,6 +168,7 @@ public class ActorFactory extends ComponentFactory {
     protected void setCommonAttrsAndListener(Button btn, ActionButtonRenderable actionButtonRenderable) {
         setButtonDimensions(actionButtonRenderable, btn);
         btn.setName(actionButtonRenderable.getId());
+        btn.setZIndex(actionButtonRenderable.getZIndex());
         addButtonListener(btn, actionButtonRenderable);
     }
 
@@ -208,13 +211,10 @@ public class ActorFactory extends ComponentFactory {
         return actor;
     }
 
-    protected Actor createSpaceshipControllerActor(final SpaceshipChargerRenderable renderable) {
-        SpaceshipChargerActor spaceshipControllerActor = new SpaceshipChargerActor(skin, renderable);
-        spaceshipControllerActor.setCalculatorButton(createButton(renderable.getCalculatorButton()));
-        spaceshipControllerActor.setChargeButton(createButton(renderable.getChargeButton()));
-        spaceshipControllerActor.setEscapeButton(createButton(renderable.getEscapeButton()));
-        spaceshipControllerActor.addSubTables();
-        return spaceshipControllerActor;
+    protected Actor createSpaceshipInventoryControllerActor(final SpaceshipInventoryRenderable renderable) {
+        SpaceshipInventoryActor actor = new SpaceshipInventoryActor(skin, renderable);
+        actor.setZIndex(0);
+        return actor;
     }
 
     private Actor createMapEpisodeActor(MapEpisodeRenderable renderable) {

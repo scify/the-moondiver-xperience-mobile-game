@@ -31,6 +31,21 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
 
 public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGameState> {
+    public static final String BACKGROUND_IMG_UI = "BACKGROUND_IMG_UI";
+    public static final String SCREEN_FADE_OUT = "SCREEN_FADE_OUT";
+    public static final String SCREEN_FADE_IN = "SCREEN_FADE_IN";
+    public static final String BORDER_UI = "BORDER_UI";
+    public static final String EPISODE_SUCCESS_UI = "EPISODE_SUCCESS_UI";
+    public static final String AUDIO_TOGGLE_UI = "GAME_EVENT_AUDIO_TOGGLE_UI";
+    public static final String AUDIO_LOAD_UI = "GAME_EVENT_AUDIO_LOAD_UI";
+    public static final String AUDIO_DISPOSE_UI = "GAME_EVENT_AUDIO_DISPOSE_UI";
+    public static final String AUDIO_START_UI = "GAME_EVENT_AUDIO_START_UI";
+    public static final String AUDIO_START_LOOP_UI = "GAME_EVENT_AUDIO_START_LOOP_UI";
+    public static final String AUDIO_STOP_UI = "GAME_EVENT_AUDIO_STOP_UI";
+    public static final String UPDATE_LABEL_TEXT_UI = "UPDATE_LABEL_TEXT_UI";
+    public static final String SOUND_BUMP_PATH = "audio/bump.wav";
+    public static final String SOUND_SUCCESS_PATH = "audio/success.wav";
+    public static final String SOUND_EPISODE_MAIN_MENU_BG_PATH = "audio/episode_main_menu/bg.mp3";
     /**
      * The rendering engine processes the game events, one at a time.
      * The currently processed {@link GameEvent} may block any UI input.
@@ -54,6 +69,8 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     protected boolean bDisposalOngoing;
     protected boolean audioEnabled;
     protected MoonwalkerUIPainter painter;
+
+    protected int lowerUpdatedZIndex = Integer.MAX_VALUE;
 
     public MoonWalkerRenderingEngine(UserInputHandler userInputHandler, SpriteBatch batch, ZIndexedStage stage) {
         this.resourceLocator = new ResourceLocator();
@@ -85,7 +102,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         bookKeeper.setStage(stage);
 
         audioEngine.pauseCurrentlyPlayingAudios();
-        audioEngine.loadSound("audio/episode_mainMenu/bg.mp3");
+        audioEngine.loadSound(SOUND_EPISODE_MAIN_MENU_BG_PATH);
         audioEngine.loadSound("audio/button1.mp3");
         audioEngine.loadSound("audio/message.mp3");
         audioEngine.loadSound("audio/wrong.mp3");
@@ -138,7 +155,34 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             synchronized (currentState.getRenderableList()) {
                 // Get renderable list snapshot (to avoid concurrent modification)
                 List<Renderable> lRenderables = new ArrayList<>(currentState.getRenderableList());
+                // Sort renderables
+                Collections.sort(lRenderables, new Comparator<Renderable>() {
+                    @Override
+                    public int compare(Renderable o1, Renderable o2) {
+                        if (o1.equals(o2)) {
+                            return 0;
+                        }
 
+                        // Start with z-index
+                        int iRes = o1.getZIndex() - o2.getZIndex();
+                        if (iRes == 0) {
+                            // Continue with area (smaller gets higher zorder)
+                            iRes = -(int)((o1.getWidth() * o1.getHeight()) -
+                                    (o2.getWidth() * o2.getHeight()));
+                        }
+
+                        // If still the same
+                        if (iRes == 0) {
+                            // use hash value of id to order
+                            iRes = (int)(o1.getId().hashCode() - o2.getId().hashCode());
+                        }
+
+                        return -iRes; // Order from lower to upper
+                    }
+                });
+
+
+                lowerUpdatedZIndex = Integer.MAX_VALUE; // Nothing updated yet
                 for (Renderable renderable : lRenderables) {
                     drawRenderable(renderable);
                 }
@@ -166,13 +210,19 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 ///
                 painter.drawUIRenderable(uiRepresentationOfRenderable, renderable);
                 // NOTE: We do NOT and should NOT call wasUpdated. It is the actor's responsibility to do so.
+
+                // Update lowest updated layer
+                lowerUpdatedZIndex = Math.min(lowerUpdatedZIndex, renderable.getZIndex());
             }
             // else
             else {
-                // If needs repaint
-                if (renderable.needsRepaint()) {
+                // If needs repaint in itself, or something below it was painted
+                if (renderable.needsRepaint() || (renderable.getZIndex() >= lowerUpdatedZIndex)) {
                     // repaint
                     painter.drawUIRenderable(uiRepresentationOfRenderable, renderable);
+
+                    // Update lowest updated layer
+                    lowerUpdatedZIndex = Math.min(lowerUpdatedZIndex, renderable.getZIndex());
                 }
             }
 
@@ -198,72 +248,72 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     private void handleCurrentGameEvent(GameEvent gameEvent, ListIterator<GameEvent> listIterator) {
         String eventType = gameEvent.type;
         switch (eventType) {
-            case "BACKGROUND_IMG_UI":
+            case BACKGROUND_IMG_UI:
                 String imgPath = (String) gameEvent.parameters;
                 painter.setOverallBackground(createBackgroundCustomImg(imgPath));
                 listIterator.remove();
                 break;
-            case "SCREEN_FADE_OUT":
+            case SCREEN_FADE_OUT:
                 listIterator.remove();
                 Action fadeOut = fadeOut((Float) gameEvent.parameters);
                 stage.getRoot().addAction(fadeOut);
                 break;
-            case "SCREEN_FADE_IN":
+            case SCREEN_FADE_IN:
                 stage.getRoot().getColor().a = 0;
                 Action action = fadeIn((Float) gameEvent.parameters);
                 stage.getRoot().addAction(action);
                 listIterator.remove();
                 break;
-            case "BORDER_UI":
-                audioEngine.playSound("audio/bump.wav");
+            case BORDER_UI:
+                audioEngine.playSound(SOUND_BUMP_PATH);
                 listIterator.remove();
                 break;
-            case "EPISODE_SUCCESS_UI":
-                audioEngine.playSound("audio/success.wav");
+            case EPISODE_SUCCESS_UI:
+                audioEngine.playSound(SOUND_SUCCESS_PATH);
                 listIterator.remove();
                 break;
-            case "AUDIO_TOGGLE_UI":
+            case AUDIO_TOGGLE_UI:
                 if (audioEnabled) {
                     audioEnabled = false;
-                    audioEngine.stopSound("audio/episode_mainMenu/bg.mp3");
+                    audioEngine.stopSound(SOUND_EPISODE_MAIN_MENU_BG_PATH);
                 } else {
                     audioEnabled = true;
-                    audioEngine.playSoundLoop("audio/episode_mainMenu/bg.mp3");
+                    audioEngine.playSoundLoop(SOUND_EPISODE_MAIN_MENU_BG_PATH);
                 }
                 listIterator.remove();
                 break;
-            case "AUDIO_LOAD_UI":
+            case AUDIO_LOAD_UI:
                 audioEngine.loadSound((String) gameEvent.parameters);
                 listIterator.remove();
                 break;
-            case "AUDIO_DISPOSE_UI":
+            case AUDIO_DISPOSE_UI:
                 if (new Date().getTime() > gameEvent.delay) {
                     audioEngine.disposeSound((String) gameEvent.parameters);
                     listIterator.remove();
                 }
                 break;
-            case "AUDIO_START_UI":
+            case AUDIO_START_UI:
                 if (new Date().getTime() > gameEvent.delay) {
                     if (audioEnabled)
                         audioEngine.playSound((String) gameEvent.parameters);
                     listIterator.remove();
                 }
                 break;
-            case "AUDIO_START_LOOP_UI":
+            case AUDIO_START_LOOP_UI:
                 if (new Date().getTime() > gameEvent.delay) {
                     if (audioEnabled)
                         audioEngine.playSoundLoop((String) gameEvent.parameters);
                     listIterator.remove();
                 }
                 break;
-            case "AUDIO_STOP_UI":
+            case AUDIO_STOP_UI:
                 if (new Date().getTime() > gameEvent.delay) {
                     if (audioEnabled)
                         audioEngine.stopSound((String) gameEvent.parameters);
                     listIterator.remove();
                 }
                 break;
-            case "UPDATE_LABEL_TEXT_UI":
+            case UPDATE_LABEL_TEXT_UI:
                 updateLabelText((HashMap.SimpleEntry<org.scify.engine.renderables.Renderable, String>) currentGameEvent.parameters);
                 listIterator.remove();
                 break;
@@ -278,7 +328,10 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         }
         // Update texture
         worldImgTexture = new Texture(resourceLocator.getFilePath(imgPath));
-        return new Image(worldImgTexture);
+        Image iRes = new Image(worldImgTexture);
+        // Apply app size to image (stretch it to fit the app stage)
+        iRes.setSize(appInfo.getScreenWidth(), appInfo.getScreenHeight());
+        return iRes;
     }
 
     private void updateLabelText(HashMap.SimpleEntry<Renderable, String> parameters) {
@@ -334,7 +387,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         if (!bDisposalOngoing && currentGameState != null) {
             this.world = currentGameState.world;
             long lNewTime = new Date().getTime();
-            if (lNewTime - lLastUpdate < 10L) {// If no less than 1/5 sec has passed
+            if (lNewTime - lLastUpdate < 10L) {// If a trivial time has not passed
                 Thread.yield();
                 return; // Do nothing
             } else {
@@ -346,14 +399,15 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
 
                     painter.updateStageBG(delta, lNewTime, lLastUpdate);
 
-                    drawGameState(currentGameState);
-
                     batch.end();
 
                     cameraController.update();
                     stage.act(delta);
                     stage.draw();
 
+                    batch.begin();
+                    drawGameState(currentGameState);
+                    batch.end();
                 }
                 cameraController.render(world);
                 cameraController.setProjectionMatrix(batch);

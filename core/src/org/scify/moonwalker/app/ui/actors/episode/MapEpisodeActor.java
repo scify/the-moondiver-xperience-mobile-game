@@ -40,7 +40,7 @@ public class MapEpisodeActor extends ActorWithEffects implements Updateable<MapE
 
     @Override
     public void update(MapEpisodeRenderable renderable) {
-        // If location is selected
+//        // If location is selected
         if (renderable.isLocationSelected() && !bSelectedOnce) {
             bSelectedOnce = true;
             Location lTarget = renderable.getTargetLocation();
@@ -48,18 +48,19 @@ public class MapEpisodeActor extends ActorWithEffects implements Updateable<MapE
             Label lCur = getLocationNameHUD();
             lCur.setAlignment(Align.center);
             lCur.setText(lTarget.getName());
-            centerRenderableByActorSize(renderable.getLocationNameHUD(), lCur);
+//            centerRenderableByActorSize(renderable.getLocationNameHUD(), lCur);
             // Update distance
             lCur = getDistanceHUD();
             lCur.setAlignment(Align.center);
             lCur.setText(String.valueOf(lTarget.getDistanceFromLocation(renderable.getOriginLocation())) + "KM");
-            centerRenderableByActorSize(renderable.getDistanceHUD(), lCur);
+//            centerRenderableByActorSize(renderable.getDistanceHUD(), lCur);
             // Update mission
             lCur = getMissionHUD();
             lCur.setAlignment(Align.center);
             lCur.setText(lTarget.getMission());
-            centerRenderableByActorSize(renderable.getMissionHUD(), lCur);
+//            centerRenderableByActorSize(renderable.getMissionHUD(), lCur);
         }
+        renderable.wasUpdated();
     }
 
     protected void centerRenderableByActorSize(Renderable rToMove, Label lLabel) {

@@ -152,6 +152,7 @@ public class MapEpisodeRenderable extends Renderable {
             closeButton.setImgPath(QUIT_BUTTON_IMG_PATH);
             closeButton.setUserAction(new UserAction(UserActionCode.QUIT, null));
             closeButton.setVisible(false);
+            closeButton.setZIndex(100); // On top of the world
         }
 
         return closeButton;
@@ -222,20 +223,26 @@ public class MapEpisodeRenderable extends Renderable {
                 Renderable btn;
                 if (lCur.equals(nextAllowedLocation)) {
                     btn = createNextAllowedLocationRenderable(lCur);
+                    // Set z-index high
+                    btn.setZIndex(4);
                 }
                 else if (lCur.equals(currentLocation)) {
                     btn = createCurrentLocationRenderable(lCur);
+                    // Set z-index high (over others)
+                    btn.setZIndex(5);
                 }
                 else if (lCur.getName().equals(MapEpisodeRules.TARGET_MIDDLE_OF_NOWHERE) ||
                         lCur.getName().equals(MapEpisodeRules.ORIGIN_MIDDLE_OF_NOWHERE)){
                     btn = createMiddleOfNowhereRenderable(lCur);
+                    // Set z-index high
+                    btn.setZIndex(4);
                 }
                 else {
                     btn = createCityPointRenderable(lCur);
+                    // Set z-index high
+                    btn.setZIndex(3);
                 }
 
-                // Set z-index high (to show on top)
-                btn.setZIndex(5);
                 // Set invisible (to support fade-in smoothly)
                 btn.setVisible(false);
 
