@@ -10,6 +10,7 @@ import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.TwoChoiceConversationRenderable;
 import org.scify.engine.renderables.effects.*;
 import org.scify.moonwalker.app.game.SelectedPlayer;
+import org.scify.moonwalker.app.game.conversation.RandomResponseFactory;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 
@@ -35,8 +36,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
     private Json json;
     protected ResourceLocator resourceLocator;
     protected Renderable lastConversationRenderable;
-
-
+    protected RandomResponseFactory randomResponseFactory;
 
     public boolean isStarted() {
         return started;
@@ -99,6 +99,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
         oldConversationLines = new ArrayList<>();
         lastConversationRenderable = null;
         this.currentConversationOrderId = 0;
+        randomResponseFactory = RandomResponseFactory.getInstance();
     }
 
     public Renderable getLastConversationRenderable() {
@@ -154,10 +155,9 @@ public class ConversationRules extends MoonWalkerBaseRules {
             nextLines = extractNextLines(gameState, userAction);
         }
 
+        handleOnEnterEventForCurrentConversationOrder(gameState);
         // Call event that handles conversation order change
         handleNextConversationState(gameState, userAction);
-        // Call event that signifies conversation order change
-        handleOnEnterEventForCurrentConversationOrder(gameState);
         return gameState;
     }
 
@@ -187,10 +187,23 @@ public class ConversationRules extends MoonWalkerBaseRules {
         Set<String> sAllEvents = new HashSet<>();
         for (ConversationLine currLine : nextLines) {
             sAllEvents.addAll(currLine.getOnEnterCurrentOrderTrigger());
+            try {
+                handleRandomTextEventForCurrentLine(currLine);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         // Send event indicating we entered a new order
         gameState.addGameEvent(new GameEvent(ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT, sAllEvents, this));
+    }
+
+    protected void handleRandomTextEventForCurrentLine(ConversationLine currLine) throws Exception {
+        Set<String> eventNames = currLine.getOnEnterCurrentOrderTrigger();
+        for(String eventName: eventNames) {
+            if(eventName.equals("random_correct") || eventName.equals("random_wrong") || eventName.equals("random_boring"))
+                currLine.setText(randomResponseFactory.getRandomResponseFor(eventName));
+        }
     }
 
 
@@ -420,8 +433,6 @@ public class ConversationRules extends MoonWalkerBaseRules {
                 return line;
         return null;
     }
-
-//        return gameState.eventsQueueContainsEvent(CONVERSATION_PAUSED);
 
     public void start(GameState gameState) {
         started = true;

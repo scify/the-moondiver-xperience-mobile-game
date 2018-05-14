@@ -77,4 +77,8 @@ public class ConversationLine {
     public String getButtonText() {
         return buttonText;
     }
+
+    public void setText(String text) {
+        this.text = text;
+    }
 }
