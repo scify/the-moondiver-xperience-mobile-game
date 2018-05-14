@@ -177,7 +177,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                             iRes = (int)(o1.getId().hashCode() - o2.getId().hashCode());
                         }
 
-                        return -iRes; // Order from lower to upper
+                        return iRes; // Order from lower to upper
                     }
                 });
 

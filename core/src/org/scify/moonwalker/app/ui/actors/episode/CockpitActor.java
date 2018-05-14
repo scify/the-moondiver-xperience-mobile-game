@@ -99,7 +99,7 @@ public class CockpitActor extends FadingTableActor<CockpitRenderable> {
     }
 
     protected void drawTopRightPad() {
-        Stack stack = new Stack();
+        Stack stack = new StackWithEffect<>();
 
         Image image = (ImageWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getRightTablet());
         float width = convertWidth(image.getWidth());

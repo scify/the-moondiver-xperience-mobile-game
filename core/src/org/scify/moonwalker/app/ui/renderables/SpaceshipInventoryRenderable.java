@@ -3,7 +3,10 @@ package org.scify.moonwalker.app.ui.renderables;
 import org.scify.engine.renderables.ActionButtonRenderable;
 import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.Renderable;
+import org.scify.engine.renderables.TextLabelRenderable;
 import org.scify.engine.renderables.effects.*;
+import org.scify.moonwalker.app.game.GameInfo;
+import org.scify.moonwalker.app.game.MoonPhase;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,6 +30,9 @@ public class SpaceshipInventoryRenderable extends FadingTableRenderable {
     protected static final String EXTRA_TURBINES_ID = "extraTurbines";
     protected static final String CENTRAL_TURBINE_ID = "centralTurbine";
     protected static final String BATTERY_ID = "battery";
+    protected static final String UNITS_PER_NIGHT_ID = "units_per_night";
+    protected static final String DISTANCE_PER_UNIT_ID = "distance_per_unit";
+    protected static final String MOON_PHASE_ID = "moon_phase";
 
     protected ImageRenderable solarPanel1;
     protected ImageRenderable solarPanel2;
@@ -35,6 +41,10 @@ public class SpaceshipInventoryRenderable extends FadingTableRenderable {
     protected ImageRenderable centralTurbine;
     protected ImageRenderable extraTurbines;
     protected ImageRenderable battery;
+    protected ImageRenderable moonPhase;
+
+    protected TextLabelRenderable unitsLabel;
+    protected TextLabelRenderable distancePerUnitLabel;
 
     protected Set<Renderable> allRenderables;
 
@@ -51,62 +61,63 @@ public class SpaceshipInventoryRenderable extends FadingTableRenderable {
         allRenderables = new HashSet<>();
         float height = appInfo.getScreenHeight();
         float width = appInfo.getScreenWidth();
+        EffectSequence effect = getShowPartEffectSequence();
 
-        if (inventoryItemsCounter > 0)
-            centralTurbine = createImageRenderable(CENTRAL_TURBINE_ID, CENTRAL_TURBINE_IMG_PATH, true, true, 14);
-        else
-            centralTurbine = createImageRenderable(CENTRAL_TURBINE_ID, CENTRAL_TURBINE_IMG_PATH, true, false, 14);
-        centralTurbine.setHeight(appInfo.convertY(centralTurbine.getHeight()));
-        centralTurbine.setWidth(appInfo.convertX(centralTurbine.getWidth()));
+        centralTurbine = createImageRenderable(CENTRAL_TURBINE_ID, CENTRAL_TURBINE_IMG_PATH, true, false, 14);
+        centralTurbine.setHeight(height);
+        centralTurbine.setWidth(width);
+        if (inventoryItemsCounter > 0) {
+            centralTurbine.addEffect(effect);
+        }
         allRenderables.add(centralTurbine);
 
-        if (inventoryItemsCounter > 1)
-            extraTurbines = createImageRenderable(EXTRA_TURBINES_ID, EXTRA_TURBINES_IMG_PATH, true, true, 15);
-        else
-            extraTurbines = createImageRenderable(EXTRA_TURBINES_ID, EXTRA_TURBINES_IMG_PATH, true, false, 15);
+        extraTurbines = createImageRenderable(EXTRA_TURBINES_ID, EXTRA_TURBINES_IMG_PATH, true, false, 15);
         extraTurbines.setHeight(height);
         extraTurbines.setWidth(width);
+        if (inventoryItemsCounter > 1)
+            extraTurbines.addEffect(effect);
         allRenderables.add(extraTurbines);
 
-        if (inventoryItemsCounter > 2)
-            solarPanel1 = createImageRenderable(SOLAR_PANELS_1_ID, SOLAR_PANELS_1_IMG_PATH, true, true, 10);
-        else
-            solarPanel1 = createImageRenderable(SOLAR_PANELS_1_ID, SOLAR_PANELS_1_IMG_PATH, true, false, 10);
+        solarPanel1 = createImageRenderable(SOLAR_PANELS_1_ID, SOLAR_PANELS_1_IMG_PATH, true, false, 10);
         solarPanel1.setHeight(height);
         solarPanel1.setWidth(width);
+        if (inventoryItemsCounter > 2)
+            solarPanel1.addEffect(effect);
         allRenderables.add(solarPanel1);
 
-        if (inventoryItemsCounter > 3)
-            solarPanel2 = createImageRenderable(SOLAR_PANELS_2_ID, SOLAR_PANELS_2_IMG_PATH, true, true, 11);
-        else
-            solarPanel2 = createImageRenderable(SOLAR_PANELS_2_ID, SOLAR_PANELS_2_IMG_PATH, true, false, 11);
+        solarPanel2 = createImageRenderable(SOLAR_PANELS_2_ID, SOLAR_PANELS_2_IMG_PATH, true, false, 11);
         solarPanel2.setHeight(height);
         solarPanel2.setWidth(width);
+        if (inventoryItemsCounter > 3)
+            solarPanel2.addEffect(effect);
         allRenderables.add(solarPanel2);
 
-        if (inventoryItemsCounter > 4)
-            solarPanel3 = createImageRenderable(SOLAR_PANELS_3_ID, SOLAR_PANELS_3_IMG_PATH, true, true, 12);
-        else
-            solarPanel3 = createImageRenderable(SOLAR_PANELS_3_ID, SOLAR_PANELS_3_IMG_PATH, true, false, 12);
+        solarPanel3 = createImageRenderable(SOLAR_PANELS_3_ID, SOLAR_PANELS_3_IMG_PATH, true, false, 12);
         solarPanel3.setHeight(height);
         solarPanel3.setWidth(width);
+        if (inventoryItemsCounter > 4)
+            solarPanel3.addEffect(effect);
         allRenderables.add(solarPanel3);
 
-        if (inventoryItemsCounter > 5)
-            solarPanel4 = createImageRenderable(SOLAR_PANELS_4_ID, SOLAR_PANELS_4_IMG_PATH, true, true, 13);
-        else
-            solarPanel4 = createImageRenderable(SOLAR_PANELS_4_ID, SOLAR_PANELS_4_IMG_PATH, true, false, 13);
+        solarPanel4 = createImageRenderable(SOLAR_PANELS_4_ID, SOLAR_PANELS_4_IMG_PATH, true, false, 13);
         solarPanel4.setHeight(height);
         solarPanel4.setWidth(width);
+        if (inventoryItemsCounter > 5)
+            solarPanel4.addEffect(effect);
         allRenderables.add(solarPanel4);
 
-        if (inventoryItemsCounter > 5)
-            battery = createImageRenderable(BATTERY_ID, BATTERY_IMG_PATH, true, true, 16);
-        else
-            battery = createImageRenderable(BATTERY_ID, BATTERY_IMG_PATH, true, false, 16);
+
+        battery = createImageRenderable(BATTERY_ID, BATTERY_IMG_PATH, true, false, 16);
         battery.setHeight(height);
         battery.setWidth(width);
+        if (inventoryItemsCounter > 6)
+            battery.addEffect(effect);
         allRenderables.add(battery);
+
+        unitsLabel = createTextLabelRenderable(UNITS_PER_NIGHT_ID, "", false, true, 5);
+        allRenderables.add(unitsLabel);
+        distancePerUnitLabel = createTextLabelRenderable(DISTANCE_PER_UNIT_ID, "", false, true, 5);
+        allRenderables.add(distancePerUnitLabel);
     }
 
     public ImageRenderable getTableBGRenderable() {
@@ -117,12 +128,23 @@ public class SpaceshipInventoryRenderable extends FadingTableRenderable {
         EffectSequence fadeInEffects = new EffectSequence();
         fadeInEffects.addEffect(new FadeEffect(1.0, 0, 0));
         fadeInEffects.addEffect(new VisibilityEffect(true));
-        fadeInEffects.addEffect(new FadeEffect(0.0, 1.0, 2500));
+        fadeInEffects.addEffect(new FadeEffect(0.0, 1.0, 2000));
         return fadeInEffects;
     }
 
     public void addSolarPanel1() {
         solarPanel1.addEffect(getShowPartEffectSequence());
+        /*gameInfo.set
+        EffectSequence labelUpdateEffect = new EffectSequence();
+        labelUpdateEffect.addEffect(new FadeEffect(1.0, 0, 1000));
+        labelUpdateEffect.addEffect(new FunctionEffect(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        }));
+        labelUpdateEffect.addEffect(new FadeEffect(0, 1.0, 1000));
+        unitsLabel.addEffect(labelUpdateEffect);*/
     }
 
     public void addSolarPanel2() {
@@ -165,6 +187,32 @@ public class SpaceshipInventoryRenderable extends FadingTableRenderable {
         else if (inventoryItemsCounter == 7)
             addBattery();
 
+    }
+
+    public void setUnitsValue(String units) {
+        unitsLabel.setLabel(units);
+    }
+
+    public void setDistancePerUnitValue(String distancePerUnit) {
+        distancePerUnitLabel.setLabel(distancePerUnit);
+    }
+
+    public TextLabelRenderable getUnitsLabel() {
+
+        return unitsLabel;
+    }
+
+    public TextLabelRenderable getDistancePerUnitLabel() {
+        return distancePerUnitLabel;
+    }
+
+    public void setMoonPhase(MoonPhase moonPhase) {
+        this.moonPhase = createImageRenderable(MOON_PHASE_ID, moonPhase.getImgPath(), false, true, 4);
+        allRenderables.add(this.moonPhase);
+    }
+
+    public ImageRenderable getMoonPhase() {
+        return moonPhase;
     }
 
 }

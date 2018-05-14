@@ -5,6 +5,7 @@ import org.scify.engine.EpisodeEndState;
 import org.scify.engine.EpisodeEndStateCode;
 import org.scify.engine.GameState;
 import org.scify.engine.UserAction;
+import org.scify.moonwalker.app.game.MoonPhase;
 import org.scify.moonwalker.app.ui.renderables.SpaceshipInventoryRenderable;
 
 import java.util.ArrayList;
@@ -26,6 +27,11 @@ public class SpaceshipInventoryEpisodeRules extends FadingEpisodeRules<Spaceship
     public void episodeStartedEvents(final GameState gameState) {
         if (!isEpisodeStarted(gameState)) {
             renderable = new SpaceshipInventoryRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID, gameInfo.getInventoryItemsCounter());
+            renderable.setDistancePerUnitValue(gameInfo.getMotorEfficiency() + " Km/Unit");
+            MoonPhase moonPhase = gameInfo.getCurrentMoonPhase();
+            renderable.setMoonPhase(moonPhase);
+            renderable.setUnitsValue(gameInfo.getUnitsOfMoonPhase(moonPhase) + " Units");
+            renderable.setZIndex(0);
             renderable.addAfterFadeIn(new Runnable() {
                 @Override
                 public void run() {
@@ -33,7 +39,6 @@ public class SpaceshipInventoryEpisodeRules extends FadingEpisodeRules<Spaceship
                 }
             });
             gameState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
-            gameState.addRenderable(renderable);
             super.episodeStartedEvents(gameState);
         }
     }

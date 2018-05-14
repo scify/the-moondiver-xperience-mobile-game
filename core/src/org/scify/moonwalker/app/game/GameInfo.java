@@ -28,7 +28,7 @@ public class GameInfo {
         this.nextAllowedLocation = nextAllowedLocation;
     }
 
-    protected int daysLeftForDestination;
+    protected int inintialDaysToSuccessfullyCompleteGame;
     protected MoonPhase currentMoonPhase;
     protected MoonPhase nextMoonPhase;
     protected MoonPhase postNextMoonPhase;
@@ -50,9 +50,9 @@ public class GameInfo {
     private GameInfo() {
         moonPhasesController = new MoonPhasesController();
         currentDay = 1;
+        inintialDaysToSuccessfullyCompleteGame = 90;
         motorEfficiency = 10;
         remainingEnergy = 0;
-        daysLeftForDestination = 90;
         LocationController lc = new LocationController();
         currentLocation = lc.getLocations().get(0);
         setMoonPhases();
@@ -63,7 +63,7 @@ public class GameInfo {
         setNextAllowedLocation(lc.germany);
         setPreviousTravelPercentageComplete(0);
         setNextTravelPercentagePossible(100);
-        inventoryItemsCounter = 0;
+        inventoryItemsCounter = 5;
         inventoryIncreased = true;
     }
 
@@ -124,11 +124,7 @@ public class GameInfo {
     }
 
     public int getDaysLeftForDestination() {
-        return daysLeftForDestination;
-    }
-
-    public void setDaysLeftForDestination(int daysLeftForDestination) {
-        this.daysLeftForDestination = daysLeftForDestination;
+        return inintialDaysToSuccessfullyCompleteGame - currentDay;
     }
 
     public MoonPhase getCurrentMoonPhase() {
@@ -199,5 +195,9 @@ public class GameInfo {
 
     public void addNextInventoryItem() {
         inventoryIncreased = true;
+    }
+
+    public int getUnitsOfMoonPhase(MoonPhase moonPhase) {
+        return moonPhasesController.getUnitsOfMoonPhase(moonPhase, inventoryItemsCounter);
     }
 }

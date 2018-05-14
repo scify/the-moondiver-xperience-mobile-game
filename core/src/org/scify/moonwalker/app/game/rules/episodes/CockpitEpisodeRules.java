@@ -32,7 +32,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
         travelClickable = false;
         mapClickable = false;
         chargeClickable = false;
-        inventoryClickable = false;
+        inventoryClickable = true;
     }
 
     @Override
@@ -40,11 +40,12 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
         if (!isEpisodeStarted(gameState)) {
             locationController = new LocationController();
             renderable = new CockpitRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), COCKPIT_ID);
+            renderable.setZIndex(1);
             setCockpitFieldValues();
             renderable.addAfterFadeIn(new Runnable() {
                 @Override
                 public void run() {
-                    if (gameInfo.getContactRequestFlag()) {
+                    /*if (gameInfo.getContactRequestFlag()) {
                         gameState.addGameEvent(new GameEvent(TOGGLE_BUTTON, renderable.getContactLightedButton(), new Date().getTime() + 500, false, this));
                         renderable.toogleButtonLight(renderable.getContactLightedButton());
                         contactClickable = true;
@@ -52,7 +53,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                         gameState.addGameEvent(new GameEvent(TOGGLE_BUTTON, renderable.getMapLightedButton(), new Date().getTime() + 500, false, this));
                         renderable.toogleButtonLight(renderable.getMapLightedButton());
                         mapClickable = true;
-                    }
+                    }*/
                     buttonsEnabled = true;
                 }
             });
@@ -148,8 +149,13 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
             renderable.setLocationValue(gameInfo.getCurrentLocationName());
         renderable.setRemainingEnergyValue(String.valueOf(gameInfo.getRemainingEnergy()));
         renderable.setMotorEfficiencyValue(String.valueOf(gameInfo.getMotorEfficiency()));
-        renderable.setDaysLeftValue("99");
-        renderable.setDestinationDistanceValue(1000);
+        renderable.setDaysLeftValue(gameInfo.getDaysLeftForDestination() + "");
+        if (gameInfo.getNextLocation() != null) {
+            renderable.setDestinationDistanceValue(gameInfo.getNextLocationDistance() + "");
+        }
+        else{
+            renderable.setDestinationDistanceValue("--");
+        }
     }
 
 

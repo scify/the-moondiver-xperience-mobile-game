@@ -165,8 +165,8 @@ public class CockpitRenderable extends FadingTableRenderable {
         energyLabel.setLabel(energy);
     }
 
-    public void setDestinationDistanceValue(int distance) {
-        distanceLabel.setLabel(distance + "");
+    public void setDestinationDistanceValue(String distance) {
+        distanceLabel.setLabel(distance);
     }
 
     public void setDaysLeftValue(String daysLeft) {

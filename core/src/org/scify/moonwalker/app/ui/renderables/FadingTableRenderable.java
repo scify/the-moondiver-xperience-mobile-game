@@ -26,6 +26,9 @@ public class FadingTableRenderable extends TableRenderable {
 
     public FadingTableRenderable(String type, String id) {
         super(type, id);
+        tableBGRenderable.setZIndex(1);
+        this.setZIndex(1);
+        setPositionDrawable(false);
     }
 
     /**
@@ -41,14 +44,20 @@ public class FadingTableRenderable extends TableRenderable {
      */
     public FadingTableRenderable(float xPos, float yPos, float width, float height, String type, String id, String bgImagePath) {
         super(xPos, yPos, width, height, type, id, bgImagePath);
+        tableBGRenderable.setZIndex(1);
+        this.setZIndex(1);
         setVisible(false);
+        setPositionDrawable(false);
     }
 
     public FadingTableRenderable(float xPos, float yPos, float width, float height, String type, String id, String bgImagePath, boolean bStartVisibility) {
         super(xPos, yPos, width, height, type, id);
 
         tableBGRenderable = new ImageRenderable("bg", bgImagePath);
+        tableBGRenderable.setZIndex(1);
+        this.setZIndex(1);
         setVisible(bStartVisibility);
+        setPositionDrawable(false);
     }
 
     public void fadeIn() {
