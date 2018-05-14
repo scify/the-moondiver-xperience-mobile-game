@@ -6,10 +6,10 @@
   {"id": "5", "order":"5", "speakerId":"player", "text":"Τα ξέρω όλα, πες πως ήμουν εκεί!", "prerequisites":""},
   {"id": "5", "order":"5", "speakerId":"player", "text":"Κάτι θυμάμαι, για λέγε...", "prerequisites":""},
   {"id": "6", "order":"6", "speakerId":"scientist_london", "text":"Εντάξει λοιπόν, ας δούμε τι ξέρεις\nτώρα για τις αποστολές στη Σελήνη...", "prerequisites":"", "onExitCurrentOrderTrigger":"load_questions"},
-  {"id": "7", "order":"7", "speakerId":"scientist_madrid", "text":"Μπράβο! τα κατάφερες!", "prerequisites":"player_has_3_correct"},
-  {"id": "8", "order":"8", "speakerId":"scientist_madrid", "text":"Σου προσφέρω λοιπόν το επόμενο εξάρτημα\nπου θα χρειαστείς για το ταξίδι σου:", "prerequisites":"player_has_3_correct"},
-  {"id": "9", "order":"9", "speakerId":"scientist_madrid", "text":"Ο πρώτος ειδικός συλλέκτης ηλιακής\nακτινοβολίας είναι δικός σου!", "prerequisites":"player_has_3_correct"},
-  {"id": "10", "order":"10", "speakerId":"scientist_madrid", "text":"Αξιοποιεί το φως που αντανακλάται στη Σελήνη.", "prerequisites":"player_has_3_correct"},
-  {"id": "11", "order":"11", "speakerId":"scientist_madrid", "text":"Καλή επιτυχία!", "prerequisites":"player_has_3_correct", "onExitCurrentOrderTrigger":"end"},
-  {"id": "12", "order":"12", "speakerId":"scientist_madrid", "text":"Χμ... Δεν είσαι {{έτοιμος/έτοιμη}} ακόμα.\nΈλα πίσω ξανά αύριο.", "prerequisites":"player_has_3_wrong", "onExitCurrentOrderTrigger":"end"}
+  {"id": "7", "order":"7", "speakerId":"scientist_london", "text":"Μπράβο! τα κατάφερες!", "prerequisites":"player_has_3_correct"},
+  {"id": "8", "order":"8", "speakerId":"scientist_london", "text":"Σου προσφέρω λοιπόν το επόμενο εξάρτημα\nπου θα χρειαστείς για το ταξίδι σου:", "prerequisites":"player_has_3_correct"},
+  {"id": "9", "order":"9", "speakerId":"scientist_london", "text":"Ο πρώτος ειδικός συλλέκτης ηλιακής\nακτινοβολίας είναι δικός σου!", "prerequisites":"player_has_3_correct"},
+  {"id": "10", "order":"10", "speakerId":"scientist_london", "text":"Αξιοποιεί το φως που αντανακλάται στη Σελήνη.", "prerequisites":"player_has_3_correct"},
+  {"id": "11", "order":"11", "speakerId":"scientist_london", "text":"Καλή επιτυχία!", "prerequisites":"player_has_3_correct", "onExitCurrentOrderTrigger":"end"},
+  {"id": "12", "order":"12", "speakerId":"scientist_london", "text":"Χμ... Δεν είσαι {{έτοιμος/έτοιμη}} ακόμα.\nΈλα πίσω ξανά αύριο.", "prerequisites":"player_has_3_wrong", "onExitCurrentOrderTrigger":"end"}
 ]
