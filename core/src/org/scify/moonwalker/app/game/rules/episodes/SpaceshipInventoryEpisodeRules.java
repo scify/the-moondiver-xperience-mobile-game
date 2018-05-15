@@ -84,10 +84,10 @@ public class SpaceshipInventoryEpisodeRules extends FadingEpisodeRules<Spaceship
 
     @Override
     protected void handleUserAction(GameState gameState, UserAction userAction) {
-        System.out.println("benw");
         switch (userAction.getActionCode()) {
             case UserActionCode.QUIT: {
                 endEpisodeAndAddEventWithType(gameState, "");
+                renderable.fadeOutAllExtraRenderables();
                 gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.ADD_ITEM_AUDIO_PATH));
                 break;
             }

@@ -132,7 +132,7 @@ public class SpaceshipInventoryRenderable extends FadingTableRenderable {
         distancePerUnitLabel = createTextLabelRenderable(DISTANCE_PER_UNIT_ID, "", false, true, 5);
         allRenderables.add(distancePerUnitLabel);
 
-        exitButton = createImageButton(EXIT_BUTTON_ID, EXIT_BUTTON_IMG_PATH, new UserAction(UserActionCode.QUIT),true, true, 100);
+        exitButton = createImageButton(EXIT_BUTTON_ID, EXIT_BUTTON_IMG_PATH, new UserAction(UserActionCode.QUIT),true, false, 100);
         exitButton.setHeight(appInfo.convertY(157));
         exitButton.setWidth(appInfo.convertX(157));
         exitButton.setxPos(0.88f * width);
@@ -162,14 +162,25 @@ public class SpaceshipInventoryRenderable extends FadingTableRenderable {
             @Override
             public void run() {
                 EffectSequence effects = new EffectSequence();
-                effects.addEffect(new FadeEffect(1, 0, 1000));
+                effects.addEffect(new FadeEffect(1, 0, 500));
                 effects.addEffect(new FunctionEffect(new Runnable() {
                     @Override
                     public void run() {
-                        label.setLabel(nextValue);
+                        if (label != null)
+                            label.setLabel(nextValue);
                     }
                 }));
-                effects.addEffect(new FadeEffect(0, 1, 1000));
+                effects.addEffect(new FadeEffect(0, 1, 500));
+                effects.addEffect(new FunctionEffect(new Runnable() {
+                    @Override
+                    public void run() {
+                        EffectSequence effects = new EffectSequence();
+                        effects.addEffect(new FadeEffect(1.0, 0, 0));
+                        effects.addEffect(new VisibilityEffect(true));
+                        effects.addEffect(new FadeEffect(0, 1.0, 500));
+                        exitButton.addEffect(effects);
+                    }
+                }));
                 label.addEffect(effects);
             }
         }));
@@ -193,9 +204,7 @@ public class SpaceshipInventoryRenderable extends FadingTableRenderable {
 
     public void addExtraTurbines() { extraTurbines.addEffect(addStatsUpdateToEffectSequence(distancePerUnitLabel, nextDistancePerUnitValue)); }
 
-    public void addBattery() {
-        battery.addEffect(getShowPartEffectSequence());
-    }
+    public void addBattery() { battery.addEffect(addStatsUpdateToEffectSequence(null, null)); }
 
     public void addNextItem(int inventoryItemsCounter) {
         if (inventoryItemsCounter == 1)
@@ -212,7 +221,6 @@ public class SpaceshipInventoryRenderable extends FadingTableRenderable {
             addSolarPanel4();
         else if (inventoryItemsCounter == 7)
             addBattery();
-
     }
 
     public void setUnitsValue(String units) {
@@ -251,5 +259,24 @@ public class SpaceshipInventoryRenderable extends FadingTableRenderable {
 
     public ActionButtonRenderable getExitButton() {
         return exitButton;
+    }
+
+    public void fadeOutAllExtraRenderables() {
+        Effect effect = new FadeEffect(1, 0, 2000);
+        exitButton.addEffect(effect);
+        if (solarPanel1.isVisible())
+            solarPanel1.addEffect(effect);
+        if (solarPanel2.isVisible())
+            solarPanel2.addEffect(effect);
+        if (solarPanel3.isVisible())
+            solarPanel3.addEffect(effect);
+        if (solarPanel4.isVisible())
+            solarPanel4.addEffect(effect);
+        if (extraTurbines.isVisible())
+            extraTurbines.addEffect(effect);
+        if (centralTurbine.isVisible())
+            centralTurbine.addEffect(effect);
+        if (battery.isVisible())
+            battery.addEffect(effect);
     }
 }
