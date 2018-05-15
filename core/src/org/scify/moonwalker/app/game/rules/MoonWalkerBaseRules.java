@@ -27,10 +27,6 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
     protected MoonWalkerPhysicsRules physics;
     protected GameState initialGameState;
     protected GameInfo gameInfo;
-    protected QuestionService questionService;
-    protected List<QuestionCategory> questionCategories;
-    protected List<Question> questionsForEpisode;
-    protected int questionIndex = 0;
 
     public MoonWalkerBaseRules() {
         idToRenderable = new HashMap<>();
@@ -39,8 +35,6 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
         worldX = appInfo.getScreenWidth();
         worldY = appInfo.getScreenHeight();
         physics = new MoonWalkerPhysicsRules(worldX, worldY);
-        questionService = QuestionServiceJSON.getInstance();
-        questionCategories = questionService.getQuestionCategories();
     }
 
     public void setInitialState(GameState initialGameState) {
@@ -198,13 +192,5 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
 
     protected void onExitConversationOrder(GameState gsCurrent, ConversationLine lineExited) {
 
-    }
-
-    protected Question nextQuestion() {
-        if(questionIndex == questionsForEpisode.size())
-            questionIndex = 0;
-        Question question = questionsForEpisode.get(questionIndex);
-        questionIndex++;
-        return question;
     }
 }
