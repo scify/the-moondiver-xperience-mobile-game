@@ -29,6 +29,10 @@ public class Question {
         this.categoryId = categoryId;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public boolean checkIfCorrectAnswer(Answer answer){
         if (null == answer)
             return false;
