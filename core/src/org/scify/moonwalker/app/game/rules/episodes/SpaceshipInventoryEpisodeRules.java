@@ -1,10 +1,7 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 
-import org.scify.engine.EpisodeEndState;
-import org.scify.engine.EpisodeEndStateCode;
-import org.scify.engine.GameState;
-import org.scify.engine.UserAction;
+import org.scify.engine.*;
 import org.scify.moonwalker.app.game.MoonPhase;
 import org.scify.moonwalker.app.ui.renderables.SpaceshipInventoryRenderable;
 
@@ -47,9 +44,31 @@ public class SpaceshipInventoryEpisodeRules extends FadingEpisodeRules<Spaceship
     public GameState getNextState(final GameState gameState, UserAction userAction) {
         if (introComplete && gameInfo.isInventoryIncreased()) {
             int inventoryItemsCounter = gameInfo.increaseInventoryItemsCounter();
+            updateGameInfo(inventoryItemsCounter);
+            gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.ADD_ITEM_AUDIO_PATH));
             renderable.addNextItem(inventoryItemsCounter);
         }
         return super.getNextState(gameState, userAction);
+    }
+
+    protected void updateGameInfo (int inventoryItemsCounter) {
+        switch (inventoryItemsCounter) {
+            case 1:
+                gameInfo.setMotorEfficiency(15);
+                renderable.setNextDistancePerUnitValue("20 Km/Unit");
+                break;
+            case 2:
+                gameInfo.setMotorEfficiency(20);
+                renderable.setNextDistancePerUnitValue("30 Km/Unit");
+                break;
+            default:
+                MoonPhase moonPhase = gameInfo.getCurrentMoonPhase();
+                String newValue = gameInfo.getUnitsOfMoonPhase(moonPhase) + " Units";
+                if (!renderable.getUnitsLabel().getLabel().equals(newValue)) {
+                    renderable.setNextUnitsValue(newValue);
+                }
+                break;
+        }
     }
 
     @Override
@@ -65,9 +84,11 @@ public class SpaceshipInventoryEpisodeRules extends FadingEpisodeRules<Spaceship
 
     @Override
     protected void handleUserAction(GameState gameState, UserAction userAction) {
+        System.out.println("benw");
         switch (userAction.getActionCode()) {
-            case GAME_EVENT_EPISODE_BACK: {
+            case UserActionCode.QUIT: {
                 endEpisodeAndAddEventWithType(gameState, "");
+                gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.ADD_ITEM_AUDIO_PATH));
                 break;
             }
             default:

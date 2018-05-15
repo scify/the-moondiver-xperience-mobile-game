@@ -73,17 +73,17 @@ public class MoonWalkerScenario extends Scenario {
         addEpisodeAfter(mainMenu, room);
         Episode forest = new ForestEpisode();
         addEpisodeAfter(room, forest);*/
-        /*Episode cockpit = new CockpitEpisode();
-        setFirstEpisode(cockpit);*/
+        Episode cockpit = new CockpitEpisode();
+        setFirstEpisode(cockpit);
         //addEpisodeAfter(forest, cockpit);
         //addEpisodeAfter(mainMenu, cockpit);
-        return mainMenu;
+        return cockpit;
     }
 
     protected Episode createTestingScenario() {
         if (true) {
 //            return getCockpitEpisode();
-            return getBerlinEpisode();
+            return getMapEpisode();
         } else {
             return getPlaygroundEpisode();
         }
@@ -123,7 +123,7 @@ public class MoonWalkerScenario extends Scenario {
     private Episode getMapEpisode() {
         Random rRnd = new Random();
 
-        Episode mapEpisode = new MapEpisode(true);
+        Episode mapEpisode = new MapEpisode(false);
         setFirstEpisode(mapEpisode);
         GameInfo info = GameInfo.getInstance();
         LocationController lc = LocationController.getInstance();

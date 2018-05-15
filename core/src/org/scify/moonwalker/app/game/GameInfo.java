@@ -5,9 +5,19 @@ public class GameInfo {
     protected int currentDay;
     protected int motorEfficiency;
     protected int remainingEnergy;
+    protected int initialDaysToSuccessfullyCompleteGame;
+    protected int inventoryItemsCounter;
     protected Location currentLocation;
     protected Location nextLocation;
     protected Location nextAllowedLocation;
+    protected MoonPhase currentMoonPhase;
+    protected MoonPhase nextMoonPhase;
+    protected MoonPhase postNextMoonPhase;
+    protected MoonPhasesController moonPhasesController;
+    protected String selectedPlayer;
+    protected boolean contactRequestFlag;
+    protected boolean mapRequestFlag;
+    protected boolean inventoryIncreased;
 
     /**
      * The travel percentage complete in the LAST travel
@@ -28,17 +38,6 @@ public class GameInfo {
         this.nextAllowedLocation = nextAllowedLocation;
     }
 
-    protected int inintialDaysToSuccessfullyCompleteGame;
-    protected MoonPhase currentMoonPhase;
-    protected MoonPhase nextMoonPhase;
-    protected MoonPhase postNextMoonPhase;
-    protected MoonPhasesController moonPhasesController;
-    protected String selectedPlayer;
-    protected boolean contactRequestFlag;
-    protected boolean mapRequestFlag;
-    protected int inventoryItemsCounter;
-    protected boolean inventoryIncreased;
-
     private static GameInfo instance;
 
     public static GameInfo getInstance() {
@@ -50,7 +49,7 @@ public class GameInfo {
     private GameInfo() {
         moonPhasesController = new MoonPhasesController();
         currentDay = 1;
-        inintialDaysToSuccessfullyCompleteGame = 90;
+        initialDaysToSuccessfullyCompleteGame = 90;
         motorEfficiency = 10;
         remainingEnergy = 0;
         LocationController lc = new LocationController();
@@ -67,9 +66,13 @@ public class GameInfo {
         inventoryIncreased = true;
     }
 
-    public boolean getContactRequestFlag () { return contactRequestFlag; }
+    public boolean getContactRequestFlag() {
+        return contactRequestFlag;
+    }
 
-    public void setContactRequestFlag (Boolean contactRequestFlag) { this.contactRequestFlag = contactRequestFlag; }
+    public void setContactRequestFlag(Boolean contactRequestFlag) {
+        this.contactRequestFlag = contactRequestFlag;
+    }
 
     public int getCurrentDay() {
         return currentDay;
@@ -91,8 +94,8 @@ public class GameInfo {
         return motorEfficiency;
     }
 
-    public void addMotorEfficiencyUnits(int units) {
-        this.motorEfficiency += units;
+    public void setMotorEfficiency(int newMotorEfficiency) {
+        this.motorEfficiency = motorEfficiency;
     }
 
     public int getRemainingEnergy() {
@@ -124,7 +127,7 @@ public class GameInfo {
     }
 
     public int getDaysLeftForDestination() {
-        return inintialDaysToSuccessfullyCompleteGame - currentDay;
+        return initialDaysToSuccessfullyCompleteGame - currentDay;
     }
 
     public MoonPhase getCurrentMoonPhase() {
@@ -184,7 +187,7 @@ public class GameInfo {
     }
 
     public int increaseInventoryItemsCounter() {
-        inventoryItemsCounter ++;
+        inventoryItemsCounter++;
         inventoryIncreased = false;
         return inventoryItemsCounter;
     }
