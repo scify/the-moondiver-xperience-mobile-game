@@ -1,12 +1,13 @@
 package org.scify.moonwalker.app.ui.actors.conversation;
 
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.utils.Align;
 import org.scify.engine.renderables.MultipleChoiceConversationRenderable;
 import org.scify.moonwalker.app.ui.actors.FadingTableActor;
 
 
 public class MultipleChoiceConversationActor extends FadingTableActor<MultipleChoiceConversationRenderable> {
-
+    protected Label lineLabel;
     protected Button buttonTopLeft;
     protected Button buttonBottomLeft;
     protected Button buttonTopRight;
@@ -29,15 +30,22 @@ public class MultipleChoiceConversationActor extends FadingTableActor<MultipleCh
 
         add().height(height).width(0.01f * width);
 
+        Table centralTable = new Table();
 
-        add().height(height).width(0.01f * width);
-
+        lineLabel = (Label) bookKeeper.getUIRepresentationOfRenderable(renderable.getQuestion());
+        lineLabel.setWrap(true);
+        lineLabel.setAlignment(Align.center);
+        centralTable.add(lineLabel).center().width(width * 0.90f).padBottom(height * 0.07f);
+        centralTable.row();
+        centralTable.row();
+        centralTable.row();
+        centralTable.row();
         //Buttons
         Table buttonsTable = new Table();
         buttonsTable.defaults();
         buttonsTable.center();
         float buttonWidth = 0.40f * width;
-        float buttonHeight = 0.3f * height;
+        float buttonHeight = 0.2f * height;
         buttonTopLeft = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getConversationButtonTopLeft());
         buttonsTable.add(buttonTopLeft).width(buttonWidth).height(buttonHeight);
         buttonsTable.add().height(buttonHeight).width(0.05f * width);
@@ -51,8 +59,10 @@ public class MultipleChoiceConversationActor extends FadingTableActor<MultipleCh
         buttonsTable.add().height(buttonHeight).width(0.05f * width);
         buttonBottomRight = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getConversationButtonBottomRight());
         buttonsTable.add(buttonBottomRight).width(buttonWidth).height(buttonHeight);
-        add(buttonsTable).width(buttonWidth);
+        centralTable.add(buttonsTable).width(buttonWidth);
+        add(centralTable).height(height * 0.95f).width(width * 0.95f).center();
 
         add().height(height).width(0.01f * width);
+
     }
 }

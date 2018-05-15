@@ -3,6 +3,7 @@ package org.scify.moonwalker.app.game.rules;
 import org.scify.engine.GameState;
 import org.scify.engine.UserAction;
 import org.scify.engine.conversation.ConversationLine;
+import org.scify.engine.renderables.MultipleChoiceConversationRenderable;
 import org.scify.moonwalker.app.game.quiz.*;
 
 import java.util.ArrayList;
@@ -76,6 +77,6 @@ public class QuestionConversationRules extends ConversationRules {
             line.setSpeakerId(lineEntered.getSpeakerId());
             lines.add(line);
         }
-        addMultipleChoiceConversationLines(lines, gsCurrent, false);
+        addMultipleConversationLines(lines, gsCurrent, false, new MultipleChoiceConversationRenderable(lines.get(0).getId(), question.getTitle()), getIntroEffectForMultipleChoiceRenderable());
     }
 }

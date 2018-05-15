@@ -270,9 +270,10 @@ public class ConversationRules extends MoonWalkerBaseRules {
         } else if (nextLinesSize == 2) {
             TwoChoiceConversationRenderable renderable = new TwoChoiceConversationRenderable(nextLines.get(0).getId());
             renderable.setAvatarImg(getAvatar(nextLines.get(0).getSpeakerId()));
-            addMultipleChoiceConversationLines(nextLines, gameState, newSpeaker, renderable);
+            addMultipleConversationLines(nextLines, gameState, newSpeaker, renderable, getIntroEffect(renderable, nextLines.get(0), gameState, newSpeaker));
         } else if (nextLinesSize > 1) {
-            addMultipleChoiceConversationLines(nextLines, gameState, newSpeaker, new MultipleChoiceConversationRenderable(nextLines.get(0).getId()));
+            MultipleChoiceConversationRenderable renderable = new MultipleChoiceConversationRenderable(nextLines.get(0).getId(), null);
+            addMultipleConversationLines(nextLines, gameState, newSpeaker, renderable, getIntroEffectForMultipleChoiceRenderable());
         }
         // await next event
         pause(gameState);
@@ -298,7 +299,8 @@ public class ConversationRules extends MoonWalkerBaseRules {
     }
 
 
-    protected void addMultipleChoiceConversationLines(List<ConversationLine> nextLines, GameState gameState, boolean newSpeaker, ConversationLineRenderable renderable) {
+    protected void addMultipleConversationLines(List<ConversationLine> nextLines, GameState gameState,
+                                                boolean newSpeaker, ConversationLineRenderable renderable, Effect effect) {
         ConversationLine firstLine = nextLines.get(0);
         if (lastConversationRenderable != null) {
             lastConversationRenderable.addEffect(getOutroEffect(lastConversationRenderable, firstLine, gameState, newSpeaker));
@@ -309,12 +311,18 @@ public class ConversationRules extends MoonWalkerBaseRules {
         renderable.setConversationLines(nextLines);
         // Update previous speaker
         sPrvSpeakerID = firstLine.getSpeakerId();
-
-        renderable.addEffect(getIntroEffect(renderable, firstLine, gameState, newSpeaker));
-
+        renderable.addEffect(effect);
         gameState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
         gameState.addRenderable(renderable);
         oldConversationLines.add(renderable);
+    }
+
+    protected EffectSequence getIntroEffectForMultipleChoiceRenderable() {
+        EffectSequence ret = new EffectSequence();
+        ret.addEffect(new FadeEffect(1.0, 0.0, 0));
+        ret.addEffect(new VisibilityEffect(true));
+        ret.addEffect(new FadeEffect(0.0, 1.0, 2000));
+        return ret;
     }
 
     protected EffectSequence getIntroEffect(Renderable target, ConversationLine conversationLine, GameState gameState, boolean newSpeaker) {

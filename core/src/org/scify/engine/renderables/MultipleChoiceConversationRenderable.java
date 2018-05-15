@@ -13,8 +13,9 @@ public class MultipleChoiceConversationRenderable extends ConversationLineRender
     public static final String BOTTOM_LEFT_BUTTON_ID = "button_bottom_left";
     public static final String TOP_RIGHT_BUTTON_ID = "button_top_right";
     public static final String BOTTOM_RIGHT_BUTTON_ID = "button_bottom_right";
+    public static final String CONVERSATION_QUESTION_ID = "conversation_question_label";
 
-    protected String title;
+    protected TextLabelRenderable question;
     protected List<ConversationLine> conversationLines;
     protected int conversationId;
     protected ActionButtonRenderable  conversationButtonTopLeft;
@@ -22,11 +23,7 @@ public class MultipleChoiceConversationRenderable extends ConversationLineRender
     protected ActionButtonRenderable  conversationButtonTopRight;
     protected ActionButtonRenderable  conversationButtonBottomRight;
 
-
-
-
-
-    public MultipleChoiceConversationRenderable(int id) {
+    public MultipleChoiceConversationRenderable(int id, String questionText) {
         super(CONVERSATION_MULTIPLE_CHOICE, CONVERSATION_MULTIPLE_CHOICE + id);
         conversationId = id;
         float screenWidth = appInfo.getScreenWidth();
@@ -34,17 +31,21 @@ public class MultipleChoiceConversationRenderable extends ConversationLineRender
         this.xPos = 0.02f * screenWidth;
         this.yPos = 0.03f *  screenHeight;
         width = 0.96f * screenWidth;
-        height = 0.3f * screenHeight;
-
+        height = 0.8f * screenHeight;
+        setPositionDrawable(true);
         initSubRenderables();
+        if(questionText != null) {
+            question = createTextLabelRenderable(CONVERSATION_QUESTION_ID + conversationId, questionText, false, true, 102);
+            allRenderables.add(question);
+        }
+    }
+
+    public TextLabelRenderable getQuestion() {
+        return question;
     }
 
     private void initSubRenderables() {
         allRenderables = new HashSet<>();
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public void setConversationLines(List<ConversationLine> conversationLines) {
@@ -66,10 +67,6 @@ public class MultipleChoiceConversationRenderable extends ConversationLineRender
 
     public List<ConversationLine> getConversationLines() {
         return conversationLines;
-    }
-
-    public String getTitle() {
-        return title;
     }
 
     public ActionButtonRenderable getConversationButtonTopLeft() {
