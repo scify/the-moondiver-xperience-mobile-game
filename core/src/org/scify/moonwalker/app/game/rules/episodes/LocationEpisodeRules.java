@@ -1,19 +1,12 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
-import org.scify.engine.*;
-import org.scify.engine.conversation.ConversationLine;
+import org.scify.engine.EpisodeEndState;
+import org.scify.engine.EpisodeEndStateCode;
+import org.scify.engine.GameState;
+import org.scify.engine.UserAction;
 import org.scify.moonwalker.app.game.Location;
-import org.scify.moonwalker.app.game.quiz.Question;
-import org.scify.moonwalker.app.game.quiz.QuestionCategory;
-import org.scify.moonwalker.app.game.quiz.QuestionService;
-import org.scify.moonwalker.app.game.quiz.QuestionServiceJSON;
-import org.scify.moonwalker.app.game.rules.ConversationRules;
 import org.scify.moonwalker.app.game.rules.QuestionConversationRules;
 import org.scify.moonwalker.app.ui.renderables.LocationRenderable;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
 
 public class LocationEpisodeRules extends FadingEpisodeRules<LocationRenderable> {
 
