@@ -51,7 +51,7 @@ public class CockpitActor extends FadingTableActor<CockpitRenderable> {
         //Top Left Pad Location
         drawTopLeftPad();
         //Mid empty cell
-        add().height(0.57f * screenHeight).expandX();
+        add().height(0.561f * screenHeight).expandX();
         //Top Right Pad DaysToGo
         drawTopRightPad();
 
@@ -68,34 +68,10 @@ public class CockpitActor extends FadingTableActor<CockpitRenderable> {
     }
 
     protected void drawTopLeftPad() {
-        Stack stack = new Stack();
-        stack.setTransform(true);
-
         Image image = (ImageWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getLeftTablet());
         float width = convertWidth(image.getWidth());
         float height = convertHeight(image.getHeight());
-        stack.add(image);
-
-        Table textTable = new Table();
-        textTable.top();
-        textTable.add().width(width).height(height * 0.2f).colspan(3);
-        textTable.row();
-        textTable.add().width(0.27f * width);
-        currentLocationLabel = (StackWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getLocationLabel());
-        Label.LabelStyle ls = new Label.LabelStyle();
-        ThemeController themeController = new ThemeController(20, "controls");
-        ls.font = themeController.getFont();
-        ls.fontColor = Color.valueOf("2f312c");
-        Label label = currentLocationLabel.getBasicComponent();
-        label.setStyle(ls);
-        label.setAlignment(Align.center);
-        textTable.add(currentLocationLabel).expandX();
-        textTable.add().width(0.1f * width);
-
-        stack.add(textTable);
-
-        stack.rotateBy(4);
-        add(stack).top().left().maxWidth(width).maxHeight(height);
+        add(image).width(width).height(height).top().left();
     }
 
     protected void drawTopRightPad() {
@@ -114,7 +90,7 @@ public class CockpitActor extends FadingTableActor<CockpitRenderable> {
         daysLeftLabel = (Label) bookKeeper.getUIRepresentationOfRenderable(renderable.getDaysLeftLabel());
         daysLeftLabel.setAlignment(Align.center);
         Label.LabelStyle ls = new Label.LabelStyle();
-        ThemeController themeController = new ThemeController(25, "controls");
+        ThemeController themeController = new ThemeController(25, "dialog");
         ls.font = themeController.getFont();
         ls.fontColor = Color.valueOf("912d25");
         daysLeftLabel.setStyle(ls);
@@ -128,7 +104,7 @@ public class CockpitActor extends FadingTableActor<CockpitRenderable> {
 
         Table table = new Table();
 
-        table.add().width(0.03f * screenWidth);
+        table.add().width(0.025f * screenWidth);
 
         Stack travelButtons = new Stack();
         travelButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getTravelButton());
@@ -137,7 +113,7 @@ public class CockpitActor extends FadingTableActor<CockpitRenderable> {
         travelButtons.add(travelLightedButton);
         table.add(travelButtons).width(convertWidth(travelButton.getWidth())).height(convertHeight(travelButton.getHeight())).bottom();
 
-        table.add().width(0.065f * screenWidth);
+        table.add().width(0.068f * screenWidth);
 
         Table innerTable = new Table();
         innerTable.defaults();
@@ -183,7 +159,6 @@ public class CockpitActor extends FadingTableActor<CockpitRenderable> {
 
         table.add(innerTable).height(0.24f * screenHeight).expandX().left();
 
-        table.add().width(0.1f * screenWidth);
 
         Stack launchButtons = new Stack();
         launchButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getLaunchButton());
@@ -191,8 +166,7 @@ public class CockpitActor extends FadingTableActor<CockpitRenderable> {
         launchLightedButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getLaunchLightedButton());
         launchButtons.add(launchLightedButton);
         table.add(launchButtons).width(convertWidth(launchButton.getWidth())).height(convertHeight(launchButton.getHeight())).bottom();
-
-        table.add().width(0.05f * screenWidth);
+        table.add().width(0.025f * screenWidth);
 
         add(table).width(screenWidth).height(0.24f * screenHeight).colspan(3);
 
@@ -207,7 +181,7 @@ public class CockpitActor extends FadingTableActor<CockpitRenderable> {
 
         bottomTable = new Table();
 
-        bottomTable.add().height(screenHeight * 0.167f).width(0.26f * screenWidth);
+        bottomTable.add().height(screenHeight * 0.185f).width(0.26f * screenWidth);
 
         motorEfficiencyLabel = (Label) bookKeeper.getUIRepresentationOfRenderable(renderable.getMotorEfficiencyLabel());
         motorEfficiencyLabel.setStyle(labelStyle);

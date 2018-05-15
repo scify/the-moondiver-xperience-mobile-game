@@ -12,12 +12,14 @@ public class SpaceshipInventoryEpisodeRules extends FadingEpisodeRules<Spaceship
     protected static final String RENDERABLE_ID = "spaceship_inventory";
     protected boolean outroInitiated;
     protected boolean introComplete;
+    protected boolean exitButtonVisibilityNotHandled;
 
     public SpaceshipInventoryEpisodeRules() {
         super();
         renderable = null;
         outroInitiated = false;
         introComplete = false;
+        exitButtonVisibilityNotHandled = true;
     }
 
     @Override
@@ -46,7 +48,11 @@ public class SpaceshipInventoryEpisodeRules extends FadingEpisodeRules<Spaceship
             int inventoryItemsCounter = gameInfo.increaseInventoryItemsCounter();
             updateGameInfo(inventoryItemsCounter);
             gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.ADD_ITEM_AUDIO_PATH));
-            renderable.addNextItem(inventoryItemsCounter);
+            renderable.addNextItem(inventoryItemsCounter, gameState);
+            exitButtonVisibilityNotHandled = false;
+        }else if (introComplete && exitButtonVisibilityNotHandled) {
+            exitButtonVisibilityNotHandled = false;
+            renderable.showExitButton();
         }
         return super.getNextState(gameState, userAction);
     }
@@ -89,6 +95,7 @@ public class SpaceshipInventoryEpisodeRules extends FadingEpisodeRules<Spaceship
                 endEpisodeAndAddEventWithType(gameState, "");
                 renderable.fadeOutAllExtraRenderables();
                 gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.ADD_ITEM_AUDIO_PATH));
+                gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.UPGRADE_STATS_AUDIO_PATH));
                 break;
             }
             default:

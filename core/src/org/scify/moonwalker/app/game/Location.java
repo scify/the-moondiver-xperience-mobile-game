@@ -15,8 +15,9 @@ public class Location {
     protected Map<Location, Integer> distanceFromOtherLocations;
     protected String mission;
     protected String conversationPath;
+    protected String cockpitBG;
 
-    public Location(String name, String imgUrl, int posX, int posY, String mission, String episodeBackgroundImagePath, String flagImagePath, String conversationPath) {
+    public Location(String name, String imgUrl, int posX, int posY, String mission, String episodeBackgroundImagePath, String flagImagePath, String cockpitBG, String conversationPath) {
         this.name = name;
         this.imgPath = imgUrl;
         this.posX = posX;
@@ -24,7 +25,7 @@ public class Location {
         this.mission = mission;
         this.episodeBackgroundImagePath = episodeBackgroundImagePath;
         this.flagImagePath = flagImagePath;
-
+        this.cockpitBG = cockpitBG;
         this.conversationPath = conversationPath;
         distanceFromOtherLocations = new HashMap<>();
     }
@@ -101,5 +102,9 @@ public class Location {
 
     public String getConversationPath() {
         return conversationPath;
+    }
+
+    public String getCockpitBG() {
+        return cockpitBG;
     }
 }

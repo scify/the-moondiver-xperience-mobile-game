@@ -1,5 +1,7 @@
 package org.scify.moonwalker.app.ui.renderables;
 
+import org.scify.engine.GameEvent;
+import org.scify.engine.GameState;
 import org.scify.engine.UserAction;
 import org.scify.engine.UserActionCode;
 import org.scify.engine.renderables.ActionButtonRenderable;
@@ -40,6 +42,7 @@ public class SpaceshipInventoryRenderable extends FadingTableRenderable {
 
     //audio
     public final static String ADD_ITEM_AUDIO_PATH = "audio/episode_spaceship_inventory/addSpaceshipItemToInventory.mp3";
+    public static final String UPGRADE_STATS_AUDIO_PATH = "audio/episode_spaceship_inventory/increaseStat.mp3";
 
     protected ImageRenderable solarPanel1;
     protected ImageRenderable solarPanel2;
@@ -156,29 +159,34 @@ public class SpaceshipInventoryRenderable extends FadingTableRenderable {
         return fadeInEffects;
     }
 
-    protected EffectSequence addStatsUpdateToEffectSequence(final TextLabelRenderable label, final String nextValue) {
+    protected EffectSequence addStatsUpdateToEffectSequence(final TextLabelRenderable label, final String nextValue, final GameState gameState) {
         EffectSequence fadeInEffects = getShowPartEffectSequence();
         fadeInEffects.addEffect(new FunctionEffect(new Runnable() {
             @Override
             public void run() {
                 EffectSequence effects = new EffectSequence();
+                effects.addEffect(new FunctionEffect(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (label != null) {
+                            gameState.addGameEvent(new GameEvent("GAME_EVENT_AUDIO_START_UI", UPGRADE_STATS_AUDIO_PATH));
+                        }
+                    }
+                }));
                 effects.addEffect(new FadeEffect(1, 0, 500));
                 effects.addEffect(new FunctionEffect(new Runnable() {
                     @Override
                     public void run() {
-                        if (label != null)
+                        if (label != null) {
                             label.setLabel(nextValue);
+                        }
                     }
                 }));
                 effects.addEffect(new FadeEffect(0, 1, 500));
                 effects.addEffect(new FunctionEffect(new Runnable() {
                     @Override
                     public void run() {
-                        EffectSequence effects = new EffectSequence();
-                        effects.addEffect(new FadeEffect(1.0, 0, 0));
-                        effects.addEffect(new VisibilityEffect(true));
-                        effects.addEffect(new FadeEffect(0, 1.0, 500));
-                        exitButton.addEffect(effects);
+                        showExitButton();
                     }
                 }));
                 label.addEffect(effects);
@@ -187,40 +195,47 @@ public class SpaceshipInventoryRenderable extends FadingTableRenderable {
         return fadeInEffects;
     }
 
-
-    public void addSolarPanel1() { solarPanel1.addEffect(addStatsUpdateToEffectSequence(unitsLabel, nextUnitsValue)); }
-
-    public void addSolarPanel2() { solarPanel2.addEffect(addStatsUpdateToEffectSequence(unitsLabel, nextUnitsValue)); }
-
-    public void addSolarPanel3() {
-        solarPanel3.addEffect(addStatsUpdateToEffectSequence(unitsLabel, nextUnitsValue));
+    public void showExitButton () {
+        EffectSequence effects = new EffectSequence();
+        effects.addEffect(new FadeEffect(1.0, 0, 0));
+        effects.addEffect(new VisibilityEffect(true));
+        effects.addEffect(new FadeEffect(0, 1.0, 500));
+        exitButton.addEffect(effects);
     }
 
-    public void addSolarPanel4() {
-        solarPanel4.addEffect(addStatsUpdateToEffectSequence(unitsLabel, nextUnitsValue));
+    public void addSolarPanel1(final GameState gameState) { solarPanel1.addEffect(addStatsUpdateToEffectSequence(unitsLabel, nextUnitsValue, gameState)); }
+
+    public void addSolarPanel2(final GameState gameState) { solarPanel2.addEffect(addStatsUpdateToEffectSequence(unitsLabel, nextUnitsValue, gameState)); }
+
+    public void addSolarPanel3(final GameState gameState) {
+        solarPanel3.addEffect(addStatsUpdateToEffectSequence(unitsLabel, nextUnitsValue, gameState));
     }
 
-    public void addCentralTurbine() { centralTurbine.addEffect(addStatsUpdateToEffectSequence(distancePerUnitLabel, nextDistancePerUnitValue)); }
+    public void addSolarPanel4(final GameState gameState) {
+        solarPanel4.addEffect(addStatsUpdateToEffectSequence(unitsLabel, nextUnitsValue, gameState));
+    }
 
-    public void addExtraTurbines() { extraTurbines.addEffect(addStatsUpdateToEffectSequence(distancePerUnitLabel, nextDistancePerUnitValue)); }
+    public void addCentralTurbine(final GameState gameState) { centralTurbine.addEffect(addStatsUpdateToEffectSequence(distancePerUnitLabel, nextDistancePerUnitValue, gameState)); }
 
-    public void addBattery() { battery.addEffect(addStatsUpdateToEffectSequence(null, null)); }
+    public void addExtraTurbines(final GameState gameState) { extraTurbines.addEffect(addStatsUpdateToEffectSequence(distancePerUnitLabel, nextDistancePerUnitValue, gameState)); }
 
-    public void addNextItem(int inventoryItemsCounter) {
+    public void addBattery(final GameState gameState) { battery.addEffect(addStatsUpdateToEffectSequence(null, null, gameState)); }
+
+    public void addNextItem(int inventoryItemsCounter, final GameState gameState) {
         if (inventoryItemsCounter == 1)
-            addCentralTurbine();
+            addCentralTurbine(gameState);
         else if (inventoryItemsCounter == 2)
-            addExtraTurbines();
+            addExtraTurbines(gameState);
         else if (inventoryItemsCounter == 3)
-            addSolarPanel1();
+            addSolarPanel1(gameState);
         else if (inventoryItemsCounter == 4)
-            addSolarPanel2();
+            addSolarPanel2(gameState);
         else if (inventoryItemsCounter == 5)
-            addSolarPanel3();
+            addSolarPanel3(gameState);
         else if (inventoryItemsCounter == 6)
-            addSolarPanel4();
+            addSolarPanel4(gameState);
         else if (inventoryItemsCounter == 7)
-            addBattery();
+            addBattery(gameState);
     }
 
     public void setUnitsValue(String units) {

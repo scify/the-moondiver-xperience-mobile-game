@@ -2,6 +2,7 @@ package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
 import org.scify.engine.renderables.ActionButtonRenderable;
+import org.scify.moonwalker.app.game.Location;
 import org.scify.moonwalker.app.game.LocationController;
 import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 
@@ -39,7 +40,8 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
     public void episodeStartedEvents(final GameState gameState) {
         if (!isEpisodeStarted(gameState)) {
             locationController = new LocationController();
-            renderable = new CockpitRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), COCKPIT_ID);
+            Location location = gameInfo.getCurrentLocation();
+            renderable = new CockpitRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), COCKPIT_ID, location);
             renderable.setZIndex(1);
             setCockpitFieldValues();
             renderable.addAfterFadeIn(new Runnable() {
@@ -57,20 +59,19 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                     buttonsEnabled = true;
                 }
             });
-            setOutsideBackground();
+            setOutsideBackground(location);
             gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.SPACESHIP_BG_AUDIO_PATH));
             gameState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
             gameState.addRenderable(renderable);
-            gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.ADD_ITEM_AUDIO_PATH));
             super.episodeStartedEvents(gameState);
         }
     }
 
-    protected void setOutsideBackground() {
+    protected void setOutsideBackground(Location location) {
         if (gameInfo.getCurrentDay() == 1) {
             renderable.setOutsideBackground(renderable.FOREST_BG_IMG_PATH);
         } else {
-            renderable.setOutsideBackground(renderable.getBG_IMG_PATH(gameInfo.getCurrentLocation()));
+            renderable.setOutsideBackground(location.getCockpitBG());
         }
     }
 
@@ -107,6 +108,8 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                 break;
             case UserActionCode.SPACESHIP_INVENTORY_EPISODE:
                 if (buttonsEnabled && !contactClickable && inventoryClickable) {
+                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.ADD_ITEM_AUDIO_PATH));
+                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.UPGRADE_STATS_AUDIO_PATH));
                     goToEpisode(gameState, new GameEvent(SPACESHIP_INVENTORY_EPISODE_STARTED, null, this));
                 } else
                     gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
@@ -146,8 +149,6 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
     }
 
     protected void setCockpitFieldValues() {
-        if (gameInfo.getCurrentLocation() != null)
-            renderable.setLocationValue(gameInfo.getCurrentLocationName());
         renderable.setRemainingEnergyValue(String.valueOf(gameInfo.getRemainingEnergy()));
         renderable.setMotorEfficiencyValue(String.valueOf(gameInfo.getMotorEfficiency()));
         renderable.setDaysLeftValue(gameInfo.getDaysLeftForDestination() + "");

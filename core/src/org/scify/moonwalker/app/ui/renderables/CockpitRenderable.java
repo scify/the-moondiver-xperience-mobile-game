@@ -30,7 +30,6 @@ public class CockpitRenderable extends FadingTableRenderable {
     protected static final String CHARGE_BUTTON_LIGHTED_IMG_PATH = "img/episode_cockpit/charge_lighted.png";
     protected static final String SPACESHIP_INVENTORY_BUTTON_DEFAULT_IMG_PATH = "img/episode_cockpit/spaceship.png";
     protected static final String SPACESHIP_INVENTORY_BUTTON_LIGHTED_IMG_PATH = "img/episode_cockpit/spaceship_lighted.png";
-    protected static final String LEFT_TABLET_IMG_PATH = "img/episode_cockpit/left_tablet.png";
     protected static final String RIGHT_TABLET_IMG_PATH = "img/episode_cockpit/right_tablet.png";
     //OUTSIDE BackGroundsGs
     public static final String FOREST_BG_IMG_PATH = "img/episode_cockpit/outside_bgs/forest.png";
@@ -40,7 +39,6 @@ public class CockpitRenderable extends FadingTableRenderable {
     protected static final String REMAINING_ENERGY_ID = "remaining_energy";
     protected static final String DESTINATION_DISTANCE_ID = "destination_distance";
     protected static final String LEFT_TABLET_ID = "left_tablet";
-    protected static final String LOCATION_ID = "location";
     protected static final String RIGHT_TABLET_ID = "right_tablet";
     protected static final String DAYS_LEFT_ID = "days_left";
     protected static final String TRAVEL_BUTTON_DEFAULT_ID = "travel_button";
@@ -62,11 +60,11 @@ public class CockpitRenderable extends FadingTableRenderable {
     public static final String WRONG_BUTTON_AUDIO_PATH = "audio/wrong.mp3";
     public static final String SPACESHIP_BG_AUDIO_PATH = "audio/spaceship_bg.mp3";
     public static final String ADD_ITEM_AUDIO_PATH = "audio/episode_spaceship_inventory/addSpaceshipItemToInventory.mp3";
+    public static final String UPGRADE_STATS_AUDIO_PATH = "audio/episode_spaceship_inventory/increaseStat.mp3";
 
     protected TextLabelRenderable motorEfficiencyLabel;
     protected TextLabelRenderable energyLabel;
     protected TextLabelRenderable distanceLabel;
-    protected TextLabelRenderable locationLabel;
     protected TextLabelRenderable daysLeftLabel;
 
     protected ImageRenderable leftTablet;
@@ -92,18 +90,16 @@ public class CockpitRenderable extends FadingTableRenderable {
         return allRenderables;
     }
 
-    public CockpitRenderable(float xPos, float yPos, float width, float height, String id) {
+    public CockpitRenderable(float xPos, float yPos, float width, float height, String id, Location location) {
         super(xPos, yPos, width, height, ACTOR_EPISODE_COCKPIT, id, BG_IMG_PATH);
-        initSubRenderables();
+        initSubRenderables(location);
     }
 
-    private void initSubRenderables() {
+    private void initSubRenderables(Location location) {
         allRenderables = new HashSet<>();
 
-        leftTablet = createImageRenderable(LEFT_TABLET_ID, LEFT_TABLET_IMG_PATH, false, true, 2);
+        leftTablet = createImageRenderable(LEFT_TABLET_ID, location.getFlagImagePath(), false, true, 2);
         allRenderables.add(leftTablet);
-        locationLabel = createTextRotatableLabelRenderable(LOCATION_ID, "", false, true, 3);
-        allRenderables.add(locationLabel);
 
         rightTablet = createImageRenderable(RIGHT_TABLET_ID, RIGHT_TABLET_IMG_PATH, false, true, 2);
         allRenderables.add(rightTablet);
@@ -154,10 +150,6 @@ public class CockpitRenderable extends FadingTableRenderable {
         allRenderables.add(distanceLabel);
     }
 
-    public void setLocationValue(String location) {
-        locationLabel.setLabel(location);
-    }
-
     public void setMotorEfficiencyValue(String motorEfficiency) {
         motorEfficiencyLabel.setLabel(motorEfficiency);
     }
@@ -172,11 +164,6 @@ public class CockpitRenderable extends FadingTableRenderable {
 
     public void setDaysLeftValue(String daysLeft) {
         daysLeftLabel.setLabel(daysLeft);
-    }
-
-
-    public boolean isButtonLighted(ActionButtonRenderable buttonRenderable) {
-        return buttonRenderable.isVisible();
     }
 
     public void toogleButtonLight(ActionButtonRenderable buttonRenderable) {
@@ -206,10 +193,6 @@ public class CockpitRenderable extends FadingTableRenderable {
 
     public TextLabelRenderable getDistanceLabel() {
         return distanceLabel;
-    }
-
-    public TextLabelRenderable getLocationLabel() {
-        return locationLabel;
     }
 
     public TextLabelRenderable getDaysLeftLabel() {
@@ -289,14 +272,5 @@ public class CockpitRenderable extends FadingTableRenderable {
 
     public void fadeoutOutsideBackground() {
         outside_background.addEffect(new FadeEffect(1.0, 0, 1000));
-    }
-
-    public String getBG_IMG_PATH(Location location) {
-        switch (location.getName()) {
-            case "Αθήνα":
-                return null;
-            default:
-                return null;
-        }
     }
 }
