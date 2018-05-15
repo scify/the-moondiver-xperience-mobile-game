@@ -29,6 +29,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
     public static final String EVENT_RANDOM_WRONG = "random_wrong";
     public static final String EVENT_RANDOM_BORING = "random_boring";
     public static final String EVENT_LOAD_QUESTION = "load_question";
+    public static final String EVENT_RANDOM_RESPONSE = "load_response_for_question";
     /**
      * All conversation lines that are read from the json file for
      * this conversation.

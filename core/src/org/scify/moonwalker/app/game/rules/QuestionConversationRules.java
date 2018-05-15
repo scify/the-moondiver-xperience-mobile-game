@@ -1,5 +1,6 @@
 package org.scify.moonwalker.app.game.rules;
 
+import org.scify.engine.GameEvent;
 import org.scify.engine.GameState;
 import org.scify.engine.UserAction;
 import org.scify.engine.conversation.ConversationLine;
@@ -42,9 +43,27 @@ public class QuestionConversationRules extends ConversationRules {
         }
     }
 
+    @Override
+    protected void handleOnEnterEventForCurrentConversationOrder(GameState gsCurrent) {
+        ConversationLine lineEntered = getCurrentConversationLine(gsCurrent);
+        Set<String> eventTrigger;
+        if (gsCurrent.eventsQueueContainsEvent(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT) && conversationLineHasRandomResponseEvent(lineEntered)) {
+            eventTrigger = (Set<String>) gsCurrent.getGameEventWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
+            System.out.println(eventTrigger.size());
+        }
+        super.handleOnEnterEventForCurrentConversationOrder(gsCurrent);
+    }
+
     private boolean conversationLineHasRandomQuestionEvent(ConversationLine conversationLine) {
         for(String eventName: conversationLine.getOnEnterCurrentOrderTrigger())
             if(eventName.contains(conversationRules.EVENT_LOAD_QUESTION))
+                return true;
+        return false;
+    }
+
+    private boolean conversationLineHasRandomResponseEvent(ConversationLine conversationLine) {
+        for(String eventName: conversationLine.getOnEnterCurrentOrderTrigger())
+            if(eventName.contains(conversationRules.EVENT_RANDOM_RESPONSE))
                 return true;
         return false;
     }
