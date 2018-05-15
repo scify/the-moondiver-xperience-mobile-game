@@ -3,16 +3,11 @@ package org.scify.engine.renderables;
 import org.scify.engine.UserAction;
 import org.scify.engine.UserActionCode;
 import org.scify.engine.conversation.ConversationLine;
-import org.scify.moonwalker.app.ui.renderables.FadingTableRenderable;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-public class MultipleChoiceConversationRenderable extends FadingTableRenderable {
-
-    public static final String BG_IMG_PATH = "img/conversations/bg.png";
+public class MultipleChoiceConversationRenderable extends ConversationLineRenderable {
 
     public static final String TOP_LEFT_BUTTON_ID = "button_top_left";
     public static final String BOTTOM_LEFT_BUTTON_ID = "button_bottom_left";
@@ -27,14 +22,12 @@ public class MultipleChoiceConversationRenderable extends FadingTableRenderable 
     protected ActionButtonRenderable  conversationButtonTopRight;
     protected ActionButtonRenderable  conversationButtonBottomRight;
 
-    protected Set<Renderable> allRenderables;
 
-    public Set<Renderable> getAllRenderables() {
-        return allRenderables;
-    }
+
+
 
     public MultipleChoiceConversationRenderable(int id) {
-        super(0,0,0,0,CONVERSATION_MULTIPLE_CHOICE, CONVERSATION_MULTIPLE_CHOICE + id, BG_IMG_PATH);
+        super(CONVERSATION_MULTIPLE_CHOICE, CONVERSATION_MULTIPLE_CHOICE + id);
         conversationId = id;
         float screenWidth = appInfo.getScreenWidth();
         float screenHeight = appInfo.getScreenHeight();
