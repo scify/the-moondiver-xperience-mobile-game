@@ -180,7 +180,7 @@ public class LGDXRenderableBookKeeper {
     }
 
     protected Actor addActor(final Renderable toDraw, Actor newActorForRenderable) {
-        addClickListenerIfButton(toDraw, newActorForRenderable);
+//        addClickListenerIfButton(toDraw, newActorForRenderable);
         renderableActorMap.put(toDraw, newActorForRenderable);
         return  newActorForRenderable;
     }

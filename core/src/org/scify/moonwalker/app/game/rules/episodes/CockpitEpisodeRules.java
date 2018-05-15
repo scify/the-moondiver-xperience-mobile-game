@@ -61,6 +61,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
             gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.SPACESHIP_BG_AUDIO_PATH));
             gameState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
             gameState.addRenderable(renderable);
+            gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.ADD_ITEM_AUDIO_PATH));
             super.episodeStartedEvents(gameState);
         }
     }
