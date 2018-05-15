@@ -68,22 +68,22 @@ public class MoonWalkerScenario extends Scenario {
 
     protected Episode createBasicScenario () {
         /*Episode mainMenu = new MainMenuEpisode();
-        setFirstEpisode(mainMenu);*/
-        /*Episode room = new RoomEpisode();
+        setFirstEpisode(mainMenu);
+        Episode room = new RoomEpisode();
         addEpisodeAfter(mainMenu, room);
         Episode forest = new ForestEpisode();
         addEpisodeAfter(room, forest);*/
-        Episode cockpit = new CockpitEpisode();
-        setFirstEpisode(cockpit);
+        /*Episode cockpit = new CockpitEpisode();
+        setFirstEpisode(cockpit);*/
         //addEpisodeAfter(forest, cockpit);
         //addEpisodeAfter(mainMenu, cockpit);
-        return cockpit;
+        return mainMenu;
     }
 
     protected Episode createTestingScenario() {
         if (true) {
 //            return getCockpitEpisode();
-            return getMapEpisode();
+            return getBerlinEpisode();
         } else {
             return getPlaygroundEpisode();
         }
@@ -112,6 +112,12 @@ public class MoonWalkerScenario extends Scenario {
         Episode playground = new EffectPlaygroundEpisode();
         setFirstEpisode(playground);
         return playground;
+    }
+
+    private Episode getBerlinEpisode() {
+        Episode berlin = new BerlinEpisode();
+        setFirstEpisode(berlin);
+        return berlin;
     }
 
     private Episode getMapEpisode() {

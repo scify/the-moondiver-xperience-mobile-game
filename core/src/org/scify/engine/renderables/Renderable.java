@@ -43,6 +43,7 @@ public class Renderable extends Positionable implements EffectTarget {
     public static final String ACTOR_EPISODE_SPACESHIP_INVENTORY = "spaceship_inventory";
     public static final String ACTOR_EPISODE_MAP_LOCATION = "map_location";
     public static final String ACTOR_EPISODE_CONTACT_SCREEN = "contact_screen";
+    public static final String ACTOR_EPISODE_LOCATION = "location";
 
     protected String type;
     /**

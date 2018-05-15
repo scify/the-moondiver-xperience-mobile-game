@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class TwoChoiceConversationRenderable extends FadingTableRenderable {
+public class TwoChoiceConversationRenderable extends TableRenderable {
 
     public static final String BG_IMG_PATH = "img/conversations/bg.png";
     public static final String AVATAR_BG_IMG_PATH = "img/avatars/bg.png";
@@ -65,7 +65,7 @@ public class TwoChoiceConversationRenderable extends FadingTableRenderable {
     }
 
     public void setAvatarImg (String imgPath) {
-        avatar = new ImageRenderable("avatar_img", imgPath);
+        avatar = new ImageRenderable(AVATAR_IMAGE_ID, imgPath);
         avatar.setZIndex(103);
         avatar.setPositionDrawable(false);
         allRenderables.add(avatar);

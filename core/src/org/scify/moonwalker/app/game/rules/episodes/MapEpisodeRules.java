@@ -102,7 +102,7 @@ public class MapEpisodeRules extends BaseEpisodeRules {
             // Create "middle of nowhere" location for target
             double dMoNX = gameInfo.getCurrentLocation().getPosX() + (gameInfo.getNextAllowedLocation().getPosX() - gameInfo.getCurrentLocation().getPosX()) * dPercentageOfNextMovePossible / 100;
             double dMoNY = gameInfo.getCurrentLocation().getPosY() + (gameInfo.getNextAllowedLocation().getPosY() - gameInfo.getCurrentLocation().getPosY()) * dPercentageOfNextMovePossible / 100;
-            targetMiddleOfNowhere = new Location(ORIGIN_MIDDLE_OF_NOWHERE, "", (int)dMoNX, (int)dMoNY, NO_MISSION);
+            targetMiddleOfNowhere = new Location(ORIGIN_MIDDLE_OF_NOWHERE, "", (int)dMoNX, (int)dMoNY, NO_MISSION,"", "", "");
             targetLocation = targetMiddleOfNowhere;
         }
         else {
@@ -130,7 +130,7 @@ public class MapEpisodeRules extends BaseEpisodeRules {
             // Create "middle of nowhere" location for origin
             double dMoNX = gameInfo.getCurrentLocation().getPosX() + (gameInfo.getNextAllowedLocation().getPosX() - gameInfo.getCurrentLocation().getPosX()) * dPercentageOfPreviousMoveComplete / 100.0;
             double dMoNY = gameInfo.getCurrentLocation().getPosY() + (gameInfo.getNextAllowedLocation().getPosY() - gameInfo.getCurrentLocation().getPosY()) * dPercentageOfPreviousMoveComplete / 100.0;
-            originMiddleOfNowhere = new Location(TARGET_MIDDLE_OF_NOWHERE, "", (int)dMoNX, (int)dMoNY, NO_MISSION);
+            originMiddleOfNowhere = new Location(TARGET_MIDDLE_OF_NOWHERE, "", (int)dMoNX, (int)dMoNY, NO_MISSION, "", "", "");
             originLocation = originMiddleOfNowhere;
         }
         else {

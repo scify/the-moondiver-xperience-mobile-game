@@ -11,6 +11,7 @@ import org.scify.engine.renderables.TwoChoiceConversationRenderable;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.actors.FadingTableActor;
+import org.scify.moonwalker.app.ui.actors.TableActor;
 
 /**
  * This class describes the conversation component that is drawn
@@ -21,7 +22,7 @@ import org.scify.moonwalker.app.ui.actors.FadingTableActor;
  * and an image path that represents the conversation participant who is saying
  * the line.
  */
-public class TwoChoiceConversationActor extends FadingTableActor<TwoChoiceConversationRenderable> {
+public class TwoChoiceConversationActor extends TableActor<TwoChoiceConversationRenderable> {
 
     protected Button buttonTop;
     protected Button buttonBottom;

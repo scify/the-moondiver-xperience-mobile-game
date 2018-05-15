@@ -7,22 +7,25 @@ public class Location {
 
     protected String name;
     protected String imgPath;
+    protected String episodeBackgroundImagePath;
+    protected String flagImagePath;
     protected int distanceInKilometers;
     protected int posX;
     protected int posY;
     protected Map<Location, Integer> distanceFromOtherLocations;
     protected String mission;
+    protected String conversationPath;
 
-    public String getMission() {
-        return mission;
-    }
-
-    public Location(String name, String imgUrl, int posX, int posY, String mission) {
+    public Location(String name, String imgUrl, int posX, int posY, String mission, String episodeBackgroundImagePath, String flagImagePath, String conversationPath) {
         this.name = name;
         this.imgPath = imgUrl;
         this.posX = posX;
         this.posY = posY;
         this.mission = mission;
+        this.episodeBackgroundImagePath = episodeBackgroundImagePath;
+        this.flagImagePath = flagImagePath;
+
+        this.conversationPath = conversationPath;
         distanceFromOtherLocations = new HashMap<>();
     }
 
@@ -84,5 +87,19 @@ public class Location {
         return getName().hashCode();
     }
 
+    public String getMission() {
+        return mission;
+    }
 
+    public String getEpisodeBackgroundImagePath() {
+        return episodeBackgroundImagePath;
+    }
+
+    public String getFlagImagePath() {
+        return flagImagePath;
+    }
+
+    public String getConversationPath() {
+        return conversationPath;
+    }
 }

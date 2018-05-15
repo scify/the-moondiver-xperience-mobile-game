@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.scify.engine.renderables.*;
+import org.scify.moonwalker.app.game.Location;
 import org.scify.moonwalker.app.ui.ComponentFactory;
 import org.scify.moonwalker.app.ui.UnsupportedRenderableTypeException;
 import org.scify.moonwalker.app.ui.actors.calculator.ChargeEpisodeActor;
@@ -110,6 +111,9 @@ public class ActorFactory extends ComponentFactory {
                 break;
             case Renderable.ACTOR_EPISODE_CONTACT_SCREEN:
                 toReturn = createContactScreenActor((ContactScreenRenderable) renderable);
+                break;
+            case Renderable.ACTOR_EPISODE_LOCATION:
+                toReturn = createLocationActor((LocationRenderable) renderable);
                 break;
             case Renderable.ACTOR_TABLE:
                 toReturn = createTableActor((TableRenderable)renderable);
@@ -220,6 +224,11 @@ public class ActorFactory extends ComponentFactory {
     private Actor createMapEpisodeActor(MapEpisodeRenderable renderable) {
         MapEpisodeActor mapEpisodeActor = new MapEpisodeActor(skin, renderable);
         return mapEpisodeActor;
+    }
+
+    private Actor createLocationActor(LocationRenderable renderable) {
+        LocationActor actor = new LocationActor(skin, renderable);
+        return actor;
     }
 
     private Actor createNextConversationActor(SingleChoiceConversationRenderable renderable) {

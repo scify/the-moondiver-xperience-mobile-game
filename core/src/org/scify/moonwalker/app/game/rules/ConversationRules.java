@@ -28,6 +28,9 @@ public class ConversationRules extends MoonWalkerBaseRules {
     public static final String CONVERSATION_FAILED = "CONVERSATION_FAILED";
     public static final String TAG_FAIL = "fail";
     public static final String TAG_END = "end";
+    public static final String EVENT_RANDOM_CORRECT = "random_correct";
+    public static final String EVENT_RANDOM_WRONG = "random_wrong";
+    public static final String EVENT_RANDOM_BORING = "random_boring";
     /**
      * All conversation lines that are read from the json file for
      * this conversation.
@@ -154,10 +157,10 @@ public class ConversationRules extends MoonWalkerBaseRules {
             // Actually retrieve the next lines
             nextLines = extractNextLines(gameState, userAction);
         }
-
-        handleOnEnterEventForCurrentConversationOrder(gameState);
         // Call event that handles conversation order change
         handleNextConversationState(gameState, userAction);
+
+        handleOnEnterEventForCurrentConversationOrder(gameState);
         return gameState;
     }
 
@@ -186,22 +189,24 @@ public class ConversationRules extends MoonWalkerBaseRules {
         // For every possible next line
         Set<String> sAllEvents = new HashSet<>();
         for (ConversationLine currLine : nextLines) {
+            // Check if we have a trigger and add apropriate event
             sAllEvents.addAll(currLine.getOnEnterCurrentOrderTrigger());
-            try {
-                handleRandomTextEventForCurrentLine(currLine);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
         }
 
         // Send event indicating we entered a new order
         gameState.addGameEvent(new GameEvent(ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT, sAllEvents, this));
     }
 
+    /**
+     * Updates the current line, by changing its text with some randomly generated (appropriate) text.
+     * @param currLine The line the text of which we update.
+     * @throws Exception Thrown if we cannot generate an appropriate response text.
+     */
     protected void handleRandomTextEventForCurrentLine(ConversationLine currLine) throws Exception {
         Set<String> eventNames = currLine.getOnEnterCurrentOrderTrigger();
         for(String eventName: eventNames) {
-            if(eventName.equals("random_correct") || eventName.equals("random_wrong") || eventName.equals("random_boring"))
+            if(eventName.equals(EVENT_RANDOM_CORRECT) || eventName.equals(EVENT_RANDOM_WRONG) || eventName.equals(EVENT_RANDOM_BORING))
                 currLine.setText(randomResponseFactory.getRandomResponseFor(eventName));
         }
     }
@@ -242,6 +247,11 @@ public class ConversationRules extends MoonWalkerBaseRules {
         return answered;
     }
 
+    /**
+     * Updates the game state with the next lines, if available, also creating appropriate renderables.
+     * @param gameState The current game stage.
+     * @param userAction Any user action we may need to handle.
+     */
     protected void handleNextConversationState(GameState gameState, UserAction userAction) {
         if (nextLines == null)
             return;
@@ -415,6 +425,17 @@ public class ConversationRules extends MoonWalkerBaseRules {
             lines.add(conversationLines.get(0));
         else
             lines = getLinesWithOrder(this.currentConversationOrderId);
+
+        // Post process returned lines to handle randomly generated lines
+        for (ConversationLine currLine: lines) {
+            try {
+                // and call it appropriately to update the lines
+                handleRandomTextEventForCurrentLine(currLine);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         return lines;
     }
 

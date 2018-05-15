@@ -7,7 +7,7 @@ import org.scify.moonwalker.app.ui.renderables.FadingTableRenderable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class SingleChoiceConversationRenderable extends FadingTableRenderable {
+public class SingleChoiceConversationRenderable extends TableRenderable {
 
     public static final String BG_IMG_PATH = "img/conversations/bg.png";
     public static final String AVATAR_BG_IMG_PATH = "img/avatars/bg.png";
