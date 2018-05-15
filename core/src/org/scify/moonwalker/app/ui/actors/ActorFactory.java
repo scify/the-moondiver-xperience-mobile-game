@@ -245,12 +245,7 @@ public class ActorFactory extends ComponentFactory {
 
     private Actor createMultipleChoiceConversationActor(MultipleChoiceConversationRenderable renderable) {
         MultipleChoiceConversationActor actor = new MultipleChoiceConversationActor(skin, renderable);
-        //actor.setZIndex(1);
-        int btnIndex = 1;
-        for (ActionButtonRenderable button : renderable.getButtons()) {
-            actor.addButton(createButton(button), btnIndex);
-            btnIndex++;
-        }
+        actor.setZIndex(100);
         return actor;
     }
 
