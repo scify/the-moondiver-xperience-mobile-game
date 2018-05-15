@@ -81,4 +81,12 @@ public class ConversationLine {
     public void setText(String text) {
         this.text = text;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setSpeakerId(String speakerId) {
+        this.speakerId = speakerId;
+    }
 }

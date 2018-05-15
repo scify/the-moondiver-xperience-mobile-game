@@ -16,7 +16,7 @@ import java.util.Random;
 public class MoonWalkerScenario extends Scenario {
 
     public MoonWalkerScenario() {
-        if (true) {
+        if (false) {
             createBasicScenario();
         }
         else {
@@ -83,7 +83,7 @@ public class MoonWalkerScenario extends Scenario {
     protected Episode createTestingScenario() {
         if (true) {
 //            return getCockpitEpisode();
-            return getMapEpisode();
+            return getBerlinEpisode();
         } else {
             return getPlaygroundEpisode();
         }

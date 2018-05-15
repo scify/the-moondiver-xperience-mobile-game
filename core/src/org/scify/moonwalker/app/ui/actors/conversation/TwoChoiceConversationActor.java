@@ -1,16 +1,10 @@
 package org.scify.moonwalker.app.ui.actors.conversation;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.TwoChoiceConversationRenderable;
-import org.scify.moonwalker.app.helpers.AppInfo;
-import org.scify.moonwalker.app.helpers.ResourceLocator;
-import org.scify.moonwalker.app.ui.actors.FadingTableActor;
 import org.scify.moonwalker.app.ui.actors.TableActor;
 
 /**

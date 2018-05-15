@@ -9,4 +9,10 @@ public interface QuestionService {
     List<QuestionCategory> getQuestionCategories();
 
     List<Question> getQuestionsForQuestionCategory(QuestionCategory category);
+
+    Question nextQuestion();
+
+    Question nextQuestionForCategory(int categoryId);
+
+    void init();
 }
