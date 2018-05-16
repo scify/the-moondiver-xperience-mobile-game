@@ -48,8 +48,8 @@ public class ConversationLine {
         return text;
     }
 
-    public String getPrerequisites() {
-        return prerequisites;
+    public Set<String> getPrerequisites() {
+        return parseEvents(prerequisites);
     }
 
     public Set<String> getOnEnterCurrentOrderTrigger() {
@@ -99,5 +99,22 @@ public class ConversationLine {
 
     public void setPayload(Object payload) {
         this.payload = payload;
+    }
+
+    public void setOnEnterCurrentOrderTrigger(Set<String> onEnterCurrentOrderTriggerEvents) {
+        this.onEnterCurrentOrderTrigger = convert(onEnterCurrentOrderTriggerEvents);
+    }
+
+    public void setOnExitCurrentOrderTrigger(Set<String> onExitCurrentOrderTriggerEvents) {
+        this.onExitCurrentOrderTrigger = convert(onExitCurrentOrderTriggerEvents);
+    }
+
+    public String convert(Set<String> strings) {
+        StringBuilder sb = new StringBuilder();
+        for (String st : strings) {
+            sb.append('\'').append(st).append('\'').append(',');
+        }
+        if (strings.size() != 0) sb.deleteCharAt(sb.length()-1);
+        return sb.toString();
     }
 }

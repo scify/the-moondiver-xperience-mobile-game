@@ -159,7 +159,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
         // Call event that handles conversation order change
         handleNextConversationState(gameState, userAction);
 
-        handleOnEnterEventForCurrentConversationOrder(gameState);
+        handleOnEnterConversationOrder(gameState);
         return gameState;
     }
 
@@ -180,7 +180,11 @@ public class ConversationRules extends MoonWalkerBaseRules {
         super.onExitConversationOrder(gsCurrent, lineExited);
     }
 
-    protected void handleOnEnterEventForCurrentConversationOrder(GameState gameState) {
+    /**
+     * This function creates an onEnter event for each next line.
+     * @param gameState The current game state.
+     */
+    protected void handleOnEnterConversationOrder(GameState gameState) {
         if (nextLines == null)
             return;
 
@@ -408,13 +412,13 @@ public class ConversationRules extends MoonWalkerBaseRules {
     }
 
     protected void setCurrentConversationLine(GameState gameState, ConversationLine currentLine) {
-        gameState.storeAdditionalDataEntry(ID, currentLine);
+        gameState.setAdditionalDataEntry(ID, currentLine);
         // TODO
         //addSpeakersAsNeeded(gameState, currentLine);
     }
 
     protected List<ConversationLine> extractNextLines(GameState currentGameState, UserAction userAction) {
-        List<ConversationLine> lines = new ArrayList<>();
+        List<ConversationLine> lines = new LinkedList<>();
         if (this.currentConversationOrderId == 0)
             lines.add(conversationLines.get(0));
         else
@@ -430,7 +434,26 @@ public class ConversationRules extends MoonWalkerBaseRules {
             }
         }
 
+        ListIterator<ConversationLine> iLines = lines.listIterator();
+        // For each item
+        while (iLines.hasNext()) {
+            // Remove it, if it cannot cope with the prerequisites
+            if (!satisfiesPrerequisites(iLines.next(), currentGameState))
+                iLines.remove();
+        }
+
         return lines;
+    }
+
+    protected boolean satisfiesPrerequisites(ConversationLine next, GameState currentGameState) {
+        // Get all prerequisites
+        Set<String> sPrereqs = next.getPrerequisites();
+        // If no prereqs
+        if (sPrereqs.size() == 0)
+            // all is OK
+            return true;
+
+        return true;
     }
 
     protected List<ConversationLine> getLinesWithOrder(int lineOrder) {

@@ -12,7 +12,6 @@ import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.ui.MoonWalkerRenderingEngine;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction, EpisodeEndState> {
@@ -156,9 +155,9 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
 
     protected void setFieldsForTimedEpisode(GameState gsCurrent, String imgPath, int millisecondsToLast) {
         if (imgPath != null) {
-            gsCurrent.storeAdditionalDataEntry(TIMED_EPISODE_IMG_PATH, imgPath);
+            gsCurrent.setAdditionalDataEntry(TIMED_EPISODE_IMG_PATH, imgPath);
         }
-        gsCurrent.storeAdditionalDataEntry(TIMED_EPISODE_MILLISECONDS, millisecondsToLast);
+        gsCurrent.setAdditionalDataEntry(TIMED_EPISODE_MILLISECONDS, millisecondsToLast);
     }
 
     protected GameState handleConversationRules(GameState gsCurrent, UserAction userAction) {
@@ -176,6 +175,12 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
         return gsCurrent;
     }
 
+    /**
+     * Handles all enter and exit events per conversation line.
+     * @param gsCurrent The current game state.
+     * @param currentConversationLine The current conversation line of interest (in multiple alternatives we expect
+     *                                one event per alternative line).
+     */
     protected void handleTriggerEventForCurrentConversationLine(GameState gsCurrent, ConversationLine currentConversationLine) {
         if (gsCurrent.eventsQueueContainsEvent(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT)) {
             onEnterConversationOrder(gsCurrent, currentConversationLine);

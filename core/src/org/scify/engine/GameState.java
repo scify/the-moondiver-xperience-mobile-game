@@ -80,7 +80,7 @@ public abstract class GameState {
         return false;
     }
 
-    public void storeAdditionalDataEntry(String dataId, Object dataPayload) {
+    public void setAdditionalDataEntry(String dataId, Object dataPayload) {
         additionalDataMap.put(dataId, dataPayload);
     }
 

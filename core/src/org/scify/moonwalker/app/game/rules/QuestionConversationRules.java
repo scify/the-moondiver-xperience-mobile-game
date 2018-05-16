@@ -6,14 +6,17 @@ import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.renderables.MultipleChoiceConversationRenderable;
 import org.scify.moonwalker.app.game.quiz.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class QuestionConversationRules extends ConversationRules {
+    public static final String PLAYER_HAS_3_CORRECT = "player_has_3_correct";
+    public static final String CORRECT_ANSWERS = "CORRECT_ANSWERS";
+    public static final String PLAYER_HAS_LESS_THAN_3_CORRECT = "player_has_less_than_3_correct";
     protected QuestionService questionService;
     protected List<QuestionCategory> questionCategories;
     protected List<Question> questions;
+
+    protected boolean lineProcessedIsQuestion;
 
     public QuestionConversationRules(String conversationJSONFilePath) {
         super(conversationJSONFilePath);
@@ -25,39 +28,84 @@ public class QuestionConversationRules extends ConversationRules {
 
     @Override
     public GameState getNextState(GameState gameState, UserAction userAction) {
-        // If got an answer
-
-        GameState conversationState = super.getNextState(gameState, userAction);
-        onEnterConversationOrder(conversationState, getCurrentConversationLine(conversationState));
         if (gotAnswer(userAction)) {
             // we need to check whether this answer was for a question-type
             // conversation line (which means that we got an answer
             // for a Question and we need to evaluate it)
-            if(conversationLineHasRandomQuestionEvent(getCurrentConversationLine(conversationState))) {
+            if(lineProcessedIsQuestion) {
+                ConversationLine selectedLine = (ConversationLine) userAction.getActionPayload();
                 // the answer instance was set as a payload in the conversation line
                 // which is set as a payload to the user action
-                ConversationLine selectedLine = (ConversationLine) userAction.getActionPayload();
                 Answer answer = (Answer) selectedLine.getPayload();
-                evaluateAnswerAndSetGameInfo(answer);
+                evaluateAnswerAndSetGameInfo(answer, gameState);
             }
         }
-        return conversationState;
+        return super.getNextState(gameState, userAction);
     }
 
-    protected void evaluateAnswerAndSetGameInfo(Answer answer) {
+    protected void evaluateAnswerAndSetGameInfo(Answer answer, GameState gameState) {
+        if (answer.isCorrect()) increaseCorrectAnswers(gameState);
         gameInfo.setLastQuizAnswerCorrect(answer.isCorrect());
     }
 
     @Override
-    protected void addSingleChoiceConversationLine(ConversationLine conversationLine, GameState gameState, boolean newSpeaker) {
-        if(!conversationLine.getText().equals("") && !conversationLineHasRandomQuestionEvent(conversationLine))
-            super.addSingleChoiceConversationLine(conversationLine, gameState, newSpeaker);
+    protected List<ConversationLine> extractNextLines(GameState currentGameState, UserAction userAction) {
+        lineProcessedIsQuestion = false;
+        List<ConversationLine> possibleNextLines = new LinkedList<>(super.extractNextLines(currentGameState, userAction));
+        ListIterator<ConversationLine> iLines = possibleNextLines.listIterator();
+        // For each item
+        while (iLines.hasNext()) {
+            // Remove it, if it cannot cope with the prerequisites
+            if (!satisfiesPrerequisites(iLines.next(), currentGameState))
+                iLines.remove();
+        }
+
+        return possibleNextLines;
+    }
+
+    @Override
+    protected boolean satisfiesPrerequisites(ConversationLine next, GameState currentGameState) {
+        boolean bSuperOK = super.satisfiesPrerequisites(next, currentGameState);
+
+        if (!bSuperOK)
+            return false;
+
+        // If we need 3 correct
+        if (next.getPrerequisites().contains(PLAYER_HAS_3_CORRECT)) {
+            return Integer.valueOf((String)currentGameState.getAdditionalDataEntry(CORRECT_ANSWERS)) >= 3;
+        }
+
+        if (next.getPrerequisites().contains(PLAYER_HAS_LESS_THAN_3_CORRECT)) {
+            return Integer.valueOf((String)currentGameState.getAdditionalDataEntry(CORRECT_ANSWERS)) < 3;
+        }
+
+
+        return true;
+    }
+
+    protected void increaseCorrectAnswers(GameState currentGameState) {
+        // Initialize value as needed
+        if (!currentGameState.additionalDataEntryExists(CORRECT_ANSWERS)) {
+            currentGameState.setAdditionalDataEntry(CORRECT_ANSWERS, String.valueOf(1));
+        }
         else {
-            Set<String> eventTrigger;
-            eventTrigger = conversationLine.getOnEnterCurrentOrderTrigger();
-            processSingleLine(eventTrigger, conversationLine, gameState);
+            currentGameState.setAdditionalDataEntry(CORRECT_ANSWERS, String.valueOf(
+                    Integer.valueOf((String)currentGameState.getAdditionalDataEntry(CORRECT_ANSWERS))+1));
         }
     }
+
+    @Override
+    protected void addSingleChoiceConversationLine(ConversationLine conversationLine, GameState gameState, boolean newSpeaker) {
+        // If we do not have a random question/answer line
+        if(!(conversationLineHasRandomQuestionEvent(conversationLine) || conversationLineHasRandomResponseEvent(conversationLine)))
+            // handle things as usual
+            super.addSingleChoiceConversationLine(conversationLine, gameState, newSpeaker);
+        else {
+            // else replace the single line conversation with an appropriate replacement
+            replaceSingleLineWithDynamicContent(conversationLine, gameState);
+        }
+    }
+
 
     private boolean conversationLineHasRandomQuestionEvent(ConversationLine conversationLine) {
         for(String eventName: conversationLine.getOnEnterCurrentOrderTrigger())
@@ -73,10 +121,19 @@ public class QuestionConversationRules extends ConversationRules {
         return false;
     }
 
-    protected void processSingleLine(Set<String> eventTrigger, ConversationLine lineEntered, GameState gsCurrent) {
+    /**
+     * This function, in the place of a given conversation line, loads and creates renderables for a multiple-choice
+     * question, or a randomly chosen single line.
+     * @param lineEntered The line to be replaced.
+     * @param gsCurrent The current game state.
+     */
+    protected void replaceSingleLineWithDynamicContent(ConversationLine lineEntered, GameState gsCurrent) {
+        Set<String> eventTrigger = lineEntered.getOnEnterCurrentOrderTrigger();
+
         for(String eventName: eventTrigger) {
             if(eventName.contains(conversationRules.EVENT_LOAD_QUESTION)) {
                 loadRandomQuestion(eventName, lineEntered, gsCurrent);
+                lineProcessedIsQuestion = true;
             } else if(eventName.equals("load_response_for_question")) {
                 loadResponseForQuestion(lineEntered, gsCurrent);
             }
