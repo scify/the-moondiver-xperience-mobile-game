@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static org.scify.moonwalker.app.game.rules.ConversationRules.EVENT_RANDOM_BORING;
+import static org.scify.moonwalker.app.game.rules.ConversationRules.EVENT_RANDOM_CORRECT;
+import static org.scify.moonwalker.app.game.rules.ConversationRules.EVENT_RANDOM_WRONG;
+
 public class RandomResponseFactory {
 
     protected static RandomResponseFactory factory = null;
@@ -50,11 +54,11 @@ public class RandomResponseFactory {
 
     public String getRandomResponseFor(String randomResponseCode) throws Exception {
         switch (randomResponseCode) {
-            case "random_correct":
+            case EVENT_RANDOM_CORRECT:
                 return getRandomCorrectResponse();
-            case "random_wrong":
+            case EVENT_RANDOM_WRONG:
                 return getRandomWrongResponse();
-            case "random_boring":
+            case EVENT_RANDOM_BORING:
                 return getRandomBoringResponse();
             default:
                 throw new Exception("Unsupported response code: " + randomResponseCode);

@@ -13,6 +13,9 @@ public class ConversationLine {
     protected String onExitCurrentOrderTrigger;
     protected String buttonText;
     protected int nextOrder;
+    // we may need to pass a payload object to the line
+    // in case we want to retrieve data on click or other events
+    protected Object payload;
 
     public void setLineProcessedByRules(boolean lineProcessedByRules) {
         this.lineProcessedByRules = lineProcessedByRules;
@@ -88,5 +91,13 @@ public class ConversationLine {
 
     public void setSpeakerId(String speakerId) {
         this.speakerId = speakerId;
+    }
+
+    public Object getPayload() {
+        return payload;
+    }
+
+    public void setPayload(Object payload) {
+        this.payload = payload;
     }
 }

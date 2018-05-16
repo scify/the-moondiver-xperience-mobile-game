@@ -31,18 +31,18 @@ public class SingleChoiceConversationRenderable extends TableRenderable {
         return allRenderables;
     }
 
-    public SingleChoiceConversationRenderable(int id) {
-        super(0, 0, 0, 0, CONVERSATION_SINGLE_CHOICE, CONVERSATION_SINGLE_CHOICE + id, BG_IMG_PATH);
-        conversationId = id;
+    public SingleChoiceConversationRenderable(ConversationLine line) {
+        super(0, 0, 0, 0, CONVERSATION_SINGLE_CHOICE, CONVERSATION_SINGLE_CHOICE + line.getId(), BG_IMG_PATH);
+        conversationId = line.getId();
         float screenWidth = appInfo.getScreenWidth();
         float screenHeight = appInfo.getScreenHeight();
         this.xPos = 0.02f * screenWidth;
         this.yPos = 0.03f * screenHeight;
         width = 0.96f * screenWidth;
         height = 0.3f * screenHeight;
-        conversationButton = createTextButton(SINGLE_CHOICE_BUTTON_ID + id, "Επόμενο", new UserAction(UserActionCode.SINGLE_CHOICE_CONVERSATION_LINE, id), false, true, 102);
+        conversationButton = createTextButton(SINGLE_CHOICE_BUTTON_ID + line.getId(), "Επόμενο", new UserAction(UserActionCode.SINGLE_CHOICE_CONVERSATION_LINE, line), false, true, 102);
         buttonActive = true;
-        avatar_bg = createImageRenderable(AVATAR_BG_ID + id, AVATAR_BG_IMG_PATH, false, true, 102);
+        avatar_bg = createImageRenderable(AVATAR_BG_ID + line.getId(), AVATAR_BG_IMG_PATH, false, true, 102);
         initSubRenderables();
     }
 

@@ -238,7 +238,8 @@ public class ConversationRules extends MoonWalkerBaseRules {
         ConversationLine answered = null;
         if (userAction.getActionCode().equals(UserActionCode.MULTIPLE_SELECTION_ANSWER) ||
                 userAction.getActionCode().equals(UserActionCode.SINGLE_CHOICE_CONVERSATION_LINE)) {
-            answered = getLineById((Integer) userAction.getActionPayload());
+            ConversationLine clickedLine = (ConversationLine) userAction.getActionPayload();
+            answered = getLineById(clickedLine.getId());
         }
 
         return answered;
@@ -282,7 +283,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
     }
 
     protected void addSingleChoiceConversationLine(final ConversationLine conversationLine, final GameState gameState, boolean newSpeaker) {
-        SingleChoiceConversationRenderable renderable = new SingleChoiceConversationRenderable(conversationLine.getId());
+        SingleChoiceConversationRenderable renderable = new SingleChoiceConversationRenderable(conversationLine);
         if (lastConversationRenderable != null) {
             lastConversationRenderable.addEffect(getOutroEffect(lastConversationRenderable, conversationLine, gameState, newSpeaker));
         }

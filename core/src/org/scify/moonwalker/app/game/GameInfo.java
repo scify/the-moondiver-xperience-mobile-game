@@ -18,6 +18,8 @@ public class GameInfo {
     protected boolean contactRequestFlag;
     protected boolean mapRequestFlag;
     protected boolean inventoryIncreased;
+    // we keep track of the last answer of the user to the quiz
+    protected boolean lastQuizAnswerCorrect;
 
     /**
      * The travel percentage complete in the LAST travel
@@ -202,5 +204,13 @@ public class GameInfo {
 
     public int getUnitsOfMoonPhase(MoonPhase moonPhase) {
         return moonPhasesController.getUnitsOfMoonPhase(moonPhase, inventoryItemsCounter);
+    }
+
+    public boolean isLastQuizAnswerCorrect() {
+        return lastQuizAnswerCorrect;
+    }
+
+    public void setLastQuizAnswerCorrect(boolean lastQuizAnswerCorrect) {
+        this.lastQuizAnswerCorrect = lastQuizAnswerCorrect;
     }
 }

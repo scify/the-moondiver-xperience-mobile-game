@@ -1,6 +1,5 @@
 package org.scify.moonwalker.app.game.rules;
 
-import org.scify.engine.GameEvent;
 import org.scify.engine.GameState;
 import org.scify.engine.UserAction;
 import org.scify.engine.conversation.ConversationLine;
@@ -26,9 +25,27 @@ public class QuestionConversationRules extends ConversationRules {
 
     @Override
     public GameState getNextState(GameState gameState, UserAction userAction) {
+        // If got an answer
+
         GameState conversationState = super.getNextState(gameState, userAction);
         onEnterConversationOrder(conversationState, getCurrentConversationLine(conversationState));
+        if (gotAnswer(userAction)) {
+            // we need to check whether this answer was for a question-type
+            // conversation line (which means that we got an answer
+            // for a Question and we need to evaluate it)
+            if(conversationLineHasRandomQuestionEvent(getCurrentConversationLine(conversationState))) {
+                // the answer instance was set as a payload in the conversation line
+                // which is set as a payload to the user action
+                ConversationLine selectedLine = (ConversationLine) userAction.getActionPayload();
+                Answer answer = (Answer) selectedLine.getPayload();
+                evaluateAnswerAndSetGameInfo(answer);
+            }
+        }
         return conversationState;
+    }
+
+    protected void evaluateAnswerAndSetGameInfo(Answer answer) {
+        gameInfo.setLastQuizAnswerCorrect(answer.isCorrect());
     }
 
     @Override
@@ -38,20 +55,8 @@ public class QuestionConversationRules extends ConversationRules {
         else {
             Set<String> eventTrigger;
             eventTrigger = conversationLine.getOnEnterCurrentOrderTrigger();
-            loadRandomQuestionEvent(eventTrigger, conversationLine, gameState);
-
+            processSingleLine(eventTrigger, conversationLine, gameState);
         }
-    }
-
-    @Override
-    protected void handleOnEnterEventForCurrentConversationOrder(GameState gsCurrent) {
-        ConversationLine lineEntered = getCurrentConversationLine(gsCurrent);
-        Set<String> eventTrigger;
-        if (gsCurrent.eventsQueueContainsEvent(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT) && conversationLineHasRandomResponseEvent(lineEntered)) {
-            eventTrigger = (Set<String>) gsCurrent.getGameEventWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
-            System.out.println(eventTrigger.size());
-        }
-        super.handleOnEnterEventForCurrentConversationOrder(gsCurrent);
     }
 
     private boolean conversationLineHasRandomQuestionEvent(ConversationLine conversationLine) {
@@ -68,33 +73,53 @@ public class QuestionConversationRules extends ConversationRules {
         return false;
     }
 
-    protected void loadRandomQuestionEvent(Set<String> eventTrigger, ConversationLine lineEntered, GameState gsCurrent) {
+    protected void processSingleLine(Set<String> eventTrigger, ConversationLine lineEntered, GameState gsCurrent) {
         for(String eventName: eventTrigger) {
             if(eventName.contains(conversationRules.EVENT_LOAD_QUESTION)) {
-                Question question = null;
-                if(eventName.equals(conversationRules.EVENT_LOAD_QUESTION)) {
-                    // load a random question regardless of it's category
-                    question = questionService.nextQuestion();
-
-                } else {
-                    // if a category is present, we need to the the number after the last underscore
-                    // which indicates the id of the question category
-                    String categoryId = eventName.substring(eventName.lastIndexOf('_') + 1).trim();
-                    question = questionService.nextQuestionForCategory(Integer.parseInt(categoryId));
-                }
-                addQuestionAsRenderable(question, gsCurrent, lineEntered);
+                loadRandomQuestion(eventName, lineEntered, gsCurrent);
+            } else if(eventName.equals("load_response_for_question")) {
+                loadResponseForQuestion(lineEntered, gsCurrent);
             }
         }
     }
 
+    protected void loadRandomQuestion(String eventName, ConversationLine lineEntered, GameState gsCurrent) {
+        Question question;
+        if(eventName.equals(conversationRules.EVENT_LOAD_QUESTION)) {
+            // load a random question regardless of it's category
+            question = questionService.nextQuestion();
+        } else {
+            // if a category is present, we need to the the number after the last underscore
+            // which indicates the id of the question category
+            String categoryId = eventName.substring(eventName.lastIndexOf('_') + 1).trim();
+            question = questionService.nextQuestionForCategory(Integer.parseInt(categoryId));
+        }
+        addQuestionAsRenderable(question, gsCurrent, lineEntered);
+    }
+
+    protected void loadResponseForQuestion(ConversationLine lineEntered, GameState gsCurrent) {
+        ConversationLine responseLine = new ConversationLine();
+        try {
+            responseLine.setText(randomResponseFactory.getRandomResponseFor(gameInfo.isLastQuizAnswerCorrect() ? EVENT_RANDOM_CORRECT : EVENT_RANDOM_WRONG));
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseLine.setText(e.getMessage());
+        }
+        responseLine.setSpeakerId(lineEntered.getSpeakerId());
+        responseLine.setId(lineEntered.getId());
+        addSingleChoiceConversationLine(responseLine, gsCurrent, false);
+    }
+
     protected void addQuestionAsRenderable(Question question, GameState gsCurrent, ConversationLine lineEntered) {
         List<ConversationLine> lines = new ArrayList<>();
+        lineEntered.setPayload(question);
         for(Answer answer: question.getAnswers()) {
             ConversationLine line = new ConversationLine();
             line.setText(answer.getText());
-            line.setId(question.getId());
+            line.setId(lineEntered.getId());
             line.setSpeakerId(lineEntered.getSpeakerId());
             lines.add(line);
+            line.setPayload(answer);
         }
         addMultipleConversationLines(lines, gsCurrent, false, new MultipleChoiceConversationRenderable(lines.get(0).getId(), question.getTitle()), getIntroEffectForMultipleChoiceRenderable());
     }
