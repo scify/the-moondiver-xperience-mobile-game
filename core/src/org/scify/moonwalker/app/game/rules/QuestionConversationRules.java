@@ -16,6 +16,8 @@ public class QuestionConversationRules extends ConversationRules {
     protected List<QuestionCategory> questionCategories;
     protected List<Question> questions;
 
+    // this variable describes whether the last process conversation line
+    // was of a question type.
     protected boolean lineProcessedIsQuestion;
 
     public QuestionConversationRules(String conversationJSONFilePath) {
