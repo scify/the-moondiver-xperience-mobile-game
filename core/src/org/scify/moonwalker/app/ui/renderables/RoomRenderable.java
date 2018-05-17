@@ -8,18 +8,22 @@ import java.util.Set;
 
 public class RoomRenderable extends FadingTableRenderable {
 
-    protected ImageRenderable phoneOffRenderable;
     protected ImageRenderable phoneOnRenderable;
+    protected ImageRenderable phoneOffRenderable;
 
     //IMAGES BOY
-    public final static String BOY_BG_IMG_PATH = "img/episode_room/boy/bg.png";
-    public final static String BOY_PHONE_OFF_IMG_PATH = "img/episode_room/boy/phoneMusic.png";
-    public final static String BOY_PHONE_ON_IMG_PATH = "img/episode_room/boy/phoneCalling.png";
+    protected final static String BOY_IMG_PATH = "img/episode_room/boy/";
+    public final static String BOY_BG_IMG_PATH = BOY_IMG_PATH + "bg.png";
+    public final static String BOY_PHONE_IMG_PATH = BOY_IMG_PATH + "phone.png";
+    public final static String BOY_PHONE_MESSAGE_IMG_PATH = BOY_IMG_PATH + "phoneMessage.png";
+    public final static String BOY_CONVERSATION_BG_IMG_PATH = BOY_IMG_PATH + "conversation_bg.png";
 
     //IMAGES GIRL
-    public final static String GIRL_BG_IMG_PATH = "img/episode_room/girl/bg.png";
-    public final static String GIRL_PHONE_OFF_IMG_PATH = "img/episode_room/girl/phoneMusic.png";
-    public final static String GIRL_PHONE_ON_IMG_PATH = "img/episode_room/girl/phoneCalling.png";
+    protected final static String GIRL_IMG_PATH = "img/episode_room/girl/";
+    public final static String GIRL_BG_IMG_PATH = GIRL_IMG_PATH + "bg.png";
+    public final static String GIRL_PHONE_IMG_PATH = GIRL_IMG_PATH + "phone.png";
+    public final static String GIRL_PHONE_MESSAGE_IMG_PATH = GIRL_IMG_PATH + "phoneMessage.png";
+    public final static String GIRL_CONVERSATION_BG_IMG_PATH = GIRL_IMG_PATH + "conversation_bg.png";
 
     //AUDIO
     public final static String BOY_MUSIC_AUDIO_PATH = "audio/episode_room/boy_music.mp3";
@@ -43,11 +47,11 @@ public class RoomRenderable extends FadingTableRenderable {
         permanentlyOn = false;
         chatEnabled = false;
         if (isBoy) {
-            phoneOnRenderable = new ImageRenderable("phone_on", BOY_PHONE_ON_IMG_PATH);
-            phoneOffRenderable = new ImageRenderable("phone_off", BOY_PHONE_OFF_IMG_PATH);
+            phoneOnRenderable = new ImageRenderable("phone_on", BOY_PHONE_MESSAGE_IMG_PATH);
+            phoneOffRenderable = new ImageRenderable("phone_off", BOY_PHONE_IMG_PATH);
         }else {
-            phoneOnRenderable = new ImageRenderable("phone_on", GIRL_PHONE_ON_IMG_PATH);
-            phoneOffRenderable = new ImageRenderable("phone_off", GIRL_PHONE_OFF_IMG_PATH);
+            phoneOnRenderable = new ImageRenderable("phone_on", GIRL_PHONE_MESSAGE_IMG_PATH);
+            phoneOffRenderable = new ImageRenderable("phone_off", GIRL_PHONE_IMG_PATH);
         }
         phoneOnRenderable.setZIndex(2);
         phoneOnRenderable.setPositionDrawable(false);
@@ -79,11 +83,6 @@ public class RoomRenderable extends FadingTableRenderable {
             else
                 phoneOnRenderable.setVisible(true);
         }
-    }
-
-    public void turnOnPhone() {
-        permanentlyOn = true;
-        phoneOnRenderable.setVisible(true);
     }
 
     public void turnOffPhone() {

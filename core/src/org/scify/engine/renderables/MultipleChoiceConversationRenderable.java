@@ -7,7 +7,7 @@ import org.scify.engine.conversation.ConversationLine;
 import java.util.HashSet;
 import java.util.List;
 
-public class MultipleChoiceConversationRenderable extends ConversationLineRenderable {
+public class MultipleChoiceConversationRenderable extends ConversationRenderable {
 
     public static final String TOP_LEFT_BUTTON_ID = "button_top_left";
     public static final String BOTTOM_LEFT_BUTTON_ID = "button_bottom_left";
@@ -18,23 +18,23 @@ public class MultipleChoiceConversationRenderable extends ConversationLineRender
     protected TextLabelRenderable question;
     protected List<ConversationLine> conversationLines;
     protected int conversationId;
-    protected ActionButtonRenderable  conversationButtonTopLeft;
-    protected ActionButtonRenderable  conversationButtonBottomLeft;
-    protected ActionButtonRenderable  conversationButtonTopRight;
-    protected ActionButtonRenderable  conversationButtonBottomRight;
+    protected ActionButtonRenderable conversationButtonTopLeft;
+    protected ActionButtonRenderable conversationButtonBottomLeft;
+    protected ActionButtonRenderable conversationButtonTopRight;
+    protected ActionButtonRenderable conversationButtonBottomRight;
 
-    public MultipleChoiceConversationRenderable(int id, String questionText) {
-        super(CONVERSATION_MULTIPLE_CHOICE, CONVERSATION_MULTIPLE_CHOICE + id);
+    public MultipleChoiceConversationRenderable(int id, String questionText, String bgImgPath, boolean keepFirstDuringParsing) {
+        super(CONVERSATION_MULTIPLE_CHOICE, CONVERSATION_MULTIPLE_CHOICE + id, bgImgPath, keepFirstDuringParsing);
         conversationId = id;
         float screenWidth = appInfo.getScreenWidth();
         float screenHeight = appInfo.getScreenHeight();
         this.xPos = 0.02f * screenWidth;
-        this.yPos = 0.03f *  screenHeight;
+        this.yPos = 0.03f * screenHeight;
         width = 0.96f * screenWidth;
         height = 0.8f * screenHeight;
         setPositionDrawable(true);
         initSubRenderables();
-        if(questionText != null) {
+        if (questionText != null) {
             question = createTextLabelRenderable(CONVERSATION_QUESTION_ID + conversationId, questionText, false, true, 102);
             allRenderables.add(question);
         }
@@ -51,16 +51,16 @@ public class MultipleChoiceConversationRenderable extends ConversationLineRender
     public void setConversationLines(List<ConversationLine> conversationLines) {
         this.conversationLines = conversationLines;
         ConversationLine conversationLine = conversationLines.get(0);
-        conversationButtonTopLeft = createTextButton(TOP_LEFT_BUTTON_ID+ conversationLine.getId(),conversationLine.getText(),new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine),false, true,102);
+        conversationButtonTopLeft = createTextButton(TOP_LEFT_BUTTON_ID + conversationLine.getId(), conversationLine.getText(), new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine), false, true, 102);
         allRenderables.add(conversationButtonTopLeft);
         conversationLine = conversationLines.get(1);
-        conversationButtonBottomLeft = createTextButton(BOTTOM_LEFT_BUTTON_ID+ conversationLine.getId(),conversationLine.getText(),new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine),false, true,102);
+        conversationButtonBottomLeft = createTextButton(BOTTOM_LEFT_BUTTON_ID + conversationLine.getId(), conversationLine.getText(), new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine), false, true, 102);
         allRenderables.add(conversationButtonBottomLeft);
         conversationLine = conversationLines.get(2);
-        conversationButtonTopRight = createTextButton(TOP_RIGHT_BUTTON_ID+ conversationLine.getId(),conversationLine.getText(),new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine),false, true,102);
+        conversationButtonTopRight = createTextButton(TOP_RIGHT_BUTTON_ID + conversationLine.getId(), conversationLine.getText(), new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine), false, true, 102);
         allRenderables.add(conversationButtonTopRight);
         conversationLine = conversationLines.get(3);
-        conversationButtonBottomRight = createTextButton(BOTTOM_RIGHT_BUTTON_ID+ conversationLine.getId(),conversationLine.getText(),new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine),false, true,102);
+        conversationButtonBottomRight = createTextButton(BOTTOM_RIGHT_BUTTON_ID + conversationLine.getId(), conversationLine.getText(), new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine), false, true, 102);
         allRenderables.add(conversationButtonBottomRight);
     }
 

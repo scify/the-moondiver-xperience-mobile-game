@@ -45,7 +45,7 @@ public class LocationEpisodeRules extends FadingEpisodeRules<LocationRenderable>
         } else if (renderable != null && renderable.isChatEnabled()) {
             // Initialize conversation
             if(conversationRules == null) {
-                conversationRules = new QuestionConversationRules(location.getConversationPath());
+                conversationRules = new QuestionConversationRules(location.getConversationPath(), location.getConversationBG());
                 conversationRules.setStarted(true);
             }
         }

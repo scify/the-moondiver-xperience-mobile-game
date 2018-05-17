@@ -3,15 +3,15 @@ package org.scify.engine.renderables;
 import org.scify.engine.UserAction;
 import org.scify.engine.UserActionCode;
 import org.scify.engine.conversation.ConversationLine;
-import org.scify.moonwalker.app.ui.renderables.FadingTableRenderable;
+
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-public class SingleChoiceConversationRenderable extends TableRenderable {
+public class SingleChoiceConversationRenderable extends ConversationRenderable {
 
-    public static final String BG_IMG_PATH = "img/conversations/bg.png";
     public static final String AVATAR_BG_IMG_PATH = "img/avatars/bg.png";
-
     public static final String SINGLE_CHOICE_BUTTON_ID = "single_choice_button";
     public static final String AVATAR_BG_ID = "avatar_bg";
     public static final String AVATAR_IMAGE_ID = "avatar_image";
@@ -31,24 +31,22 @@ public class SingleChoiceConversationRenderable extends TableRenderable {
         return allRenderables;
     }
 
-    public SingleChoiceConversationRenderable(ConversationLine line) {
-        super(0, 0, 0, 0, CONVERSATION_SINGLE_CHOICE, CONVERSATION_SINGLE_CHOICE + line.getId(), BG_IMG_PATH);
-        conversationId = line.getId();
+    public SingleChoiceConversationRenderable(int id, String bgImgPath, boolean keepFirstDuringParsing) {
+        super(CONVERSATION_SINGLE_CHOICE, CONVERSATION_SINGLE_CHOICE + id, bgImgPath, keepFirstDuringParsing);
+        conversationId = id;
         float screenWidth = appInfo.getScreenWidth();
         float screenHeight = appInfo.getScreenHeight();
         this.xPos = 0.02f * screenWidth;
         this.yPos = 0.03f * screenHeight;
         width = 0.96f * screenWidth;
         height = 0.3f * screenHeight;
-        conversationButton = createTextButton(SINGLE_CHOICE_BUTTON_ID + line.getId(), "Επόμενο", new UserAction(UserActionCode.SINGLE_CHOICE_CONVERSATION_LINE, line), false, true, 102);
         buttonActive = true;
-        avatar_bg = createImageRenderable(AVATAR_BG_ID + line.getId(), AVATAR_BG_IMG_PATH, false, true, 102);
+        avatar_bg = createImageRenderable(AVATAR_BG_ID + id, AVATAR_BG_IMG_PATH, false, true, 102);
         initSubRenderables();
     }
 
     private void initSubRenderables() {
         allRenderables = new HashSet<>();
-        allRenderables.add(conversationButton);
         allRenderables.add(avatar_bg);
     }
 
@@ -57,15 +55,26 @@ public class SingleChoiceConversationRenderable extends TableRenderable {
         allRenderables.add(avatar);
     }
 
-    public void setConversationLine(ConversationLine conversationLine) {
+    @Override
+    public void setConversationLines(List<ConversationLine> conversationLines) {
+        this.conversationLines = conversationLines;
+        conversationLine = conversationLines.get(0);
 
-        this.conversationLine = conversationLine;
         String buttonText = conversationLine.getButtonText();
         if (buttonText != null) {
-            conversationButton.setTitle(buttonText);
+            conversationButton = createTextButton(SINGLE_CHOICE_BUTTON_ID + id, buttonText, new UserAction(UserActionCode.SINGLE_CHOICE_CONVERSATION_LINE, conversationLine), false, true, 102);
+        }else {
+            conversationButton = createTextButton(SINGLE_CHOICE_BUTTON_ID + id, "Επόμενο", new UserAction(UserActionCode.SINGLE_CHOICE_CONVERSATION_LINE, conversationLine), false, true, 102);
         }
-        conversationText = createTextLabelRenderable(CONVERSATION_TEXT_ID + conversationId, conversationLine.getText(),false, true, 102);
+        conversationText = createTextLabelRenderable(CONVERSATION_TEXT_ID + conversationId, parseText(conversationLine.getText()),false, true, 102);
         allRenderables.add(conversationText);
+        allRenderables.add(conversationButton);
+    }
+
+    public void setConversationLine(ConversationLine conversationLine) {
+        List<ConversationLine> listOfConversationLines = new ArrayList<>();
+        listOfConversationLines.add(conversationLine);
+        setConversationLines(listOfConversationLines);
     }
 
     public ImageRenderable getTableBGRenderable() {

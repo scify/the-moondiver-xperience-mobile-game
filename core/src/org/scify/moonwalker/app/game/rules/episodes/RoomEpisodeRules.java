@@ -39,7 +39,10 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
             endEpisodeAndAddEventWithType(gsCurrent, "");
 
         } else if (renderable != null && renderable.isChatEnabled()) {
-            createConversation(gsCurrent, "conversations/episode_room.json");
+            if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy)
+                createConversation(gsCurrent, "conversations/episode_room.json", renderable.BOY_CONVERSATION_BG_IMG_PATH);
+            else
+                createConversation(gsCurrent, "conversations/episode_room.json", renderable.GIRL_CONVERSATION_BG_IMG_PATH);
         }
         return super.getNextState(gsCurrent, userAction);
     }
@@ -47,10 +50,12 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
     @Override
     public void episodeStartedEvents(GameState currentState) {
         if (!isEpisodeStarted(currentState)) {
-            if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy)
+            if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
                 renderable = new RoomRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID, true);
-            else
+            }
+            else {
                 renderable = new RoomRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID, false);
+            }
             renderable.addAfterFadeIn(new Runnable() {
                 @Override
                 public void run() {

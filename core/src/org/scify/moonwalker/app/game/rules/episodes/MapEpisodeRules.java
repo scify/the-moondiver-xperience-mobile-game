@@ -22,10 +22,9 @@ import java.util.List;
 */
 
 public class MapEpisodeRules extends BaseEpisodeRules {
+
     public static final String ORIGIN_MIDDLE_OF_NOWHERE = "Μέση του\nΠουθενά";
     public static final String TARGET_MIDDLE_OF_NOWHERE = "Άκρη του\nΠουθενά";
-
-    public static final String NO_MISSION = "(Καμία)";
     protected LocationController locationController;
     protected boolean travelOnly;
     protected MapEpisodeRenderable renderable;
@@ -102,7 +101,8 @@ public class MapEpisodeRules extends BaseEpisodeRules {
             // Create "middle of nowhere" location for target
             double dMoNX = gameInfo.getCurrentLocation().getPosX() + (gameInfo.getNextAllowedLocation().getPosX() - gameInfo.getCurrentLocation().getPosX()) * dPercentageOfNextMovePossible / 100;
             double dMoNY = gameInfo.getCurrentLocation().getPosY() + (gameInfo.getNextAllowedLocation().getPosY() - gameInfo.getCurrentLocation().getPosY()) * dPercentageOfNextMovePossible / 100;
-            targetMiddleOfNowhere = new Location(ORIGIN_MIDDLE_OF_NOWHERE, "", (int)dMoNX, (int)dMoNY, NO_MISSION,"", "", "", "");
+            //targetMiddleOfNowhere = new Location(ORIGIN_MIDDLE_OF_NOWHERE, "", (int)dMoNX, (int)dMoNY, NO_MISSION,"", "", "", "");
+            targetMiddleOfNowhere = locationController.getNowhereLocation(ORIGIN_MIDDLE_OF_NOWHERE, (int)dMoNX, (int)dMoNY);
             targetLocation = targetMiddleOfNowhere;
         }
         else {
@@ -130,7 +130,8 @@ public class MapEpisodeRules extends BaseEpisodeRules {
             // Create "middle of nowhere" location for origin
             double dMoNX = gameInfo.getCurrentLocation().getPosX() + (gameInfo.getNextAllowedLocation().getPosX() - gameInfo.getCurrentLocation().getPosX()) * dPercentageOfPreviousMoveComplete / 100.0;
             double dMoNY = gameInfo.getCurrentLocation().getPosY() + (gameInfo.getNextAllowedLocation().getPosY() - gameInfo.getCurrentLocation().getPosY()) * dPercentageOfPreviousMoveComplete / 100.0;
-            originMiddleOfNowhere = new Location(TARGET_MIDDLE_OF_NOWHERE, "", (int)dMoNX, (int)dMoNY, NO_MISSION, "", "", "", "");
+            //originMiddleOfNowhere = new Location(TARGET_MIDDLE_OF_NOWHERE, "", (int)dMoNX, (int)dMoNY, NO_MISSION, "", "", "", "");
+            originMiddleOfNowhere = locationController.getNowhereLocation(TARGET_MIDDLE_OF_NOWHERE, (int)dMoNX, (int)dMoNY);
             originLocation = originMiddleOfNowhere;
         }
         else {

@@ -30,6 +30,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
     public static final String EVENT_RANDOM_BORING = "random_boring";
     public static final String EVENT_LOAD_QUESTION = "load_question";
     public static final String EVENT_RANDOM_RESPONSE = "load_response_for_question";
+
     /**
      * All conversation lines that are read from the json file for
      * this conversation.
@@ -39,6 +40,8 @@ public class ConversationRules extends MoonWalkerBaseRules {
     protected ResourceLocator resourceLocator;
     protected Renderable lastConversationRenderable;
     protected RandomResponseFactory randomResponseFactory;
+    protected String bgImgPath;
+    protected boolean keepFirstDuringParsing;
 
     public boolean isStarted() {
         return started;
@@ -89,7 +92,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
     protected List<Renderable> oldConversationLines;
     protected String sPrvSpeakerID;
 
-    public ConversationRules(String conversationJSONFilePath) {
+    public ConversationRules(String conversationJSONFilePath, String bgImgPath) {
         appInfo = AppInfo.getInstance();
         conversationLines = new ArrayList<>();
         resourceLocator = new ResourceLocator();
@@ -102,6 +105,8 @@ public class ConversationRules extends MoonWalkerBaseRules {
         lastConversationRenderable = null;
         this.currentConversationOrderId = 0;
         randomResponseFactory = RandomResponseFactory.getInstance();
+        this.bgImgPath = bgImgPath;
+        keepFirstDuringParsing = true;
     }
 
     public Renderable getLastConversationRenderable() {
@@ -134,7 +139,6 @@ public class ConversationRules extends MoonWalkerBaseRules {
             return gameState;
 
 
-
         // Move to appropriate next order
         // If we just started
         if (currentConversationOrderId == 0) {
@@ -164,7 +168,6 @@ public class ConversationRules extends MoonWalkerBaseRules {
     }
 
 
-
     @Override
     protected void onExitConversationOrder(GameState gsCurrent, ConversationLine lineExited) {
         Set<String> sAllEvents = lineExited.getOnExitCurrentOrderTrigger();
@@ -182,6 +185,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
 
     /**
      * This function creates an onEnter event for each next line.
+     *
      * @param gameState The current game state.
      */
     protected void handleOnEnterConversationOrder(GameState gameState) {
@@ -201,13 +205,14 @@ public class ConversationRules extends MoonWalkerBaseRules {
 
     /**
      * Updates the current line, by changing its text with some randomly generated (appropriate) text.
+     *
      * @param currLine The line the text of which we update.
      * @throws Exception Thrown if we cannot generate an appropriate response text.
      */
     protected void handleRandomTextEventForCurrentLine(ConversationLine currLine) throws Exception {
         Set<String> eventNames = currLine.getOnEnterCurrentOrderTrigger();
-        for(String eventName: eventNames) {
-            if(eventName.equals(EVENT_RANDOM_CORRECT) || eventName.equals(EVENT_RANDOM_WRONG) || eventName.equals(EVENT_RANDOM_BORING))
+        for (String eventName : eventNames) {
+            if (eventName.equals(EVENT_RANDOM_CORRECT) || eventName.equals(EVENT_RANDOM_WRONG) || eventName.equals(EVENT_RANDOM_BORING))
                 currLine.setText(randomResponseFactory.getRandomResponseFor(eventName));
         }
     }
@@ -251,7 +256,8 @@ public class ConversationRules extends MoonWalkerBaseRules {
 
     /**
      * Updates the game state with the next lines, if available, also creating appropriate renderables.
-     * @param gameState The current game stage.
+     *
+     * @param gameState  The current game stage.
      * @param userAction Any user action we may need to handle.
      */
     protected void handleNextConversationState(GameState gameState, UserAction userAction) {
@@ -274,11 +280,11 @@ public class ConversationRules extends MoonWalkerBaseRules {
         if (nextLinesSize == 1) {
             addSingleChoiceConversationLine(nextLines.get(0), gameState, newSpeaker);
         } else if (nextLinesSize == 2) {
-            TwoChoiceConversationRenderable renderable = new TwoChoiceConversationRenderable(nextLines.get(0).getId());
+            TwoChoiceConversationRenderable renderable = new TwoChoiceConversationRenderable(nextLines.get(0).getId(), bgImgPath, keepFirstDuringParsing);
             renderable.setAvatarImg(getAvatar(nextLines.get(0).getSpeakerId()));
             addMultipleConversationLines(nextLines, gameState, newSpeaker, renderable, getIntroEffect(renderable, nextLines.get(0), gameState, newSpeaker));
         } else if (nextLinesSize > 1) {
-            MultipleChoiceConversationRenderable renderable = new MultipleChoiceConversationRenderable(nextLines.get(0).getId(), null);
+            MultipleChoiceConversationRenderable renderable = new MultipleChoiceConversationRenderable(nextLines.get(0).getId(), null, bgImgPath, keepFirstDuringParsing);
             addMultipleConversationLines(nextLines, gameState, newSpeaker, renderable, getIntroEffectForMultipleChoiceRenderable());
         }
         // await next event
@@ -287,9 +293,9 @@ public class ConversationRules extends MoonWalkerBaseRules {
     }
 
     protected void addSingleChoiceConversationLine(final ConversationLine conversationLine, final GameState gameState, boolean newSpeaker) {
-        SingleChoiceConversationRenderable renderable = new SingleChoiceConversationRenderable(conversationLine);
+        SingleChoiceConversationRenderable renderable = new SingleChoiceConversationRenderable(conversationLine.getId(), bgImgPath, keepFirstDuringParsing);
         if (lastConversationRenderable != null) {
-            lastConversationRenderable.addEffect(getOutroEffect(lastConversationRenderable, conversationLine, gameState, newSpeaker));
+            lastConversationRenderable.addEffect(getOutroEffect());
         }
         lastConversationRenderable = renderable;
         lastConversationRenderable.setVisible(false);
@@ -306,10 +312,10 @@ public class ConversationRules extends MoonWalkerBaseRules {
 
 
     protected void addMultipleConversationLines(List<ConversationLine> nextLines, GameState gameState,
-                                                boolean newSpeaker, ConversationLineRenderable renderable, Effect effect) {
+                                                boolean newSpeaker, ConversationRenderable renderable, Effect effect) {
         ConversationLine firstLine = nextLines.get(0);
         if (lastConversationRenderable != null) {
-            lastConversationRenderable.addEffect(getOutroEffect(lastConversationRenderable, firstLine, gameState, newSpeaker));
+            lastConversationRenderable.addEffect(getOutroEffect());
         }
         lastConversationRenderable = renderable;
         lastConversationRenderable.setVisible(false);
@@ -361,11 +367,9 @@ public class ConversationRules extends MoonWalkerBaseRules {
         return ret;
     }
 
-    private Effect getOutroEffect(Renderable target, ConversationLine conversationLine, GameState gameState, boolean newSpeaker) {
-        ParallelEffectList lRes = new ParallelEffectList();
-        lRes.addEffect(new FadeEffect(1.0, 0.0, 200));
-
-        return lRes;
+    private Effect getOutroEffect() {
+        Effect ret = new FadeEffect(1.0, 0.0, 200);
+        return ret;
     }
 
 
@@ -425,7 +429,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
             lines = getLinesWithOrder(this.currentConversationOrderId);
 
         // Post process returned lines to handle randomly generated lines
-        for (ConversationLine currLine: lines) {
+        for (ConversationLine currLine : lines) {
             try {
                 // and call it appropriately to update the lines
                 handleRandomTextEventForCurrentLine(currLine);
@@ -499,5 +503,9 @@ public class ConversationRules extends MoonWalkerBaseRules {
         currentState.removeGameEventsWithType(CONVERSATION_STARTED);
         currentState.removeGameEventsWithType(CONVERSATION_FAILED);
         return currentState;
+    }
+
+    public void setKeepFirstDuringParsing(boolean keepFirstDuringParsing) {
+        this.keepFirstDuringParsing = keepFirstDuringParsing;
     }
 }

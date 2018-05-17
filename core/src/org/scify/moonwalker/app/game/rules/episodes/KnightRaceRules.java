@@ -56,7 +56,7 @@ public class KnightRaceRules extends SinglePlayerRules {
             // TODO add conversation id in case we have multiple conversations in an episode
             if(!gsCurrent.eventsQueueContainsEvent("CONVERSATION_STARTED") && !gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED")) {
                 // call base class create method, passing the resource file for this specific conversation
-                createConversation(gsCurrent, "json_DB/conversation.json");
+                //createConversation(gsCurrent, "json_DB/conversation.json");
             }
             // if the conversation has already started, but has not finished yet
             if (gsCurrent.eventsQueueContainsEvent("CONVERSATION_STARTED") && !gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED")) {

@@ -1,14 +1,14 @@
 [
-  {"id": "1", "order":"1", "speakerId":"scientist_madrid", "text":"Buenos días αστέρι! Θέλεις να ταξιδέψεις στη Σελήνη, ε;", "prerequisites":""},
-  {"id": "2", "order":"2", "speakerId":"scientist_madrid", "text":"Είμαι η Estrella Soñadores, επικεφαλής του Ισπανικού Κέντρου Διαστημικής Τεχνολογίας.", "prerequisites":""},
-  {"id": "3", "order":"3", "speakerId":"scientist_madrid", "text":"Έμαθα ότι τα πήγες καλά ως τώρα.", "prerequisites":""},
-  {"id": "4", "order":"4", "speakerId":"scientist_madrid", "text":"Αλλά φυσικά εμείς πρέπει να σιγουρευτούμε ότι ξέρεις\nκαλά την πηγή της ενέργειας που χρησιμοποιούμε.", "prerequisites":""},
-  {"id": "5", "order":"5", "speakerId":"player", "text":"Ξέρω τα πάντα για τον Ήλιο!", "prerequisites":""},
-  {"id": "5", "order":"5", "speakerId":"player", "text":"Ε, κάτι θα καταφέρω...", "prerequisites":""},
-  {"id": "6", "order":"6", "speakerId":"scientist_madrid", "text":"Εντάξει λοιπόν, ας δούμε τώρα τι ξέρεις για τον Ήλιο...", "prerequisites":"", "onExitCurrentOrderTrigger":"load_questions"},
-  {"id": "7", "order":"7", "speakerId":"scientist_madrid", "text":"Μπράβο! τα κατάφερες!", "prerequisites":"player_has_3_correct"},
-  {"id": "8", "order":"8", "speakerId":"scientist_madrid", "text":"Σου προσφέρω λοιπόν το επόμενο εξάρτημα\nπου θα χρειαστείς για το ταξίδι σου:", "prerequisites":"player_has_3_correct"},
-  {"id": "9", "order":"9", "speakerId":"scientist_madrid", "text":"Ένας ακόμα ισχυρός προωθητήρας είναι δικός σου.", "prerequisites":"player_has_3_correct"},
-  {"id": "10", "order":"10", "speakerId":"scientist_madrid", "text":"Καλή επιτυχία!", "prerequisites":"player_has_3_correct", "onExitCurrentOrderTrigger":"end"},
-  {"id": "11", "order":"11", "speakerId":"scientist_madrid", "text":"Χμ... Δεν είσαι {{έτοιμος/έτοιμη}} ακόμα.\nΈλα πίσω ξανά αύριο.", "prerequisites":"player_has_3_wrong", "onExitCurrentOrderTrigger":"end"}
+  {"id": "1", "order":"1", "speakerId":"estrella", "text":"Buenos días αστέρι! Θέλεις να ταξιδέψεις στη Σελήνη, ε;", "prerequisites":""},
+  {"id": "2", "order":"2", "speakerId":"estrella", "text":"Είμαι η Estrella Soñadores, επικεφαλής του Ισπανικού Κέντρου Διαστημικής Τεχνολογίας.", "prerequisites":""},
+  {"id": "3", "order":"3", "speakerId":"estrella", "text":"Έμαθα ότι τα πήγες καλά ως τώρα.", "prerequisites":""},
+  {"id": "4", "order":"4", "speakerId":"estrella", "text":"Αλλά φυσικά εμείς πρέπει να σιγουρευτούμε ότι ξέρεις\nκαλά την πηγή της ενέργειας που χρησιμοποιούμε.", "prerequisites":""},
+  {"id": "5", "order":"5", "speakerId":"player", "text":"[#ffeeaaff]Ξέρω τα πάντα για τον Ήλιο!", "prerequisites":""},
+  {"id": "5", "order":"5", "speakerId":"player", "text":"[#ffeeaaff]Ε, κάτι θα καταφέρω...", "prerequisites":""},
+  {"id": "6", "order":"6", "speakerId":"estrella", "text":"Εντάξει λοιπόν, ας δούμε τώρα τι ξέρεις για τον Ήλιο...", "prerequisites":"", "onExitCurrentOrderTrigger":"load_questions"},
+  {"id": "7", "order":"7", "speakerId":"estrella", "text":"Μπράβο! τα κατάφερες!", "prerequisites":"player_has_3_correct"},
+  {"id": "8", "order":"8", "speakerId":"estrella", "text":"Σου προσφέρω λοιπόν το επόμενο εξάρτημα\nπου θα χρειαστείς για το ταξίδι σου:", "prerequisites":"player_has_3_correct"},
+  {"id": "9", "order":"9", "speakerId":"estrella", "text":"Ένας ακόμα ισχυρός προωθητήρας είναι δικός σου.", "prerequisites":"player_has_3_correct"},
+  {"id": "10", "order":"10", "speakerId":"estrella", "text":"Καλή επιτυχία!", "prerequisites":"player_has_3_correct", "onExitCurrentOrderTrigger":"end"},
+  {"id": "11", "order":"11", "speakerId":"estrella", "text":"Χμ... Δεν είσαι {{έτοιμος/έτοιμη}} ακόμα.\nΈλα πίσω ξανά αύριο.", "prerequisites":"player_has_3_wrong", "onExitCurrentOrderTrigger":"end"}
 ]

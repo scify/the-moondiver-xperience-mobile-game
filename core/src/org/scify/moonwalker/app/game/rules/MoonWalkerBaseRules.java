@@ -7,6 +7,7 @@ import org.scify.engine.renderables.Renderable;
 import org.scify.engine.rules.Rules;
 import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.moonwalker.app.game.GameInfo;
+import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.game.quiz.*;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.ui.MoonWalkerRenderingEngine;
@@ -101,10 +102,14 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
         gameState.removeGameEventsWithType("PAUSE_GAME");
     }
 
-    protected void createConversation(GameState gsCurrent, String conversationResFile) {
+    protected void createConversation(GameState gsCurrent, String conversationResFile, String conversationBgImgPath) {
         if (conversationRules == null) {
-            conversationRules = new ConversationRules(conversationResFile);
+            conversationRules = new ConversationRules(conversationResFile, conversationBgImgPath);
             conversationRules.setStarted(true);
+            if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy)
+                conversationRules.setKeepFirstDuringParsing(true);
+            else
+                conversationRules.setKeepFirstDuringParsing(false);
         }
     }
 

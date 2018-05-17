@@ -3,10 +3,10 @@ package org.scify.moonwalker.app.ui.actors.conversation;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import org.scify.engine.renderables.MultipleChoiceConversationRenderable;
-import org.scify.moonwalker.app.ui.actors.FadingTableActor;
+import org.scify.moonwalker.app.ui.actors.TableActor;
 
 
-public class MultipleChoiceConversationActor extends FadingTableActor<MultipleChoiceConversationRenderable> {
+public class MultipleChoiceConversationActor extends TableActor<MultipleChoiceConversationRenderable> {
     protected Label lineLabel;
     protected Button buttonTopLeft;
     protected Button buttonBottomLeft;

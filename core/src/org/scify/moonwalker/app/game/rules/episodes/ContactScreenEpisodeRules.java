@@ -31,7 +31,7 @@ public class ContactScreenEpisodeRules extends FadingEpisodeRules<ContactScreenR
         } else if (renderable != null && renderable.isChatEnabled()) {
             // Initialize conversation
             if (gameInfo.getCurrentDay() == 1)
-                createConversation(gameState, "conversations/episode_contact_screen1.json");
+                createConversation(gameState, "conversations/episode_contact_screen1.json", renderable.CONVERSATION_BG_IMG_PATH);
         }
         return super.getNextState(gameState, userAction);
     }
@@ -46,8 +46,6 @@ public class ContactScreenEpisodeRules extends FadingEpisodeRules<ContactScreenR
                     renderable.enableChat();
                 }
             });
-            //TODO remmove this, only for fast debugging
-            gameInfo.setSelectedPlayer("boy");
             gameState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
             gameState.addRenderable(renderable);
             super.episodeStartedEvents(gameState);

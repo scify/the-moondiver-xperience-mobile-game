@@ -31,8 +31,9 @@ public class CockpitRenderable extends FadingTableRenderable {
     protected static final String SPACESHIP_INVENTORY_BUTTON_DEFAULT_IMG_PATH = "img/episode_cockpit/spaceship.png";
     protected static final String SPACESHIP_INVENTORY_BUTTON_LIGHTED_IMG_PATH = "img/episode_cockpit/spaceship_lighted.png";
     protected static final String RIGHT_TABLET_IMG_PATH = "img/episode_cockpit/right_tablet.png";
-    //OUTSIDE BackGroundsGs
-    public static final String FOREST_BG_IMG_PATH = "img/episode_cockpit/outside_bgs/forest.png";
+
+    //SPECIAL OUTSIDE BackGrounds
+    public static final String FOREST_BG_IMG_PATH = "img/episode_cockpit/forest_bg.png";
 
     //renderable ids
     protected static final String MOTOR_EFFICIENCY_ID = "motor_efficiency";

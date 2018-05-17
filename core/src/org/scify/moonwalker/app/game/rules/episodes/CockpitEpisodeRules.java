@@ -47,7 +47,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
             renderable.addAfterFadeIn(new Runnable() {
                 @Override
                 public void run() {
-                    /*if (gameInfo.getContactRequestFlag()) {
+                    if (gameInfo.getContactRequestFlag()) {
                         gameState.addGameEvent(new GameEvent(TOGGLE_BUTTON, renderable.getContactLightedButton(), new Date().getTime() + 500, false, this));
                         renderable.toogleButtonLight(renderable.getContactLightedButton());
                         contactClickable = true;
@@ -55,7 +55,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                         gameState.addGameEvent(new GameEvent(TOGGLE_BUTTON, renderable.getMapLightedButton(), new Date().getTime() + 500, false, this));
                         renderable.toogleButtonLight(renderable.getMapLightedButton());
                         mapClickable = true;
-                    }*/
+                    }
                     buttonsEnabled = true;
                 }
             });

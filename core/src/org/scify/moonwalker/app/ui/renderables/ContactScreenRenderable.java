@@ -9,9 +9,11 @@ import java.util.Set;
 
 public class ContactScreenRenderable extends FadingTableRenderable {
     //renderable image paths
-    protected final static String BG_IMG_PATH = "img/episode_contact_screen/bg.png";
-    protected final static String AUNT_TEXT_IMG_PATH = "img/episode_contact_screen/aunt_text.png";
-    protected final static String AUNT_AVATAR_IMG_PATH = "img/episode_contact_screen/aunt_avatar.png";
+    protected final static String IMG_PATH = "img/episode_contact_screen/";
+    protected final static String BG_IMG_PATH = IMG_PATH + "bg.png";
+    protected final static String AUNT_TEXT_IMG_PATH = IMG_PATH +"aunt_text.png";
+    protected final static String AUNT_AVATAR_IMG_PATH = IMG_PATH + "aunt_avatar.png";
+    public final static String CONVERSATION_BG_IMG_PATH = IMG_PATH + "conversation_bg.png";
     //renderable ids
     protected final static String AUNT_TEXT_ID = "aunt_text";
     protected final static String AUNT_AVATAR_ID = "aunt_avatar";

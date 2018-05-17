@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class TwoChoiceConversationRenderable extends ConversationLineRenderable {
+public class TwoChoiceConversationRenderable extends ConversationRenderable {
 
     public static final String AVATAR_BG_IMG_PATH = "img/avatars/bg.png";
 
@@ -19,7 +19,6 @@ public class TwoChoiceConversationRenderable extends ConversationLineRenderable 
 
     protected ImageRenderable avatar_bg;
     protected ImageRenderable avatar;
-    protected List<ConversationLine> conversationLines;
     protected int conversationId;
     protected ActionButtonRenderable  conversationButtonTop;
     protected ActionButtonRenderable  conversationButtonBottom;
@@ -30,8 +29,8 @@ public class TwoChoiceConversationRenderable extends ConversationLineRenderable 
         return allRenderables;
     }
 
-    public TwoChoiceConversationRenderable(int id) {
-        super(CONVERSATION_TWO_CHOICE, CONVERSATION_TWO_CHOICE + id);
+    public TwoChoiceConversationRenderable(int id, String bgImgPath, boolean keepFirstDuringParsing) {
+        super(CONVERSATION_TWO_CHOICE, CONVERSATION_TWO_CHOICE + id, bgImgPath, keepFirstDuringParsing);
         conversationId = id;
         float screenWidth = appInfo.getScreenWidth();
         float screenHeight = appInfo.getScreenHeight();
@@ -53,6 +52,7 @@ public class TwoChoiceConversationRenderable extends ConversationLineRenderable 
         return tableBGRenderable;
     }
 
+    @Override
     public void setConversationLines(List<ConversationLine> conversationLines) {
         this.conversationLines = conversationLines;
         ConversationLine conversationLine = conversationLines.get(0);

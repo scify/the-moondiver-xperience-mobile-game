@@ -20,8 +20,8 @@ public class QuestionConversationRules extends ConversationRules {
     // was of a question type.
     protected boolean lineProcessedIsQuestion;
 
-    public QuestionConversationRules(String conversationJSONFilePath) {
-        super(conversationJSONFilePath);
+    public QuestionConversationRules(String conversationJSONFilePath, String bgImgPath) {
+        super(conversationJSONFilePath, bgImgPath);
         questionService = QuestionServiceJSON.getInstance();
         questionService.init();
         questionCategories = questionService.getQuestionCategories();
@@ -34,7 +34,7 @@ public class QuestionConversationRules extends ConversationRules {
             // we need to check whether this answer was for a question-type
             // conversation line (which means that we got an answer
             // for a Question and we need to evaluate it)
-            if(lineProcessedIsQuestion) {
+            if (lineProcessedIsQuestion) {
                 ConversationLine selectedLine = (ConversationLine) userAction.getActionPayload();
                 // the answer instance was set as a payload in the conversation line
                 // which is set as a payload to the user action
@@ -74,11 +74,11 @@ public class QuestionConversationRules extends ConversationRules {
 
         // If we need 3 correct
         if (next.getPrerequisites().contains(PLAYER_HAS_3_CORRECT)) {
-            return Integer.valueOf((String)currentGameState.getAdditionalDataEntry(CORRECT_ANSWERS)) >= 3;
+            return Integer.valueOf((String) currentGameState.getAdditionalDataEntry(CORRECT_ANSWERS)) >= 3;
         }
 
         if (next.getPrerequisites().contains(PLAYER_HAS_LESS_THAN_3_CORRECT)) {
-            return Integer.valueOf((String)currentGameState.getAdditionalDataEntry(CORRECT_ANSWERS)) < 3;
+            return Integer.valueOf((String) currentGameState.getAdditionalDataEntry(CORRECT_ANSWERS)) < 3;
         }
 
 
@@ -89,17 +89,16 @@ public class QuestionConversationRules extends ConversationRules {
         // Initialize value as needed
         if (!currentGameState.additionalDataEntryExists(CORRECT_ANSWERS)) {
             currentGameState.setAdditionalDataEntry(CORRECT_ANSWERS, String.valueOf(1));
-        }
-        else {
+        } else {
             currentGameState.setAdditionalDataEntry(CORRECT_ANSWERS, String.valueOf(
-                    Integer.valueOf((String)currentGameState.getAdditionalDataEntry(CORRECT_ANSWERS))+1));
+                    Integer.valueOf((String) currentGameState.getAdditionalDataEntry(CORRECT_ANSWERS)) + 1));
         }
     }
 
     @Override
     protected void addSingleChoiceConversationLine(ConversationLine conversationLine, GameState gameState, boolean newSpeaker) {
         // If we do not have a random question/answer line
-        if(!(conversationLineHasRandomQuestionEvent(conversationLine) || conversationLineHasRandomResponseEvent(conversationLine)))
+        if (!(conversationLineHasRandomQuestionEvent(conversationLine) || conversationLineHasRandomResponseEvent(conversationLine)))
             // handle things as usual
             super.addSingleChoiceConversationLine(conversationLine, gameState, newSpeaker);
         else {
@@ -110,15 +109,15 @@ public class QuestionConversationRules extends ConversationRules {
 
 
     private boolean conversationLineHasRandomQuestionEvent(ConversationLine conversationLine) {
-        for(String eventName: conversationLine.getOnEnterCurrentOrderTrigger())
-            if(eventName.contains(conversationRules.EVENT_LOAD_QUESTION))
+        for (String eventName : conversationLine.getOnEnterCurrentOrderTrigger())
+            if (eventName.contains(conversationRules.EVENT_LOAD_QUESTION))
                 return true;
         return false;
     }
 
     private boolean conversationLineHasRandomResponseEvent(ConversationLine conversationLine) {
-        for(String eventName: conversationLine.getOnEnterCurrentOrderTrigger())
-            if(eventName.contains(conversationRules.EVENT_RANDOM_RESPONSE))
+        for (String eventName : conversationLine.getOnEnterCurrentOrderTrigger())
+            if (eventName.contains(conversationRules.EVENT_RANDOM_RESPONSE))
                 return true;
         return false;
     }
@@ -126,17 +125,18 @@ public class QuestionConversationRules extends ConversationRules {
     /**
      * This function, in the place of a given conversation line, loads and creates renderables for a multiple-choice
      * question, or a randomly chosen single line.
+     *
      * @param lineEntered The line to be replaced.
-     * @param gsCurrent The current game state.
+     * @param gsCurrent   The current game state.
      */
     protected void replaceSingleLineWithDynamicContent(ConversationLine lineEntered, GameState gsCurrent) {
         Set<String> eventTrigger = lineEntered.getOnEnterCurrentOrderTrigger();
 
-        for(String eventName: eventTrigger) {
-            if(eventName.contains(conversationRules.EVENT_LOAD_QUESTION)) {
+        for (String eventName : eventTrigger) {
+            if (eventName.contains(conversationRules.EVENT_LOAD_QUESTION)) {
                 loadRandomQuestion(eventName, lineEntered, gsCurrent);
                 lineProcessedIsQuestion = true;
-            } else if(eventName.equals("load_response_for_question")) {
+            } else if (eventName.equals("load_response_for_question")) {
                 loadResponseForQuestion(lineEntered, gsCurrent);
             }
         }
@@ -144,7 +144,7 @@ public class QuestionConversationRules extends ConversationRules {
 
     protected void loadRandomQuestion(String eventName, ConversationLine lineEntered, GameState gsCurrent) {
         Question question;
-        if(eventName.equals(conversationRules.EVENT_LOAD_QUESTION)) {
+        if (eventName.equals(conversationRules.EVENT_LOAD_QUESTION)) {
             // load a random question regardless of it's category
             question = questionService.nextQuestion();
         } else {
@@ -172,7 +172,7 @@ public class QuestionConversationRules extends ConversationRules {
     protected void addQuestionAsRenderable(Question question, GameState gsCurrent, ConversationLine lineEntered) {
         List<ConversationLine> lines = new ArrayList<>();
         lineEntered.setPayload(question);
-        for(Answer answer: question.getAnswers()) {
+        for (Answer answer : question.getAnswers()) {
             ConversationLine line = new ConversationLine();
             line.setText(answer.getText());
             line.setId(lineEntered.getId());
@@ -180,6 +180,6 @@ public class QuestionConversationRules extends ConversationRules {
             lines.add(line);
             line.setPayload(answer);
         }
-        addMultipleConversationLines(lines, gsCurrent, false, new MultipleChoiceConversationRenderable(lines.get(0).getId(), question.getTitle()), getIntroEffectForMultipleChoiceRenderable());
+        addMultipleConversationLines(lines, gsCurrent, false, new MultipleChoiceConversationRenderable(lines.get(0).getId(), question.getTitle(), bgImgPath, keepFirstDuringParsing), getIntroEffectForMultipleChoiceRenderable());
     }
 }

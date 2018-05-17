@@ -198,7 +198,7 @@ public class MapEpisodeRenderable extends Renderable {
 
     public Renderable getMissionHUD() {
         if (missionHUD == null) {
-            missionHUD = new TextLabelRenderable(appInfo.convertX(250f),appInfo.convertY(1080 - 875f), appInfo.convertX(0), appInfo.convertY(0), Renderable.ACTOR_ROTATABLE_LABEL, "missionHUD") {
+            missionHUD = new TextLabelRenderable(appInfo.convertX(250f),appInfo.convertY(1080 - 885f), appInfo.convertX(0), appInfo.convertY(0), Renderable.ACTOR_ROTATABLE_LABEL, "missionHUD") {
                 @Override
                 public boolean needsRepaint() {
                     return true;

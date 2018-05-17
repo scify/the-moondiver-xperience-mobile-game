@@ -50,7 +50,7 @@ public class ForestEpisodeRules extends FadingEpisodeRules<ForestRenderable> {
             }
         } else if (renderable != null && renderable.isChatEnabled()) {
             // Initialize conversation
-            createConversation(gameState, "conversations/episode_forest.json");
+            createConversation(gameState, "conversations/episode_forest.json", renderable.CONVERSATION_BG_IMG_PATH);
         }
         return super.getNextState(gameState, userAction);
     }
