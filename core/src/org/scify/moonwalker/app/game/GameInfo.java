@@ -20,7 +20,7 @@ public class GameInfo {
     protected boolean inventoryIncreased;
     // we keep track of the last answer of the user to the quiz
     protected boolean lastQuizAnswerCorrect;
-
+    protected String conversationFileForContactScreen;
     /**
      * The travel percentage complete in the LAST travel
      */
@@ -61,8 +61,8 @@ public class GameInfo {
         selectedPlayer = SelectedPlayer.girl;
         contactRequestFlag = true;
         mapRequestFlag = false;
-        setCurrentLocation(lc.greece);
-        setNextAllowedLocation(lc.germany);
+        setCurrentLocation(lc.getLocations().get(5));
+        setNextAllowedLocation(lc.getLocations().get(0));
         setPreviousTravelPercentageComplete(0);
         setNextTravelPercentagePossible(100);
         //inventory
@@ -215,4 +215,10 @@ public class GameInfo {
     public void setLastQuizAnswerCorrect(boolean lastQuizAnswerCorrect) {
         this.lastQuizAnswerCorrect = lastQuizAnswerCorrect;
     }
+
+    public String getConversationFileForContactScreen() {
+        return this.conversationFileForContactScreen;
+    }
+
+
 }
