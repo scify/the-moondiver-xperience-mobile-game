@@ -12,6 +12,7 @@ public class QuestionConversationRules extends ConversationRules {
     public static final String PLAYER_HAS_3_CORRECT = "player_has_3_correct";
     public static final String CORRECT_ANSWERS = "CORRECT_ANSWERS";
     public static final String PLAYER_HAS_LESS_THAN_3_CORRECT = "player_has_less_than_3_correct";
+
     protected QuestionService questionService;
     protected List<QuestionCategory> questionCategories;
     protected List<Question> questions;
@@ -136,7 +137,7 @@ public class QuestionConversationRules extends ConversationRules {
             if (eventName.contains(conversationRules.EVENT_LOAD_QUESTION)) {
                 loadRandomQuestion(eventName, lineEntered, gsCurrent);
                 lineProcessedIsQuestion = true;
-            } else if (eventName.equals("load_response_for_question")) {
+            } else if (eventName.equals(conversationRules.EVENT_RANDOM_RESPONSE)) {
                 loadResponseForQuestion(lineEntered, gsCurrent);
             }
         }

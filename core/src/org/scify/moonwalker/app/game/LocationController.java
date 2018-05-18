@@ -96,7 +96,6 @@ public class LocationController {
         locations.add(italy);
         locations.add(norway);
         locations.add(greece);
-        //        locations.add(poland);
     }
 
     public List<Location> getLocations() {

@@ -82,12 +82,10 @@ public class MoonWalkerScenario extends Scenario {
 
     protected Episode createTestingScenario() {
         if (true) {
-//            return getCockpitEpisode();
-            return getBerlinEpisode();
+            return getLocationEpisode(new MadridEpisode());
         } else {
             return getPlaygroundEpisode();
         }
-
     }
 
     private Episode getChargeEpisode() {
@@ -114,10 +112,9 @@ public class MoonWalkerScenario extends Scenario {
         return playground;
     }
 
-    private Episode getBerlinEpisode() {
-        Episode berlin = new BerlinEpisode();
-        setFirstEpisode(berlin);
-        return berlin;
+    private Episode getLocationEpisode(LocationEpisode episode) {
+        setFirstEpisode(episode);
+        return episode;
     }
 
     private Episode getMapEpisode() {
