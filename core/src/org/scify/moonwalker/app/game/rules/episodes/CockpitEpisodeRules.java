@@ -31,7 +31,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
         contactClickable = false;
         launchClickable = false;
         travelClickable = false;
-        mapClickable = false;
+        mapClickable = true;
         chargeClickable = false;
         inventoryClickable = true;
     }
@@ -55,6 +55,16 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                         gameState.addGameEvent(new GameEvent(TOGGLE_BUTTON, renderable.getMapLightedButton(), new Date().getTime() + 500, false, this));
                         renderable.toogleButtonLight(renderable.getMapLightedButton());
                         mapClickable = true;
+                    } else if (gameInfo.getChargeRequestFlag()) {
+                        gameState.addGameEvent(new GameEvent(TOGGLE_BUTTON, renderable.getChargeLightedButton(), new Date().getTime() + 500, false, this));
+                        renderable.toogleButtonLight(renderable.getChargeLightedButton());
+                        chargeClickable = true;
+                    } else {
+                        inventoryClickable = true;
+                        if (gameInfo.getNextLocation() != null)
+                            chargeClickable = true;
+                        if (gameInfo.getRemainingEnergy() > 0)
+                            travelClickable = true;
                     }
                     buttonsEnabled = true;
                 }
@@ -68,7 +78,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
     }
 
     protected void setOutsideBackground(Location location) {
-        if (gameInfo.getCurrentDay() == 1) {
+        if (gameInfo.isAtForest()) {
             renderable.setOutsideBackground(renderable.FOREST_BG_IMG_PATH);
         } else {
             renderable.setOutsideBackground(location.getCockpitBG());

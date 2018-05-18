@@ -12,8 +12,6 @@ public class SpaceshipInventoryActor extends FadingTableActor<SpaceshipInventory
 
     public SpaceshipInventoryActor(Skin skin, SpaceshipInventoryRenderable renderable) {
         super(skin, renderable);
-        this.renderable = renderable;
-        timestamp = this.renderable.getRenderableLastUpdated();
         setWidth(renderable.getWidth());
         setHeight(renderable.getHeight());
         addBackground(renderable.getTableBGRenderable());

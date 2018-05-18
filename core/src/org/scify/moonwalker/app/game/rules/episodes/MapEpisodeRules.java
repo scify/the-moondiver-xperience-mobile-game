@@ -169,6 +169,7 @@ public class MapEpisodeRules extends BaseEpisodeRules {
                 gameInfo.getNextLocation().setDistanceInKilometers(gameInfo.getCurrentLocation().getDistanceFromLocation(nextLocation));
                 // And show appropriate effect
                 gameInfo.setMapRequestFlag(false);
+                gameInfo.setChargeRequestFlag(true);
                 createSpaceshipMovementEffect(gsCurrent);
                 break;
             case UserActionCode.QUIT:

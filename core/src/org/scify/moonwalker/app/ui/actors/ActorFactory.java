@@ -136,7 +136,7 @@ public class ActorFactory extends ComponentFactory {
 
     protected ImageWithEffect createImage(String imgFileRelevantPath, Renderable renderable) {
         // TODO: Fix. Something is wrong with the image
-        ImageWithEffect img = new ImageWithEffect(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath(imgFileRelevantPath)))));
+        ImageWithEffect img = new ImageWithEffect(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath(imgFileRelevantPath)))), resourceLocator);
 
         if (renderable.getWidth() == 0 && renderable.getHeight() == 0) {
             // Delegate image size to renderable

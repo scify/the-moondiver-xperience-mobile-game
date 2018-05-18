@@ -17,9 +17,11 @@ public class GameInfo {
     protected String selectedPlayer;
     protected boolean contactRequestFlag;
     protected boolean mapRequestFlag;
+    protected boolean chargeRequestFlag;
     protected boolean inventoryIncreased;
     // we keep track of the last answer of the user to the quiz
     protected boolean lastQuizAnswerCorrect;
+    protected boolean atForest;
 
     /**
      * The travel percentage complete in the LAST travel
@@ -47,9 +49,9 @@ public class GameInfo {
             instance = new GameInfo();
         return instance;
     }
-
     private GameInfo() {
         moonPhasesController = new MoonPhasesController();
+        atForest = true;
         currentDay = 1;
         initialDaysToSuccessfullyCompleteGame = 90;
         motorEfficiency = 10;
@@ -59,8 +61,9 @@ public class GameInfo {
         setMoonPhases();
         //TODO set to unset
         selectedPlayer = SelectedPlayer.girl;
-        contactRequestFlag = true;
-        mapRequestFlag = false;
+        contactRequestFlag = false;
+        chargeRequestFlag = false;
+        mapRequestFlag = true;
         setCurrentLocation(lc.greece);
         setNextAllowedLocation(lc.germany);
         setPreviousTravelPercentageComplete(0);
@@ -84,7 +87,6 @@ public class GameInfo {
 
     public void dayPassed() {
         currentDay++;
-        remainingEnergy += currentMoonPhase.energyUnits;
         setMoonPhases();
     }
 
@@ -108,6 +110,10 @@ public class GameInfo {
 
     public void setRemainingEnergy(int remainingEnergy) {
         this.remainingEnergy = remainingEnergy;
+    }
+
+    public void addEnergy(int remainingEnergy) {
+        this.remainingEnergy += remainingEnergy;
     }
 
     public int getNextLocationDistance() {
@@ -214,5 +220,21 @@ public class GameInfo {
 
     public void setLastQuizAnswerCorrect(boolean lastQuizAnswerCorrect) {
         this.lastQuizAnswerCorrect = lastQuizAnswerCorrect;
+    }
+
+    public boolean getChargeRequestFlag() {
+        return chargeRequestFlag;
+    }
+
+    public void setChargeRequestFlag(boolean chargeRequestFlag) {
+        this.chargeRequestFlag = chargeRequestFlag;
+    }
+
+    public boolean isAtForest() {
+        return atForest;
+    }
+
+    public void setAtForest(boolean atForest) {
+        this.atForest = atForest;
     }
 }

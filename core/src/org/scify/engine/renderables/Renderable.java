@@ -148,6 +148,7 @@ public class Renderable extends Positionable implements EffectTarget {
 
     public void setImgPath(String imgPath) {
         this.imgPath = imgPath;
+        this.markAsNeedsUpdate();
     }
 
     @Override

@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class SpaceshipInventoryRenderable extends FadingTableRenderable {
     //renderable image paths
-    protected final static String BG_IMG_PATH = "img/episode_spaceship_inventory/bg.png";
+    protected static final String BG_IMG_PATH = "img/episode_spaceship_inventory/bg.png";
     protected static final String SOLAR_PANELS_1_IMG_PATH = "img/episode_spaceship_inventory/solar1.png";
     protected static final String SOLAR_PANELS_2_IMG_PATH = "img/episode_spaceship_inventory/solar2.png";
     protected static final String SOLAR_PANELS_3_IMG_PATH = "img/episode_spaceship_inventory/solar3.png";
@@ -141,9 +141,6 @@ public class SpaceshipInventoryRenderable extends FadingTableRenderable {
         exitButton.setxPos(0.88f * width);
         exitButton.setyPos(0.83f * height);
 
-        // TODO: Remove
-        // allRenderables.clear();
-        ////////////////
         allRenderables.add(exitButton);
     }
 

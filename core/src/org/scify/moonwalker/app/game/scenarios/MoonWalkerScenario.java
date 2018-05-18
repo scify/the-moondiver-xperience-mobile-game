@@ -27,31 +27,36 @@ public class MoonWalkerScenario extends Scenario {
     @Override
     protected Episode getNextEpisode(EpisodeEndState state) {
         String endStateCode = state.getEndStateCode();
+        Episode newCurrentEpisode = null;
         switch (endStateCode) {
             case EpisodeEndStateCode.SCENARIO_NEEDS_RESTART:
                 clear();
                 GameInfo.getInstance().setSelectedPlayer(SelectedPlayer.unset);
                 return createBasicScenario();
-            /*case EpisodeEndStateCode.GAME_EVENT_CALCULATOR_STARTED:
-                addTemporaryEpisode(new CalculatorEpisode());
-                break;*/
             case EpisodeEndStateCode.CONTACT_SCREEN_EPISODE_STARTED:
-                Episode newCurrentEpisode = null;
                 if (currentEpisode instanceof CockpitEpisode)
                     newCurrentEpisode = new CockpitEpisode();
                 addTemporaryEpisode(new ContactScreenEpisode(), newCurrentEpisode);
                 break;
+            case EpisodeEndStateCode.SPACESHIP_CHARGER_EPISODE_STARTED:
+                if (currentEpisode instanceof CockpitEpisode)
+                    newCurrentEpisode = new CockpitEpisode();
+                addTemporaryEpisode(new ChargeEpisode(), newCurrentEpisode);
+                break;
             case EpisodeEndStateCode.SELECT_LOCATION_ON_MAP_EPISODE:
-                addTemporaryEpisode(new MapEpisode(false), new CockpitEpisode());
+                if (currentEpisode instanceof CockpitEpisode)
+                    newCurrentEpisode = new CockpitEpisode();
+                addTemporaryEpisode(new MapEpisode(false), newCurrentEpisode);
                 break;
             case EpisodeEndStateCode.TRAVEL_ON_MAP_EPISODE:
-                addTemporaryEpisode(new MapEpisode(true), new CockpitEpisode());
-                break;
-            case EpisodeEndStateCode.SPACESHIP_CHARGER_EPISODE_STARTED:
-                addTemporaryEpisode(new ChargeEpisode(), new CockpitEpisode());
+                if (currentEpisode instanceof CockpitEpisode)
+                    newCurrentEpisode = new CockpitEpisode();
+                addTemporaryEpisode(new MapEpisode(true), newCurrentEpisode);
                 break;
             case EpisodeEndStateCode.SPACESHIP_INVENTORY_EPISODE_STARTED:
-                addTemporaryEpisode(new SpaceshipInventoryEpisode(), new CockpitEpisode());
+                if (currentEpisode instanceof CockpitEpisode)
+                    newCurrentEpisode = new CockpitEpisode();
+                addTemporaryEpisode(new SpaceshipInventoryEpisode(), newCurrentEpisode);
                 break;
             /*case EpisodeEndStateCode.SIMPLE_TIMED_IMAGE_EPISODE:
                 addTemporaryEpisode(new SimpleTimedImageEpisode());
