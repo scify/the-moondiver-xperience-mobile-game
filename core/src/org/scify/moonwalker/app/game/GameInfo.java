@@ -21,6 +21,7 @@ public class GameInfo {
     // we keep track of the last answer of the user to the quiz
     protected boolean lastQuizAnswerCorrect;
     protected String conversationFileForContactScreen;
+
     /**
      * The travel percentage complete in the LAST travel
      */
@@ -220,5 +221,7 @@ public class GameInfo {
         return this.conversationFileForContactScreen;
     }
 
-
+    public void setConversationFileForContactScreen(String conversationFileForContactScreen) {
+        this.conversationFileForContactScreen = conversationFileForContactScreen;
+    }
 }

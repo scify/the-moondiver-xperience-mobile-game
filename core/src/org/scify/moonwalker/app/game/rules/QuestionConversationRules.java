@@ -1,5 +1,6 @@
 package org.scify.moonwalker.app.game.rules;
 
+import org.scify.engine.EpisodeEndState;
 import org.scify.engine.GameState;
 import org.scify.engine.UserAction;
 import org.scify.engine.conversation.ConversationLine;
@@ -20,16 +21,20 @@ public class QuestionConversationRules extends ConversationRules {
     // this variable describes whether the last process conversation line
     // was of a question type.
     protected boolean lineProcessedIsQuestion;
+    // conversation file to be shown if the quiz is successful
+    protected String quizSuccessFulConversationFilePath;
+    // conversation file to be shown if the quiz is not successful
+    protected String quizFailedConversationFilePath;
 
-    public QuestionConversationRules(String conversationJSONFilePath, String bgImgPath) {
+    public QuestionConversationRules(String conversationJSONFilePath, String bgImgPath, String quizSuccessFulConversationFilePath, String quizFailedConversationFilePath) {
         super(conversationJSONFilePath, bgImgPath);
         questionService = QuestionServiceJSON.getInstance();
         questionService.init();
         questionCategories = questionService.getQuestionCategories();
         questions = questionService.getQuestions();
+        this.quizSuccessFulConversationFilePath = quizSuccessFulConversationFilePath;
+        this.quizFailedConversationFilePath = quizFailedConversationFilePath;
     }
-
-
 
     @Override
     public GameState getNextState(GameState gameState, UserAction userAction) {
@@ -46,6 +51,11 @@ public class QuestionConversationRules extends ConversationRules {
                 Answer answer = (Answer) selectedLine.getPayload();
                 evaluateAnswerAndSetGameInfo(answer, gameState);
             }
+        }
+        if (Integer.valueOf((String) gameState.getAdditionalDataEntry(CORRECT_ANSWERS)) >= 3) {
+            gameInfo.setConversationFileForContactScreen(this.quizSuccessFulConversationFilePath);
+        } else {
+            gameInfo.setConversationFileForContactScreen(this.quizFailedConversationFilePath);
         }
         return super.getNextState(gameState, userAction);
     }
