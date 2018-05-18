@@ -13,8 +13,10 @@ public class Location {
     protected Map<Location, Integer> distanceFromOtherLocations;
     protected String mission;
     protected String conversationPath;
+    protected String conversationSuccessFilePath;
+    protected String conversationFailureFilePath;
 
-    public Location(String name, String imgUrl, int posX, int posY, String mission, String conversationPath) {
+    public Location(String name, String imgUrl, int posX, int posY, String mission, String conversationPath, String conversationSuccessFilePath, String conversationFailureFilePath) {
         this.name = name;
         this.imgPath = imgUrl;
         this.posX = posX;
@@ -22,6 +24,8 @@ public class Location {
         this.mission = mission;
         this.conversationPath = conversationPath;
         distanceFromOtherLocations = new HashMap<>();
+        this.conversationSuccessFilePath = conversationSuccessFilePath;
+        this.conversationFailureFilePath = conversationFailureFilePath;
     }
 
     public int getDistanceInKilometers() {
@@ -100,5 +104,13 @@ public class Location {
 
     public String getConversationPath() {
         return conversationPath;
+    }
+
+    public String getConversationSuccessFilePath() {
+        return conversationSuccessFilePath;
+    }
+
+    public String getConversationFailureFilePath() {
+        return conversationFailureFilePath;
     }
 }

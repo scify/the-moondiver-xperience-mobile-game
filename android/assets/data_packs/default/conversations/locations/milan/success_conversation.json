@@ -1,0 +1,12 @@
+[
+  {"id": "1", "order":"1", "speakerId":"aunt", "text":"[#ffeeaaff]Τα κατάφερες κι εδώ!\nΜπράβο!", "prerequisites":""},
+  {"id": "1", "order":"1", "speakerId":"aunt", "text":"[#ffeeaaff]Με τον συλλέκτη μπορείς να μαζεύεις\nπερισσότερη ενέργεια κάθε νύχτα.", "prerequisites":""},
+  {"id": "2", "order":"2", "speakerId":"player", "text":"Ακόμα γρηγορότερη φόρτιση...", "prerequisites":""},
+  {"id": "3", "order":"3", "speakerId":"aunt", "text":"[#ffeeaaff]Σωστά!\nΕπόμενος προορισμός: Όσλο, Νορβηγία.", "prerequisites":""},
+  {"id": "4", "order":"4", "speakerId":"aunt", "text":"[#ffeeaaff]Ευγενικοί άνθρωποι,\nεξαίρετοι επιστήμονες!", "prerequisites":""},
+  {"id": "5", "order":"5", "speakerId":"aunt", "text":"[#ffeeaaff]Όρισε τον νέο προορισμό στον Χάρτη.", "prerequisites":""},
+  {"id": "6", "order":"6", "speakerId":"aunt", "text":"[#ffeeaaff]Στην οθόνη φόρτισης μάζεψε όση ενέργεια χρειάζεσαι.", "prerequisites":""},
+  {"id": "7", "order":"7", "speakerId":"aunt", "text":"[#ffeeaaff]Πρόσεξε τον υπολογισμό σου όμως:\nΗ απόδοση του κινητήρα αυξήθηκε πάλι.", "prerequisites":""},
+  {"id": "8", "order":"8", "speakerId":"aunt", "text":"[#ffeeaaff]Και μην ξεχνάς: Διαιρώντας Απόσταση/ Απόδοση\nβρίσκεις πόση ενέργεια χρειάζεσαι.", "prerequisites":""},
+  {"id": "9", "order":"9", "speakerId":"aunt", "text":"[#ffeeaaff]Καλή επιτυχία!", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
+]

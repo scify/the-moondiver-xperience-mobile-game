@@ -32,6 +32,9 @@ public class ChargeEpisodeRenderable extends FadingTableRenderable {
     protected static final String DISTANCE_PER_UNIT_ID = "distance_per_unit";
     protected static final String ENERGY_ID = "energy";
 
+    //audio
+    public static final String POWER_UP_AUDIO_PATH = "audio/episode_charge/power_up.mp3";
+
     protected ImageRenderable moonPhase1 = null;
     protected ImageRenderable moonPhase2 = null;
     protected ImageRenderable moonPhase3 = null;

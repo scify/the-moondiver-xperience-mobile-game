@@ -54,6 +54,7 @@ public class ChargeEpisodeRules extends FadingEpisodeRules<ChargeEpisodeRenderab
     protected void handleUserAction(GameState gameState, UserAction userAction) {
         switch (userAction.getActionCode()) {
             case UserActionCode.CHARGE_SPACESHIP_PASS_DAY: {
+                gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.POWER_UP_AUDIO_PATH));
                 gameInfo.addEnergy(gameInfo.getUnitsOfMoonPhase(gameInfo.getCurrentMoonPhase()));
                 gameInfo.dayPassed();
                 renderable.setCurrentMoonPhaseInfo(gameInfo.getUnitsOfMoonPhase(gameInfo.getCurrentMoonPhase()), gameInfo.getCurrentMoonPhase().getImgPath());
@@ -65,6 +66,7 @@ public class ChargeEpisodeRules extends FadingEpisodeRules<ChargeEpisodeRenderab
             case UserActionCode.QUIT: {
                 if (gameInfo.getRemainingEnergy()  > 0)
                     gameInfo.setChargeRequestFlag(false);
+                gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.POWER_UP_AUDIO_PATH));
                 endEpisodeAndAddEventWithType(gameState, "");
                 break;
             }

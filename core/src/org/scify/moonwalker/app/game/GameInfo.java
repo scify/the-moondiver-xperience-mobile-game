@@ -22,6 +22,8 @@ public class GameInfo {
     // we keep track of the last answer of the user to the quiz
     protected boolean lastQuizAnswerCorrect;
     protected boolean atForest;
+    protected String conversationFileForContactScreen;
+
 
     /**
      * The travel percentage complete in the LAST travel
@@ -57,15 +59,14 @@ public class GameInfo {
         motorEfficiency = 10;
         remainingEnergy = 0;
         LocationController lc = new LocationController();
-        currentLocation = lc.getLocations().get(0);
         setMoonPhases();
         //TODO set to unset
         selectedPlayer = SelectedPlayer.girl;
-        contactRequestFlag = false;
+        contactRequestFlag = true;
         chargeRequestFlag = false;
-        mapRequestFlag = true;
-        setCurrentLocation(lc.greece);
-        setNextAllowedLocation(lc.germany);
+        mapRequestFlag = false;
+        setCurrentLocation(lc.getLocations().get(5));
+        setNextAllowedLocation(lc.getLocations().get(0));
         setPreviousTravelPercentageComplete(0);
         setNextTravelPercentagePossible(100);
         //inventory
@@ -101,15 +102,11 @@ public class GameInfo {
     }
 
     public void setMotorEfficiency(int newMotorEfficiency) {
-        this.motorEfficiency = motorEfficiency;
+        this.motorEfficiency = newMotorEfficiency;
     }
 
     public int getRemainingEnergy() {
         return remainingEnergy;
-    }
-
-    public void setRemainingEnergy(int remainingEnergy) {
-        this.remainingEnergy = remainingEnergy;
     }
 
     public void addEnergy(int remainingEnergy) {
@@ -236,5 +233,14 @@ public class GameInfo {
 
     public void setAtForest(boolean atForest) {
         this.atForest = atForest;
+    }
+
+    public String getConversationFileForContactScreen() {
+        return this.conversationFileForContactScreen;
+    }
+
+    public void setConversationFileForContactScreen(String conversationFileForContactScreen) {
+        this.conversationFileForContactScreen = conversationFileForContactScreen;
+
     }
 }

@@ -33,7 +33,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
         travelClickable = false;
         mapClickable = true;
         chargeClickable = false;
-        inventoryClickable = true;
+        inventoryClickable = false;
     }
 
     @Override
@@ -111,8 +111,10 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                     gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
                 break;
             case UserActionCode.CHARGE_SPACESHIP_EPISODE:
-                if (buttonsEnabled && !contactClickable && chargeClickable)
+                if (buttonsEnabled && !contactClickable && chargeClickable) {
+                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.POWER_UP_AUDIO_PATH));
                     goToEpisode(gameState, new GameEvent(SPACESHIP_CHARGER_EPISODE_STARTED, null, this));
+                }
                 else
                     gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
                 break;

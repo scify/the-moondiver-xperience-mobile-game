@@ -61,11 +61,11 @@ public class SpaceshipInventoryEpisodeRules extends FadingEpisodeRules<Spaceship
         switch (inventoryItemsCounter) {
             case 1:
                 gameInfo.setMotorEfficiency(15);
-                renderable.setNextDistancePerUnitValue("20 Km/Unit");
+                renderable.setNextDistancePerUnitValue("15 Km/Unit");
                 break;
             case 2:
                 gameInfo.setMotorEfficiency(20);
-                renderable.setNextDistancePerUnitValue("30 Km/Unit");
+                renderable.setNextDistancePerUnitValue("20 Km/Unit");
                 break;
             default:
                 MoonPhase moonPhase = gameInfo.getCurrentMoonPhase();

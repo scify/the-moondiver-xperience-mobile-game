@@ -62,6 +62,7 @@ public class CockpitRenderable extends FadingTableRenderable {
     public static final String SPACESHIP_BG_AUDIO_PATH = "audio/spaceship_bg.mp3";
     public static final String ADD_ITEM_AUDIO_PATH = "audio/episode_spaceship_inventory/addSpaceshipItemToInventory.mp3";
     public static final String UPGRADE_STATS_AUDIO_PATH = "audio/episode_spaceship_inventory/increaseStat.mp3";
+    public static final String POWER_UP_AUDIO_PATH = "audio/episode_charge/power_up.mp3";
 
     protected TextLabelRenderable motorEfficiencyLabel;
     protected TextLabelRenderable energyLabel;

@@ -9,6 +9,8 @@ import org.scify.moonwalker.app.game.Location;
 import org.scify.moonwalker.app.game.LocationController;
 import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.game.episodes.*;
+import org.scify.moonwalker.app.game.episodes.locations.LondonEpisode;
+import org.scify.moonwalker.app.game.episodes.locations.MadridEpisode;
 
 import java.util.List;
 import java.util.Random;
@@ -87,7 +89,7 @@ public class MoonWalkerScenario extends Scenario {
 
     protected Episode createTestingScenario() {
         if (true) {
-            return getLocationEpisode(new MadridEpisode());
+            return new ContactScreenEpisode();
         } else {
             return getPlaygroundEpisode();
         }

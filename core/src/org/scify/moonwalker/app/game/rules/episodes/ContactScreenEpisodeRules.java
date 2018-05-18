@@ -30,8 +30,14 @@ public class ContactScreenEpisodeRules extends FadingEpisodeRules<ContactScreenR
             endEpisodeAndAddEventWithType(gameState, "");
         } else if (renderable != null && renderable.isChatEnabled()) {
             // Initialize conversation
+            // we need to check wich conversation to show
+            // if we are on the first day of the journey, show the initial conversation
+            // otherwise, check to see if we need to show a conversation for a successfully/ not successfully completed location episode
             if (gameInfo.getCurrentDay() == 1)
                 createConversation(gameState, "conversations/episode_contact_screen1.json", renderable.CONVERSATION_BG_IMG_PATH);
+            else {
+                createConversation(gameState, gameInfo.getConversationFileForContactScreen(), renderable.CONVERSATION_BG_IMG_PATH);
+            }
         }
         return super.getNextState(gameState, userAction);
     }

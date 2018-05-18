@@ -17,14 +17,14 @@ public class MoonPhasesController {
 
     public MoonPhasesController() {
         moonPhases = new LinkedList<>();
-        moonPhases.add(new MoonPhase(FULL_MOON_PHASE_IMG_PATH, 120, 3));
-        moonPhases.add(new MoonPhase(WANING_GIBBOUS_PHASE_IMG_PATH, 95, 5));
-        moonPhases.add(new MoonPhase(THIRD_QUARTER_PHASE_IMG_PATH, 70,3));
-        moonPhases.add(new MoonPhase(WANING_CRESCENT_PHASE_IMG_PATH, 45, 5));
-        moonPhases.add(new MoonPhase(NEW_MOON_PHASE_IMG_PATH, 20, 1));
-        moonPhases.add(new MoonPhase(WAXING_CRESCENT_PHASE_IMG_PATH, 45, 5));
-        moonPhases.add(new MoonPhase(FIRST_QUARTER_MOON_PHASE_IMG_PATH, 70, 3));
-        moonPhases.add(new MoonPhase(WAXING_GIBBOUS_PHASE_IMG_PATH, 95, 5));
+        moonPhases.add(new MoonPhase(FULL_MOON_PHASE_IMG_PATH, 100, 3));
+        moonPhases.add(new MoonPhase(WANING_GIBBOUS_PHASE_IMG_PATH, 80, 5));
+        moonPhases.add(new MoonPhase(THIRD_QUARTER_PHASE_IMG_PATH, 50,3));
+        moonPhases.add(new MoonPhase(WANING_CRESCENT_PHASE_IMG_PATH, 20, 5));
+        moonPhases.add(new MoonPhase(NEW_MOON_PHASE_IMG_PATH, 10, 1));
+        moonPhases.add(new MoonPhase(WAXING_CRESCENT_PHASE_IMG_PATH, 20, 5));
+        moonPhases.add(new MoonPhase(FIRST_QUARTER_MOON_PHASE_IMG_PATH, 50, 3));
+        moonPhases.add(new MoonPhase(WAXING_GIBBOUS_PHASE_IMG_PATH, 80, 5));
     }
 
     public MoonPhase getMoonPhaseForDay(int day) {
