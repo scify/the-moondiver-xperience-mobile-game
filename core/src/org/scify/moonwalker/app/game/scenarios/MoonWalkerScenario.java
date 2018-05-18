@@ -16,7 +16,7 @@ import java.util.Random;
 public class MoonWalkerScenario extends Scenario {
 
     public MoonWalkerScenario() {
-        if (true) {
+        if (false) {
             createBasicScenario();
         }
         else {
@@ -69,14 +69,15 @@ public class MoonWalkerScenario extends Scenario {
     protected Episode createBasicScenario () {
         Episode mainMenu = new MainMenuEpisode();
         setFirstEpisode(mainMenu);
-        /*Episode room = new RoomEpisode();
+        Episode room = new RoomEpisode();
         addEpisodeAfter(mainMenu, room);
         Episode forest = new ForestEpisode();
-        addEpisodeAfter(room, forest);*/
+        addEpisodeAfter(room, forest);
         Episode cockpit = new CockpitEpisode();
         //setFirstEpisode(cockpit);
-        //addEpisodeAfter(forest, cockpit);
-        addEpisodeAfter(mainMenu, cockpit);
+        addEpisodeAfter(forest, cockpit);
+        //addEpisodeAfter(mainMenu, cockpit);
+        addEpisodeAfter(cockpit, berlin);
         return mainMenu;
     }
 
