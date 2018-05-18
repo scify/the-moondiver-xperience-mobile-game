@@ -90,12 +90,12 @@ public class LocationController {
 //        poland.addOtherLocationAndDistance(norway, 1000);
 
         locations.add(germany);
-        locations.add(uk);
-        locations.add(france);
         locations.add(spain);
+        locations.add(uk);
         locations.add(italy);
         locations.add(norway);
         locations.add(greece);
+        locations.add(france);
     }
 
     public List<Location> getLocations() {

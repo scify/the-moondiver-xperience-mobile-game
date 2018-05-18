@@ -1,14 +1,14 @@
 [
   {"id": "1", "order":"1", "speakerId":"player", "text":"Τα καταφέραμε! Είναι υπέροχα!", "prerequisites":"full_success"},
   {"id": "2", "order":"2", "speakerId":"player", "text":"Δεν νιώθεις ανάλαφρος; Σα να πετάς;", "prerequisites":"full_success"},
-  {"id": "3", "order":"3", "speakerId":"horace", "text":"Ναι... Στη Σελήνη έχεις το ⅙ του βάρους σου...", "prerequisites":"full_success"},
-  {"id": "4", "order":"4", "speakerId":"horace", "text":"Εσύ ας πούμε τώρα ζυγίζεις δεν ζυγίζεις 10 κιλά.", "prerequisites":"full_success"},
+  {"id": "3", "order":"3", "speakerId":"oratios", "text":"Ναι... Στη Σελήνη έχεις το ⅙ του βάρους σου...", "prerequisites":"full_success"},
+  {"id": "4", "order":"4", "speakerId":"oratios", "text":"Εσύ ας πούμε τώρα ζυγίζεις δεν ζυγίζεις 10 κιλά.", "prerequisites":"full_success"},
   {"id": "5", "order":"5", "speakerId":"player", "text":"Ξέρεις να μαγεύεις τον κόσμο Οράτιε...", "prerequisites":"full_success"},
   {"id": "6", "order":"6", "speakerId":"player", "text":"Δεν σε πιστεύω... Μα κοίτα εκεί!", "prerequisites":"full_success"},
-  {"id": "7", "order":"7", "speakerId":"horace", "text":"Είναι μαγικό! Σ’ ευχαριστώ {{μικρέ/μικρή}} μου {{φίλε/φίλη}}...", "prerequisites":"full_success", "onExitCurrentOrderTrigger":"end"},
-  {"id": "8", "order":"8", "speakerId":"horace", "text":"Τα καταφέραμε! Η Γη είναι υπέροχη από εδώ!", "prerequisites":"simple_success"},
+  {"id": "7", "order":"7", "speakerId":"oratios", "text":"Είναι μαγικό! Σ’ ευχαριστώ {{μικρέ/μικρή}} μου {{φίλε/φίλη}}...", "prerequisites":"full_success", "onExitCurrentOrderTrigger":"end"},
+  {"id": "8", "order":"8", "speakerId":"oratios", "text":"Τα καταφέραμε! Η Γη είναι υπέροχη από εδώ!", "prerequisites":"simple_success"},
   {"id": "9", "order":"9", "speakerId":"player", "text":"Ναι, μπορούμε να στείλουμε απίστευτες selfies.", "prerequisites":"simple_success"},
-  {"id": "10", "order":"10", "speakerId":"horace", "text":"Ελπίζω να βγάζει καλές φωτό η μπακατέλα σου.", "prerequisites":"simple_success"},
+  {"id": "10", "order":"10", "speakerId":"oratios", "text":"Ελπίζω να βγάζει καλές φωτό η μπακατέλα σου.", "prerequisites":"simple_success"},
   {"id": "11", "order":"11", "speakerId":"player", "text":"Μπακατέλα; Χα! Εδώ μιλάμε για\nεργαλείο, όχι αστεία!", "prerequisites":"simple_success"},
   {"id": "12", "order":"12", "speakerId":"player", "text":"Μόνο αυτό μπορεί να βγάλει\nφωτό σε αυτές τις συνθήκες… :-)", "prerequisites":"simple_success", "onExitCurrentOrderTrigger":"end"}
 ]
