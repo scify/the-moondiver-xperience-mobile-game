@@ -29,8 +29,12 @@ public class QuestionConversationRules extends ConversationRules {
         questions = questionService.getQuestions();
     }
 
+
+
     @Override
     public GameState getNextState(GameState gameState, UserAction userAction) {
+        if(gameState.getAdditionalDataEntry(CORRECT_ANSWERS) == null)
+            gameState.setAdditionalDataEntry(CORRECT_ANSWERS, "0");
         if (gotAnswer(userAction)) {
             // we need to check whether this answer was for a question-type
             // conversation line (which means that we got an answer
