@@ -57,15 +57,17 @@ public class GameInfo {
         LocationController lc = new LocationController();
         currentLocation = lc.getLocations().get(0);
         setMoonPhases();
-        selectedPlayer = SelectedPlayer.unset;
+        //TODO set to unset
+        selectedPlayer = SelectedPlayer.girl;
         contactRequestFlag = true;
         mapRequestFlag = false;
         setCurrentLocation(lc.greece);
         setNextAllowedLocation(lc.germany);
         setPreviousTravelPercentageComplete(0);
         setNextTravelPercentagePossible(100);
-        inventoryItemsCounter = 5;
-        inventoryIncreased = true;
+        //inventory
+        inventoryItemsCounter = 0;
+        inventoryIncreased = false;
     }
 
     public boolean getContactRequestFlag() {

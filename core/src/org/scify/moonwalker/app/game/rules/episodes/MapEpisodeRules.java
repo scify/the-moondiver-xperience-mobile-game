@@ -145,7 +145,7 @@ public class MapEpisodeRules extends BaseEpisodeRules {
     @Override
     protected void episodeEndedEvents(GameState currentState) {
         // Update main properties in game info
-        gameInfo.setNextLocation(renderable.getNextAllowedLocation());
+        //gameInfo.setNextLocation(renderable.getNextAllowedLocation());
 
         super.episodeEndedEvents(currentState);
     }
@@ -162,10 +162,13 @@ public class MapEpisodeRules extends BaseEpisodeRules {
         switch (actionCode) {
             case MapEpisodeRenderable.MAP_SELECT_ACTION:
                 // Update next location
-                renderable.setNextLocation((Location)userAction.getActionPayload());
+                Location nextLocation = (Location)userAction.getActionPayload();
+                renderable.setNextLocation(nextLocation);
                 // Also update game info
-                gameInfo.setNextLocation((Location)userAction.getActionPayload());
+                gameInfo.setNextLocation(nextLocation);
+                gameInfo.getNextLocation().setDistanceInKilometers(gameInfo.getCurrentLocation().getDistanceFromLocation(nextLocation));
                 // And show appropriate effect
+                gameInfo.setMapRequestFlag(false);
                 createSpaceshipMovementEffect(gsCurrent);
                 break;
             case UserActionCode.QUIT:
