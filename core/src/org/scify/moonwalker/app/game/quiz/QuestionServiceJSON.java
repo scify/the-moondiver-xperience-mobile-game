@@ -65,6 +65,7 @@ public class QuestionServiceJSON implements QuestionService {
             questionIndex = 0;
         Question question = allQuestions.get(questionIndex);
         questionIndex++;
+        Collections.shuffle(question.answers);
         return question;
     }
 
