@@ -1,4 +1,4 @@
-package org.scify.moonwalker.app.ui.actors.calculator;
+package org.scify.moonwalker.app.ui.actors.episode;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -31,7 +31,6 @@ public class ChargeEpisodeActor extends FadingTableActor<ChargeEpisodeRenderable
         createLeftColumn(screenWidth, screenHeight, 0.28f * screenWidth);
         createCentralColumn(screenWidth, screenHeight, 0.44f * screenWidth);
         createRightColumn(screenWidth, screenHeight, 0.28f * screenWidth);
-        //debugAll();
     }
 
     protected void createLeftColumn(float screenWidth, float screenHeight, float columnWidth) {
@@ -97,14 +96,82 @@ public class ChargeEpisodeActor extends FadingTableActor<ChargeEpisodeRenderable
     }
 
     protected void createCentralColumn(float screenWidth, float screenHeight, float columnWidth) {
-        Table table = new Table();
-        table.add().width(columnWidth).expandY();
-        table.row();
         Button chargeButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getChargeButton());
-        table.add(chargeButton).width(convertWidth(chargeButton.getWidth())).height(convertHeight(chargeButton.getHeight()));
+        float chargeButtonWidth = convertWidth(chargeButton.getWidth());
+        float chargeButtonHeight = convertHeight(chargeButton.getHeight());
+        float calculatorHeight = screenHeight - (0.14f * screenHeight) - chargeButtonHeight;
+
+        Table table = new Table();
+        table.add().width(columnWidth).height(0.07f *screenHeight);
+        table.row();
+        table.add(createCalculator(0.05f * screenWidth, calculatorHeight)).width(columnWidth).height(calculatorHeight);
+        table.row();
+        table.add(chargeButton).width(chargeButtonWidth).height(chargeButtonHeight);
         table.row();
         table.add().width(columnWidth).height(0.07f *screenHeight);
         add(table).width(columnWidth).height(screenHeight);
+    }
+
+    protected Table createCalculator(float widthOfLeftAndRight, float tableHeight) {
+        Table ret = new Table();
+        ret.add().width(widthOfLeftAndRight).height(tableHeight);
+
+        Table calculator = new Table();
+        Label calculatorResult = (Label) bookKeeper.getUIRepresentationOfRenderable(renderable.getCalculatorLabel());
+        calculatorResult.setAlignment(Align.right);
+        Label.LabelStyle calculatorStyle = new Label.LabelStyle();
+        ThemeController themeController = new ThemeController(25,"controls");
+        calculatorStyle.font = themeController.getFont();
+        calculatorStyle.fontColor = Color.valueOf("113b3e");
+        calculatorResult.setStyle(calculatorStyle);
+        calculator.add(calculatorResult).height(0.2f * tableHeight).right().colspan(4).padRight(widthOfLeftAndRight);
+        calculator.row();
+        //row 789/
+        Button button7 = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getCalculatorButton7());
+        float buttonWidth = convertWidth(button7.getWidth());
+        float buttonHeight = convertHeight(button7.getHeight());
+        calculator.add(button7).width(buttonWidth).height(buttonHeight);
+        Button button8 = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getCalculatorButton8());
+        calculator.add(button8).width(buttonWidth).height(buttonHeight);
+        Button button9 = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getCalculatorButton9());
+        calculator.add(button9).width(buttonWidth).height(buttonHeight);
+        Button buttonDiv = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getCalculatorButtonDiv());
+        calculator.add(buttonDiv).width(buttonWidth).height(buttonHeight);
+        //row 456x
+        calculator.row();
+        Button button4 = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getCalculatorButton4());
+        calculator.add(button4).width(buttonWidth).height(buttonHeight);
+        Button button5 = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getCalculatorButton5());
+        calculator.add(button5).width(buttonWidth).height(buttonHeight);
+        Button button6 = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getCalculatorButton6());
+        calculator.add(button6).width(buttonWidth).height(buttonHeight);
+        Button buttonMulti = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getCalculatorButtonMulti());
+        calculator.add(buttonMulti).width(buttonWidth).height(buttonHeight);
+        //row 123-
+        calculator.row();
+        Button button1 = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getCalculatorButton1());
+        calculator.add(button1).width(buttonWidth).height(buttonHeight);
+        Button button2 = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getCalculatorButton2());
+        calculator.add(button2).width(buttonWidth).height(buttonHeight);
+        Button button3 = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getCalculatorButton3());
+        calculator.add(button3).width(buttonWidth).height(buttonHeight);
+        Button buttonMinus = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getCalculatorButtonMinus());
+        calculator.add(buttonMinus).width(buttonWidth).height(buttonHeight);
+        //row 0C-+
+        calculator.row();
+        Button button0 = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getCalculatorButton0());
+        calculator.add(button0).width(buttonWidth).height(buttonHeight);
+        Button buttonC = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getCalculatorButtonC());
+        calculator.add(buttonC).width(buttonWidth).height(buttonHeight);
+        Button buttonEquals = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getCalculatorButtonEquals());
+        calculator.add(buttonEquals).width(buttonWidth).height(buttonHeight);
+        Button buttonPlus = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getCalculatorButtonPlus());
+        calculator.add(buttonPlus).width(buttonWidth).height(buttonHeight);
+
+
+        ret.add(calculator).height(tableHeight).expandX();
+        ret.add().width(widthOfLeftAndRight).height(tableHeight);
+        return ret;
     }
 
     protected void createRightColumn(float screenWidth, float screenHeight, float columnWidth) {

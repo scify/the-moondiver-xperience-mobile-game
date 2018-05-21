@@ -28,4 +28,5 @@ public class UserActionCode {
     public static final String CHARGE_SPACESHIP_EPISODE = "CHARGE_SPACESHIP_EPISODE";
     public static final String SPACESHIP_INVENTORY_EPISODE = "SPACESHIP_INVENTORY_EPISODE";
     public static final String CHARGE_SPACESHIP_PASS_DAY = "CHARGE_SPACESHIP_PASS_DAY";
+    public static final String CALCULATOR_OPERATION = "CALCULATOR_OPERATION";
 }

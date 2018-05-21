@@ -59,9 +59,10 @@ public class GameInfo {
         LocationController lc = new LocationController();
         setMoonPhases();
         //TODO set to unset
+        setNextLocation(lc.getLocations().get(0));
         selectedPlayer = SelectedPlayer.girl;
-        contactRequestFlag = true;
-        chargeRequestFlag = false;
+        contactRequestFlag = false;
+        chargeRequestFlag = true;
         mapRequestFlag = false;
         setCurrentLocation(lc.getLocations().get(5));
         setNextAllowedLocation(lc.getLocations().get(0));

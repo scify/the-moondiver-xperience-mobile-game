@@ -1,12 +1,8 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
-import org.scify.engine.renderables.Renderable;
-import org.scify.moonwalker.app.game.MoonPhase;
 import org.scify.moonwalker.app.ui.actors.calculator.CalculatorController;
 import org.scify.moonwalker.app.ui.renderables.ChargeEpisodeRenderable;
-import org.scify.moonwalker.app.ui.renderables.SpaceshipInventoryRenderable;
-
 import java.util.ArrayList;
 
 /**
@@ -20,12 +16,15 @@ public class ChargeEpisodeRules extends FadingEpisodeRules<ChargeEpisodeRenderab
     protected static final String RENDERABLE_ID = "charge";
     protected boolean outroInitiated;
     protected boolean introComplete;
+    protected CalculatorController calculatorController;
 
     public ChargeEpisodeRules () {
         super();
         renderable = null;
         outroInitiated = false;
         introComplete = false;
+        calculatorController = new CalculatorController();
+        calculatorController.resetCalculator();
     }
 
     @Override
@@ -38,6 +37,7 @@ public class ChargeEpisodeRules extends FadingEpisodeRules<ChargeEpisodeRenderab
             renderable.setCurrentMoonPhaseInfo(gameInfo.getUnitsOfMoonPhase(gameInfo.getCurrentMoonPhase()), gameInfo.getCurrentMoonPhase().getImgPath());
             renderable.setNextMoonPhaseInfo(gameInfo.getUnitsOfMoonPhase(gameInfo.getNextMoonPhase()), gameInfo.getNextMoonPhase().getImgPath());
             renderable.setPostNextMoonPhaseInfo(gameInfo.getUnitsOfMoonPhase(gameInfo.getPostNextMoonPhase()), gameInfo.getPostNextMoonPhase().getImgPath());
+            renderable.setCalculatorLabel(calculatorController.getCurrentΡrepresentation());
             renderable.setZIndex(0);
             renderable.addAfterFadeIn(new Runnable() {
                 @Override
@@ -61,6 +61,18 @@ public class ChargeEpisodeRules extends FadingEpisodeRules<ChargeEpisodeRenderab
                 renderable.setNextMoonPhaseInfo(gameInfo.getUnitsOfMoonPhase(gameInfo.getNextMoonPhase()), gameInfo.getNextMoonPhase().getImgPath());
                 renderable.setPostNextMoonPhaseInfo(gameInfo.getUnitsOfMoonPhase(gameInfo.getPostNextMoonPhase()), gameInfo.getPostNextMoonPhase().getImgPath());
                 renderable.setEnergyLabel(gameInfo.getRemainingEnergy() + " Units");
+                break;
+            }
+            case UserActionCode.CALCULATOR_OPERATION: {
+                String payload = (String)userAction.getActionPayload();
+                String existingValue = renderable.getCalculatorValue();
+                String newValue = calculatorController.calculate(payload);
+                if (newValue.equals(existingValue)) {
+                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI,renderable.WRONG_BUTTON_AUDIO_PATH));
+                }else {
+                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI,renderable.CLICK_AUDIO_PATH));
+                    renderable.setCalculatorLabel(newValue);
+                }
                 break;
             }
             case UserActionCode.QUIT: {
