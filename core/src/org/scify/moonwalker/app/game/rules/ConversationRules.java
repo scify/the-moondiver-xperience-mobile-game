@@ -150,13 +150,15 @@ public class ConversationRules extends MoonWalkerBaseRules {
         // else, if we have gone beyond initialization
         else {
             // If no explicit next order has been requested
-            if (getSelectedConversationLine(gameState, userAction).getNextOrder() == 0) {
-                currentConversationOrderId++; // Move to next normally
-            } else {
-                // else update order based on request from current conversation line
-                currentConversationOrderId = getSelectedConversationLine(gameState, userAction).getNextOrder();
-            }
-
+            if(userAction != null)
+                if (getSelectedConversationLine(gameState, userAction).getNextOrder() == 0) {
+                    currentConversationOrderId++; // Move to next normally
+                } else {
+                    // else update order based on request from current conversation line
+                    currentConversationOrderId = getSelectedConversationLine(gameState, userAction).getNextOrder();
+                }
+            else
+                currentConversationOrderId++;
             // Actually retrieve the next lines
             nextLines = extractNextLines(gameState, userAction);
         }
@@ -287,9 +289,8 @@ public class ConversationRules extends MoonWalkerBaseRules {
             MultipleChoiceConversationRenderable renderable = new MultipleChoiceConversationRenderable(nextLines.get(0).getId(), null, bgImgPath, keepFirstDuringParsing);
             addMultipleConversationLines(nextLines, gameState, newSpeaker, renderable, getIntroEffectForMultipleChoiceRenderable());
         }
-        // await next event
-        pause(gameState);
-
+        if(nextLinesSize > 0)
+            pause(gameState);
     }
 
     protected void addSingleChoiceConversationLine(final ConversationLine conversationLine, final GameState gameState, boolean newSpeaker) {
