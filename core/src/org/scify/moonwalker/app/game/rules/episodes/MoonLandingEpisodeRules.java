@@ -39,11 +39,10 @@ public class MoonLandingEpisodeRules extends FadingEpisodeRules<MoonLandingRende
             });
             if (gameState.getGameEventWithType(conversationRules.CONVERSATION_FAILED)  != null) {
                 EffectSequence effects = new EffectSequence();
-                effects.addEffect(new DelayEffect(3000));
+                effects.addEffect(new DelayEffect(4000));
                 effects.addEffect(new FunctionEffect(new Runnable() {
                     @Override
                     public void run() {
-                        //gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.BORING_MUSIC_AUDIO_PATH));
                         endEpisodeAndAddEventWithType(gameState, "");
                     }
                 }));
@@ -61,9 +60,9 @@ public class MoonLandingEpisodeRules extends FadingEpisodeRules<MoonLandingRende
     @Override
     public void episodeStartedEvents(final GameState currentState) {
         if (!isEpisodeStarted(currentState)) {
-            // todo change
+            // these static fields need to be set before the constructor is called, so that
+            // the renderable constructor can initialise the corresponding image files
             MoonLandingRenderable.IMG_PATH += gameInfo.isGameFullySuccessfullyCompleted() ? "success/" : "fail/";
-
             MoonLandingRenderable.BG_IMG_PATH = gameInfo.getSelectedPlayer().equals(SelectedPlayer.boy) ? MoonLandingRenderable.IMG_PATH + "boy_bg.png" : MoonLandingRenderable.IMG_PATH + "girl_bg.png";
             MoonLandingRenderable.CONVERSATION_BG_IMG_PATH = MoonLandingRenderable.IMG_PATH + "conversation_bg.png";
             renderable = new MoonLandingRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID);
