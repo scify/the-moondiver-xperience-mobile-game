@@ -74,6 +74,7 @@ public class QuestionServiceJSON implements QuestionService {
             Question question = allQuestions.get(i);
             if(categoryId == question.categoryId) {
                 allQuestions.remove(question);
+                Collections.shuffle(question.answers);
                 return question;
             }
         }
