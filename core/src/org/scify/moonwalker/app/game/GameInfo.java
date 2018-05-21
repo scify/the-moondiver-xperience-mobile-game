@@ -15,6 +15,7 @@ public class GameInfo {
     protected MoonPhase postNextMoonPhase;
     protected MoonPhasesController moonPhasesController;
     protected String selectedPlayer;
+    protected boolean tutorialMode;
     protected boolean contactRequestFlag;
     protected boolean mapRequestFlag;
     protected boolean chargeRequestFlag;
@@ -60,9 +61,10 @@ public class GameInfo {
         setMoonPhases();
         //TODO set to unset
         selectedPlayer = SelectedPlayer.girl;
+        tutorialMode = true;
         contactRequestFlag = false;
-        chargeRequestFlag = true;
-        mapRequestFlag = false;
+        mapRequestFlag = true;
+        chargeRequestFlag = false;
         setCurrentLocation(lc.getLocations().get(5));
         setNextAllowedLocation(lc.getLocations().get(0));
         setPreviousTravelPercentageComplete(0);
@@ -235,5 +237,13 @@ public class GameInfo {
 
     public boolean isGameFullySuccessfullyCompleted() {
         return currentDay <= initialDaysToSuccessfullyCompleteGame;
+    }
+
+    public boolean isTutorialMode() {
+        return tutorialMode;
+    }
+
+    public void setTutorialMode(boolean tutorialMode) {
+        this.tutorialMode = tutorialMode;
     }
 }

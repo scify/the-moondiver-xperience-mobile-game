@@ -1,0 +1,5 @@
+[
+  {"id": "1", "order":"1", "speakerId":"aunt", "text":"Μπράβο, τα κατάφερες! Κοίτα τη \"Διαθέσιμη ενέργεια\".", "prerequisites":""},
+  {"id": "2", "order":"2", "speakerId":"aunt", "text":"Είμαστε έτοιμοι για απογείωση! Μην χάσεις χρόνο φορτίζοντας ξανά, ξεκίνα!", "prerequisites":""},
+  {"id": "3", "order":"3", "speakerId":"aunt", "text":"Πήγαινε στο πιλοτήριο και πάτησε \"Απογείωση\"", "prerequisites":"","onExitCurrentOrderTrigger":"end"}
+]
