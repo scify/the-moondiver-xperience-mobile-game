@@ -1,6 +1,5 @@
 package org.scify.moonwalker.app.game.rules;
 
-import org.scify.engine.EpisodeEndState;
 import org.scify.engine.GameState;
 import org.scify.engine.UserAction;
 import org.scify.engine.conversation.ConversationLine;
@@ -25,6 +24,8 @@ public class QuestionConversationRules extends ConversationRules {
     protected String quizSuccessFulConversationFilePath;
     // conversation file to be shown if the quiz is not successful
     protected String quizFailedConversationFilePath;
+    // we keep track of the last answer of the user to the quiz
+    protected boolean lastQuizAnswerCorrect;
 
     public QuestionConversationRules(String conversationJSONFilePath, String bgImgPath, String quizSuccessFulConversationFilePath, String quizFailedConversationFilePath) {
         super(conversationJSONFilePath, bgImgPath);
@@ -62,7 +63,7 @@ public class QuestionConversationRules extends ConversationRules {
 
     protected void evaluateAnswerAndSetGameInfo(Answer answer, GameState gameState) {
         if (answer.isCorrect()) increaseCorrectAnswers(gameState);
-        gameInfo.setLastQuizAnswerCorrect(answer.isCorrect());
+        this.lastQuizAnswerCorrect = answer.isCorrect();
     }
 
     @Override
@@ -174,7 +175,7 @@ public class QuestionConversationRules extends ConversationRules {
     protected void loadResponseForQuestion(ConversationLine lineEntered, GameState gsCurrent) {
         ConversationLine responseLine = new ConversationLine();
         try {
-            responseLine.setText(randomResponseFactory.getRandomResponseFor(gameInfo.isLastQuizAnswerCorrect() ? EVENT_RANDOM_CORRECT : EVENT_RANDOM_WRONG));
+            responseLine.setText(randomResponseFactory.getRandomResponseFor(this.lastQuizAnswerCorrect ? EVENT_RANDOM_CORRECT : EVENT_RANDOM_WRONG));
         } catch (Exception e) {
             e.printStackTrace();
             responseLine.setText(e.getMessage());

@@ -19,8 +19,6 @@ public class GameInfo {
     protected boolean mapRequestFlag;
     protected boolean chargeRequestFlag;
     protected boolean inventoryIncreased;
-    // we keep track of the last answer of the user to the quiz
-    protected boolean lastQuizAnswerCorrect;
     protected boolean atForest;
     protected String conversationFileForContactScreen;
 
@@ -209,14 +207,6 @@ public class GameInfo {
 
     public int getUnitsOfMoonPhase(MoonPhase moonPhase) {
         return moonPhasesController.getUnitsOfMoonPhase(moonPhase, inventoryItemsCounter);
-    }
-
-    public boolean isLastQuizAnswerCorrect() {
-        return lastQuizAnswerCorrect;
-    }
-
-    public void setLastQuizAnswerCorrect(boolean lastQuizAnswerCorrect) {
-        this.lastQuizAnswerCorrect = lastQuizAnswerCorrect;
     }
 
     public boolean getChargeRequestFlag() {
