@@ -59,7 +59,6 @@ public class GameInfo {
         LocationController lc = new LocationController();
         setMoonPhases();
         //TODO set to unset
-        setNextLocation(lc.getLocations().get(0));
         selectedPlayer = SelectedPlayer.girl;
         contactRequestFlag = false;
         chargeRequestFlag = true;
@@ -235,6 +234,6 @@ public class GameInfo {
     }
 
     public boolean isGameFullySuccessfullyCompleted() {
-        return currentDay > initialDaysToSuccessfullyCompleteGame;
+        return currentDay <= initialDaysToSuccessfullyCompleteGame;
     }
 }

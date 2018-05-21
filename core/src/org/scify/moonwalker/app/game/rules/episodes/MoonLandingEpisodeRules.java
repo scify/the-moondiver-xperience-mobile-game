@@ -63,7 +63,7 @@ public class MoonLandingEpisodeRules extends FadingEpisodeRules<MoonLandingRende
             // these static fields need to be set before the constructor is called, so that
             // the renderable constructor can initialise the corresponding image files
             MoonLandingRenderable.IMG_PATH += gameInfo.isGameFullySuccessfullyCompleted() ? "full_success/" : "simple_success/";
-            MoonLandingRenderable.AUDIO_PATH += gameInfo.isGameFullySuccessfullyCompleted() ? "full_success/" : "simple_success/";
+            MoonLandingRenderable.AUDIO_PATH += gameInfo.isGameFullySuccessfullyCompleted() ? "full_success.mp3/" : "simple_success.mp3/";
             MoonLandingRenderable.BG_IMG_PATH = gameInfo.getSelectedPlayer().equals(SelectedPlayer.boy) ? MoonLandingRenderable.IMG_PATH + "boy_bg.png" : MoonLandingRenderable.IMG_PATH + "girl_bg.png";
             renderable = new MoonLandingRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID);
 
@@ -74,8 +74,7 @@ public class MoonLandingEpisodeRules extends FadingEpisodeRules<MoonLandingRende
                 }
             });
             currentState.addRenderable(renderable);
-//            currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.FOREST_AUDIO_PATH));
-//            currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.BORING_MUSIC_AUDIO_PATH));
+            currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.AUDIO_PATH));
             super.episodeStartedEvents(currentState);
         }
     }

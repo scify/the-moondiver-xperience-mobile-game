@@ -89,7 +89,7 @@ public class MoonWalkerScenario extends Scenario {
 
     protected Episode createTestingScenario() {
         if (true) {
-            return new MoonLandingEpisode();
+            return new LondonEpisode();
         } else {
             return getPlaygroundEpisode();
         }
