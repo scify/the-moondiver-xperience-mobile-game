@@ -7,7 +7,7 @@ import org.scify.engine.renderables.Renderable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ContactScreenRenderable extends FadingTableRenderable {
+public class ContactScreenRenderable extends ChattableRenderable {
     //renderable image paths
     protected final static String IMG_PATH = "img/episode_contact_screen/";
     protected final static String BG_IMG_PATH = IMG_PATH + "bg.png";
@@ -24,8 +24,6 @@ public class ContactScreenRenderable extends FadingTableRenderable {
     protected ImageRenderable contactDescription;
     protected ImageRenderable contactAvatar;
     protected ActionButtonRenderable exitButton;
-
-    protected boolean chatEnabled;
 
     protected Set<Renderable> allRenderables;
 
@@ -47,18 +45,6 @@ public class ContactScreenRenderable extends FadingTableRenderable {
         contactAvatar = createImageRenderable(AUNT_AVATAR_ID, AUNT_AVATAR_IMG_PATH, false, true, 1);
         allRenderables.add(contactAvatar);
 
-    }
-
-    public boolean isChatEnabled() {
-        return chatEnabled;
-    }
-
-    public void enableChat () {
-        chatEnabled = true;
-    }
-
-    public ImageRenderable getTableBGRenderable() {
-        return tableBGRenderable;
     }
 
     public ImageRenderable getContactDescription() {

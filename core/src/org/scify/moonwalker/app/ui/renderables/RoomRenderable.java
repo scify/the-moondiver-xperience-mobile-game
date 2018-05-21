@@ -6,7 +6,7 @@ import org.scify.engine.renderables.Renderable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class RoomRenderable extends FadingTableRenderable {
+public class RoomRenderable extends ChattableRenderable {
 
     protected ImageRenderable phoneOnRenderable;
     protected ImageRenderable phoneOffRenderable;
@@ -33,7 +33,6 @@ public class RoomRenderable extends FadingTableRenderable {
     public final static String FOREST_AUDIO_PATH = "audio/episode_forest/bg.mp3";
 
     protected boolean permanentlyOn;
-    protected boolean chatEnabled;
 
     protected Set<Renderable> allRenderables;
 
@@ -68,14 +67,6 @@ public class RoomRenderable extends FadingTableRenderable {
         allRenderables.add(phoneOffRenderable);
     }
 
-    public void enableChat() {
-        chatEnabled = true;
-    }
-
-    public boolean isChatEnabled() {
-        return chatEnabled;
-    }
-
     public void togglePhone() {
         if (!permanentlyOn) {
             if (phoneOnRenderable.isVisible())
@@ -87,10 +78,6 @@ public class RoomRenderable extends FadingTableRenderable {
 
     public void turnOffPhone() {
         phoneOnRenderable.setVisible(false);
-    }
-
-    public ImageRenderable getTableBGRenderable() {
-        return tableBGRenderable;
     }
 
     public ImageRenderable getPhoneOffRenderable() {

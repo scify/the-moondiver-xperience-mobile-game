@@ -87,6 +87,9 @@ public class ActorFactory extends ComponentFactory {
             case Renderable.ACTOR_EPISODE_FOREST:
                 toReturn = createForestActor((ForestRenderable) renderable);
                 break;
+            case Renderable.ACTOR_EPISODE_MOON_LANDING:
+                toReturn = createMoonLandingActor((MoonLandingRenderable) renderable);
+                break;
             case Renderable.ACTOR_EPISODE_COCKPIT:
                 toReturn = createCockpitActor((CockpitRenderable) renderable);
                 break;
@@ -198,6 +201,12 @@ public class ActorFactory extends ComponentFactory {
 
     private Actor createForestActor(final ForestRenderable renderable) {
         ForestActor actor = new ForestActor(skin, renderable);
+        actor.setZIndex(0);
+        return actor;
+    }
+
+    private Actor createMoonLandingActor(final MoonLandingRenderable renderable) {
+        MoonLandingActor actor = new MoonLandingActor(skin, renderable);
         actor.setZIndex(0);
         return actor;
     }

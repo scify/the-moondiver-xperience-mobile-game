@@ -232,6 +232,9 @@ public class GameInfo {
 
     public void setConversationFileForContactScreen(String conversationFileForContactScreen) {
         this.conversationFileForContactScreen = conversationFileForContactScreen;
+    }
 
+    public boolean isGameFullySuccessfullyCompleted() {
+        return currentDay > initialDaysToSuccessfullyCompleteGame;
     }
 }

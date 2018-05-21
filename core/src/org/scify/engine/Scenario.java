@@ -1,9 +1,9 @@
 package org.scify.engine;
 
-import org.scify.moonwalker.app.game.episodes.CockpitEpisode;
-import org.scify.moonwalker.app.game.episodes.ContactScreenEpisode;
-
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The Scenario objects provide an episode-based view of an interactive story. It manages the order of appearance
