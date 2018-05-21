@@ -103,7 +103,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
         ID = UUID.randomUUID().toString();
         oldConversationLines = new ArrayList<>();
         lastConversationRenderable = null;
-        this.currentConversationOrderId = 0;
+        currentConversationOrderId = 0;
         randomResponseFactory = RandomResponseFactory.getInstance();
         this.bgImgPath = bgImgPath;
         keepFirstDuringParsing = true;
@@ -131,37 +131,20 @@ public class ConversationRules extends MoonWalkerBaseRules {
                 onExitConversationOrder(gameState, selected);
                 setCurrentConversationLine(gameState, selected);
             }
-
         }
         // If conversation is paused
         if (isPaused() || isFinished())
             // return the current game state
             return gameState;
 
-
         // Move to appropriate next order
-        // If we just started
-        if (currentConversationOrderId == 0) {
-            // Get next alternatives
-            nextLines = extractNextLines(gameState, userAction);
-            // Update current order to initialize
-            currentConversationOrderId = nextLines.get(0).getOrder();
-        }
-        // else, if we have gone beyond initialization
-        else {
+        if(userAction != null)
             // If no explicit next order has been requested
-            if(userAction != null)
-                if (getSelectedConversationLine(gameState, userAction).getNextOrder() == 0) {
-                    currentConversationOrderId++; // Move to next normally
-                } else {
-                    // else update order based on request from current conversation line
-                    currentConversationOrderId = getSelectedConversationLine(gameState, userAction).getNextOrder();
-                }
-            else
-                currentConversationOrderId++;
-            // Actually retrieve the next lines
-            nextLines = extractNextLines(gameState, userAction);
-        }
+            updateCurrentConversationOrderBasedOnUserAction(gameState, userAction);
+        else
+            normallyUpdateConversationOrder();
+
+        nextLines = extractNextLines(gameState, userAction);
         // Call event that handles conversation order change
         handleNextConversationState(gameState, userAction);
 
@@ -169,6 +152,18 @@ public class ConversationRules extends MoonWalkerBaseRules {
         return gameState;
     }
 
+    protected void updateCurrentConversationOrderBasedOnUserAction(GameState gameState, UserAction userAction) {
+        if (getSelectedConversationLine(gameState, userAction).getNextOrder() == 0) {
+            currentConversationOrderId++; // Move to next normally
+        } else {
+            // else update order based on request from current conversation line
+            currentConversationOrderId = getSelectedConversationLine(gameState, userAction).getNextOrder();
+        }
+    }
+
+    protected void normallyUpdateConversationOrder() {
+        currentConversationOrderId = currentConversationOrderId == 0 ? conversationLines.get(0).getOrder() : currentConversationOrderId + 1;
+    }
 
     @Override
     protected void onExitConversationOrder(GameState gsCurrent, ConversationLine lineExited) {
