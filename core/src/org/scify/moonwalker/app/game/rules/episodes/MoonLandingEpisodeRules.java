@@ -1,14 +1,10 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
-import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.renderables.effects.DelayEffect;
 import org.scify.engine.renderables.effects.EffectSequence;
 import org.scify.engine.renderables.effects.FunctionEffect;
-import org.scify.moonwalker.app.game.rules.ConversationRules;
 import org.scify.moonwalker.app.ui.renderables.MoonLandingRenderable;
-
-import java.util.Set;
 
 import static org.scify.engine.renderables.Renderable.ACTOR_EPISODE_MOON_LANDING;
 
