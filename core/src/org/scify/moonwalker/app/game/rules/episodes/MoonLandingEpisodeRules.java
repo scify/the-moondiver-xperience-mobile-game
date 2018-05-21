@@ -53,8 +53,7 @@ public class MoonLandingEpisodeRules extends FadingEpisodeRules<MoonLandingRende
                 endEpisodeAndAddEventWithType(gameState, "");
             }
         } else if (renderable != null && renderable.isChatEnabled()) {
-            // todo load conversation file according to success level
-            createConversation(gameState, false ? "conversations/episode_moon_landing_success_full.json" : "conversations/episode_moon_landing_success_simple.json", renderable.CONVERSATION_BG_IMG_PATH);
+            createConversation(gameState, gameInfo.isGameFullySuccessfullyCompleted() ? "conversations/episode_moon_landing_success_full.json" : "conversations/episode_moon_landing_success_simple.json", renderable.CONVERSATION_BG_IMG_PATH);
         }
         return super.getNextState(gameState, userAction);
     }
@@ -63,7 +62,7 @@ public class MoonLandingEpisodeRules extends FadingEpisodeRules<MoonLandingRende
     public void episodeStartedEvents(final GameState currentState) {
         if (!isEpisodeStarted(currentState)) {
             // todo change
-            MoonLandingRenderable.IMG_PATH += true ? "success/" : "fail/";
+            MoonLandingRenderable.IMG_PATH += gameInfo.isGameFullySuccessfullyCompleted() ? "success/" : "fail/";
 
             MoonLandingRenderable.BG_IMG_PATH = gameInfo.getSelectedPlayer().equals(SelectedPlayer.boy) ? MoonLandingRenderable.IMG_PATH + "boy_bg.png" : MoonLandingRenderable.IMG_PATH + "girl_bg.png";
             MoonLandingRenderable.CONVERSATION_BG_IMG_PATH = MoonLandingRenderable.IMG_PATH + "conversation_bg.png";
