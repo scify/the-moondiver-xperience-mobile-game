@@ -62,9 +62,9 @@ public class MoonLandingEpisodeRules extends FadingEpisodeRules<MoonLandingRende
         if (!isEpisodeStarted(currentState)) {
             // these static fields need to be set before the constructor is called, so that
             // the renderable constructor can initialise the corresponding image files
-            MoonLandingRenderable.IMG_PATH += gameInfo.isGameFullySuccessfullyCompleted() ? "success/" : "fail/";
+            MoonLandingRenderable.IMG_PATH += gameInfo.isGameFullySuccessfullyCompleted() ? "full_success/" : "simple_success/";
+            MoonLandingRenderable.AUDIO_PATH += gameInfo.isGameFullySuccessfullyCompleted() ? "full_success/" : "simple_success/";
             MoonLandingRenderable.BG_IMG_PATH = gameInfo.getSelectedPlayer().equals(SelectedPlayer.boy) ? MoonLandingRenderable.IMG_PATH + "boy_bg.png" : MoonLandingRenderable.IMG_PATH + "girl_bg.png";
-            MoonLandingRenderable.CONVERSATION_BG_IMG_PATH = MoonLandingRenderable.IMG_PATH + "conversation_bg.png";
             renderable = new MoonLandingRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID);
 
             renderable.addAfterFadeIn(new Runnable() {
@@ -97,7 +97,7 @@ public class MoonLandingEpisodeRules extends FadingEpisodeRules<MoonLandingRende
     protected void onExitConversationOrder(GameState gsCurrent, ConversationLine lineExited) {
         Set<String> eventTrigger;
 
-        // If we received a conversation "fail" event
+        // If we received a conversation "simple_success" event
         if (gsCurrent.eventsQueueContainsEvent(ConversationRules.ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT)) {
             eventTrigger = (Set<String>) gsCurrent.getGameEventWithType(ConversationRules.ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
             if (eventTrigger.contains(conversationRules.TAG_FAIL)) {
