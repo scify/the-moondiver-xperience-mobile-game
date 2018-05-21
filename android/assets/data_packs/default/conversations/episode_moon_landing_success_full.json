@@ -1,0 +1,8 @@
+[
+  {"id": "1", "order":"1", "speakerId":"player", "text":"[#ffeeaaff]Τα καταφέραμε! Είναι υπέροχα! Δεν νιώθεις\nανάλαφρος; Σα να πετάς;", "prerequisites":""},
+  {"id": "2", "order":"2", "speakerId":"oratios", "text":"Ναι… Στη Σελήνη έχεις το 1/6 του βάρους σου...", "prerequisites":""},
+  {"id": "3", "order":"3", "speakerId":"oratios", "text":"Εσύ ας πούμε τώρα ζυγίζεις δεν ζυγίζεις 10 κιλά!", "prerequisites":""},
+  {"id": "4", "order":"4", "speakerId":"player", "text":"[#ffeeaaff]Ξέρεις να μαγεύεις τον κόσμο Οράτιε...", "prerequisites":""},
+  {"id": "5", "order":"4", "speakerId":"player", "text":"[#ffeeaaff]Δεν σε πιστεύω... Μα κοίτα εκεί!", "prerequisites":""},
+  {"id": "6", "order":"5", "speakerId":"oratios", "text":"Είναι μαγικό! Σ’ ευχαριστώ {{μικρέ μου φίλε/μικρή μου φίλη}}...", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
+]

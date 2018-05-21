@@ -1,0 +1,7 @@
+[
+  {"id": "1", "order":"1", "speakerId":"oratios", "text":"Τα καταφέραμε! Η Γη είναι υπέροχη από εδώ!", "prerequisites":""},
+  {"id": "2", "order":"2", "speakerId":"player", "text":"[#ffeeaaff][[Ναι, μπορούμε να στείλουμε απίστευτες selfie!]", "prerequisites":""},
+  {"id": "3", "order":"3", "speakerId":"oratios", "text":"Ελπίζω να βγάζει καλές φωτό η μπακατέλα σου...", "prerequisites":""},
+  {"id": "4", "order":"4", "speakerId":"player", "text":"[#ffeeaaff][[Μπακατέλα; Χα! Εδώ μιλάμε για εργαλείο, όχι αστεία!]", "prerequisites":""},
+  {"id": "5", "order":"5", "speakerId":"player", "text":"[#ffeeaaff][[Μόνο αυτό μπορεί να βγάλει φωτό σε αυτές τις συνθήκες... [#ff0000ff]\u00b1]", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
+]
