@@ -1,5 +1,6 @@
 package org.scify.moonwalker.app.game.rules;
 
+import org.scify.engine.GameEvent;
 import org.scify.engine.GameState;
 import org.scify.engine.UserAction;
 import org.scify.engine.conversation.ConversationLine;
@@ -7,6 +8,8 @@ import org.scify.engine.renderables.MultipleChoiceConversationRenderable;
 import org.scify.moonwalker.app.game.quiz.*;
 
 import java.util.*;
+
+import static org.scify.moonwalker.app.game.rules.episodes.BaseEpisodeRules.GAME_EVENT_AUDIO_START_UI;
 
 public class QuestionConversationRules extends ConversationRules {
     public static final String PLAYER_HAS_3_CORRECT = "player_has_3_correct";
@@ -16,6 +19,8 @@ public class QuestionConversationRules extends ConversationRules {
     protected QuestionService questionService;
     protected List<QuestionCategory> questionCategories;
     protected List<Question> questions;
+    protected String correctAudioPath;
+    protected String wrongAudioPath;
 
     // this variable describes whether the last process conversation line
     // was of a question type.
@@ -27,7 +32,7 @@ public class QuestionConversationRules extends ConversationRules {
     // we keep track of the last answer of the user to the quiz
     protected boolean lastQuizAnswerCorrect;
 
-    public QuestionConversationRules(String conversationJSONFilePath, String bgImgPath, String quizSuccessFulConversationFilePath, String quizFailedConversationFilePath) {
+    public QuestionConversationRules(String conversationJSONFilePath, String bgImgPath, String quizSuccessFulConversationFilePath, String quizFailedConversationFilePath, String correctAudioPath, String wrongAudioPath) {
         super(conversationJSONFilePath, bgImgPath);
         questionService = QuestionServiceJSON.getInstance();
         questionService.init();
@@ -35,6 +40,8 @@ public class QuestionConversationRules extends ConversationRules {
         questions = questionService.getQuestions();
         this.quizSuccessFulConversationFilePath = quizSuccessFulConversationFilePath;
         this.quizFailedConversationFilePath = quizFailedConversationFilePath;
+        this.correctAudioPath = correctAudioPath;
+        this.wrongAudioPath = wrongAudioPath;
     }
 
     @Override
@@ -62,7 +69,12 @@ public class QuestionConversationRules extends ConversationRules {
     }
 
     protected void evaluateAnswerAndSetGameInfo(Answer answer, GameState gameState) {
-        if (answer.isCorrect()) increaseCorrectAnswers(gameState);
+        if (answer.isCorrect()) {
+            increaseCorrectAnswers(gameState);
+            gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, correctAudioPath));
+        }else {
+            gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, wrongAudioPath));
+        }
         this.lastQuizAnswerCorrect = answer.isCorrect();
     }
 

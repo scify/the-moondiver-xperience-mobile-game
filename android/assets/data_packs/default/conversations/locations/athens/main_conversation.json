@@ -22,5 +22,5 @@
   {"id": "21", "order":"19", "speakerId":"aphrodite", "text":"Άλλος ένας εξελιγμένος συλλέκτης\nηλιακής ακτινοβολίας είναι δικός σου!", "prerequisites":"player_has_3_correct"},
   {"id": "22", "order":"20", "speakerId":"aphrodite", "text":"Αξιοποιεί το φως που αντανακλάται στη Σελήνη.", "prerequisites":"player_has_3_correct"},
   {"id": "23", "order":"21", "speakerId":"aphrodite", "text":"Καλή επιτυχία!", "prerequisites":"player_has_3_correct", "onExitCurrentOrderTrigger":"end"},
-  {"id": "24", "order":"22", "speakerId":"aphrodite", "text":"Χμ... Δεν είσαι {{έτοιμος/έτοιμη}} ακόμα.\nΈλα πίσω ξανά αύριο.", "prerequisites":"player_has_3_wrong", "onExitCurrentOrderTrigger":"end"}
+  {"id": "24", "order":"22", "speakerId":"aphrodite", "text":"Χμ... Δεν είσαι {{έτοιμος/έτοιμη}} ακόμα.\nΈλα πίσω ξανά αύριο.", "prerequisites":"player_has_less_than_3_correct", "onExitCurrentOrderTrigger":"end"}
 ]

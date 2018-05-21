@@ -19,5 +19,6 @@
   {"id": "18", "order":"17", "speakerId":"johan", "text":"Μπράβο, τα κατάφερες!", "prerequisites":"player_has_3_correct"},
   {"id": "19", "order":"18", "speakerId":"johan", "text":"Σου προσφέρω λοιπόν το πρώτο εξάρτημα που θα χρειαστείς για το ταξίδι σου: Ένας ισχυρός προωθητήρας είναι δικός σου. Καλή επιτυχία!", "prerequisites":"player_has_3_correct"},
   {"id": "20", "order":"19", "speakerId":"johan", "text":"Ένας ισχυρός προωθητήρας είναι δικός σου.", "prerequisites":"player_has_3_correct"},
-  {"id": "21", "order":"20", "speakerId":"johan", "text":"Καλή επιτυχία!", "prerequisites":"player_has_3_correct", "onExitCurrentOrderTrigger":"end"}
+  {"id": "21", "order":"20", "speakerId":"johan", "text":"Καλή επιτυχία!", "prerequisites":"player_has_3_correct", "onExitCurrentOrderTrigger":"end"},
+  {"id": "24", "order":"22", "speakerId":"aphrodite", "text":"Χμ... Δεν είσαι {{έτοιμος/έτοιμη}} ακόμα.\nΈλα πίσω ξανά αύριο.", "prerequisites":"player_has_less_than_3_correct", "onExitCurrentOrderTrigger":"end"}
 ]

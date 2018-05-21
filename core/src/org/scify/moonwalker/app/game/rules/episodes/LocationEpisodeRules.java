@@ -63,11 +63,11 @@ public class LocationEpisodeRules extends FadingEpisodeRules<LocationRenderable>
                     gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.DAYPASSED_AUDIO_PATH));
                 }
             });
-
+            endEpisodeAndAddEventWithType(gameState, "");
         } else if (renderable != null && renderable.isChatEnabled()) {
             // Initialize conversation
             if(conversationRules == null) {
-                conversationRules = new QuestionConversationRules(location.getConversationPath(), location.getConversationBG(), location.getConversationSuccessFilePath(), location.getConversationFailureFilePath());
+                conversationRules = new QuestionConversationRules(location.getConversationPath(), location.getConversationBG(), location.getConversationSuccessFilePath(), location.getConversationFailureFilePath(), renderable.CORRECT_AUDIO_PATH, renderable.WRONG_AUDIO_PATH);
                 conversationRules.setStarted(true);
             }
         }
