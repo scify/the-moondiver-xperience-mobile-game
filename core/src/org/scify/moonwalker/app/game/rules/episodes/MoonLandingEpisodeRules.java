@@ -54,7 +54,7 @@ public class MoonLandingEpisodeRules extends FadingEpisodeRules<MoonLandingRende
             }
         } else if (renderable != null && renderable.isChatEnabled()) {
             // todo load conversation file according to success level
-            createConversation(gameState, true ? "conversations/episode_moon_landing_success_full.json" : "conversations/episode_moon_landing_success_simple.json", renderable.CONVERSATION_BG_IMG_PATH);
+            createConversation(gameState, false ? "conversations/episode_moon_landing_success_full.json" : "conversations/episode_moon_landing_success_simple.json", renderable.CONVERSATION_BG_IMG_PATH);
         }
         return super.getNextState(gameState, userAction);
     }
