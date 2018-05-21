@@ -5,14 +5,18 @@ import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.renderables.effects.DelayEffect;
 import org.scify.engine.renderables.effects.EffectSequence;
 import org.scify.engine.renderables.effects.FunctionEffect;
+import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.game.rules.ConversationRules;
 import org.scify.moonwalker.app.ui.renderables.ForestRenderable;
+import org.scify.moonwalker.app.ui.renderables.MoonLandingRenderable;
 
 import java.util.Set;
 
-public class MoonLandingEpisodeRules extends FadingEpisodeRules<ForestRenderable> {
+import static org.scify.engine.renderables.Renderable.ACTOR_EPISODE_MOON_LANDING;
 
-    public static final String RENDERABLE_ID = "moon_landing";
+public class MoonLandingEpisodeRules extends FadingEpisodeRules<MoonLandingRenderable> {
+
+    public static final String RENDERABLE_ID = ACTOR_EPISODE_MOON_LANDING;
     protected boolean outroInitiated;
 
     public MoonLandingEpisodeRules() {
@@ -29,8 +33,8 @@ public class MoonLandingEpisodeRules extends FadingEpisodeRules<ForestRenderable
             renderable.addBeforeFadeOut(new Runnable() {
                 @Override
                 public void run() {
-                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.FOREST_AUDIO_PATH));
-                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.BORING_MUSIC_AUDIO_PATH));
+                    //gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.FOREST_AUDIO_PATH));
+                    //gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.BORING_MUSIC_AUDIO_PATH));
                 }
             });
             if (gameState.getGameEventWithType(conversationRules.CONVERSATION_FAILED)  != null) {
@@ -39,13 +43,13 @@ public class MoonLandingEpisodeRules extends FadingEpisodeRules<ForestRenderable
                 effects.addEffect(new FunctionEffect(new Runnable() {
                     @Override
                     public void run() {
-                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.BORING_MUSIC_AUDIO_PATH));
+                        //gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.BORING_MUSIC_AUDIO_PATH));
                         endEpisodeAndAddEventWithType(gameState, "");
                     }
                 }));
                 renderable.addEffect(effects);
             }else {
-                gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.FOREST_AUDIO_PATH));
+                //gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.FOREST_AUDIO_PATH));
                 endEpisodeAndAddEventWithType(gameState, "");
             }
         } else if (renderable != null && renderable.isChatEnabled()) {
@@ -58,7 +62,12 @@ public class MoonLandingEpisodeRules extends FadingEpisodeRules<ForestRenderable
     @Override
     public void episodeStartedEvents(final GameState currentState) {
         if (!isEpisodeStarted(currentState)) {
-            renderable = new ForestRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID);
+            // todo change
+            MoonLandingRenderable.IMG_PATH += true ? "success/" : "fail/";
+            MoonLandingRenderable.BG_IMG_PATH = gameInfo.getSelectedPlayer().equals(SelectedPlayer.boy) ? MoonLandingRenderable.IMG_PATH + "boy_bg.png" : MoonLandingRenderable.IMG_PATH + "girl_bg.png";
+            MoonLandingRenderable.CONVERSATION_BG_IMG_PATH = MoonLandingRenderable.IMG_PATH + "conversation_bg.png";
+            renderable = new MoonLandingRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID);
+
             renderable.addAfterFadeIn(new Runnable() {
                 @Override
                 public void run() {
@@ -66,8 +75,8 @@ public class MoonLandingEpisodeRules extends FadingEpisodeRules<ForestRenderable
                 }
             });
             currentState.addRenderable(renderable);
-            currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.FOREST_AUDIO_PATH));
-            currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.BORING_MUSIC_AUDIO_PATH));
+//            currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.FOREST_AUDIO_PATH));
+//            currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.BORING_MUSIC_AUDIO_PATH));
             super.episodeStartedEvents(currentState);
         }
     }
@@ -78,7 +87,7 @@ public class MoonLandingEpisodeRules extends FadingEpisodeRules<ForestRenderable
         if (gsCurrent.eventsQueueContainsEvent(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT)) {
             eventTrigger = (Set<String>) gsCurrent.getGameEventWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
             if (eventTrigger.contains("ring_phone")) {
-                gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.MOBILE_AUDIO_PATH));
+
             }
         }
 
@@ -93,9 +102,9 @@ public class MoonLandingEpisodeRules extends FadingEpisodeRules<ForestRenderable
         if (gsCurrent.eventsQueueContainsEvent(ConversationRules.ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT)) {
             eventTrigger = (Set<String>) gsCurrent.getGameEventWithType(ConversationRules.ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
             if (eventTrigger.contains(conversationRules.TAG_FAIL)) {
-                gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.MAINMENU_AUDIO_PATH));
-                gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.FOREST_AUDIO_PATH));
-                gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.BORING_MUSIC_AUDIO_PATH));
+//                gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.MAINMENU_AUDIO_PATH));
+//                gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.FOREST_AUDIO_PATH));
+//                gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.BORING_MUSIC_AUDIO_PATH));
                 gsCurrent.addGameEvent(new GameEvent(conversationRules.CONVERSATION_FAILED));
             }
         }

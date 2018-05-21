@@ -1,8 +1,6 @@
 package org.scify.moonwalker.app.ui.renderables;
 
-import org.scify.engine.renderables.ImageRenderable;
-
-public class ForestRenderable extends FadingTableRenderable {
+public class ForestRenderable extends ChattableRenderable {
 
     //Images
     protected final static String IMG_PATH = "img/episode_forest/";
@@ -14,23 +12,8 @@ public class ForestRenderable extends FadingTableRenderable {
     public final static String MOBILE_AUDIO_PATH = "audio/message.mp3";
     public final static String MAINMENU_AUDIO_PATH = "audio/episode_main_menu/bg.mp3";
 
-    protected boolean chatEnabled;
-
     public ForestRenderable(float xPos, float yPos, float width, float height, String id) {
         super(xPos, yPos, width, height, ACTOR_EPISODE_FOREST, id, BG_IMG_PATH);
         chatEnabled = false;
     }
-
-    public boolean isChatEnabled() {
-        return chatEnabled;
-    }
-
-    public void enableChat () {
-        chatEnabled = true;
-    }
-
-    public ImageRenderable getTableBGRenderable() {
-        return tableBGRenderable;
-    }
-
 }
