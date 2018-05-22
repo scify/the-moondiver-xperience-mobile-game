@@ -130,7 +130,6 @@ public class MapEpisodeRules extends BaseEpisodeRules {
 
     protected void initOriginLocation() {
         double dPercentageOfPreviousMoveComplete = gameInfo.getPreviousTravelPercentageComplete();
-        // todo ask ggianna
         if (dPercentageOfPreviousMoveComplete != 0.0) {
             // Create "middle of nowhere" location for origin
             double dMoNX = gameInfo.getCurrentLocation().getPosX() + (gameInfo.getNextAllowedLocation().getPosX() - gameInfo.getCurrentLocation().getPosX()) * dPercentageOfPreviousMoveComplete / 100.0;
@@ -252,12 +251,6 @@ public class MapEpisodeRules extends BaseEpisodeRules {
                 @Override
                 public void run() {
                     handleUserAction(gsCurrent, new UserAction(UserActionCode.QUIT));
-                    // If we actually reached the destination
-                    // todo ask ggianna
-//                    if (gameInfo.getPreviousTravelPercentageComplete() == 100.0) {
-//                        // Update the current location
-//                        gameInfo.setCurrentLocation(renderable.getNextAllowedLocation());
-//                    }
                 }
             }));
             rCurLocation.addEffect(esRes);
