@@ -23,7 +23,7 @@ public class GameInfo {
     protected boolean atForest;
     protected String conversationFileForContactScreen;
     protected boolean afterTravel;
-
+    protected double distanceLeftForNextLocation;
     /**
      * The travel percentage complete in the LAST travel
      */
@@ -67,7 +67,6 @@ public class GameInfo {
         chargeRequestFlag = false;
         setCurrentLocation(lc.getInitialLocation());
         setNextAllowedLocation(lc.getLocations().get(0));
-        //setNextTravelPercentagePossible(100);
         //inventory
         inventoryItemsCounter = 0;
         inventoryIncreased = false;
@@ -107,6 +106,10 @@ public class GameInfo {
 
     public int getRemainingEnergy() {
         return remainingEnergy;
+    }
+
+    public void setRemainingEnergy(int remainingEnergy) {
+        this.remainingEnergy = remainingEnergy;
     }
 
     public void addEnergy(int remainingEnergy) {
@@ -257,5 +260,13 @@ public class GameInfo {
 
     public boolean isAfterTravel() {
         return afterTravel;
+    }
+
+    public double getDistanceLeftForNextLocation() {
+        return distanceLeftForNextLocation;
+    }
+
+    public void setDistanceLeftForNextLocation(double distanceLeftForNextLocation) {
+        this.distanceLeftForNextLocation = distanceLeftForNextLocation;
     }
 }
