@@ -89,6 +89,8 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                 }
             });
             setOutsideBackground(location);
+            gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.LOW_ENERGY_AUDIO_PATH));
+            gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.TAKE_OFF_AUDIO_PATH));
             gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.BG_DEFAULT_AUDIO_PATH));
             gameState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
             gameState.addRenderable(renderable);
@@ -150,12 +152,17 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
             case UserActionCode.TRAVEL:
                 if (buttonsEnabled && !contactClickable && travelClickable) {
                     gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.TRAVEL_AUDIO_PATH));
+                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.TAKE_OFF_AUDIO_PATH));
                     calculateAndSetTravelPercentage();
                     gameInfo.setAfterTravel(true);
                     // end current episode and start map episode
                     goToEpisode(gameState, new GameEvent(TRAVEL_ON_MAP_EPISODE, null, this));
-                } else
-                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
+                } else {
+                    if (gameInfo.getRemainingEnergy() == 0)
+                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.LOW_ENERGY_AUDIO_PATH));
+                    else
+                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
+                }
                 break;
             case UserActionCode.LAUNCH:
                 if (buttonsEnabled && !contactClickable && launchClickable) {
@@ -192,7 +199,9 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
         renderable.setMotorEfficiencyValue(String.valueOf(gameInfo.getMotorEfficiency()));
         renderable.setDaysLeftValue(gameInfo.getDaysLeftForDestination() + "");
         if (gameInfo.getNextLocation() != null) {
-            renderable.setDestinationDistanceValue(gameInfo.getNextLocationDistance() + "");
+            System.out.println();
+            int percentageTraveled = (int)((100 - gameInfo.getNextTravelPercentagePossible()) * gameInfo.getNextLocationDistance() / 100);
+            renderable.setDestinationDistanceValue(percentageTraveled + "");
         }
         else{
             renderable.setDestinationDistanceValue("--");

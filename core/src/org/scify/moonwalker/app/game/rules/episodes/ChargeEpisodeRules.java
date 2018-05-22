@@ -56,7 +56,8 @@ public class ChargeEpisodeRules extends FadingEpisodeRules<ChargeEpisodeRenderab
     public void episodeStartedEvents(final GameState gameState) {
         if (!isEpisodeStarted(gameState)) {
             renderable = new ChargeEpisodeRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID);
-            renderable.setDistanceFromDestinationLabel(gameInfo.getNextLocationDistance() + " Km");
+            int percentageTraveled = (int)((100 - gameInfo.getNextTravelPercentagePossible()) * gameInfo.getNextLocationDistance() / 100);
+            renderable.setDistanceFromDestinationLabel(percentageTraveled + " Km");
             renderable.setDistancePerUnitLabel(gameInfo.getMotorEfficiency() + " Km/Unit");
             renderable.setEnergyLabel(gameInfo.getRemainingEnergy() + " Units");
             renderable.setCurrentMoonPhaseInfo(gameInfo.getUnitsOfMoonPhase(gameInfo.getCurrentMoonPhase()), gameInfo.getCurrentMoonPhase().getImgPath());

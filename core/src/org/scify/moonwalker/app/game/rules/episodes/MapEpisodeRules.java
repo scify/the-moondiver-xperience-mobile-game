@@ -159,8 +159,13 @@ public class MapEpisodeRules extends BaseEpisodeRules {
                 gameInfo.setNextLocation(nextLocation);
                 gameInfo.getNextLocation().setDistanceInKilometers(gameInfo.getCurrentLocation().getDistanceFromLocation(nextLocation));
                 // And show appropriate effect
-                gameInfo.setMapRequestFlag(false);
-                gameInfo.setChargeRequestFlag(true);
+                if (!travelOnly) {
+                    gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.LOCATION_SELECTED_AUDIO_PATH));
+                    gameInfo.setMapRequestFlag(false);
+                    gameInfo.setChargeRequestFlag(true);
+                }else {
+                    gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.TRAVEL_AUDIO_PATH));
+                }
                 createSpaceshipMovementEffect(gsCurrent);
                 break;
             case UserActionCode.QUIT:
@@ -168,6 +173,8 @@ public class MapEpisodeRules extends BaseEpisodeRules {
                 eFadeOutAndEnd.addEffect(new FunctionEffect(new Runnable() {
                     @Override
                     public void run() {
+                        gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.LOCATION_SELECTED_AUDIO_PATH));
+                        gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.TRAVEL_AUDIO_PATH));
                         endEpisodeAndAddEventWithType(gsCurrent, "");
                     }
                 }));

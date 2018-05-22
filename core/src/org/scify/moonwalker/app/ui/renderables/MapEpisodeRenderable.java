@@ -29,6 +29,9 @@ public class MapEpisodeRenderable extends Renderable {
     public static final String STAR_IMG_PATH = "img/episode_map/star_red1.png";
     public static final String STAR2_IMG_PATH = "img/episode_map/star_grey1.png";
 
+    public static final String LOCATION_SELECTED_AUDIO_PATH = "audio/episode_map/location_selected.mp3";
+    public static final String TRAVEL_AUDIO_PATH = "audio/episode_map/travel.mp3";
+
 
     protected Location currentLocation;
     protected Location nextAllowedLocation;
