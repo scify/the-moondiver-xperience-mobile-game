@@ -141,20 +141,6 @@ public class MapEpisodeRules extends BaseEpisodeRules {
         }
     }
 
-
-    @Override
-    protected void episodeEndedEvents(GameState currentState) {
-        // Update main properties in game info
-        //gameInfo.setNextLocation(renderable.getNextAllowedLocation());
-
-        super.episodeEndedEvents(currentState);
-    }
-
-    @Override
-    public GameState getNextState(GameState gsCurrent, UserAction userAction) {
-        return super.getNextState(gsCurrent, userAction);
-    }
-
     @Override
     protected void handleUserAction(final GameState gsCurrent, UserAction userAction) {
         // If location was selected
@@ -186,11 +172,6 @@ public class MapEpisodeRules extends BaseEpisodeRules {
         }
 
         super.handleUserAction(gsCurrent, userAction);
-    }
-
-    @Override
-    public EpisodeEndState determineEndState(GameState currentState) {
-        return new EpisodeEndState(EpisodeEndStateCode.TEMP_EPISODE_FINISHED, currentState);
     }
 
     protected void createSpaceshipMovementEffect(final GameState gsCurrent) {
