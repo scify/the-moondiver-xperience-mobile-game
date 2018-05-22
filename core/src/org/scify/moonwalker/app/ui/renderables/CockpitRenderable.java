@@ -59,10 +59,20 @@ public class CockpitRenderable extends FadingTableRenderable {
     //audio
     public static final String CLICK_AUDIO_PATH = "audio/button1.mp3";
     public static final String WRONG_BUTTON_AUDIO_PATH = "audio/wrong.mp3";
-    public static final String SPACESHIP_BG_AUDIO_PATH = "audio/spaceship_bg.mp3";
+    public static final String BG_DEFAULT_AUDIO_PATH = "audio/episode_cockpit/bg.mp3";
+    public static final String BG_NOWHERE1_AUDIO_PATH = "audio/episode_cockpit/bg_nowhere1.mp3";
+    public static final String BG_NOWHERE2_AUDIO_PATH = "audio/episode_cockpit/bg_nowhere2.mp3";
+    public static final String LOW_ENERGY_AUDIO_PATH = "audio/episode_cockpit/low_energy.mp3";
+    public static final String TAKE_OFF_AUDIO_PATH = "audio/episode_cockpit/take_off.mp3";
+    public static final String MOON_TAKE_OFF_AUDIO_PATH = "audio/episode_cockpit/moon_take_off.mp3";
+    //CHARGE EPISODE
     public static final String ADD_ITEM_AUDIO_PATH = "audio/episode_spaceship_inventory/addSpaceshipItemToInventory.mp3";
+    //INVENTORY
     public static final String UPGRADE_STATS_AUDIO_PATH = "audio/episode_spaceship_inventory/increaseStat.mp3";
     public static final String POWER_UP_AUDIO_PATH = "audio/episode_charge/power_up.mp3";
+    //MAP
+    public static final String LOCATION_SELECTED_AUDIO_PATH = "audio/episode_map/location_selected.mp3";
+    public static final String TRAVEL_AUDIO_PATH = "audio/episode_map/travel.mp3";
 
     protected TextLabelRenderable motorEfficiencyLabel;
     protected TextLabelRenderable energyLabel;

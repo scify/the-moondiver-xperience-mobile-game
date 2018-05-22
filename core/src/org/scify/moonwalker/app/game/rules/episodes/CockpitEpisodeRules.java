@@ -88,7 +88,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                 }
             });
             setOutsideBackground(location);
-            gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.SPACESHIP_BG_AUDIO_PATH));
+            gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.BG_DEFAULT_AUDIO_PATH));
             gameState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
             gameState.addRenderable(renderable);
             super.episodeStartedEvents(gameState);
@@ -123,8 +123,10 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                     gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
                 break;
             case UserActionCode.MAP_EPISODE:
-                if (buttonsEnabled && !contactClickable && mapClickable)
+                if (buttonsEnabled && !contactClickable && mapClickable) {
+                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.LOCATION_SELECTED_AUDIO_PATH));
                     goToEpisode(gameState, new GameEvent(SELECT_LOCATION_ON_MAP_EPISODE, null, this));
+                }
                 else
                     gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
                 break;
@@ -146,6 +148,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                 break;
             case UserActionCode.TRAVEL:
                 if (buttonsEnabled && !contactClickable && travelClickable) {
+                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.TRAVEL_AUDIO_PATH));
                     calculateAndSetTravelPercentage();
                     gameInfo.setAfterTravel(true);
                     // end current episode and start map episode
