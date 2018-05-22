@@ -1,9 +1,6 @@
 package org.scify.moonwalker.app.game.scenarios;
 
-import org.scify.engine.Episode;
-import org.scify.engine.EpisodeEndState;
-import org.scify.engine.EpisodeEndStateCode;
-import org.scify.engine.Scenario;
+import org.scify.engine.*;
 import org.scify.moonwalker.app.game.GameInfo;
 import org.scify.moonwalker.app.game.Location;
 import org.scify.moonwalker.app.game.LocationController;
@@ -11,14 +8,17 @@ import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.game.episodes.*;
 import org.scify.moonwalker.app.game.episodes.locations.LondonEpisode;
 import org.scify.moonwalker.app.game.episodes.locations.MadridEpisode;
+import org.scify.moonwalker.app.game.rules.episodes.LocationEpisodeRules;
 
 import java.util.List;
 import java.util.Random;
 
 public class MoonWalkerScenario extends Scenario {
 
+    private static final String NEXT_LOCATION = "NEXT_LOCATION";
+
     public MoonWalkerScenario() {
-        if (true) {
+        if (false) {
             createBasicScenario();
         }
         else {
@@ -60,6 +60,11 @@ public class MoonWalkerScenario extends Scenario {
                     newCurrentEpisode = new CockpitEpisode();
                 addTemporaryEpisode(new SpaceshipInventoryEpisode(), newCurrentEpisode);
                 break;
+            case EpisodeEndStateCode.LOCATION_EPISODE_STARTED:
+                GameState gameState = state.getGameState();
+                Location target = (Location) gameState.getAdditionalDataEntry(NEXT_LOCATION);
+                addTemporaryEpisode(new LocationEpisode(new LocationEpisodeRules(target)), newCurrentEpisode);
+                break;
             /*case EpisodeEndStateCode.SIMPLE_TIMED_IMAGE_EPISODE:
                 addTemporaryEpisode(new SimpleTimedImageEpisode());
                 break;*/
@@ -74,22 +79,21 @@ public class MoonWalkerScenario extends Scenario {
     }
 
     protected Episode createBasicScenario () {
-        /*Episode mainMenu = new MainMenuEpisode();
+        Episode mainMenu = new MainMenuEpisode();
         setFirstEpisode(mainMenu);
         Episode room = new RoomEpisode();
         addEpisodeAfter(mainMenu, room);
         Episode forest = new ForestEpisode();
-        addEpisodeAfter(room, forest);*/
+        addEpisodeAfter(room, forest);
         Episode cockpit = new CockpitEpisode();
-        setFirstEpisode(cockpit);
-        //addEpisodeAfter(forest, cockpit);
-        //addEpisodeAfter(mainMenu, cockpit);
+        //setFirstEpisode(cockpit);
+        addEpisodeAfter(forest, cockpit);
         return cockpit;
     }
 
     protected Episode createTestingScenario() {
         if (true) {
-            return new LondonEpisode();
+            return new MapEpisode(false);
         } else {
             return getPlaygroundEpisode();
         }

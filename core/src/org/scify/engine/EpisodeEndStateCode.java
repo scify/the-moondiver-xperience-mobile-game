@@ -15,4 +15,5 @@ public class EpisodeEndStateCode {
     public static final String TRAVEL_ON_MAP_EPISODE = "TRAVEL_ON_MAP_EPISODE";
     public static final String SPACESHIP_CHARGER_EPISODE_STARTED = "SPACESHIP_CHARGER_EPISODE_STARTED";
     public static final String SPACESHIP_INVENTORY_EPISODE_STARTED = "SPACESHIP_INVENTORY_EPISODE_STARTED";
+    public static final String LOCATION_EPISODE_STARTED = "LOCATION_EPISODE_STARTED";
 }
