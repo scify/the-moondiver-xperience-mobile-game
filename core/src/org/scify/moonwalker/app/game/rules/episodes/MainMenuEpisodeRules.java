@@ -122,11 +122,6 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
         }
     }
 
-    private void prepareNextEpisodeAudio(GameState currentState) {
-        currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.BOY_MUSIC_AUDIO_PATH));
-        currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
-    }
-
 
     protected void removePreviousAvatarSelectionAndAddNew(GameState currentState, String newSelection) {
         currentState.removeGameEventsWithType(AVATAR_SELECTED);
@@ -135,7 +130,6 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
 
     protected void initPlayerSelection(GameState gameState) {
         renderable.disableInput();
-        prepareNextEpisodeAudio(gameState);
         renderable.initiatePlayerSelection();
         mainMenuButtonsEnabled = false;
     }
@@ -169,17 +163,7 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
 
     protected void endEpisode(final GameState gameState, String sEpisodeEndEventType) {
         renderable.disableInput();
-
-        renderable.addBeforeFadeOut(new Runnable() {
-            @Override
-            public void run() {
-                gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.MAINMENU_AUDIO_PATH));
-                gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.MAINMENU_AUDIO_PATH));
-            }
-        });
-
         endEpisodeAndAddEventWithType(gameState, sEpisodeEndEventType);
-
     }
 
 }

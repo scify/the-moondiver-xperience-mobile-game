@@ -81,6 +81,9 @@ public class ActorFactory extends ComponentFactory {
             case Renderable.ACTOR_EPISODE_MAIN_MENU:
                 toReturn = createMainMenuActor((MainMenuRenderable) renderable);
                 break;
+            case Renderable.ACTOR_EPISODE_INTRO:
+                toReturn = createIntroActor((IntroRenderable) renderable);
+                break;
             case Renderable.ACTOR_EPISODE_ROOM:
                 toReturn = createRoomActor((RoomRenderable) renderable);
                 break;
@@ -189,6 +192,12 @@ public class ActorFactory extends ComponentFactory {
 
     private MainMenuActor createMainMenuActor(MainMenuRenderable renderable) {
         MainMenuActor actor = new MainMenuActor(skin, renderable);
+        actor.setZIndex(0);
+        return actor;
+    }
+
+    private Actor createIntroActor(final IntroRenderable renderable) {
+        IntroActor actor = new IntroActor(skin, renderable);
         actor.setZIndex(0);
         return actor;
     }
