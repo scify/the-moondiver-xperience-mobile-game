@@ -88,7 +88,7 @@ public class MoonWalkerScenario extends Scenario {
         Episode cockpit = new CockpitEpisode();
         setFirstEpisode(cockpit);
         addEpisodeAfter(forest, cockpit);
-        return cockpit;
+        return mainMenu;
     }
 
     protected Episode createTestingScenario() {
