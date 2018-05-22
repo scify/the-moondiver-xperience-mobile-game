@@ -121,4 +121,8 @@ public class LocationController {
     public Location getInitialLocation() {
         return initialLocation;
     }
+
+    public Location getLocationAfter(Location location) {
+        return locations.get(locations.indexOf(location) + 1);
+    }
 }

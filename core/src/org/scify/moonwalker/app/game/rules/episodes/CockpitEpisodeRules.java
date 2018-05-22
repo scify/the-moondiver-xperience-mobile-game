@@ -46,6 +46,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
             if(gameInfo.getNextTravelPercentagePossible() == 100.0 && gameInfo.isAfterTravel()) {
                 // update current location in gameInfo
                 gameInfo.setCurrentLocation(gameInfo.getNextAllowedLocation());
+                gameInfo.setNextAllowedLocation(locationController.getLocationAfter(gameInfo.getCurrentLocation()));
                 // reset the travel percentages in gameInfo
                 gameInfo.resetTravelState();
                 location = gameInfo.getCurrentLocation();
@@ -222,6 +223,12 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
         if(percentage > 100)
             percentage = 100;
         System.out.println("percentage " + percentage);
+        int remainingKilometers = 0;
+        if(destinationKm > kilometersForEnergyUnits)
+            remainingKilometers = destinationKm - kilometersForEnergyUnits;
+        if(kilometersForEnergyUnits > destinationKm)
+            remainingKilometers = kilometersForEnergyUnits - destinationKm;
+        gameInfo.setRemainingEnergy(remainingKilometers / motorEfficiency);
         gameInfo.setNextTravelPercentagePossible(percentage);
     }
 }

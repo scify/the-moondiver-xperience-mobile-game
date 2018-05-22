@@ -109,6 +109,10 @@ public class GameInfo {
         return remainingEnergy;
     }
 
+    public void setRemainingEnergy(int remainingEnergy) {
+        this.remainingEnergy = remainingEnergy;
+    }
+
     public void addEnergy(int remainingEnergy) {
         this.remainingEnergy += remainingEnergy;
     }
