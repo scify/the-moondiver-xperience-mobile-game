@@ -9,6 +9,7 @@ public class LocationController {
     public static final String NO_MISSION = "(Καμία)";
 
     protected List<Location> locations;
+    protected Location initialLocation;
     protected static boolean selectFirstMiddleOfNowhere = true;
     protected static String CONVERSATIONS_PATH = "conversations/locations/";
     protected static String CONVERSATION_MAIN_FILE_NAME = "main_conversation.json";
@@ -82,6 +83,8 @@ public class LocationController {
         locations.add(norway);
         locations.add(greece);
         locations.add(france);
+
+        initialLocation = greece;
     }
 
     public List<Location> getLocations() {
@@ -94,9 +97,7 @@ public class LocationController {
         if (instance == null) {
             instance = new LocationController();
         }
-
         return instance;
-
     }
 
     public Location getNowhereLocation(String name, int posX, int posY) {
@@ -115,5 +116,9 @@ public class LocationController {
                 CONVERSATIONS_PATH + resDirName + "/" + CONVERSATION_SUCCESS_FILE_NAME,
                 CONVERSATIONS_PATH + "conversation_after_quiz_failure.json"
         );
+    }
+
+    public Location getInitialLocation() {
+        return initialLocation;
     }
 }

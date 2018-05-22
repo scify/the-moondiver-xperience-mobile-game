@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static org.scify.engine.EpisodeEndStateCode.*;
+import static org.scify.moonwalker.app.game.rules.episodes.MapEpisodeRules.ORIGIN_MIDDLE_OF_NOWHERE;
 
 public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
 
@@ -40,7 +41,21 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
     public void episodeStartedEvents(final GameState gameState) {
         if (!isEpisodeStarted(gameState)) {
             locationController = new LocationController();
-            Location location = gameInfo.getCurrentLocation();
+            Location location;
+            // if last travel was successful
+            if(gameInfo.getNextTravelPercentagePossible() == 100.0 && gameInfo.isAfterTravel()) {
+                // update current location in gameInfo
+                gameInfo.setCurrentLocation(gameInfo.getNextAllowedLocation());
+                // reset the travel percentages in gameInfo
+                gameInfo.resetTravelState();
+                location = gameInfo.getCurrentLocation();
+            } // if last travel was unsuccessful
+            else if (gameInfo.getNextTravelPercentagePossible() < 100.0 && gameInfo.isAfterTravel()){
+                location = locationController.getNowhereLocation(ORIGIN_MIDDLE_OF_NOWHERE, 0,0);
+            } else {
+                location = gameInfo.getCurrentLocation();
+            }
+
             renderable = new CockpitRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), COCKPIT_ID, location);
             renderable.setZIndex(1);
             setCockpitFieldValues();
@@ -67,6 +82,9 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                             travelClickable = true;
                     }
                     buttonsEnabled = true;
+
+
+
                 }
             });
             setOutsideBackground(location);
@@ -128,7 +146,10 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                 break;
             case UserActionCode.TRAVEL:
                 if (buttonsEnabled && !contactClickable && travelClickable) {
-
+                    calculateAndSetTravelPercentage();
+                    gameInfo.setAfterTravel(true);
+                    // end current episode and start map episode
+                    goToEpisode(gameState, new GameEvent(TRAVEL_ON_MAP_EPISODE, null, this));
                 } else
                     gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
                 break;
@@ -157,6 +178,8 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
             return new EpisodeEndState(SPACESHIP_CHARGER_EPISODE_STARTED, cleanUpGameState(currentState));
         else if (currentState.eventsQueueContainsEventOwnedBy(SPACESHIP_INVENTORY_EPISODE_STARTED, this))
             return new EpisodeEndState(SPACESHIP_INVENTORY_EPISODE_STARTED, cleanUpGameState(currentState));
+        else if (currentState.eventsQueueContainsEventOwnedBy(TRAVEL_ON_MAP_EPISODE, this))
+            return new EpisodeEndState(TRAVEL_ON_MAP_EPISODE, cleanUpGameState(currentState));
         return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE, cleanUpGameState(currentState));
     }
 
@@ -184,5 +207,21 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
             gameState.addGameEvent(new GameEvent(TOGGLE_BUTTON, button, new Date().getTime() + 500, false, this));
         }
         return super.getNextState(gameState, userAction);
+    }
+
+    protected void calculateAndSetTravelPercentage() {
+        // motor efficiency describes how many kilometers the spaceship
+        int motorEfficiency = gameInfo.getMotorEfficiency();
+        // get the destination (in kilometers) for the target location
+        int destinationKm = gameInfo.getNextLocationDistance();
+        // get the remaining energy units from gameInfo
+        int remainingEnergy = gameInfo.getRemainingEnergy();
+        int kilometersForEnergyUnits = motorEfficiency * remainingEnergy;
+        double percentage = (kilometersForEnergyUnits / destinationKm) * 100;
+        // if we have more energy than needed, set as full percentage
+        if(percentage > 100)
+            percentage = 100;
+        System.out.println("percentage " + percentage);
+        gameInfo.setNextTravelPercentagePossible(percentage);
     }
 }

@@ -22,7 +22,7 @@ public class GameInfo {
     protected boolean inventoryIncreased;
     protected boolean atForest;
     protected String conversationFileForContactScreen;
-
+    protected boolean afterTravel;
 
     /**
      * The travel percentage complete in the LAST travel
@@ -61,17 +61,17 @@ public class GameInfo {
         setMoonPhases();
         //TODO set to unset
         selectedPlayer = SelectedPlayer.girl;
-        tutorialMode = true;
+        tutorialMode = false;
         contactRequestFlag = false;
         mapRequestFlag = true;
         chargeRequestFlag = false;
-        setCurrentLocation(lc.getLocations().get(5));
+        setCurrentLocation(lc.getInitialLocation());
         setNextAllowedLocation(lc.getLocations().get(0));
-        setPreviousTravelPercentageComplete(0);
-        setNextTravelPercentagePossible(100);
+        //setNextTravelPercentagePossible(100);
         //inventory
         inventoryItemsCounter = 0;
         inventoryIncreased = false;
+        afterTravel = false;
     }
 
     public boolean getContactRequestFlag() {
@@ -165,15 +165,13 @@ public class GameInfo {
         return previousTravelPercentageComplete;
     }
 
-    public void setPreviousTravelPercentageComplete(double previousTravelPercentageComplete) {
-        this.previousTravelPercentageComplete = previousTravelPercentageComplete;
-    }
-
     public double getNextTravelPercentagePossible() {
         return nextTravelPercentagePossible;
     }
 
     public void setNextTravelPercentagePossible(double nextTravelPercentagePossible) {
+        // the previous travel is equal as the previous value of the next travel percentage
+        this.previousTravelPercentageComplete = this.nextTravelPercentagePossible;
         this.nextTravelPercentagePossible = nextTravelPercentagePossible;
     }
 
@@ -245,5 +243,19 @@ public class GameInfo {
 
     public void setTutorialMode(boolean tutorialMode) {
         this.tutorialMode = tutorialMode;
+    }
+
+    public void resetTravelState() {
+        previousTravelPercentageComplete = 0;
+        nextTravelPercentagePossible = 0;
+        afterTravel = false;
+    }
+
+    public void setAfterTravel(boolean afterTravel) {
+        this.afterTravel = afterTravel;
+    }
+
+    public boolean isAfterTravel() {
+        return afterTravel;
     }
 }
