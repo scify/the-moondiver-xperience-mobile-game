@@ -15,12 +15,13 @@ import org.scify.moonwalker.app.ui.actors.calculator.CalculatorController;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ChargeEpisodeRenderable extends FadingTableRenderable {
+public class ChargeEpisodeRenderable extends ChattableRenderable {
     //renderable image paths
     protected static final String BG_IMG_PATH = "img/episode_charge/bg.png";
     protected static final String CHARGE_BUTTON_IMG_PATH = "img/episode_charge/charge_button_green.png";
     protected static final String EXIT_BUTTON_IMG_PATH = "img/episode_charge/exit_button.png";
     protected static final String TRANSPARENT_BUTTON_IMG_PATH = "img/episode_charge/transparent_button.png";
+    public static final String CONVERSATION_BG_IMG_PATH = "img/episode_charge/conversation_bg.png";
 
     //renderable ids
     protected static final String CHARGE_BUTTON_ID = "charge_button";
@@ -105,6 +106,7 @@ public class ChargeEpisodeRenderable extends FadingTableRenderable {
         nextUnitsValue2 = null;
         nextUnitsValue3 = null;
         nextEnergyValue = null;
+        chatEnabled = false;
     }
 
     private void initSubRenderables() {
