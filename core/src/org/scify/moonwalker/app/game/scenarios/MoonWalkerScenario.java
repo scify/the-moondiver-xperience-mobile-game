@@ -18,7 +18,7 @@ public class MoonWalkerScenario extends Scenario {
     private static final String NEXT_LOCATION = "NEXT_LOCATION";
 
     public MoonWalkerScenario() {
-        if (false) {
+        if (true) {
             createBasicScenario();
         }
         else {
@@ -88,7 +88,7 @@ public class MoonWalkerScenario extends Scenario {
         Episode cockpit = new CockpitEpisode();
         //setFirstEpisode(cockpit);
         addEpisodeAfter(forest, cockpit);
-        return cockpit;
+        return mainMenu;
     }
 
     protected Episode createTestingScenario() {
