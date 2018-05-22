@@ -55,6 +55,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                 location = locationController.getNowhereLocation(ORIGIN_MIDDLE_OF_NOWHERE, 0,0);
             } else {
                 location = gameInfo.getCurrentLocation();
+                locationController.resetSelectFirstMiddleOfNowhere();
             }
 
             renderable = new CockpitRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), COCKPIT_ID, location);
@@ -151,6 +152,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                 break;
             case UserActionCode.TRAVEL:
                 if (buttonsEnabled && !contactClickable && travelClickable) {
+                    gameInfo.setAtForest(false);
                     gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.TRAVEL_AUDIO_PATH));
                     gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.TAKE_OFF_AUDIO_PATH));
                     calculateAndSetTravelPercentage();

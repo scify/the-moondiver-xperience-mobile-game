@@ -102,12 +102,21 @@ public class LocationController {
 
     public Location getNowhereLocation(String name, int posX, int posY) {
         if (selectFirstMiddleOfNowhere) {
-            selectFirstMiddleOfNowhere = false;
             return createLocation(name, "nowhere", posX, posY, NO_MISSION);
         } else {
-            selectFirstMiddleOfNowhere = true;
             return createLocation(name, "nowhere2", posX, posY, NO_MISSION);
         }
+    }
+
+    public void resetSelectFirstMiddleOfNowhere() {
+        selectFirstMiddleOfNowhere = true;
+    }
+
+    public void toggleSelectFirstMiddleOfNowhere() {
+        if (selectFirstMiddleOfNowhere)
+            selectFirstMiddleOfNowhere = false;
+        else
+            selectFirstMiddleOfNowhere = true;
     }
 
     protected Location createLocation(String name, String resDirName, int posX, int posY, String mission) {
