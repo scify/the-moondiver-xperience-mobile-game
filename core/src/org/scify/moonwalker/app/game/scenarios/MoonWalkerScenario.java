@@ -88,14 +88,14 @@ public class MoonWalkerScenario extends Scenario {
         Episode forest = new ForestEpisode();
         addEpisodeAfter(room, forest);
         Episode cockpit = new CockpitEpisode();
-        //setFirstEpisode(cockpit);
+        setFirstEpisode(cockpit);
         addEpisodeAfter(forest, cockpit);
         return mainMenu;
     }
 
     protected Episode createTestingScenario() {
         if (true) {
-            return new MapEpisode(false);
+            return new ForestEpisode();
         } else {
             return getPlaygroundEpisode();
         }
@@ -133,21 +133,24 @@ public class MoonWalkerScenario extends Scenario {
     private Episode getMapEpisode() {
         Random rRnd = new Random();
 
-        Episode mapEpisode = new MapEpisode(false);
+        Episode mapEpisode = new MapEpisode(true);
         setFirstEpisode(mapEpisode);
         GameInfo info = GameInfo.getInstance();
+
         LocationController lc = LocationController.getInstance();
+
+
         int iSize = lc.getLocations().size();
         List<Location> llLocations = lc.getLocations();
         int iFrom = rRnd.nextInt(iSize);
         info.setCurrentLocation(llLocations.get(iFrom));
+
         int iTo = rRnd.nextInt(iSize);
         while (iTo == iFrom) {
             iTo = rRnd.nextInt(iSize);
         }
 
-        info.setNextAllowedLocation(llLocations.get(iTo));
-        info.setPreviousTravelPercentageComplete(25);
+        info.setNextLocation(llLocations.get(iTo));
         info.setNextTravelPercentagePossible(75);
         return mapEpisode;
     }

@@ -12,6 +12,8 @@ import org.scify.moonwalker.app.ui.renderables.MapEpisodeRenderable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.scify.engine.EpisodeEndStateCode.TEMP_EPISODE_FINISHED;
+
 
 /* Guide:
  1st step: constructor
@@ -97,6 +99,8 @@ public class MapEpisodeRules extends BaseEpisodeRules {
 
     protected void initTargetLocation() {
         double dPercentageOfNextMovePossible = gameInfo.getNextTravelPercentagePossible();
+        if(!travelOnly)
+            dPercentageOfNextMovePossible = 100.0;
         if (dPercentageOfNextMovePossible < 100.0) {
             // Create "middle of nowhere" location for target
             double dMoNX = gameInfo.getCurrentLocation().getPosX() + (gameInfo.getNextAllowedLocation().getPosX() - gameInfo.getCurrentLocation().getPosX()) * dPercentageOfNextMovePossible / 100;
@@ -126,6 +130,7 @@ public class MapEpisodeRules extends BaseEpisodeRules {
 
     protected void initOriginLocation() {
         double dPercentageOfPreviousMoveComplete = gameInfo.getPreviousTravelPercentageComplete();
+        // todo ask ggianna
         if (dPercentageOfPreviousMoveComplete != 0.0) {
             // Create "middle of nowhere" location for origin
             double dMoNX = gameInfo.getCurrentLocation().getPosX() + (gameInfo.getNextAllowedLocation().getPosX() - gameInfo.getCurrentLocation().getPosX()) * dPercentageOfPreviousMoveComplete / 100.0;
@@ -147,6 +152,7 @@ public class MapEpisodeRules extends BaseEpisodeRules {
         String actionCode = userAction.getActionCode();
         switch (actionCode) {
             case MapEpisodeRenderable.MAP_SELECT_ACTION:
+
                 // Update next location
                 Location nextLocation = (Location)userAction.getActionPayload();
                 renderable.setNextLocation(nextLocation);
@@ -247,10 +253,11 @@ public class MapEpisodeRules extends BaseEpisodeRules {
                 public void run() {
                     handleUserAction(gsCurrent, new UserAction(UserActionCode.QUIT));
                     // If we actually reached the destination
-                    if (gameInfo.getPreviousTravelPercentageComplete() == 100.0) {
-                        // Update the current location
-                        gameInfo.setCurrentLocation(renderable.getNextAllowedLocation());
-                    }
+                    // todo ask ggianna
+//                    if (gameInfo.getPreviousTravelPercentageComplete() == 100.0) {
+//                        // Update the current location
+//                        gameInfo.setCurrentLocation(renderable.getNextAllowedLocation());
+//                    }
                 }
             }));
             rCurLocation.addEffect(esRes);
@@ -258,4 +265,8 @@ public class MapEpisodeRules extends BaseEpisodeRules {
 
     }
 
+    @Override
+    public EpisodeEndState determineEndState(GameState currentState) {
+        return new EpisodeEndState(TEMP_EPISODE_FINISHED, cleanUpGameState(currentState));
+    }
 }
