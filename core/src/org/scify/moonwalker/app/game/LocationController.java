@@ -114,10 +114,7 @@ public class LocationController {
     }
 
     public void toggleSelectFirstMiddleOfNowhere() {
-        if (selectFirstMiddleOfNowhere)
-            selectFirstMiddleOfNowhere = false;
-        else
-            selectFirstMiddleOfNowhere = true;
+        selectFirstMiddleOfNowhere = !selectFirstMiddleOfNowhere;
     }
 
     protected Location createLocation(String name, String resDirName, int posX, int posY, String mission) {
