@@ -25,6 +25,8 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
     protected boolean travelClickable;
     protected boolean chargeClickable;
     protected boolean inventoryClickable;
+    protected boolean showArrivalConversation;
+    protected Location episodeLocation;
 
     public CockpitEpisodeRules() {
         super();
@@ -37,31 +39,26 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
         inventoryClickable = false;
     }
 
+    public void init() {
+        showArrivalConversation = false;
+        locationController = new LocationController();
+    }
+
     @Override
     public void episodeStartedEvents(final GameState gameState) {
         if (!isEpisodeStarted(gameState)) {
-            locationController = new LocationController();
-            Location location;
+            init();
             // if last travel was successful
-            if(gameInfo.getNextTravelPercentagePossible() == 100.0 && gameInfo.isAfterTravel()) {
-                // update current location in gameInfo
-                gameInfo.setCurrentLocation(gameInfo.getNextLocation());
-                // set the next location to null, so the user has to select it from the map
-                gameInfo.setNextLocation(null);
-                // todo what to do in case we landed in paris (so the next location does not exist)?
-                gameInfo.setNextAllowedLocation(locationController.getLocationAfter(gameInfo.getCurrentLocation()));
-                // reset the travel percentages in gameInfo
-                gameInfo.resetTravelState();
-                location = gameInfo.getCurrentLocation();
+            if(hasSpaceshipJustArrivedAtLocation()) {
+                spaceshipHasJustArrived();
             } // if last travel was unsuccessful
-            else if (gameInfo.getNextTravelPercentagePossible() < 100.0 && gameInfo.isAfterTravel()){
-                location = locationController.getNowhereLocation(ORIGIN_MIDDLE_OF_NOWHERE, 0,0);
+            else if (hasSpaceshipFailedToArriveAtLocation()){
+                episodeLocation = locationController.getNowhereLocation(ORIGIN_MIDDLE_OF_NOWHERE, 0,0);
             } else {
-                location = gameInfo.getCurrentLocation();
+                episodeLocation = gameInfo.getCurrentLocation();
                 locationController.resetSelectFirstMiddleOfNowhere();
             }
-
-            renderable = new CockpitRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), COCKPIT_ID, location);
+            renderable = new CockpitRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), COCKPIT_ID, episodeLocation);
             renderable.setZIndex(1);
             setCockpitFieldValues();
             renderable.addAfterFadeIn(new Runnable() {
@@ -87,9 +84,11 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                             travelClickable = true;
                     }
                     buttonsEnabled = true;
+                    if(showArrivalConversation)
+                        createConversation(gameState, gameInfo.getCurrentLocation().getConversationArrivalFilePath(), renderable.CONVERSATION_BG_IMG_PATH);
                 }
             });
-            setOutsideBackground(location);
+            setOutsideBackground(episodeLocation);
             gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.LOW_ENERGY_AUDIO_PATH));
             gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.TAKE_OFF_AUDIO_PATH));
             if(!gameState.eventsQueueContainsEvent(GAME_EVENT_AUDIO_START_LOOP_UI))
@@ -98,6 +97,27 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
             gameState.addRenderable(renderable);
             super.episodeStartedEvents(gameState);
         }
+    }
+
+    protected void spaceshipHasJustArrived() {
+        // update current location in gameInfo
+        gameInfo.setCurrentLocation(gameInfo.getNextLocation());
+        // set the next location to null, so the user has to select it from the map
+        gameInfo.setNextLocation(null);
+        // todo what to do in case we landed in paris (so the next location does not exist)?
+        gameInfo.setNextAllowedLocation(locationController.getLocationAfter(gameInfo.getCurrentLocation()));
+        // reset the travel percentages in gameInfo
+        gameInfo.resetTravelState();
+        showArrivalConversation = true;
+        episodeLocation = gameInfo.getCurrentLocation();
+    }
+
+    protected boolean hasSpaceshipJustArrivedAtLocation() {
+        return gameInfo.getNextTravelPercentagePossible() == 100.0 && gameInfo.isAfterTravel();
+    }
+
+    protected boolean hasSpaceshipFailedToArriveAtLocation() {
+        return gameInfo.getNextTravelPercentagePossible() < 100.0 && gameInfo.isAfterTravel();
     }
 
     protected void setOutsideBackground(Location location) {
@@ -153,24 +173,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                     gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
                 break;
             case UserActionCode.TRAVEL:
-                if (buttonsEnabled && !contactClickable && travelClickable) {
-                    gameInfo.setAtForest(false);
-                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.TRAVEL_AUDIO_PATH));
-                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.TAKE_OFF_AUDIO_PATH));
-                    calculateAndSetTravelPercentage();
-                    gameInfo.setAfterTravel(true);
-                    // end current episode and start map episode
-                    goToEpisode(gameState, new GameEvent(TRAVEL_ON_MAP_EPISODE, null, this));
-                } else {
-                    if (gameInfo.getRemainingEnergy() == 0)
-                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.LOW_ENERGY_AUDIO_PATH));
-                    else
-                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
-                    if(gameInfo.getNextLocation() == null) {
-                        createConversation(gameState, "conversations/next_location_not_selected.json", renderable.CONVERSATION_BG_IMG_PATH);
-                        renderable.turnOnButtonLight(renderable.getMapLightedButton());
-                    }
-                }
+                handleTravelClick(gameState);
                 break;
             case UserActionCode.LAUNCH:
                 if (buttonsEnabled && !contactClickable && launchClickable) {
@@ -181,6 +184,27 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
             default:
                 super.handleUserAction(gameState, userAction);
                 break;
+        }
+    }
+
+    protected void handleTravelClick(GameState gameState) {
+        if (buttonsEnabled && !contactClickable && travelClickable) {
+            gameInfo.setAtForest(false);
+            gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.TRAVEL_AUDIO_PATH));
+            gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.TAKE_OFF_AUDIO_PATH));
+            calculateAndSetTravelPercentage();
+            gameInfo.setAfterTravel(true);
+            // end current episode and start map episode
+            goToEpisode(gameState, new GameEvent(TRAVEL_ON_MAP_EPISODE, null, this));
+        } else {
+            if (gameInfo.getRemainingEnergy() == 0)
+                gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.LOW_ENERGY_AUDIO_PATH));
+            else
+                gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
+            if(gameInfo.getNextLocation() == null) {
+                createConversation(gameState, "conversations/next_location_not_selected.json", renderable.CONVERSATION_BG_IMG_PATH);
+                renderable.turnOnButtonLight(renderable.getMapLightedButton());
+            }
         }
     }
 

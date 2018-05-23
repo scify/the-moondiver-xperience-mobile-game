@@ -121,7 +121,8 @@ public class LocationController {
         return new Location(name, LOCATION_IMG_PATH + resDirName + "/", posX, posY, mission,
                 CONVERSATIONS_PATH + resDirName + "/" + CONVERSATION_MAIN_FILE_NAME,
                 CONVERSATIONS_PATH + resDirName + "/" + CONVERSATION_SUCCESS_FILE_NAME,
-                CONVERSATIONS_PATH + "conversation_after_quiz_failure.json"
+                CONVERSATIONS_PATH + "conversation_after_quiz_failure.json",
+                CONVERSATIONS_PATH + resDirName + "/" + "arrival_conversation.json"
         );
     }
 
