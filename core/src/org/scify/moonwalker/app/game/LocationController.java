@@ -25,7 +25,7 @@ public class LocationController {
         Location italy = createLocation("Μιλάνο", "milan", 1130, 1080 - 680, "Πάρε τον\nΗλιακό Συλλέκτη\nX3000");
         Location germany = createLocation("Βερολίνο", "berlin", 1220, 1080 - 400, "Πάρε τον\nκεντρικό\nκινητήρα");
         Location norway = createLocation("Όσλο", "oslo", 1170, 1080 - 90, "Πάρε τον\nΗλιακό Συλλέκτη\nX4000");
-
+        // todo add moon as last location
         greece.addOtherLocationAndDistance(uk, 2500);
         greece.addOtherLocationAndDistance(france, 1800);
         greece.addOtherLocationAndDistance(spain, 2200);
@@ -101,6 +101,7 @@ public class LocationController {
     }
 
     public Location getNowhereLocation(String name, int posX, int posY) {
+        toggleSelectFirstMiddleOfNowhere();
         if (selectFirstMiddleOfNowhere) {
             return createLocation(name, "nowhere", posX, posY, NO_MISSION);
         } else {
