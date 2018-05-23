@@ -6,8 +6,6 @@ import org.scify.moonwalker.app.game.Location;
 import org.scify.moonwalker.app.game.LocationController;
 import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.game.episodes.*;
-import org.scify.moonwalker.app.game.episodes.locations.LondonEpisode;
-import org.scify.moonwalker.app.game.episodes.locations.MadridEpisode;
 import org.scify.moonwalker.app.game.rules.episodes.LocationEpisodeRules;
 
 import java.util.List;
@@ -15,7 +13,7 @@ import java.util.Random;
 
 public class MoonWalkerScenario extends Scenario {
 
-    private static final String NEXT_LOCATION = "NEXT_LOCATION";
+    public static final String NEXT_LOCATION = "NEXT_LOCATION";
 
     public MoonWalkerScenario() {
         if (true) {
@@ -61,8 +59,11 @@ public class MoonWalkerScenario extends Scenario {
                 addTemporaryEpisode(new SpaceshipInventoryEpisode(), newCurrentEpisode);
                 break;
             case EpisodeEndStateCode.LOCATION_EPISODE_STARTED:
+                if (currentEpisode instanceof CockpitEpisode)
+                    newCurrentEpisode = new CockpitEpisode();
                 GameState gameState = state.getGameState();
                 Location target = (Location) gameState.getAdditionalDataEntry(NEXT_LOCATION);
+                // todo fix here, the scenario ends
                 addTemporaryEpisode(new LocationEpisode(new LocationEpisodeRules(target)), newCurrentEpisode);
                 break;
             /*case EpisodeEndStateCode.SIMPLE_TIMED_IMAGE_EPISODE:

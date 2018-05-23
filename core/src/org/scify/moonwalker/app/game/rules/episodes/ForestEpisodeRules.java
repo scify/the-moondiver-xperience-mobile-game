@@ -10,8 +10,9 @@ import org.scify.moonwalker.app.ui.renderables.ForestRenderable;
 
 import java.util.Set;
 
-public class ForestEpisodeRules extends FadingEpisodeRules<ForestRenderable> {
+import static org.scify.moonwalker.app.game.rules.ConversationRules.EVENT_RING_PHONE;
 
+public class ForestEpisodeRules extends FadingEpisodeRules<ForestRenderable> {
     public static final String RENDERABLE_ID = "forest";
     protected boolean outroInitiated;
 
@@ -77,7 +78,7 @@ public class ForestEpisodeRules extends FadingEpisodeRules<ForestRenderable> {
         Set<String> eventTrigger;
         if (gsCurrent.eventsQueueContainsEvent(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT)) {
             eventTrigger = (Set<String>) gsCurrent.getGameEventWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
-            if (eventTrigger.contains("ring_phone")) {
+            if (eventTrigger.contains(EVENT_RING_PHONE)) {
                 gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.MOBILE_AUDIO_PATH));
             }
         }

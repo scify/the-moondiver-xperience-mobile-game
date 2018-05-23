@@ -8,6 +8,8 @@ import org.scify.moonwalker.app.ui.renderables.ContactScreenRenderable;
 import java.util.ArrayList;
 import java.util.Set;
 
+import static org.scify.moonwalker.app.game.rules.ConversationRules.EVENT_RING_PHONE;
+
 public class ContactScreenEpisodeRules extends FadingEpisodeRules<ContactScreenRenderable> {
 
     protected static final String RENDERABLE_ID = "contact";
@@ -70,7 +72,7 @@ public class ContactScreenEpisodeRules extends FadingEpisodeRules<ContactScreenR
         Set<String> eventTrigger;
         if (gsCurrent.eventsQueueContainsEvent(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT)) {
             eventTrigger = (Set<String>) gsCurrent.getGameEventWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
-            if (eventTrigger.contains("ring_phone")) {
+            if (eventTrigger.contains(EVENT_RING_PHONE)) {
                 gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.MOBILE_AUDIO_PATH));
             }
         }

@@ -10,8 +10,9 @@ import org.scify.moonwalker.app.ui.renderables.RoomRenderable;
 import java.util.ArrayList;
 import java.util.Set;
 
+import static org.scify.moonwalker.app.game.rules.ConversationRules.EVENT_RING_PHONE;
+
 public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
-    public static final String RING_PHONE = "ring_phone";
     public static final String TOGGLE = "toggle";
     public static final String RENDERABLE_ID = "room";
     protected boolean outroInitiated;
@@ -80,7 +81,7 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
     protected void onEnterConversationOrder(GameState gsCurrent, ConversationLine lineEntered) {
         Set<String> eventTrigger;
         eventTrigger = (Set<String>) gsCurrent.getGameEventWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
-        if (eventTrigger.contains(RING_PHONE)) {
+        if (eventTrigger.contains(EVENT_RING_PHONE)) {
             gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.MOBILE_AUDIO_PATH));
             renderable.togglePhone();
         }

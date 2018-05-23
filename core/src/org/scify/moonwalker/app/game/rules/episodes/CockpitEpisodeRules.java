@@ -1,16 +1,21 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
+import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.renderables.ActionButtonRenderable;
 import org.scify.moonwalker.app.game.Location;
 import org.scify.moonwalker.app.game.LocationController;
+import org.scify.moonwalker.app.game.rules.ConversationRules;
 import org.scify.moonwalker.app.ui.renderables.CockpitRenderable;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Set;
 
 import static org.scify.engine.EpisodeEndStateCode.*;
+import static org.scify.moonwalker.app.game.rules.ConversationRules.EVENT_SHOW_QUIZ_EPISODE;
 import static org.scify.moonwalker.app.game.rules.episodes.MapEpisodeRules.ORIGIN_MIDDLE_OF_NOWHERE;
+import static org.scify.moonwalker.app.game.scenarios.MoonWalkerScenario.NEXT_LOCATION;
 
 public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
 
@@ -134,6 +139,20 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
         } else {
             renderable.setOutsideBackground(location.getCockpitBG());
         }
+    }
+
+    @Override
+    protected void onExitConversationOrder(GameState gsCurrent, ConversationLine lineEntered) {
+        Set<String> eventTrigger;
+        if (gsCurrent.eventsQueueContainsEvent(ConversationRules.ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT)) {
+            eventTrigger = (Set<String>) gsCurrent.getGameEventWithType(ConversationRules.ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
+            if (eventTrigger.contains(EVENT_SHOW_QUIZ_EPISODE)) {
+                gsCurrent.setAdditionalDataEntry(NEXT_LOCATION, gameInfo.getCurrentLocation());
+                goToEpisode(gsCurrent, new GameEvent(LOCATION_EPISODE_STARTED, null, this));
+            }
+        }
+
+        super.onEnterConversationOrder(gsCurrent, lineEntered);
     }
 
     protected void goToEpisode(GameState gameState, GameEvent gameEvent) {
