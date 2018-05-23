@@ -48,6 +48,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                 gameInfo.setCurrentLocation(gameInfo.getNextLocation());
                 // set the next location to null, so the user has to select it from the map
                 gameInfo.setNextLocation(null);
+                // todo what to do in case we landed in paris (so the next location does not exist)?
                 gameInfo.setNextAllowedLocation(locationController.getLocationAfter(gameInfo.getCurrentLocation()));
                 // reset the travel percentages in gameInfo
                 gameInfo.resetTravelState();
@@ -82,13 +83,10 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                         inventoryClickable = true;
                         if (gameInfo.getNextLocation() != null)
                             chargeClickable = true;
-                        if (gameInfo.getRemainingEnergy() > 0)
+                        if (gameInfo.getRemainingEnergy() > 0 && gameInfo.getNextLocation() != null)
                             travelClickable = true;
                     }
                     buttonsEnabled = true;
-
-
-
                 }
             });
             setOutsideBackground(location);
@@ -133,6 +131,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                 if (buttonsEnabled && !contactClickable && mapClickable) {
                     gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.LOCATION_SELECTED_AUDIO_PATH));
                     goToEpisode(gameState, new GameEvent(SELECT_LOCATION_ON_MAP_EPISODE, null, this));
+                    renderable.turnOffButtonLight(renderable.getMapLightedButton());
                 }
                 else
                     gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
@@ -154,24 +153,23 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                     gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
                 break;
             case UserActionCode.TRAVEL:
-                if (buttonsEnabled && !contactClickable && travelClickable && gameInfo.getNextLocation() != null) {
-                    if(gameInfo.getNextLocation() == null) {
-                        // todo display conversation prompting the user to select a location from the map
-                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
-                    } else {
-                        gameInfo.setAtForest(false);
-                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.TRAVEL_AUDIO_PATH));
-                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.TAKE_OFF_AUDIO_PATH));
-                        calculateAndSetTravelPercentage();
-                        gameInfo.setAfterTravel(true);
-                        // end current episode and start map episode
-                        goToEpisode(gameState, new GameEvent(TRAVEL_ON_MAP_EPISODE, null, this));
-                    }
+                if (buttonsEnabled && !contactClickable && travelClickable) {
+                    gameInfo.setAtForest(false);
+                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.TRAVEL_AUDIO_PATH));
+                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.TAKE_OFF_AUDIO_PATH));
+                    calculateAndSetTravelPercentage();
+                    gameInfo.setAfterTravel(true);
+                    // end current episode and start map episode
+                    goToEpisode(gameState, new GameEvent(TRAVEL_ON_MAP_EPISODE, null, this));
                 } else {
                     if (gameInfo.getRemainingEnergy() == 0)
                         gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.LOW_ENERGY_AUDIO_PATH));
                     else
                         gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
+                    if(gameInfo.getNextLocation() == null) {
+                        createConversation(gameState, "conversations/next_location_not_selected.json", renderable.CONVERSATION_BG_IMG_PATH);
+                        renderable.turnOnButtonLight(renderable.getMapLightedButton());
+                    }
                 }
                 break;
             case UserActionCode.LAUNCH:

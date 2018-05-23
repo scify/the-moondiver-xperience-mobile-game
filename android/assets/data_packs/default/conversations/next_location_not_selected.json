@@ -1,0 +1,3 @@
+[
+  {"id": "1", "order":"1", "speakerId":"aunt", "text":"Πρέπει πρώτα να επιλέξεις\nπροορισμό από το χάρτη!", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
+]

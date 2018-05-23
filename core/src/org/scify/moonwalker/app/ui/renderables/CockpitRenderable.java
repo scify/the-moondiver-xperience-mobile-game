@@ -31,6 +31,7 @@ public class CockpitRenderable extends FadingTableRenderable {
     protected static final String SPACESHIP_INVENTORY_BUTTON_DEFAULT_IMG_PATH = "img/episode_cockpit/spaceship.png";
     protected static final String SPACESHIP_INVENTORY_BUTTON_LIGHTED_IMG_PATH = "img/episode_cockpit/spaceship_lighted.png";
     protected static final String RIGHT_TABLET_IMG_PATH = "img/episode_cockpit/right_tablet.png";
+    public static final String CONVERSATION_BG_IMG_PATH = "img/episode_charge/conversation_bg.png";
 
     //SPECIAL OUTSIDE BackGrounds
     public static final String FOREST_BG_IMG_PATH = "img/episode_cockpit/forest_bg.png";
@@ -184,6 +185,14 @@ public class CockpitRenderable extends FadingTableRenderable {
         } else {
             buttonRenderable.setVisible(true);
         }
+    }
+
+    public void turnOnButtonLight(ActionButtonRenderable buttonRenderable) {
+        buttonRenderable.setVisible(true);
+    }
+
+    public void turnOffButtonLight(ActionButtonRenderable buttonRenderable) {
+        buttonRenderable.setVisible(false);
     }
 
     public void turnOffLightOffAllButtons () {
