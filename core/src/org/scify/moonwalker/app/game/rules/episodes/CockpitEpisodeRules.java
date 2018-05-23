@@ -61,38 +61,9 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
             renderable = new CockpitRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), COCKPIT_ID, episodeLocation);
             renderable.setZIndex(1);
             setCockpitFieldValues();
-            renderable.addAfterFadeIn(new Runnable() {
-                @Override
-                public void run() {
-                    if (gameInfo.getContactRequestFlag()) {
-                        gameState.addGameEvent(new GameEvent(TOGGLE_BUTTON, renderable.getContactLightedButton(), new Date().getTime() + 500, false, this));
-                        renderable.toogleButtonLight(renderable.getContactLightedButton());
-                        contactClickable = true;
-                    } else if (gameInfo.getMapRequestFlag()) {
-                        gameState.addGameEvent(new GameEvent(TOGGLE_BUTTON, renderable.getMapLightedButton(), new Date().getTime() + 500, false, this));
-                        renderable.toogleButtonLight(renderable.getMapLightedButton());
-                        mapClickable = true;
-                    } else if (gameInfo.getChargeRequestFlag()) {
-                        gameState.addGameEvent(new GameEvent(TOGGLE_BUTTON, renderable.getChargeLightedButton(), new Date().getTime() + 500, false, this));
-                        renderable.toogleButtonLight(renderable.getChargeLightedButton());
-                        chargeClickable = true;
-                    } else {
-                        inventoryClickable = true;
-                        if (gameInfo.getNextLocation() != null)
-                            chargeClickable = true;
-                        if (gameInfo.getRemainingEnergy() > 0 && gameInfo.getNextLocation() != null)
-                            travelClickable = true;
-                    }
-                    buttonsEnabled = true;
-                    if(showArrivalConversation)
-                        createConversation(gameState, gameInfo.getCurrentLocation().getConversationArrivalFilePath(), renderable.CONVERSATION_BG_IMG_PATH);
-                }
-            });
+            addAfterEffectEventsForEpisodeRenderable(gameState);
             setOutsideBackground(episodeLocation);
-            gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.LOW_ENERGY_AUDIO_PATH));
-            gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.TAKE_OFF_AUDIO_PATH));
-            if(!gameState.eventsQueueContainsEvent(GAME_EVENT_AUDIO_START_LOOP_UI))
-                gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.BG_DEFAULT_AUDIO_PATH));
+            addAudioGameEvents(gameState);
             gameState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
             gameState.addRenderable(renderable);
             super.episodeStartedEvents(gameState);
@@ -110,6 +81,43 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
         gameInfo.resetTravelState();
         showArrivalConversation = true;
         episodeLocation = gameInfo.getCurrentLocation();
+    }
+
+    protected void addAfterEffectEventsForEpisodeRenderable(final GameState gameState) {
+        renderable.addAfterFadeIn(new Runnable() {
+            @Override
+            public void run() {
+                if (gameInfo.getContactRequestFlag()) {
+                    gameState.addGameEvent(new GameEvent(TOGGLE_BUTTON, renderable.getContactLightedButton(), new Date().getTime() + 500, false, this));
+                    renderable.toogleButtonLight(renderable.getContactLightedButton());
+                    contactClickable = true;
+                } else if (gameInfo.getMapRequestFlag()) {
+                    gameState.addGameEvent(new GameEvent(TOGGLE_BUTTON, renderable.getMapLightedButton(), new Date().getTime() + 500, false, this));
+                    renderable.toogleButtonLight(renderable.getMapLightedButton());
+                    mapClickable = true;
+                } else if (gameInfo.getChargeRequestFlag()) {
+                    gameState.addGameEvent(new GameEvent(TOGGLE_BUTTON, renderable.getChargeLightedButton(), new Date().getTime() + 500, false, this));
+                    renderable.toogleButtonLight(renderable.getChargeLightedButton());
+                    chargeClickable = true;
+                } else {
+                    inventoryClickable = true;
+                    if (gameInfo.getNextLocation() != null)
+                        chargeClickable = true;
+                    if (gameInfo.getRemainingEnergy() > 0 && gameInfo.getNextLocation() != null)
+                        travelClickable = true;
+                }
+                buttonsEnabled = true;
+                if(showArrivalConversation)
+                    createConversation(gameState, gameInfo.getCurrentLocation().getConversationArrivalFilePath(), renderable.CONVERSATION_BG_IMG_PATH);
+            }
+        });
+    }
+
+    protected void addAudioGameEvents(final GameState gameState) {
+        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.LOW_ENERGY_AUDIO_PATH));
+        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.TAKE_OFF_AUDIO_PATH));
+        if(!gameState.eventsQueueContainsEvent(GAME_EVENT_AUDIO_START_LOOP_UI))
+            gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.BG_DEFAULT_AUDIO_PATH));
     }
 
     protected boolean hasSpaceshipJustArrivedAtLocation() {
