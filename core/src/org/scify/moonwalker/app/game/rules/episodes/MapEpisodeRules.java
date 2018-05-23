@@ -155,11 +155,11 @@ public class MapEpisodeRules extends BaseEpisodeRules {
                 // Update next location
                 Location nextLocation = (Location)userAction.getActionPayload();
                 renderable.setNextLocation(nextLocation);
-                // Also update game info
-                gameInfo.setNextLocation(nextLocation);
-                gameInfo.getNextLocation().setDistanceInKilometers(gameInfo.getCurrentLocation().getDistanceFromLocation(nextLocation));
                 // And show appropriate effect
                 if (!travelOnly) {
+                    // Also update game info
+                    gameInfo.setNextLocation(nextLocation);
+                    gameInfo.getNextLocation().setDistanceInKilometers(gameInfo.getCurrentLocation().getDistanceFromLocation(nextLocation));
                     gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.LOCATION_SELECTED_AUDIO_PATH));
                     gameInfo.setMapRequestFlag(false);
                     gameInfo.setChargeRequestFlag(true);

@@ -45,7 +45,9 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
             // if last travel was successful
             if(gameInfo.getNextTravelPercentagePossible() == 100.0 && gameInfo.isAfterTravel()) {
                 // update current location in gameInfo
-                gameInfo.setCurrentLocation(gameInfo.getNextAllowedLocation());
+                gameInfo.setCurrentLocation(gameInfo.getNextLocation());
+                // set the next location to null, so the user has to select it from the map
+                gameInfo.setNextLocation(null);
                 gameInfo.setNextAllowedLocation(locationController.getLocationAfter(gameInfo.getCurrentLocation()));
                 // reset the travel percentages in gameInfo
                 gameInfo.resetTravelState();
@@ -92,7 +94,8 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
             setOutsideBackground(location);
             gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.LOW_ENERGY_AUDIO_PATH));
             gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.TAKE_OFF_AUDIO_PATH));
-            gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.BG_DEFAULT_AUDIO_PATH));
+            if(!gameState.eventsQueueContainsEvent(GAME_EVENT_AUDIO_START_LOOP_UI))
+                gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.BG_DEFAULT_AUDIO_PATH));
             gameState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
             gameState.addRenderable(renderable);
             super.episodeStartedEvents(gameState);
@@ -151,14 +154,19 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                     gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
                 break;
             case UserActionCode.TRAVEL:
-                if (buttonsEnabled && !contactClickable && travelClickable) {
-                    gameInfo.setAtForest(false);
-                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.TRAVEL_AUDIO_PATH));
-                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.TAKE_OFF_AUDIO_PATH));
-                    calculateAndSetTravelPercentage();
-                    gameInfo.setAfterTravel(true);
-                    // end current episode and start map episode
-                    goToEpisode(gameState, new GameEvent(TRAVEL_ON_MAP_EPISODE, null, this));
+                if (buttonsEnabled && !contactClickable && travelClickable && gameInfo.getNextLocation() != null) {
+                    if(gameInfo.getNextLocation() == null) {
+                        // todo display conversation prompting the user to select a location from the map
+                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
+                    } else {
+                        gameInfo.setAtForest(false);
+                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.TRAVEL_AUDIO_PATH));
+                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.TAKE_OFF_AUDIO_PATH));
+                        calculateAndSetTravelPercentage();
+                        gameInfo.setAfterTravel(true);
+                        // end current episode and start map episode
+                        goToEpisode(gameState, new GameEvent(TRAVEL_ON_MAP_EPISODE, null, this));
+                    }
                 } else {
                     if (gameInfo.getRemainingEnergy() == 0)
                         gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.LOW_ENERGY_AUDIO_PATH));
@@ -234,11 +242,13 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
         double kilometersForEnergyUnits = motorEfficiency * remainingEnergy;
         double percentage = (kilometersForEnergyUnits / destinationKm) * 100;
         // if we have more energy than needed, set as full percentage
-        if(percentage > 100)
-            percentage = 100;
         System.out.println("percentage " + percentage);
-
+        if(percentage > 100)
+            percentage = 100.0;
         gameInfo.setRemainingEnergy(0);
-        gameInfo.setNextTravelPercentagePossible(gameInfo.getNextTravelPercentagePossible() + percentage);
+        double newPercentagePossible = gameInfo.getNextTravelPercentagePossible() + percentage;
+        if(newPercentagePossible > 100.0)
+            newPercentagePossible = 100.0;
+        gameInfo.setNextTravelPercentagePossible(newPercentagePossible);
     }
 }
