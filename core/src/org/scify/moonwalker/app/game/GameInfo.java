@@ -21,8 +21,9 @@ public class GameInfo {
     protected boolean chargeRequestFlag;
     protected boolean inventoryIncreased;
     protected boolean atForest;
-    protected String conversationFileForContactScreen;
     protected boolean afterTravel;
+    protected boolean afterLocationQuizEpisode;
+    protected boolean lastQuizSuccessFul;
 
     /**
      * The travel percentage complete in the LAST travel
@@ -71,6 +72,8 @@ public class GameInfo {
         inventoryItemsCounter = 0;
         inventoryIncreased = false;
         afterTravel = false;
+        afterLocationQuizEpisode = false;
+        lastQuizSuccessFul = false;
     }
 
     public boolean getContactRequestFlag() {
@@ -228,14 +231,6 @@ public class GameInfo {
         this.atForest = atForest;
     }
 
-    public String getConversationFileForContactScreen() {
-        return this.conversationFileForContactScreen;
-    }
-
-    public void setConversationFileForContactScreen(String conversationFileForContactScreen) {
-        this.conversationFileForContactScreen = conversationFileForContactScreen;
-    }
-
     public boolean isGameFullySuccessfullyCompleted() {
         return currentDay <= initialDaysToSuccessfullyCompleteGame;
     }
@@ -260,5 +255,21 @@ public class GameInfo {
 
     public boolean isAfterTravel() {
         return afterTravel;
+    }
+
+    public boolean isAfterLocationQuizEpisode() {
+        return afterLocationQuizEpisode;
+    }
+
+    public void setAfterLocationQuizEpisode(boolean afterLocationQuizEpisode) {
+        this.afterLocationQuizEpisode = afterLocationQuizEpisode;
+    }
+
+    public boolean isLastQuizSuccessFul() {
+        return lastQuizSuccessFul;
+    }
+
+    public void setLastQuizSuccessFul(boolean lastQuizSuccessFul) {
+        this.lastQuizSuccessFul = lastQuizSuccessFul;
     }
 }

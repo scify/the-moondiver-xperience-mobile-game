@@ -37,8 +37,12 @@ public class ContactScreenEpisodeRules extends FadingEpisodeRules<ContactScreenR
             // otherwise, check to see if we need to show a conversation for a successfully/ not successfully completed location episode
             if (gameInfo.getCurrentDay() == 1)
                 createConversation(gameState, "conversations/episode_contact_screen1.json", renderable.CONVERSATION_BG_IMG_PATH);
-            else {
-                createConversation(gameState, gameInfo.getConversationFileForContactScreen(), renderable.CONVERSATION_BG_IMG_PATH);
+            else if(gameInfo.isAfterLocationQuizEpisode()) {
+                if(gameInfo.isLastQuizSuccessFul())
+                    createConversation(gameState, gameInfo.getCurrentLocation().getConversationSuccessFilePath(), renderable.CONVERSATION_BG_IMG_PATH);
+                else
+                    createConversation(gameState, gameInfo.getCurrentLocation().getConversationFailureFilePath(), renderable.CONVERSATION_BG_IMG_PATH);
+                gameInfo.setAfterLocationQuizEpisode(false);
             }
         }
         return super.getNextState(gameState, userAction);

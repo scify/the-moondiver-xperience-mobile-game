@@ -61,9 +61,9 @@ public class QuestionConversationRules extends ConversationRules {
             }
         }
         if (Integer.valueOf((String) gameState.getAdditionalDataEntry(CORRECT_ANSWERS)) >= 3) {
-            gameInfo.setConversationFileForContactScreen(this.quizSuccessFulConversationFilePath);
+            gameInfo.setLastQuizSuccessFul(true);
         } else {
-            gameInfo.setConversationFileForContactScreen(this.quizFailedConversationFilePath);
+            gameInfo.setLastQuizSuccessFul(false);
         }
         return super.getNextState(gameState, userAction);
     }

@@ -89,6 +89,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
     }
 
     protected void addAfterEffectEventsForEpisodeRenderable(final GameState gameState) {
+        final Object eventOwner = this;
         renderable.addAfterFadeIn(new Runnable() {
             @Override
             public void run() {
@@ -114,6 +115,9 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                 buttonsEnabled = true;
                 if(showArrivalConversation)
                     createConversation(gameState, gameInfo.getCurrentLocation().getConversationArrivalFilePath(), renderable.CONVERSATION_BG_IMG_PATH);
+                if(gameInfo.isAfterLocationQuizEpisode()) {
+                    goToEpisode(gameState, new GameEvent(CONTACT_SCREEN_EPISODE_STARTED, null, eventOwner));
+                }
             }
         });
     }
@@ -250,6 +254,8 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
             return new EpisodeEndState(SPACESHIP_INVENTORY_EPISODE_STARTED, cleanUpGameState(currentState));
         else if (currentState.eventsQueueContainsEventOwnedBy(TRAVEL_ON_MAP_EPISODE, this))
             return new EpisodeEndState(TRAVEL_ON_MAP_EPISODE, cleanUpGameState(currentState));
+        else if (currentState.eventsQueueContainsEventOwnedBy(LOCATION_EPISODE_STARTED, this))
+            return new EpisodeEndState(LOCATION_EPISODE_STARTED, cleanUpGameState(currentState));
         return new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_FAILURE, cleanUpGameState(currentState));
     }
 

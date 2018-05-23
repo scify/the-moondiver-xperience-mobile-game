@@ -82,7 +82,7 @@ public class LocationEpisodeRules extends FadingEpisodeRules<LocationRenderable>
             code = EpisodeEndStateCode.SCENARIO_NEEDS_RESTART;
         else if (gameState.eventsQueueContainsEvent(conversationRules.CONVERSATION_FINISHED))
             code = EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS;
-
+        gameInfo.setAfterLocationQuizEpisode(true);
         conversationRules.cleanUpState(gameState);
         return new EpisodeEndState(code, cleanUpGameState(gameState));
     }
