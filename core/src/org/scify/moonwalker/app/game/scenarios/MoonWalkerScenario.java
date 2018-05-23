@@ -63,7 +63,7 @@ public class MoonWalkerScenario extends Scenario {
                     newCurrentEpisode = new CockpitEpisode();
                 GameState gameState = state.getGameState();
                 Location target = (Location) gameState.getAdditionalDataEntry(NEXT_LOCATION);
-                // todo fix here, the scenario ends
+                // todo fix here, the scenario ends unexpectedly
                 addTemporaryEpisode(new LocationEpisode(new LocationEpisodeRules(target)), newCurrentEpisode);
                 break;
             /*case EpisodeEndStateCode.SIMPLE_TIMED_IMAGE_EPISODE:

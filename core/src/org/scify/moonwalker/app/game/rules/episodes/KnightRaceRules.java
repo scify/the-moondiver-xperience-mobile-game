@@ -53,7 +53,6 @@ public class KnightRaceRules extends SinglePlayerRules {
         if(player.getxPos() < appInfo.getScreenWidth() / 2f) {
             // begin conversation with Yoda
             // if the conversation has not started and has not finished too
-            // TODO add conversation id in case we have multiple conversations in an episode
             if(!gsCurrent.eventsQueueContainsEvent("CONVERSATION_STARTED") && !gsCurrent.eventsQueueContainsEvent("CONVERSATION_FINISHED")) {
                 // call base class create method, passing the resource file for this specific conversation
                 //createConversation(gsCurrent, "json_DB/conversation.json");
