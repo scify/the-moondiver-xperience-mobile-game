@@ -31,7 +31,7 @@ public class CockpitRenderable extends FadingTableRenderable {
     protected static final String SPACESHIP_INVENTORY_BUTTON_DEFAULT_IMG_PATH = "img/episode_cockpit/spaceship.png";
     protected static final String SPACESHIP_INVENTORY_BUTTON_LIGHTED_IMG_PATH = "img/episode_cockpit/spaceship_lighted.png";
     protected static final String RIGHT_TABLET_IMG_PATH = "img/episode_cockpit/right_tablet.png";
-    public static final String CONVERSATION_BG_IMG_PATH = "img/episode_charge/conversation_bg.png";
+    public static final String CONVERSATION_BG_IMG_PATH = "img/episode_cockpit/conversation_bg.png";
 
     //SPECIAL OUTSIDE BackGrounds
     public static final String FOREST_BG_IMG_PATH = "img/episode_cockpit/forest_bg.png";
@@ -103,12 +103,11 @@ public class CockpitRenderable extends FadingTableRenderable {
         return allRenderables;
     }
 
-    public CockpitRenderable(float xPos, float yPos, float width, float height, String id, Location location) {
+    public CockpitRenderable(float xPos, float yPos, float width, float height, String id) {
         super(xPos, yPos, width, height, ACTOR_EPISODE_COCKPIT, id, BG_IMG_PATH);
-        initSubRenderables(location);
     }
 
-    private void initSubRenderables(Location location) {
+    public void initSubRenderables(Location location) {
         allRenderables = new HashSet<>();
 
         leftTablet = createImageRenderable(LEFT_TABLET_ID, location.getFlagImagePath(), false, true, 2);

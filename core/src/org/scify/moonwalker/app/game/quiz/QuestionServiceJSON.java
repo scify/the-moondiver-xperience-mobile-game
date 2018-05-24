@@ -10,14 +10,14 @@ import java.util.List;
 
 public class QuestionServiceJSON implements QuestionService {
 
-    private static QuestionServiceJSON instance;
+    //private static QuestionServiceJSON instance;
     private Json json;
     private List<Question> allQuestions;
     private List<QuestionCategory> allQuestionCategories;
     protected ResourceLocator resourceLocator;
     protected int questionIndex;
 
-    private QuestionServiceJSON() {
+    public QuestionServiceJSON() {
         json = new Json();
         resourceLocator = new ResourceLocator();
         allQuestions = getQuestionsFromDB();
@@ -25,11 +25,11 @@ public class QuestionServiceJSON implements QuestionService {
         questionIndex = 0;
     }
 
-    public static QuestionServiceJSON getInstance() {
+    /*public static QuestionServiceJSON getInstance() {
         if(instance == null)
             instance = new QuestionServiceJSON();
         return instance;
-    }
+    }*/
 
     @Override
     public List<Question> getQuestions() {

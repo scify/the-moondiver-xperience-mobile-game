@@ -34,7 +34,8 @@ public class QuestionConversationRules extends ConversationRules {
 
     public QuestionConversationRules(String conversationJSONFilePath, String bgImgPath, String quizSuccessFulConversationFilePath, String quizFailedConversationFilePath, String correctAudioPath, String wrongAudioPath) {
         super(conversationJSONFilePath, bgImgPath);
-        questionService = QuestionServiceJSON.getInstance();
+        //questionService = QuestionServiceJSON.getInstance();
+        questionService = new QuestionServiceJSON();
         questionService.init();
         questionCategories = questionService.getQuestionCategories();
         questions = questionService.getQuestions();
@@ -61,9 +62,9 @@ public class QuestionConversationRules extends ConversationRules {
             }
         }
         if (Integer.valueOf((String) gameState.getAdditionalDataEntry(CORRECT_ANSWERS)) >= 3) {
-            gameInfo.setLastQuizSuccessFul(true);
+            gameInfo.setLastQuizSuccessFull(true);
         } else {
-            gameInfo.setLastQuizSuccessFul(false);
+            gameInfo.setLastQuizSuccessFull(false);
         }
         return super.getNextState(gameState, userAction);
     }
@@ -208,6 +209,6 @@ public class QuestionConversationRules extends ConversationRules {
             lines.add(line);
             line.setPayload(answer);
         }
-        addMultipleConversationLines(lines, gsCurrent, false, new MultipleChoiceConversationRenderable(lines.get(0).getId(), question.getTitle(), bgImgPath, keepFirstDuringParsing), getIntroEffectForMultipleChoiceRenderable());
+        addMultipleConversationLines(lines, gsCurrent, false, new MultipleChoiceConversationRenderable(lines.get(0).getId(), question.getTitle(), bgImgPath, keepFirstDuringParsing, replaceLexicon), getIntroEffectForMultipleChoiceRenderable());
     }
 }

@@ -43,15 +43,17 @@ public class LocationEpisodeRules extends FadingEpisodeRules<LocationRenderable>
         if (conversationRules != null && conversationRules.isFinished() && !outroInitiated) {
             outroInitiated = true;
             boolean success = true;
-            if (gameState.eventsQueueContainsEvent(conversationRules.CONVERSATION_FAILED))
+            if (!gameInfo.isLastQuizSuccessFull()) {
                 success = false;
+                gameInfo.dayPassed();
+            }
             final boolean dayPassed = !success;
             renderable.addBeforeFadeOut(new Runnable() {
                 @Override
                 public void run() {
                     gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.LOCATION_AUDIO_PATH));
-                        if (dayPassed == false)
-                            gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.DAYPASSED_AUDIO_PATH));
+                        if (dayPassed)
+                            gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.DAYPASSED_AUDIO_PATH));
                 }
             });
             renderable.addAfterFadeOut(new Runnable() {
@@ -76,12 +78,12 @@ public class LocationEpisodeRules extends FadingEpisodeRules<LocationRenderable>
 
     @Override
     public EpisodeEndState determineEndState(GameState gameState) {
-        String code = "";
+        String code = EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS;;
         // Handle failed conversation
-        if (gameState.eventsQueueContainsEvent(conversationRules.CONVERSATION_FAILED))
-            code = EpisodeEndStateCode.SCENARIO_NEEDS_RESTART;
-        else if (gameState.eventsQueueContainsEvent(conversationRules.CONVERSATION_FINISHED))
-            code = EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS;
+        if (gameInfo.isLastQuizSuccessFull()) {
+            gameInfo.setInventoryIncreased();
+        }
+        gameInfo.setContactRequestFlag();
         gameInfo.setAfterLocationQuizEpisode(true);
         conversationRules.cleanUpState(gameState);
         return new EpisodeEndState(code, cleanUpGameState(gameState));

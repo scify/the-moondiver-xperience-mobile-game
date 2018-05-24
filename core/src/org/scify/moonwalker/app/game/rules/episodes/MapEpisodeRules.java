@@ -161,8 +161,7 @@ public class MapEpisodeRules extends BaseEpisodeRules {
                     gameInfo.setNextLocation(nextLocation);
                     gameInfo.getNextLocation().setDistanceInKilometers(gameInfo.getCurrentLocation().getDistanceFromLocation(nextLocation));
                     gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.LOCATION_SELECTED_AUDIO_PATH));
-                    gameInfo.setMapRequestFlag(false);
-                    gameInfo.setChargeRequestFlag(true);
+                    gameInfo.setChargeRequestFlag();
                 }else {
                     gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.TRAVEL_AUDIO_PATH));
                 }
@@ -212,9 +211,14 @@ public class MapEpisodeRules extends BaseEpisodeRules {
             }
             // Perform route effect
             PointRouteSinglePointTypeEffect pRoute = new PointRouteSinglePointTypeEffect(lvPoints, 1.0,
-                    4.0, 4.0, 5000);
+                    4.0, 4.0, 2000);
             esRes.addEffect(pRoute);
-
+            esRes.addEffect(new FunctionEffect(new Runnable() {
+                @Override
+                public void run() {
+                    handleUserAction(gsCurrent, new UserAction(UserActionCode.QUIT));
+                }
+            }));
             rStar.addEffect(esRes);
             // Add star to renderables
             gsCurrent.addRenderable(rStar);
@@ -223,7 +227,7 @@ public class MapEpisodeRules extends BaseEpisodeRules {
 
         // If only travel
         if (travelOnly) {
-            final double dTransitionTime = 3000.0;
+            final double dTransitionTime = 1500.0;
 
             EffectSequence esRes = new EffectSequence();
 

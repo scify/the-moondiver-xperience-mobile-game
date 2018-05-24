@@ -6,6 +6,7 @@ import org.scify.engine.conversation.ConversationLine;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class TwoChoiceConversationRenderable extends ConversationRenderable {
@@ -29,8 +30,8 @@ public class TwoChoiceConversationRenderable extends ConversationRenderable {
         return allRenderables;
     }
 
-    public TwoChoiceConversationRenderable(int id, String bgImgPath, boolean keepFirstDuringParsing) {
-        super(CONVERSATION_TWO_CHOICE, CONVERSATION_TWO_CHOICE + id, bgImgPath, keepFirstDuringParsing);
+    public TwoChoiceConversationRenderable(int id, String bgImgPath, boolean keepFirstDuringParsing, Map<String, String> replaceLexicon) {
+        super(CONVERSATION_TWO_CHOICE, CONVERSATION_TWO_CHOICE + id, bgImgPath, keepFirstDuringParsing, replaceLexicon);
         conversationId = id;
         float screenWidth = appInfo.getScreenWidth();
         float screenHeight = appInfo.getScreenHeight();

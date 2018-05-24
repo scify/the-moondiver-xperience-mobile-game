@@ -17,7 +17,7 @@ public class MapEpisodeRenderable extends Renderable {
     public static final String MAP_SELECT_ACTION = "MAP_SELECT";
 
     public static final String BG_IMAGE_PATH = "img/episode_map/bg.png";
-    public static final String QUIT_BUTTON_IMG_PATH = "img/close.png";
+    //public static final String QUIT_BUTTON_IMG_PATH = "img/close.png";
 
     public static final String DESTINATION_HUD_IMG_PATH = "img/episode_map/destination.png";
     public static final String DISTANCE_HUD_IMG_PATH = "img/episode_map/distance.png";
@@ -43,7 +43,7 @@ public class MapEpisodeRenderable extends Renderable {
     protected List<Renderable> locationPoints;
     protected Map<Location, Renderable> renderablePerLocation;
 
-    protected ActionButtonRenderable closeButton;
+    //protected ActionButtonRenderable closeButton;
     protected TextLabelRenderable missionHUD;
 
     protected TextLabelRenderable locationNameHUD;
@@ -74,7 +74,7 @@ public class MapEpisodeRenderable extends Renderable {
         allRenderables.add(getMissionHUD());
         allRenderables.add(getLocationNameHUD());
         allRenderables.add(getDistanceHUD());
-        allRenderables.add(getCloseButton());
+        //allRenderables.add(getCloseButton());
 
         allRenderables.addAll(getHUDLabels());
 
@@ -148,7 +148,7 @@ public class MapEpisodeRenderable extends Renderable {
     }
 
 
-    public ActionButtonRenderable  getCloseButton() {
+    /*public ActionButtonRenderable  getCloseButton() {
         if (closeButton == null) {
             closeButton = new ActionButtonRenderable(appInfo.convertX(1750f), appInfo.convertY(1090 - 30 - 128f),
                     appInfo.convertX(128),appInfo.convertY(128), Renderable.ACTOR_IMAGE_BUTTON, "closeBtn");
@@ -160,7 +160,7 @@ public class MapEpisodeRenderable extends Renderable {
 
         return closeButton;
 
-    }
+    }*/
 
     public List<Location> getLocations() {
         return locations;
@@ -324,7 +324,8 @@ public class MapEpisodeRenderable extends Renderable {
         // Apply to all except close button (see below)
         EffectSequence eFadeIn = getDefaultFadeInEffect();
         for (Renderable rCur: getAllRenderables()) {
-            if (rCur != closeButton) {
+            if (rCur != missionHUD) {
+            // if (rCur != closeButton) {
                 rCur.addEffect(eFadeIn);
             }
         }
@@ -337,8 +338,9 @@ public class MapEpisodeRenderable extends Renderable {
             // append it the the close button effect
             eAfterFadeIn.addEffect(new FunctionEffect(rAfterFadeIn));
         }
+        missionHUD.addEffect(eAfterFadeIn);
         // add the effect to the renderable
-        closeButton.addEffect(eAfterFadeIn);
+        //closeButton.addEffect(eAfterFadeIn);
 
     }
 

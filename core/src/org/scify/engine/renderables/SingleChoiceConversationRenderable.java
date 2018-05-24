@@ -4,10 +4,7 @@ import org.scify.engine.UserAction;
 import org.scify.engine.UserActionCode;
 import org.scify.engine.conversation.ConversationLine;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class SingleChoiceConversationRenderable extends ConversationRenderable {
 
@@ -31,8 +28,8 @@ public class SingleChoiceConversationRenderable extends ConversationRenderable {
         return allRenderables;
     }
 
-    public SingleChoiceConversationRenderable(int id, String bgImgPath, boolean keepFirstDuringParsing) {
-        super(CONVERSATION_SINGLE_CHOICE, CONVERSATION_SINGLE_CHOICE + id, bgImgPath, keepFirstDuringParsing);
+    public SingleChoiceConversationRenderable(int id, String bgImgPath, boolean keepFirstDuringParsing, Map<String, String> replaceLexicon) {
+        super(CONVERSATION_SINGLE_CHOICE, CONVERSATION_SINGLE_CHOICE + id, bgImgPath, keepFirstDuringParsing, replaceLexicon);
         conversationId = id;
         float screenWidth = appInfo.getScreenWidth();
         float screenHeight = appInfo.getScreenHeight();

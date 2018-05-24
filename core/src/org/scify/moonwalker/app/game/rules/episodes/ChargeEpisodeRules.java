@@ -104,6 +104,9 @@ public class ChargeEpisodeRules extends FadingEpisodeRules<ChargeEpisodeRenderab
                         conversationRules = null;
                         tutorialChatPhase = 3;
                         createConversation(gameState, "conversations/episode_charge3.json", renderable.CONVERSATION_BG_IMG_PATH);
+                        gameInfo.setTravelRequestFlag();
+                    }else {
+                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI,renderable.WRONG_BUTTON_AUDIO_PATH));
                     }
                 }else
                     chargeOperation(gameState);
@@ -122,8 +125,9 @@ public class ChargeEpisodeRules extends FadingEpisodeRules<ChargeEpisodeRenderab
                 break;
             }
             case UserActionCode.QUIT: {
-                if (gameInfo.getRemainingEnergy()  > 0)
-                    gameInfo.setChargeRequestFlag(false);
+                if (gameInfo.getRemainingEnergy()  > 0 && !gameInfo.isTutorialMode())
+                    gameInfo.resetFlags();
+                gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
                 gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.POWER_UP_AUDIO_PATH));
                 endEpisodeAndAddEventWithType(gameState, "");
                 break;

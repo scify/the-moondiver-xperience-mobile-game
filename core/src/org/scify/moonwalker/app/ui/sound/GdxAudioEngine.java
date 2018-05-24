@@ -25,9 +25,10 @@ public class GdxAudioEngine implements AudioEngine {
     @Override
     public void loadSound(String filePath) {
         persistentAudios.add(filePath);
-        Sound sound = Gdx.audio.newSound(Gdx.files.internal(resourceLocator.getFilePath(filePath)));
-        stringAudiosMap.put(filePath, sound);
-
+        if (!stringAudiosMap.containsKey(filePath)) {
+            Sound sound = Gdx.audio.newSound(Gdx.files.internal(resourceLocator.getFilePath(filePath)));
+            stringAudiosMap.put(filePath, sound);
+        }
     }
 
     @Override

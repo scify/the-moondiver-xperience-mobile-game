@@ -19,7 +19,8 @@ public class KnightQuestionsRules extends SinglePlayerRules {
     protected int questionIndex = 0;
 
     public KnightQuestionsRules() {
-        questionService = QuestionServiceJSON.getInstance();
+        //questionService = QuestionServiceJSON.getInstance();
+        questionService = new QuestionServiceJSON();
         allQuestions = questionService.getQuestions();
         Collections.shuffle(allQuestions);
     }

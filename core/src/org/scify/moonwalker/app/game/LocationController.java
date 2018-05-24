@@ -131,6 +131,10 @@ public class LocationController {
     }
 
     public Location getLocationAfter(Location location) {
-        return locations.get(locations.indexOf(location) + 1);
+        int index = locations.indexOf(location) + 1;
+        if (index >= locations.size())
+            return null;
+        else
+            return locations.get(index);
     }
 }

@@ -94,6 +94,8 @@ public class SpaceshipInventoryEpisodeRules extends FadingEpisodeRules<Spaceship
             case UserActionCode.QUIT: {
                 endEpisodeAndAddEventWithType(gameState, "");
                 renderable.fadeOutAllExtraRenderables();
+                if (gameInfo.isInventoryRequestFlag())
+                    gameInfo.resetFlags();
                 gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.ADD_ITEM_AUDIO_PATH));
                 gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.UPGRADE_STATS_AUDIO_PATH));
                 break;

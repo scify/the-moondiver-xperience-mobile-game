@@ -25,10 +25,13 @@ public class ContactScreenEpisodeRules extends FadingEpisodeRules<ContactScreenR
     public GameState getNextState(final GameState gameState, UserAction userAction) {
         if (conversationRules != null && conversationRules.isFinished() && !outroInitiated) {
             outroInitiated = true;
-            if (gameInfo.getCurrentDay() == 1) {
-                gameInfo.setMapRequestFlag(true);
+            gameInfo.resetFlags();
+            if(gameInfo.isLastQuizSuccessFull()) {
+                gameInfo.setInventoryRequestFlag();
             }
-            gameInfo.setContactRequestFlag(false);
+            if (gameInfo.getCurrentDay() == 1) {
+                gameInfo.setMapRequestFlag();
+            }
             endEpisodeAndAddEventWithType(gameState, "");
         } else if (renderable != null && renderable.isChatEnabled()) {
             // Initialize conversation
@@ -38,11 +41,11 @@ public class ContactScreenEpisodeRules extends FadingEpisodeRules<ContactScreenR
             if (gameInfo.getCurrentDay() == 1)
                 createConversation(gameState, "conversations/episode_contact_screen1.json", renderable.CONVERSATION_BG_IMG_PATH);
             else if(gameInfo.isAfterLocationQuizEpisode()) {
-                if(gameInfo.isLastQuizSuccessFul())
+                if(gameInfo.isLastQuizSuccessFull()) {
                     createConversation(gameState, gameInfo.getCurrentLocation().getConversationSuccessFilePath(), renderable.CONVERSATION_BG_IMG_PATH);
+                }
                 else
                     createConversation(gameState, gameInfo.getCurrentLocation().getConversationFailureFilePath(), renderable.CONVERSATION_BG_IMG_PATH);
-                gameInfo.setAfterLocationQuizEpisode(false);
             }
         }
         return super.getNextState(gameState, userAction);

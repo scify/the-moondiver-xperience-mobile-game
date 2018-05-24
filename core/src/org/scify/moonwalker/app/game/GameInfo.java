@@ -19,11 +19,14 @@ public class GameInfo {
     protected boolean contactRequestFlag;
     protected boolean mapRequestFlag;
     protected boolean chargeRequestFlag;
+    protected boolean inventoryRequestFlag;
+    protected boolean travelRequestFlag;
+    protected boolean launchRequestFlag;
     protected boolean inventoryIncreased;
     protected boolean atForest;
     protected boolean afterTravel;
     protected boolean afterLocationQuizEpisode;
-    protected boolean lastQuizSuccessFul;
+    protected boolean lastQuizSuccessFull;
 
     /**
      * The travel percentage complete in the LAST travel
@@ -55,17 +58,17 @@ public class GameInfo {
         moonPhasesController = new MoonPhasesController();
         atForest = true;
         currentDay = 1;
-        initialDaysToSuccessfullyCompleteGame = 90;
+        initialDaysToSuccessfullyCompleteGame = 60;
         motorEfficiency = 10;
         remainingEnergy = 0;
         LocationController lc = new LocationController();
         setMoonPhases();
         //TODO set to unset
-        selectedPlayer = SelectedPlayer.girl;
         tutorialMode = false;
-        contactRequestFlag = false;
-        mapRequestFlag = true;
-        chargeRequestFlag = false;
+        selectedPlayer = SelectedPlayer.girl;
+        resetFlags();
+        //setContactRequestFlag();
+        setMapRequestFlag();
         setCurrentLocation(lc.getInitialLocation());
         setNextAllowedLocation(lc.getLocations().get(0));
         //inventory
@@ -73,15 +76,7 @@ public class GameInfo {
         inventoryIncreased = false;
         afterTravel = false;
         afterLocationQuizEpisode = false;
-        lastQuizSuccessFul = false;
-    }
-
-    public boolean getContactRequestFlag() {
-        return contactRequestFlag;
-    }
-
-    public void setContactRequestFlag(Boolean contactRequestFlag) {
-        this.contactRequestFlag = contactRequestFlag;
+        lastQuizSuccessFull = false;
     }
 
     public int getCurrentDay() {
@@ -131,8 +126,9 @@ public class GameInfo {
         return currentLocation.getName();
     }
 
-    public void setCurrentLocation(Location location) {
+    public Location setCurrentLocation(Location location) {
         this.currentLocation = location;
+        return this.currentLocation;
     }
 
     public Location getCurrentLocation() {
@@ -181,14 +177,6 @@ public class GameInfo {
         this.nextTravelPercentagePossible = nextTravelPercentagePossible;
     }
 
-    public boolean getMapRequestFlag() {
-        return mapRequestFlag;
-    }
-
-    public void setMapRequestFlag(boolean mapRequestFlag) {
-        this.mapRequestFlag = mapRequestFlag;
-    }
-
     public int getInventoryItemsCounter() {
         return inventoryItemsCounter;
     }
@@ -213,14 +201,6 @@ public class GameInfo {
 
     public int getUnitsOfMoonPhase(MoonPhase moonPhase) {
         return moonPhasesController.getUnitsOfMoonPhase(moonPhase, inventoryItemsCounter);
-    }
-
-    public boolean getChargeRequestFlag() {
-        return chargeRequestFlag;
-    }
-
-    public void setChargeRequestFlag(boolean chargeRequestFlag) {
-        this.chargeRequestFlag = chargeRequestFlag;
     }
 
     public boolean isAtForest() {
@@ -265,11 +245,95 @@ public class GameInfo {
         this.afterLocationQuizEpisode = afterLocationQuizEpisode;
     }
 
-    public boolean isLastQuizSuccessFul() {
-        return lastQuizSuccessFul;
+    public boolean isLastQuizSuccessFull() {
+        return lastQuizSuccessFull;
     }
 
-    public void setLastQuizSuccessFul(boolean lastQuizSuccessFul) {
-        this.lastQuizSuccessFul = lastQuizSuccessFul;
+    public void setLastQuizSuccessFull(boolean lastQuizSuccessFull) {
+        this.lastQuizSuccessFull = lastQuizSuccessFull;
+    }
+
+    public void resetFlags () {
+        contactRequestFlag = false;
+        mapRequestFlag = false;
+        chargeRequestFlag = false;
+        inventoryRequestFlag = false;
+        travelRequestFlag = false;
+        launchRequestFlag = false;
+    }
+
+    public boolean isAnyFlagOn () {
+        if (contactRequestFlag)
+            return true;
+        else if (mapRequestFlag)
+            return true;
+        else if (chargeRequestFlag)
+            return true;
+        else if (inventoryRequestFlag)
+            return true;
+        else if (travelRequestFlag)
+            return true;
+        else if (launchRequestFlag)
+            return true;
+        else
+            return false;
+    }
+
+    public boolean isContactRequestFlag() {
+        return contactRequestFlag;
+    }
+
+    public boolean isMapRequestFlag() {
+        return mapRequestFlag;
+    }
+
+    public boolean isChargeRequestFlag() {
+        return chargeRequestFlag;
+    }
+
+    public boolean isInventoryRequestFlag() {
+        return inventoryRequestFlag;
+    }
+
+    public boolean isTravelRequestFlag() {
+        return travelRequestFlag;
+    }
+
+    public boolean isLaunchRequestFlag() {
+        return launchRequestFlag;
+    }
+
+    public void setMapRequestFlag() {
+        resetFlags();
+        mapRequestFlag = true;
+    }
+
+    public void setContactRequestFlag() {
+        resetFlags();
+        contactRequestFlag = true;
+    }
+
+    public void setChargeRequestFlag() {
+        resetFlags();
+        chargeRequestFlag = true;
+    }
+
+    public void setInventoryRequestFlag() {
+        resetFlags();
+        inventoryRequestFlag = true;
+    }
+
+    public void setTravelRequestFlag() {
+        resetFlags();
+        travelRequestFlag = true;
+    }
+
+    public void setLaunchRequestFlag() {
+        resetFlags();
+        launchRequestFlag = true;
+    }
+
+    public void setInventoryIncreased() {
+        inventoryIncreased = true;
     }
 }
