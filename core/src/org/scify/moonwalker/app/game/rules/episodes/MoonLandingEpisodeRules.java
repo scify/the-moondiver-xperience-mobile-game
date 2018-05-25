@@ -24,13 +24,6 @@ public class MoonLandingEpisodeRules extends FadingEpisodeRules<MoonLandingRende
     public GameState getNextState(final GameState gameState, UserAction userAction) {
         if (conversationRules != null && conversationRules.isFinished() && !outroInitiated) {
             outroInitiated = true;
-            renderable.addBeforeFadeOut(new Runnable() {
-                @Override
-                public void run() {
-                    //gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.FOREST_AUDIO_PATH));
-                    //gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.BORING_MUSIC_AUDIO_PATH));
-                }
-            });
             if (gameState.getGameEventWithType(conversationRules.CONVERSATION_FAILED)  != null) {
                 EffectSequence effects = new EffectSequence();
                 effects.addEffect(new DelayEffect(4000));

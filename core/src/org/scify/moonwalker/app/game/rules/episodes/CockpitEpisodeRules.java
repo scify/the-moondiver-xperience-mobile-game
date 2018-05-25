@@ -173,6 +173,9 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
         buttonsEnabled = false;
         gameState.removeGameEventsWithType(TOGGLE_BUTTON);
         gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
+        if (gameInfo.getInventoryItemsCounter() == 7) {
+            gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.MOON_TAKE_OFF_AUDIO_PATH));
+        }
         renderable.turnOffLightOffAllButtons();
         renderable.fadeoutOutsideBackground();
         gameState.addGameEvent(gameEvent);
@@ -217,7 +220,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                 break;
             case UserActionCode.LAUNCH:
                 if (buttonsEnabled && gameInfo.isLaunchRequestFlag()) {
-
+                    goToEpisode(gameState, new GameEvent(EPISODE_FINISHED_SUCCESS, null, this));
                 } else
                     gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
                 break;

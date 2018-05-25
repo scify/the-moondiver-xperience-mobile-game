@@ -31,7 +31,7 @@ public abstract class ConversationRenderable extends TableRenderable {
             String[] s = ret.split("\\{\\{");
             String first = s[0];
             String second = s[1];
-            s = second.split("}}");
+            s = second.split("\\}\\}");
             String last = "";
             if (s.length == 2)
                 last = s[1];

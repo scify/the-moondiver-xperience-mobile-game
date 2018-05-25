@@ -18,13 +18,13 @@ public class LocationController {
 
     public LocationController() {
         locations = new LinkedList<>();
-        Location greece = createLocation("Αθήνα", "athens", 1600, 1080 - 950, "Πάρε τον\nΗλιακό Συλλέκτη\nX5000");
-        Location uk = createLocation("Λονδίνο",  "london", 900, 1080 - 420, "Πάρε τον\nΗλιακό Συλλέκτη\nX2000");
-        Location france = createLocation("Παρίσι", "paris", 965, 1080 - 540, "Πάρε την\n Μπαταρία");
+        Location greece = createLocation("Αθήνα", "athens", 1600, 1080 - 950, "Πάρε το\nΗλιακό Πάνελ\nX5000");
+        Location uk = createLocation("Λονδίνο",  "london", 900, 1080 - 420, "Πάρε το\nΗλιακό Πάνελ\nX2000");
+        Location france = createLocation("Παρίσι", "paris", 965, 1080 - 540, "Πάρε την\nΜπαταρία");
         Location spain = createLocation("Μαδρίτη", "madrid", 725, 1080 - 870, "Πάρε τους\nπλαϊνούς\nκινητήρες");
-        Location italy = createLocation("Μιλάνο", "milan", 1130, 1080 - 680, "Πάρε τον\nΗλιακό Συλλέκτη\nX3000");
+        Location italy = createLocation("Μιλάνο", "milan", 1130, 1080 - 680, "Πάρε το\nΗλιακό Πάνελ\nX3000");
         Location germany = createLocation("Βερολίνο", "berlin", 1220, 1080 - 400, "Πάρε τον\nκεντρικό\nκινητήρα");
-        Location norway = createLocation("Όσλο", "oslo", 1170, 1080 - 90, "Πάρε τον\nΗλιακό Συλλέκτη\nX4000");
+        Location norway = createLocation("Όσλο", "oslo", 1170, 1080 - 90, "Πάρε το\nΗλιακό Πάνελ\nX4000");
         // todo add moon as last location
         greece.addOtherLocationAndDistance(uk, 2500);
         greece.addOtherLocationAndDistance(france, 1800);

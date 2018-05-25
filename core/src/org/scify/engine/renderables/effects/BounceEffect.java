@@ -1,6 +1,5 @@
 package org.scify.engine.renderables.effects;
 
-import java.awt.geom.Point2D;
 import java.util.Date;
 
 public class BounceEffect extends BaseEffect {
@@ -47,7 +46,7 @@ public class BounceEffect extends BaseEffect {
         return target;
     }
 
-    protected Point2D.Double calculateOffsets() {
+    protected void calculateOffsets() {
         double dMaxXOffset = getNumericParameter(PARAM_BOUNCE_WIDTH);
         double dMaxYOffset = getNumericParameter(PARAM_BOUNCE_HEIGHT);
 
@@ -66,9 +65,6 @@ public class BounceEffect extends BaseEffect {
         double dTargetYOffset = projectionFunction(dMaxYOffset, dPercentage);
 
 
-        Point2D.Double pRes = new Point2D.Double();
-        pRes.setLocation(dTargetXOffset, dTargetYOffset);
-
         // Update target values
         setNumericParameter(INFO_TARGET_X_OFFSET, dTargetXOffset);
         setNumericParameter(INFO_TARGET_Y_OFFSET, dTargetYOffset);
@@ -80,7 +76,6 @@ public class BounceEffect extends BaseEffect {
         // DEBUG LINES
 //        System.err.println("Offset: " + pRes.toString());
         //////////////
-        return pRes;
     }
 
     /**

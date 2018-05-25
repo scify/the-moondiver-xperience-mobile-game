@@ -58,7 +58,7 @@ public class GameInfo {
         moonPhasesController = new MoonPhasesController();
         atForest = true;
         currentDay = 1;
-        initialDaysToSuccessfullyCompleteGame = 60;
+        initialDaysToSuccessfullyCompleteGame = 40;
         motorEfficiency = 10;
         remainingEnergy = 0;
         LocationController lc = new LocationController();

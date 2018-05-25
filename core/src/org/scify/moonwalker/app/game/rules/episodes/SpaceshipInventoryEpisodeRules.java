@@ -50,6 +50,13 @@ public class SpaceshipInventoryEpisodeRules extends FadingEpisodeRules<Spaceship
             gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.ADD_ITEM_AUDIO_PATH));
             renderable.addNextItem(inventoryItemsCounter, gameState);
             exitButtonVisibilityNotHandled = false;
+            if (inventoryItemsCounter == 7) {
+                gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.MOON_TAKE_OFF_AUDIO_PATH));
+                if (gameInfo.isGameFullySuccessfullyCompleted())
+                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.FULL_SUCCESS_BG_AUDIO_PATH));
+                else
+                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.SIMPLE_SUCCESS_BG_AUDIO_PATH));
+            }
         }else if (introComplete && exitButtonVisibilityNotHandled) {
             exitButtonVisibilityNotHandled = false;
             renderable.showExitButton();
@@ -96,6 +103,9 @@ public class SpaceshipInventoryEpisodeRules extends FadingEpisodeRules<Spaceship
                 renderable.fadeOutAllExtraRenderables();
                 if (gameInfo.isInventoryRequestFlag())
                     gameInfo.resetFlags();
+                if (gameInfo.getInventoryItemsCounter() == 7) {
+                    gameInfo.setLaunchRequestFlag();
+                }
                 gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.ADD_ITEM_AUDIO_PATH));
                 gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.UPGRADE_STATS_AUDIO_PATH));
                 break;

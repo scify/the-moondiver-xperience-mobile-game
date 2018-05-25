@@ -1,4 +1,4 @@
 [
-  {"id": "1", "order":"1", "speakerId":"player", "text":"[#ffeeaaff][[Καινούργια τοποθεσία!\nΤι περιπέτεια να μας περιμένει εδώ άραγε...]", "prerequisites":""},
-  {"id": "2", "order":"2", "speakerId":"player", "text":"[#ffeeaaff][[Ας βγώ απο το αεροσκάφος να δώ!]", "buttonText":"Βγές","prerequisites":"", "onExitCurrentOrderTrigger":"end,show_quiz_episode"}
+  {"id": "1", "order":"1", "speakerId":"player", "text":"[#ffeeaaff][[Για να δούμε πως θα τα πάμε σήμερα στo Λονδίνο...]", "prerequisites":""},
+  {"id": "2", "order":"2", "speakerId":"player", "text":"[#ffeeaaff][[Ας βγώ απο το αεροσκάφος!]", "buttonText":"Βγές","prerequisites":"", "onExitCurrentOrderTrigger":"end,show_quiz_episode"}
 ]

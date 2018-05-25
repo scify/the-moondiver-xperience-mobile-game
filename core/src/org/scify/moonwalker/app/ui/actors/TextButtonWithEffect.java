@@ -13,6 +13,7 @@ import java.util.Set;
 public class TextButtonWithEffect extends TextButton implements EffectTarget, Updateable {
     public TextButtonWithEffect(String text, Skin skin) {
         super(text, skin);
+        getLabel().setWrap(true);
     }
 
     public TextButtonWithEffect(String text, Skin skin, String styleName) {

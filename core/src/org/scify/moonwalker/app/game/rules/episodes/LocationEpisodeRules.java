@@ -80,10 +80,19 @@ public class LocationEpisodeRules extends FadingEpisodeRules<LocationRenderable>
     public EpisodeEndState determineEndState(GameState gameState) {
         String code = EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS;;
         // Handle failed conversation
-        if (gameInfo.isLastQuizSuccessFull()) {
-            gameInfo.setInventoryIncreased();
+        if (gameInfo.getCurrentLocation().getName().equals("Παρίσι")) {
+            if (gameInfo.isLastQuizSuccessFull()) {
+                gameInfo.setInventoryIncreased();
+                gameInfo.setInventoryRequestFlag();
+            }else {
+                gameInfo.setContactRequestFlag();
+            }
+        }else {
+            gameInfo.setContactRequestFlag();
+            if (gameInfo.isLastQuizSuccessFull()) {
+                gameInfo.setInventoryIncreased();
+            }
         }
-        gameInfo.setContactRequestFlag();
         gameInfo.setAfterLocationQuizEpisode(true);
         conversationRules.cleanUpState(gameState);
         return new EpisodeEndState(code, cleanUpGameState(gameState));
