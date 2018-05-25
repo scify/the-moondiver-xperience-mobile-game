@@ -2,7 +2,6 @@ package org.scify.moonwalker.app.game;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 public class LocationController {
 
@@ -10,13 +9,23 @@ public class LocationController {
 
     protected List<Location> locations;
     protected Location initialLocation;
+    protected Location afterInitialLocation;
     protected static boolean selectFirstMiddleOfNowhere = true;
     protected static String CONVERSATIONS_PATH = "conversations/locations/";
     protected static String CONVERSATION_MAIN_FILE_NAME = "main_conversation.json";
     protected static String CONVERSATION_SUCCESS_FILE_NAME = "success_conversation.json";
     protected static String LOCATION_IMG_PATH = "img/locations/";
 
-    public LocationController() {
+    protected static LocationController instance;
+
+    public static LocationController getInstance() {
+        if (instance == null) {
+            instance = new LocationController();
+        }
+        return instance;
+    }
+
+    private LocationController() {
         locations = new LinkedList<>();
         Location greece = createLocation("Αθήνα", "athens", 1600, 1080 - 950, "Πάρε το\nΗλιακό Πάνελ\nX5000");
         Location uk = createLocation("Λονδίνο",  "london", 900, 1080 - 420, "Πάρε το\nΗλιακό Πάνελ\nX2000");
@@ -85,19 +94,11 @@ public class LocationController {
         locations.add(france);
 
         initialLocation = greece;
+        afterInitialLocation = france;
     }
 
     public List<Location> getLocations() {
         return locations;
-    }
-
-    protected static LocationController instance;
-
-    public static LocationController getInstance() {
-        if (instance == null) {
-            instance = new LocationController();
-        }
-        return instance;
     }
 
     public Location getNowhereLocation(String name, int posX, int posY) {
@@ -136,5 +137,13 @@ public class LocationController {
             return null;
         else
             return locations.get(index);
+    }
+
+    public boolean isLastLocation(Location currentLocation) {
+        return locations.indexOf(currentLocation) == locations.size() - 1;
+    }
+
+    public Location getAfterInitialLocation() {
+        return afterInitialLocation;
     }
 }

@@ -7,6 +7,8 @@ import org.scify.moonwalker.app.ui.renderables.SpaceshipInventoryRenderable;
 
 import java.util.ArrayList;
 
+import static org.scify.moonwalker.app.game.rules.episodes.CockpitEpisodeRules.MAX_INVENTORY_ITEMS;
+
 public class SpaceshipInventoryEpisodeRules extends FadingEpisodeRules<SpaceshipInventoryRenderable> {
 
     protected static final String RENDERABLE_ID = "spaceship_inventory";
@@ -103,7 +105,7 @@ public class SpaceshipInventoryEpisodeRules extends FadingEpisodeRules<Spaceship
                 renderable.fadeOutAllExtraRenderables();
                 if (gameInfo.isInventoryRequestFlag())
                     gameInfo.resetFlags();
-                if (gameInfo.getInventoryItemsCounter() == 7) {
+                if (gameInfo.getInventoryItemsCounter() == MAX_INVENTORY_ITEMS) {
                     gameInfo.setLaunchRequestFlag();
                 }
                 gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.ADD_ITEM_AUDIO_PATH));

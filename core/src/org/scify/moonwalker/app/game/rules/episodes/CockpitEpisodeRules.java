@@ -21,6 +21,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
 
     public static final String COCKPIT_ID = "cockpit";
     public static final String TOGGLE_BUTTON = "TOGGLE_BUTTON";
+    public static final int MAX_INVENTORY_ITEMS = 7;
     protected LocationController locationController;
 
     protected boolean buttonsEnabled;
@@ -34,7 +35,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
 
     public void init() {
         showArrivalConversation = false;
-        locationController = new LocationController();
+        locationController = LocationController.getInstance();
     }
 
     @Override
@@ -77,11 +78,14 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
 
     protected void spaceshipHasJustArrived() {
         // update current location in gameInfo
-        Location location = gameInfo.setCurrentLocation(gameInfo.getNextLocation());
+        Location currentLocation = gameInfo.setCurrentLocation(gameInfo.getNextLocation());
         // set the next location to null, so the user has to select it from the map
         gameInfo.setNextLocation(null);
-        // todo what to do in case we landed in paris (so the next location does not exist)?
-        Location nextAllowedLocation = locationController.getLocationAfter(location);
+        initNextLocation(currentLocation);
+    }
+
+    protected void initNextLocation(Location currentLocation) {
+        Location nextAllowedLocation = locationController.getLocationAfter(currentLocation);
         if (nextAllowedLocation != null)
             gameInfo.setNextAllowedLocation(nextAllowedLocation);
         // reset the travel percentages in gameInfo
@@ -173,7 +177,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
         buttonsEnabled = false;
         gameState.removeGameEventsWithType(TOGGLE_BUTTON);
         gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
-        if (gameInfo.getInventoryItemsCounter() == 7) {
+        if (gameInfo.getInventoryItemsCounter() == MAX_INVENTORY_ITEMS) {
             gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.MOON_TAKE_OFF_AUDIO_PATH));
         }
         renderable.turnOffLightOffAllButtons();
@@ -326,7 +330,6 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
         double kilometersForEnergyUnits = motorEfficiency * remainingEnergy;
         double percentage = (kilometersForEnergyUnits / destinationKm) * 100;
         // if we have more energy than needed, set as full percentage
-        System.out.println("percentage " + percentage);
         gameInfo.resetFlags();
         if (percentage > 100)
             percentage = 100.0;

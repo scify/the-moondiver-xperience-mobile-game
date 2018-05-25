@@ -61,7 +61,7 @@ public class GameInfo {
         initialDaysToSuccessfullyCompleteGame = 40;
         motorEfficiency = 10;
         remainingEnergy = 0;
-        LocationController lc = new LocationController();
+        LocationController lc = LocationController.getInstance();
         setMoonPhases();
         //TODO set to unset
         tutorialMode = false;
@@ -70,7 +70,7 @@ public class GameInfo {
         //setContactRequestFlag();
         setMapRequestFlag();
         setCurrentLocation(lc.getInitialLocation());
-        setNextAllowedLocation(lc.getLocations().get(0));
+        setNextAllowedLocation(lc.getAfterInitialLocation());
         //inventory
         inventoryItemsCounter = 0;
         inventoryIncreased = false;
