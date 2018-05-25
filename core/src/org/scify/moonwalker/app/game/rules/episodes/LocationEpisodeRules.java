@@ -71,6 +71,7 @@ public class LocationEpisodeRules extends FadingEpisodeRules<LocationRenderable>
             if(conversationRules == null) {
                 conversationRules = new QuestionConversationRules(location.getConversationPath(), location.getConversationBG(), location.getConversationSuccessFilePath(), location.getConversationFailureFilePath(), renderable.CORRECT_AUDIO_PATH, renderable.WRONG_AUDIO_PATH);
                 conversationRules.setStarted(true);
+                initializeParseVariables();
             }
         }
         return super.getNextState(gameState, userAction);
