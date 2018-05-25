@@ -79,7 +79,7 @@ public class LocationEpisodeRules extends FadingEpisodeRules<LocationRenderable>
 
     @Override
     public EpisodeEndState determineEndState(GameState gameState) {
-        String code = EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS;;
+        String code = EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS;
         // Handle failed conversation
         if (gameInfo.getCurrentLocation().getName().equals("Παρίσι")) {
             if (gameInfo.isLastQuizSuccessFull()) {
