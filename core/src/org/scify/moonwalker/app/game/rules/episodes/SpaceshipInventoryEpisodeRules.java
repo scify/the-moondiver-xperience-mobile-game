@@ -7,6 +7,8 @@ import org.scify.moonwalker.app.ui.renderables.SpaceshipInventoryRenderable;
 
 import java.util.ArrayList;
 
+import static org.scify.moonwalker.app.game.rules.episodes.CockpitEpisodeRules.MAX_INVENTORY_ITEMS;
+
 public class SpaceshipInventoryEpisodeRules extends FadingEpisodeRules<SpaceshipInventoryRenderable> {
 
     protected static final String RENDERABLE_ID = "spaceship_inventory";
@@ -67,12 +69,10 @@ public class SpaceshipInventoryEpisodeRules extends FadingEpisodeRules<Spaceship
     protected void updateGameInfo (int inventoryItemsCounter) {
         switch (inventoryItemsCounter) {
             case 1:
-                gameInfo.setMotorEfficiency(15);
-                renderable.setNextDistancePerUnitValue("15 Km/Unit");
+                renderable.setNextDistancePerUnitValue(gameInfo.getMotorEfficiency() + " Km/Unit");
                 break;
             case 2:
-                gameInfo.setMotorEfficiency(20);
-                renderable.setNextDistancePerUnitValue("20 Km/Unit");
+                renderable.setNextDistancePerUnitValue(gameInfo.getMotorEfficiency() + " Km/Unit");
                 break;
             default:
                 MoonPhase moonPhase = gameInfo.getCurrentMoonPhase();
@@ -103,7 +103,7 @@ public class SpaceshipInventoryEpisodeRules extends FadingEpisodeRules<Spaceship
                 renderable.fadeOutAllExtraRenderables();
                 if (gameInfo.isInventoryRequestFlag())
                     gameInfo.resetFlags();
-                if (gameInfo.getInventoryItemsCounter() == 7) {
+                if (gameInfo.getInventoryItemsCounter() == MAX_INVENTORY_ITEMS) {
                     gameInfo.setLaunchRequestFlag();
                 }
                 gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.ADD_ITEM_AUDIO_PATH));

@@ -21,6 +21,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
 
     public static final String COCKPIT_ID = "cockpit";
     public static final String TOGGLE_BUTTON = "TOGGLE_BUTTON";
+    public static final int MAX_INVENTORY_ITEMS = 7;
     protected LocationController locationController;
 
     protected boolean buttonsEnabled;
@@ -34,7 +35,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
 
     public void init() {
         showArrivalConversation = false;
-        locationController = new LocationController();
+        locationController = LocationController.getInstance();
     }
 
     @Override
@@ -49,19 +50,25 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                 locationController.resetSelectFirstMiddleOfNowhere();
                 spaceshipHasJustArrived();
             } // if last travel was unsuccessful
-            else if (hasSpaceshipFailedToArriveAtLocation()) {
-                gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.BG_DEFAULT_AUDIO_PATH));
-                if (gameInfo.getRemainingEnergy() == 0)
-                    gameInfo.setChargeRequestFlag();
+            else if (isAtNowhereLocation()) {
                 episodeLocation = locationController.getNowhereLocation(ORIGIN_MIDDLE_OF_NOWHERE, 0, 0);
-                locationController.toggleSelectFirstMiddleOfNowhere();
-                if (episodeLocation.getName().equals("nowhere"))
-                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.BG_NOWHERE1_AUDIO_PATH));
-                else
-                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.BG_NOWHERE2_AUDIO_PATH));
+                if (hasJustFailedToArriveAtLocation()) {
+                    locationController.toggleSelectFirstMiddleOfNowhere();
+                    episodeLocation = locationController.getNowhereLocation(ORIGIN_MIDDLE_OF_NOWHERE, 0, 0);
+                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.BG_NOWHERE1_AUDIO_PATH));
+                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.BG_NOWHERE2_AUDIO_PATH));
+                    if (gameInfo.getRemainingEnergy() == 0)
+                        gameInfo.setChargeRequestFlag();
+
+                    if (locationController.isSelectFirstMiddleOfNowhere())
+                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.BG_NOWHERE1_AUDIO_PATH));
+                    else
+                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.BG_NOWHERE2_AUDIO_PATH));
+                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.BG_DEFAULT_AUDIO_PATH));
+                    gameInfo.setAfterTravel(false);
+                }
             } else {
                 episodeLocation = gameInfo.getCurrentLocation();
-                locationController.resetSelectFirstMiddleOfNowhere();
             }
             renderable.initSubRenderables(episodeLocation);
             renderable.setZIndex(1);
@@ -77,11 +84,14 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
 
     protected void spaceshipHasJustArrived() {
         // update current location in gameInfo
-        Location location = gameInfo.setCurrentLocation(gameInfo.getNextLocation());
+        Location currentLocation = gameInfo.setCurrentLocation(gameInfo.getNextLocation());
         // set the next location to null, so the user has to select it from the map
         gameInfo.setNextLocation(null);
-        // todo what to do in case we landed in paris (so the next location does not exist)?
-        Location nextAllowedLocation = locationController.getLocationAfter(location);
+        initNextLocation(currentLocation);
+    }
+
+    protected void initNextLocation(Location currentLocation) {
+        Location nextAllowedLocation = locationController.getLocationAfter(currentLocation);
         if (nextAllowedLocation != null)
             gameInfo.setNextAllowedLocation(nextAllowedLocation);
         // reset the travel percentages in gameInfo
@@ -130,16 +140,26 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
     protected void addAudioGameEvents(final GameState gameState) {
         gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.LOW_ENERGY_AUDIO_PATH));
         gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.TAKE_OFF_AUDIO_PATH));
-        if (!gameState.eventsQueueContainsEvent(GAME_EVENT_AUDIO_START_LOOP_UI))
+        if (!gameInfo.isBackGroundMusicPlaying()) {
             gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.BG_DEFAULT_AUDIO_PATH));
+            gameInfo.setBackGroundMusicPlaying(true);
+        }
     }
 
     protected boolean hasSpaceshipJustArrivedAtLocation() {
         return gameInfo.getNextTravelPercentagePossible() == 100.0 && gameInfo.isAfterTravel();
     }
 
-    protected boolean hasSpaceshipFailedToArriveAtLocation() {
-        return gameInfo.getNextTravelPercentagePossible() < 100.0 && gameInfo.isAfterTravel();
+    protected boolean hasJustFailedToArriveAtLocation() {
+        boolean isAtNowhere = isAtNowhereLocation();
+        boolean isAfterTravel = gameInfo.isAfterTravel();
+        boolean ret = isAfterTravel && isAtNowhere;
+        return  ret;
+    }
+
+    protected boolean isAtNowhereLocation() {
+        boolean ret = gameInfo.getNextTravelPercentagePossible() < 100.0 && gameInfo.getNextTravelPercentagePossible() > 0;
+        return ret;
     }
 
     protected void setOutsideBackground(Location location) {
@@ -161,6 +181,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                 gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.BG_NOWHERE2_AUDIO_PATH));
                 gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.BG_NOWHERE1_AUDIO_PATH));
                 gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.BG_NOWHERE2_AUDIO_PATH));
+                gameInfo.setBackGroundMusicPlaying(false);
                 gameState.setAdditionalDataEntry(NEXT_LOCATION, gameInfo.getCurrentLocation());
                 goToEpisode(gameState, new GameEvent(LOCATION_EPISODE_STARTED, null, this));
             }
@@ -173,7 +194,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
         buttonsEnabled = false;
         gameState.removeGameEventsWithType(TOGGLE_BUTTON);
         gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
-        if (gameInfo.getInventoryItemsCounter() == 7) {
+        if (gameInfo.getInventoryItemsCounter() == MAX_INVENTORY_ITEMS) {
             gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.MOON_TAKE_OFF_AUDIO_PATH));
         }
         renderable.turnOffLightOffAllButtons();
@@ -326,7 +347,6 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
         double kilometersForEnergyUnits = motorEfficiency * remainingEnergy;
         double percentage = (kilometersForEnergyUnits / destinationKm) * 100;
         // if we have more energy than needed, set as full percentage
-        System.out.println("percentage " + percentage);
         gameInfo.resetFlags();
         if (percentage > 100)
             percentage = 100.0;

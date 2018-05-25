@@ -3,7 +3,6 @@ package org.scify.moonwalker.app.game;
 public class GameInfo {
 
     protected int currentDay;
-    protected int motorEfficiency;
     protected int remainingEnergy;
     protected int initialDaysToSuccessfullyCompleteGame;
     protected int inventoryItemsCounter;
@@ -27,6 +26,7 @@ public class GameInfo {
     protected boolean afterTravel;
     protected boolean afterLocationQuizEpisode;
     protected boolean lastQuizSuccessFull;
+    protected boolean BackGroundMusicPlaying;
 
     /**
      * The travel percentage complete in the LAST travel
@@ -58,25 +58,23 @@ public class GameInfo {
         moonPhasesController = new MoonPhasesController();
         atForest = true;
         currentDay = 1;
-        initialDaysToSuccessfullyCompleteGame = 40;
-        motorEfficiency = 10;
+        initialDaysToSuccessfullyCompleteGame = 30;
         remainingEnergy = 0;
-        LocationController lc = new LocationController();
+        LocationController lc = LocationController.getInstance();
         setMoonPhases();
-        //TODO set to unset
         tutorialMode = false;
-        selectedPlayer = SelectedPlayer.girl;
         resetFlags();
-        //setContactRequestFlag();
-        setMapRequestFlag();
+        setContactRequestFlag();
+        //setMapRequestFlag();
         setCurrentLocation(lc.getInitialLocation());
-        setNextAllowedLocation(lc.getLocations().get(0));
+        setNextAllowedLocation(lc.getAfterInitialLocation());
         //inventory
         inventoryItemsCounter = 0;
         inventoryIncreased = false;
         afterTravel = false;
         afterLocationQuizEpisode = false;
         lastQuizSuccessFull = false;
+        BackGroundMusicPlaying = false;
     }
 
     public int getCurrentDay() {
@@ -95,11 +93,12 @@ public class GameInfo {
     }
 
     public int getMotorEfficiency() {
-        return motorEfficiency;
-    }
-
-    public void setMotorEfficiency(int newMotorEfficiency) {
-        this.motorEfficiency = newMotorEfficiency;
+        if (inventoryItemsCounter == 0)
+            return 10;
+        else if (inventoryItemsCounter == 1)
+            return 15;
+        else
+            return 20;
     }
 
     public int getRemainingEnergy() {
@@ -120,10 +119,6 @@ public class GameInfo {
 
     public void setNextLocation(Location location) {
         this.nextLocation = location;
-    }
-
-    public String getCurrentLocationName() {
-        return currentLocation.getName();
     }
 
     public Location setCurrentLocation(Location location) {
@@ -181,10 +176,6 @@ public class GameInfo {
         return inventoryItemsCounter;
     }
 
-    public void setInventoryItemsCounter(int numberOfItems) {
-        inventoryItemsCounter = numberOfItems;
-    }
-
     public int increaseInventoryItemsCounter() {
         inventoryItemsCounter++;
         inventoryIncreased = false;
@@ -193,10 +184,6 @@ public class GameInfo {
 
     public boolean isInventoryIncreased() {
         return inventoryIncreased;
-    }
-
-    public void addNextInventoryItem() {
-        inventoryIncreased = true;
     }
 
     public int getUnitsOfMoonPhase(MoonPhase moonPhase) {
@@ -335,5 +322,13 @@ public class GameInfo {
 
     public void setInventoryIncreased() {
         inventoryIncreased = true;
+    }
+
+    public boolean isBackGroundMusicPlaying() {
+        return BackGroundMusicPlaying;
+    }
+
+    public void setBackGroundMusicPlaying(boolean backGroundMusicPlaying) {
+        BackGroundMusicPlaying = backGroundMusicPlaying;
     }
 }

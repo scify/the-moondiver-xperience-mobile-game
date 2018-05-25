@@ -139,7 +139,7 @@ public class SpaceshipInventoryRenderable extends FadingTableRenderable {
         distancePerUnitLabel = createTextLabelRenderable(DISTANCE_PER_UNIT_ID, "", false, true, 5);
         allRenderables.add(distancePerUnitLabel);
 
-        exitButton = createImageButton(EXIT_BUTTON_ID, EXIT_BUTTON_IMG_PATH, new UserAction(UserActionCode.QUIT),true, false, 100);
+        exitButton = createImageButton(EXIT_BUTTON_ID, EXIT_BUTTON_IMG_PATH, new UserAction(UserActionCode.QUIT), true, false, 100);
         exitButton.setHeight(appInfo.convertY(157));
         exitButton.setWidth(appInfo.convertX(157));
         exitButton.setxPos(0.88f * width);
@@ -162,41 +162,43 @@ public class SpaceshipInventoryRenderable extends FadingTableRenderable {
 
     protected EffectSequence addStatsUpdateToEffectSequence(final TextLabelRenderable label, final String nextValue, final GameState gameState) {
         EffectSequence fadeInEffects = getShowPartEffectSequence();
-        fadeInEffects.addEffect(new FunctionEffect(new Runnable() {
-            @Override
-            public void run() {
-                EffectSequence effects = new EffectSequence();
-                effects.addEffect(new FunctionEffect(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (label != null) {
-                            gameState.addGameEvent(new GameEvent("GAME_EVENT_AUDIO_START_UI", UPGRADE_STATS_AUDIO_PATH));
+        if (label != null) {
+            fadeInEffects.addEffect(new FunctionEffect(new Runnable() {
+                @Override
+                public void run() {
+                    EffectSequence effects = new EffectSequence();
+                    effects.addEffect(new FunctionEffect(new Runnable() {
+                        @Override
+                        public void run() { gameState.addGameEvent(new GameEvent("GAME_EVENT_AUDIO_START_UI", UPGRADE_STATS_AUDIO_PATH)); }
+                    }));
+                    effects.addEffect(new FadeEffect(1, 0, 500));
+                    effects.addEffect(new FunctionEffect(new Runnable() {
+                        @Override
+                        public void run() { label.setLabel(nextValue); }
+                    }));
+                    effects.addEffect(new FadeEffect(0, 1, 500));
+                    effects.addEffect(new FunctionEffect(new Runnable() {
+                        @Override
+                        public void run() {
+                            showExitButton();
                         }
-                    }
-                }));
-                effects.addEffect(new FadeEffect(1, 0, 500));
-                effects.addEffect(new FunctionEffect(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (label != null) {
-                            label.setLabel(nextValue);
-                        }
-                    }
-                }));
-                effects.addEffect(new FadeEffect(0, 1, 500));
-                effects.addEffect(new FunctionEffect(new Runnable() {
-                    @Override
-                    public void run() {
-                        showExitButton();
-                    }
-                }));
-                label.addEffect(effects);
-            }
-        }));
+                    }));
+                    label.addEffect(effects);
+                }
+            }));
+        }else {
+            fadeInEffects.addEffect(new FunctionEffect(new Runnable() {
+                @Override
+                public void run() {
+                    showExitButton();
+                }
+            }));
+        }
+
         return fadeInEffects;
     }
 
-    public void showExitButton () {
+    public void showExitButton() {
         EffectSequence effects = new EffectSequence();
         effects.addEffect(new FadeEffect(1.0, 0, 0));
         effects.addEffect(new VisibilityEffect(true));
@@ -204,9 +206,13 @@ public class SpaceshipInventoryRenderable extends FadingTableRenderable {
         exitButton.addEffect(effects);
     }
 
-    public void addSolarPanel1(final GameState gameState) { solarPanel1.addEffect(addStatsUpdateToEffectSequence(unitsLabel, nextUnitsValue, gameState)); }
+    public void addSolarPanel1(final GameState gameState) {
+        solarPanel1.addEffect(addStatsUpdateToEffectSequence(unitsLabel, nextUnitsValue, gameState));
+    }
 
-    public void addSolarPanel2(final GameState gameState) { solarPanel2.addEffect(addStatsUpdateToEffectSequence(unitsLabel, nextUnitsValue, gameState)); }
+    public void addSolarPanel2(final GameState gameState) {
+        solarPanel2.addEffect(addStatsUpdateToEffectSequence(unitsLabel, nextUnitsValue, gameState));
+    }
 
     public void addSolarPanel3(final GameState gameState) {
         solarPanel3.addEffect(addStatsUpdateToEffectSequence(unitsLabel, nextUnitsValue, gameState));
@@ -216,11 +222,17 @@ public class SpaceshipInventoryRenderable extends FadingTableRenderable {
         solarPanel4.addEffect(addStatsUpdateToEffectSequence(unitsLabel, nextUnitsValue, gameState));
     }
 
-    public void addCentralTurbine(final GameState gameState) { centralTurbine.addEffect(addStatsUpdateToEffectSequence(distancePerUnitLabel, nextDistancePerUnitValue, gameState)); }
+    public void addCentralTurbine(final GameState gameState) {
+        centralTurbine.addEffect(addStatsUpdateToEffectSequence(distancePerUnitLabel, nextDistancePerUnitValue, gameState));
+    }
 
-    public void addExtraTurbines(final GameState gameState) { extraTurbines.addEffect(addStatsUpdateToEffectSequence(distancePerUnitLabel, nextDistancePerUnitValue, gameState)); }
+    public void addExtraTurbines(final GameState gameState) {
+        extraTurbines.addEffect(addStatsUpdateToEffectSequence(distancePerUnitLabel, nextDistancePerUnitValue, gameState));
+    }
 
-    public void addBattery(final GameState gameState) { battery.addEffect(addStatsUpdateToEffectSequence(null, null, gameState)); }
+    public void addBattery(final GameState gameState) {
+        battery.addEffect(addStatsUpdateToEffectSequence(null, null, gameState));
+    }
 
     public void addNextItem(int inventoryItemsCounter, final GameState gameState) {
         if (inventoryItemsCounter == 1)

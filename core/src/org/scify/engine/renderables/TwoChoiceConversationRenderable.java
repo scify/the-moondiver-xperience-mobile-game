@@ -57,10 +57,10 @@ public class TwoChoiceConversationRenderable extends ConversationRenderable {
     public void setConversationLines(List<ConversationLine> conversationLines) {
         this.conversationLines = conversationLines;
         ConversationLine conversationLine = conversationLines.get(0);
-        conversationButtonTop = createTextButton(TOP_BUTTON_ID+ conversationLine.getId(),conversationLine.getText(),new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine),false, true,102);
+        conversationButtonTop = createTextButton(TOP_BUTTON_ID+ conversationLine.getId(),parseText(conversationLine.getText()),new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine),false, true,102);
         allRenderables.add(conversationButtonTop);
         conversationLine = conversationLines.get(1);
-        conversationButtonBottom = createTextButton(BOTTOM_BUTTON_ID+ conversationLine.getId(),conversationLine.getText(),new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine),false, true,102);
+        conversationButtonBottom = createTextButton(BOTTOM_BUTTON_ID+ conversationLine.getId(),parseText(conversationLine.getText()),new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine),false, true,102);
         allRenderables.add(conversationButtonBottom);
     }
 
