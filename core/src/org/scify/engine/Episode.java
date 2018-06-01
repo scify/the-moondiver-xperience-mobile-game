@@ -1,5 +1,7 @@
 package org.scify.engine;
 
+import org.scify.engine.rules.Rules;
+
 import java.util.concurrent.*;
 
 /**
@@ -7,7 +9,7 @@ import java.util.concurrent.*;
  * @param <T> A class which contains info regarding how an Episode ended.
  */
 public abstract class Episode<T> implements Callable<T>, Cloneable {
-
+    protected Rules rules;
     /**
      * A game engine used to run the Episode.
      */
@@ -82,4 +84,9 @@ public abstract class Episode<T> implements Callable<T>, Cloneable {
     }
 
     public abstract void init();
+
+    protected void disposeEpisodeResources() {
+        rules.disposeResources();
+        gameEngine.disposeResources();
+    }
 }

@@ -46,15 +46,21 @@ public class ThemeController {
         parameter.magFilter = Texture.TextureFilter.Linear;
         parameter.minFilter = Texture.TextureFilter.Linear;
         FreeTypeFontGenerator generator;
-        if (fontId.equals("dialog")) {
-            generator = new FreeTypeFontGenerator(Gdx.files.internal(resourceLocator.getFilePath("fonts/CYN_EdraNR.otf")));
-        }else if (fontId.equals("controls")){
-            generator = new FreeTypeFontGenerator(Gdx.files.internal(resourceLocator.getFilePath("fonts/PVF_ClimaxTXT.otf")));
-        }else {
-            generator = new FreeTypeFontGenerator(Gdx.files.internal(resourceLocator.getFilePath("fonts/CYN_EdraNR.otf")));
+        switch (fontId) {
+            case "dialog":
+                generator = new FreeTypeFontGenerator(Gdx.files.internal(resourceLocator.getFilePath("fonts/CYN_EdraNR.otf")));
+                break;
+            case "controls":
+                generator = new FreeTypeFontGenerator(Gdx.files.internal(resourceLocator.getFilePath("fonts/PVF_ClimaxTXT.otf")));
+                break;
+            default:
+                generator = new FreeTypeFontGenerator(Gdx.files.internal(resourceLocator.getFilePath("fonts/CYN_EdraNR.otf")));
+                break;
         }
-        //FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(resourceLocator.getFilePath("fonts/Anonymous_Pro.ttf")));
-        //FreeTypeFontGenerator
+        if(font != null) {
+            System.out.println("disposing font");
+            font.dispose();
+        }
         font = generator.generateFont(parameter);
         font.getData().markupEnabled = true;
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
@@ -74,7 +80,7 @@ public class ThemeController {
     }
 
     public void dispose() {
-        font.dispose();
+
     }
 
 }

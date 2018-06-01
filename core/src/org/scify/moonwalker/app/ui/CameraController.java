@@ -32,7 +32,6 @@ public class CameraController {
     }
 
     public void disposeResources() {
-        debugRenderer.dispose();
     }
 
     public void update() {

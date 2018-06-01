@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import org.scify.engine.rules.Rules;
 
 public class EpisodeWithEndState extends Episode<EpisodeEndState> {
-    protected Rules rules;
+
 
     public EpisodeWithEndState(Rules rules) {
         this.rules = rules;
@@ -19,12 +19,12 @@ public class EpisodeWithEndState extends Episode<EpisodeEndState> {
     public EpisodeEndState call() {
 
         EpisodeEndState endState = gameEngine.execute();
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-                disposeResources();
-            }
-        });
+//        Gdx.app.postRunnable(new Runnable() {
+//            @Override
+//            public void run() {
+//                disposeEpisodeResources();
+//            }
+//        });
 
         return endState;
     }
@@ -33,9 +33,5 @@ public class EpisodeWithEndState extends Episode<EpisodeEndState> {
     protected Object clone() throws CloneNotSupportedException {
         // Only keeps basic params
         return new EpisodeWithEndState(rules);
-    }
-
-    public void disposeResources() {
-        rules.disposeResources();
     }
 }

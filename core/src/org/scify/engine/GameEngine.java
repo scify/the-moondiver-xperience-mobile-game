@@ -59,7 +59,6 @@ public class GameEngine {
         // here the game has ended
         EpisodeEndState endState = rules.determineEndState(currentGameState);
         // ask the rendering engine instance to dispose the drawables
-        renderingEngine.disposeRenderables();
         // return the end state from rules
         return endState;
     }
@@ -73,5 +72,10 @@ public class GameEngine {
         UserAction uaToHandle = inputHandler.getNextUserAction();
         // apply it and determine the next state
         currentGameState = rules.getNextState(currentGameState, uaToHandle);
+    }
+
+    public void disposeResources() {
+        renderingEngine.disposeRenderables();
+        renderingEngine.disposeResources();
     }
 }
