@@ -409,10 +409,12 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                     batch.begin();
                     drawGameState(currentGameState);
                     batch.end();
+
+                    cameraController.render(world);
+                    cameraController.setProjectionMatrix(batch);
+                    lLastUpdate = lNewTime;
                 }
-                cameraController.render(world);
-                cameraController.setProjectionMatrix(batch);
-                lLastUpdate = lNewTime;
+
             }
         }
     }

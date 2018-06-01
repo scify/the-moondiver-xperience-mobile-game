@@ -1,5 +1,6 @@
 package org.scify.engine;
 
+import com.badlogic.gdx.Gdx;
 import org.scify.engine.rules.Rules;
 
 import java.util.concurrent.*;
@@ -87,6 +88,12 @@ public abstract class Episode<T> implements Callable<T>, Cloneable {
 
     protected void disposeEpisodeResources() {
         rules.disposeResources();
-        gameEngine.disposeResources();
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                gameEngine.disposeResources();
+            }
+        });
+
     }
 }
