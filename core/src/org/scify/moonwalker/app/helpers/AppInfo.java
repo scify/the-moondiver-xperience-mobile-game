@@ -2,6 +2,10 @@ package org.scify.moonwalker.app.helpers;
 
 import com.badlogic.gdx.math.Vector2;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+
 public class AppInfo {
 
     public static final int REFERENCE_SCREEN_HEIGHT = 1080;
@@ -116,5 +120,67 @@ public class AppInfo {
         res.y = convertYInverted(initialCenterY + initialHeight / 2.0f);
 
         return res;
+    }
+
+    private static final long MEGABYTE_FACTOR = 1024L * 1024L;
+    private static final DecimalFormat ROUNDED_DOUBLE_DECIMALFORMAT;
+    private static final String MIB = "MiB";
+
+    static {
+        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
+        otherSymbols.setDecimalSeparator('.');
+        otherSymbols.setGroupingSeparator(',');
+        ROUNDED_DOUBLE_DECIMALFORMAT = new DecimalFormat("####0.00", otherSymbols);
+        ROUNDED_DOUBLE_DECIMALFORMAT.setGroupingUsed(false);
+    }
+
+
+    public String getTotalMemoryInMiB() {
+        double totalMiB = bytesToMiB(getTotalMemory());
+        return String.format("%s %s", ROUNDED_DOUBLE_DECIMALFORMAT.format(totalMiB), MIB);
+    }
+
+    public String getFreeMemoryInMiB() {
+        double freeMiB = bytesToMiB(getFreeMemory());
+        return String.format("%s %s", ROUNDED_DOUBLE_DECIMALFORMAT.format(freeMiB), MIB);
+    }
+
+    public String getUsedMemoryInMiB() {
+        double usedMiB = bytesToMiB(getUsedMemory());
+        return String.format("%s %s", ROUNDED_DOUBLE_DECIMALFORMAT.format(usedMiB), MIB);
+    }
+
+    public String getMaxMemoryInMiB() {
+        double maxMiB = bytesToMiB(getMaxMemory());
+        return String.format("%s %s", ROUNDED_DOUBLE_DECIMALFORMAT.format(maxMiB), MIB);
+    }
+
+    public double getPercentageUsed() {
+        return ((double) getUsedMemory() / getMaxMemory()) * 100;
+    }
+
+    private long getMaxMemory() {
+        return Runtime.getRuntime().maxMemory();
+    }
+
+    private long getUsedMemory() {
+        return getMaxMemory() - getFreeMemory();
+    }
+
+    private long getTotalMemory() {
+        return Runtime.getRuntime().totalMemory();
+    }
+
+    private long getFreeMemory() {
+        return Runtime.getRuntime().freeMemory();
+    }
+
+    private long bytesToMiB(long bytes) {
+        return bytes / MEGABYTE_FACTOR ;
+    }
+
+    public void printMemoryUsage() {
+        System.out.println("Total: " + getTotalMemoryInMiB() + "\t Free: " + getFreeMemoryInMiB() + "\t Used: " + getUsedMemoryInMiB() + "\t Max: " + getMaxMemoryInMiB());
+
     }
 }
