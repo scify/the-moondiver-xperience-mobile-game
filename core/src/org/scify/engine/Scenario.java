@@ -108,6 +108,7 @@ public abstract class Scenario {
         // get the next episode from the list of candidate episodes and set it
         // as the current episode
         currentEpisode.disposeEpisodeResources();
+        System.gc();
         setCurrentEpisode(getNextEpisode(lastEpisodeEndState));
         playCurrentEpisode();
     }
