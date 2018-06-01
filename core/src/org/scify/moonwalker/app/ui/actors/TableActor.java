@@ -99,20 +99,10 @@ public class TableActor<T extends Renderable> extends TableWithEffect {
     }
 
     protected float convertHeight(float initialHeight) {
-        // OBSOLETE:
-//        int initialBackgroundHeight = 1080;
-//        float ret = getHeight() * initialHeight;
-//        ret = ret / initialBackgroundHeight;
-//        return ret;
         return appInfo.convertY(initialHeight);
     }
 
     protected float convertWidth(float initialWidth) {
-        // OBSOLETE:
-//        int initialBackgroundWidth = 1920;
-//        float ret = getWidth() * initialWidth;
-//        ret = ret / initialBackgroundWidth;
-//        return ret;
         return appInfo.convertX(initialWidth);
     }
 
