@@ -203,6 +203,7 @@ public class LGDXRenderableBookKeeper {
             for(Actor actor : stage.getActors()) {
                 System.out.println("removing: " + actor.getName());
                 actor.addAction(Actions.removeActor());
+                //actor.remove();
             }
 
             // Dispose of sprites (?)
