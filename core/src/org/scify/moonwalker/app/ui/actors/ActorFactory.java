@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.scify.engine.renderables.*;
 import org.scify.moonwalker.app.ui.ComponentFactory;
-import org.scify.moonwalker.app.ui.UnsupportedRenderableTypeException;
+import org.scify.engine.renderables.UnsupportedRenderableTypeException;
 import org.scify.moonwalker.app.ui.actors.episode.ChargeEpisodeActor;
 import org.scify.moonwalker.app.ui.actors.conversation.MultipleChoiceConversationActor;
 import org.scify.moonwalker.app.ui.actors.conversation.SingleChoiceConversationActor;

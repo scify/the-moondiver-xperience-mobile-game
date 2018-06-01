@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import org.scify.engine.renderables.UnsupportedRenderableTypeException;
 import org.scify.engine.UserInputHandler;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.effects.Effect;
