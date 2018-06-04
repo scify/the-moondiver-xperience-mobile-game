@@ -21,6 +21,7 @@ public class SpriteFactory extends ComponentFactory{
                 Texture texture = new Texture(resourceLocator.getFilePath(renderable.getImgPath()));
                 Sprite sprite = new SpriteWithEffects(texture);
                 sprite.setSize(renderable.getWidth(), renderable.getHeight());
+                textureList.add(texture);
                 sToReturn = sprite;
                 }
                 break;
@@ -28,6 +29,7 @@ public class SpriteFactory extends ComponentFactory{
                 Texture texture = new Texture(resourceLocator.getFilePath(renderable.getImgPath()));
                 Sprite sprite = new SpriteWithEffects(texture);
                 sprite.setSize(renderable.getWidth(), renderable.getHeight());
+                textureList.add(texture);
                 sToReturn = sprite;
             }
                 break;
@@ -35,12 +37,11 @@ public class SpriteFactory extends ComponentFactory{
                 Texture playerImg = new Texture(resourceLocator.getFilePath("img/player.png"));
                 Sprite playerSprite = new SpriteWithEffects(playerImg);
                 playerSprite.setSize(renderable.getWidth(), renderable.getHeight());
+                textureList.add(playerImg);
                 sToReturn = playerSprite;
             }
                 break;
         }
         return sToReturn;
     }
-
-
 }

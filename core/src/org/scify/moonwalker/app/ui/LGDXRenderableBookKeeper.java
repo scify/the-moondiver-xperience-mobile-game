@@ -205,17 +205,8 @@ public class LGDXRenderableBookKeeper {
                 actor.addAction(Actions.removeActor());
                 //actor.remove();
             }
-
-            // Dispose of sprites (?)
-//            for (Sprite s : renderableSpriteMap.values()) {
-//                try {
-//                    s.getTexture().dispose();
-//                } catch (Exception e) {
-//                    System.err.println("Could not dispose of texture. Ignoring... Error as follows:");
-//                    e.printStackTrace(System.err);
-//                }
-//            }
-
+            actorFactory.disposeResources();
+            spriteFactory.disposeResources();
             reset();
         }
     }

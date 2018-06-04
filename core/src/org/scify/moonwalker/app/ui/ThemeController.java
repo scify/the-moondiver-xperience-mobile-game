@@ -18,6 +18,7 @@ public class ThemeController {
     private Skin skin;
     private ResourceLocator resourceLocator;
     private AppInfo appInfo;
+    private TextureAtlas textureAtlas;
 
     public ThemeController(int fontSize, String fontId) {
         this.resourceLocator = new ResourceLocator();
@@ -59,14 +60,15 @@ public class ThemeController {
         }
         if(font != null) {
             System.out.println("disposing font");
-            font.dispose();
+            dispose();
         }
         font = generator.generateFont(parameter);
         font.getData().markupEnabled = true;
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         skin = new Skin();
         skin.add("default-font", font, BitmapFont.class);
-        skin.addRegions(new TextureAtlas(Gdx.files.internal(resourceLocator.getFilePath("fonts/uiskin.atlas"))));
+        textureAtlas = new TextureAtlas(Gdx.files.internal(resourceLocator.getFilePath("fonts/uiskin.atlas")));
+        skin.addRegions(textureAtlas);
         skin.load(Gdx.files.internal(resourceLocator.getFilePath("fonts/uiskin.json")));
         generator.dispose();
     }
@@ -79,8 +81,10 @@ public class ThemeController {
         return skin;
     }
 
-    public void dispose() {
-
+    protected void dispose() {
+        font.dispose();
+        textureAtlas.dispose();
+        skin.dispose();
     }
 
 }

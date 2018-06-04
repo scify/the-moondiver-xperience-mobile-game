@@ -88,6 +88,7 @@ public abstract class Episode<T> implements Callable<T>, Cloneable {
 
     protected void disposeEpisodeResources() {
         rules.disposeResources();
+        // todo move elsewhere
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {
