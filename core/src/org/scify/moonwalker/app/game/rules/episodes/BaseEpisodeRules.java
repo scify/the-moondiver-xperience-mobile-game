@@ -13,7 +13,6 @@ public class BaseEpisodeRules extends SinglePlayerRules {
     //audio related
     public static final String GAME_EVENT_AUDIO_START_UI = "GAME_EVENT_AUDIO_START_UI";
     public static final String GAME_EVENT_AUDIO_START_LOOP_UI = "GAME_EVENT_AUDIO_START_LOOP_UI";
-    public static final String GAME_EVENT_AUDIO_LOAD_UI = "GAME_EVENT_AUDIO_LOAD_UI";
     public static final String GAME_EVENT_AUDIO_STOP_UI = "GAME_EVENT_AUDIO_STOP_UI";
     public static final String GAME_EVENT_AUDIO_DISPOSE_UI = "GAME_EVENT_AUDIO_DISPOSE_UI";
     public static final String GAME_EVENT_AUDIO_TOGGLE_UI = "GAME_EVENT_AUDIO_TOGGLE_UI";

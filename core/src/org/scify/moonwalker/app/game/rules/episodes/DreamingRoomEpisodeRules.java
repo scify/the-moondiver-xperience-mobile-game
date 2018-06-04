@@ -27,6 +27,7 @@ public class DreamingRoomEpisodeRules extends FadingEpisodeRules<DreamingRoomRen
     public GameState getNextState(GameState gsCurrent, UserAction userAction) {
         if (conversationRules != null && conversationRules.isFinished() && !outroInitiated) {
             outroInitiated = true;
+            gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CREDITS_AUDIO_PATH));
             if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
                 gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.BOY_MUSIC_AUDIO_PATH));
                 gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.BOY_MUSIC_AUDIO_PATH));
@@ -35,7 +36,7 @@ public class DreamingRoomEpisodeRules extends FadingEpisodeRules<DreamingRoomRen
                 gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
             }
             gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.DAYPASSED_AUDIO_PATH));
-            //THIS HOW WE END AN EPISODE AND INITIATE FADE-OUT-EFFECT
+            gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.WAKEUP_AUDIO_PATH));
             endEpisodeAndAddEventWithType(gsCurrent, "");
 
         } else if (renderable != null && renderable.isChatEnabled()) {
@@ -72,10 +73,11 @@ public class DreamingRoomEpisodeRules extends FadingEpisodeRules<DreamingRoomRen
                 }
             });
             currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI));
+            //currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.DAYPASSED_AUDIO_PATH));
             currentState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
             currentState.addRenderable(renderable);
             currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WAKEUP_AUDIO_PATH));
-            currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.MAINMENU_AUDIO_PATH));
+            //currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.CREDITS_AUDIO_PATH));
             super.episodeStartedEvents(currentState);
         }
     }

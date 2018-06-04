@@ -102,11 +102,11 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         bookKeeper.setStage(stage);
 
         audioEngine.pauseCurrentlyPlayingAudios();
-        audioEngine.loadSound(SOUND_EPISODE_MAIN_MENU_BG_PATH);
+        /*audioEngine.loadSound(SOUND_EPISODE_MAIN_MENU_BG_PATH);
         audioEngine.loadSound("audio/button1.mp3");
         audioEngine.loadSound("audio/message.mp3");
         audioEngine.loadSound("audio/wrong.mp3");
-        audioEngine.loadSound("audio/episode_cockpit/bg.mp3");
+        audioEngine.loadSound("audio/episode_cockpit/bg.mp3");*/
 
         audioEnabled = true;
         printDebugInfo();
@@ -280,10 +280,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                     audioEnabled = true;
                     audioEngine.playSoundLoop(SOUND_EPISODE_MAIN_MENU_BG_PATH);
                 }
-                listIterator.remove();
-                break;
-            case AUDIO_LOAD_UI:
-                audioEngine.loadSound((String) gameEvent.parameters);
                 listIterator.remove();
                 break;
             case AUDIO_DISPOSE_UI:

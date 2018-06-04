@@ -53,11 +53,11 @@ public class SpaceshipInventoryEpisodeRules extends FadingEpisodeRules<Spaceship
             renderable.addNextItem(inventoryItemsCounter, gameState);
             exitButtonVisibilityNotHandled = false;
             if (inventoryItemsCounter == 7) {
-                gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.MOON_TAKE_OFF_AUDIO_PATH));
-                if (gameInfo.isGameFullySuccessfullyCompleted())
+                //gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.MOON_TAKE_OFF_AUDIO_PATH));
+                /*if (gameInfo.isGameFullySuccessfullyCompleted())
                     gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.FULL_SUCCESS_BG_AUDIO_PATH));
                 else
-                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.SIMPLE_SUCCESS_BG_AUDIO_PATH));
+                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.SIMPLE_SUCCESS_BG_AUDIO_PATH));*/
             }
         }else if (introComplete && exitButtonVisibilityNotHandled) {
             exitButtonVisibilityNotHandled = false;

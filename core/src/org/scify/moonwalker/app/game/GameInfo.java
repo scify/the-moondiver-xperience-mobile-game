@@ -64,7 +64,7 @@ public class GameInfo {
         remainingEnergy = 0;
         LocationController lc = LocationController.getInstance();
         setMoonPhases();
-        tutorialMode = false;
+        tutorialMode = true;
         resetFlags();
         setContactRequestFlag();
         //setMapRequestFlag();

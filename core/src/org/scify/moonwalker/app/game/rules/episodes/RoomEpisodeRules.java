@@ -35,7 +35,7 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
                 gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
                 gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
             }
-            gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.FOREST_AUDIO_PATH));
+            //gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.FOREST_AUDIO_PATH));
             //THIS HOW WE END AN EPISODE AND INITIATE FADE-OUT-EFFECT
             endEpisodeAndAddEventWithType(gsCurrent, "");
 

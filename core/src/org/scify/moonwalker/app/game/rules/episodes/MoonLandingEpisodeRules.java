@@ -53,11 +53,11 @@ public class MoonLandingEpisodeRules extends FadingEpisodeRules<MoonLandingRende
 
             MoonLandingRenderable.calculateResPaths(gameInfo.getSelectedPlayer(), gameInfo.isGameFullySuccessfullyCompleted());
             renderable = new MoonLandingRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID, gameInfo.getSelectedPlayer(), gameInfo.isGameFullySuccessfullyCompleted());
-            if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
+            /*if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
                 currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.BOY_MUSIC_AUDIO_PATH));
             } else {
                 currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
-            }
+            }*/
             renderable.addAfterFadeIn(new Runnable() {
                 @Override
                 public void run() {

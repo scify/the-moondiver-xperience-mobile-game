@@ -21,10 +21,10 @@ public class IntroEpisodeRules extends FadingEpisodeRules<IntroRenderable> {
         if (!isEpisodeStarted(currentState)) {
             if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
                 renderable = new IntroRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID, true);
-                currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.BOY_MUSIC_AUDIO_PATH));
+                //currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.BOY_MUSIC_AUDIO_PATH));
             } else {
                 renderable = new IntroRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID, false);
-                currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
+                //currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
             }
             renderable.addAfterFadeIn(new Runnable() {
                 @Override
