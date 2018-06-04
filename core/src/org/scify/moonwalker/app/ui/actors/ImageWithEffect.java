@@ -19,6 +19,7 @@ import java.util.Set;
 
 public class ImageWithEffect extends Image implements EffectTarget, Updateable {
     protected ResourceLocator resourceLocator;
+    protected Texture lastTexture;
 
     public ImageWithEffect() {
         super();
@@ -83,7 +84,9 @@ public class ImageWithEffect extends Image implements EffectTarget, Updateable {
         setZIndex(renderable.getZIndex());
         ImageRenderable imageRenderable = (ImageRenderable) renderable;
         if (imageRenderable.getImgPathWasUpdated()) {
-            this.setDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath(imageRenderable.getImgPath())))));
+            lastTexture.dispose();
+            lastTexture = new Texture(resourceLocator.getFilePath(imageRenderable.getImgPath()));
+            this.setDrawable(new TextureRegionDrawable(new TextureRegion(lastTexture)));
             imageRenderable.setImgPathWasUpdated(false);
         }
         renderable.wasUpdated();

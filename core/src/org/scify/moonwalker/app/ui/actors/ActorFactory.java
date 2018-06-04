@@ -34,7 +34,7 @@ public class ActorFactory extends ComponentFactory {
     }
     // USE AS SINGLETON - END
 
-    public ActorFactory(Skin skin) {
+    private ActorFactory(Skin skin) {
         super(skin);
     }
 
@@ -140,8 +140,11 @@ public class ActorFactory extends ComponentFactory {
     }
 
     protected ImageWithEffect createImage(String imgFileRelevantPath, Renderable renderable) {
-        // TODO: Fix. Something is wrong with the image
-        ImageWithEffect img = new ImageWithEffect(new TextureRegionDrawable(new TextureRegion(new Texture(resourceLocator.getFilePath(imgFileRelevantPath)))), resourceLocator);
+        Texture texture = new Texture(resourceLocator.getFilePath(imgFileRelevantPath));
+        TextureRegion textureRegion = new TextureRegion(texture);
+        TextureRegionDrawable textureRegionDrawable = new TextureRegionDrawable(textureRegion);
+        textureList.add(texture);
+        ImageWithEffect img = new ImageWithEffect(textureRegionDrawable, resourceLocator);
 
         if (renderable.getWidth() == 0 && renderable.getHeight() == 0) {
             // Delegate image size to renderable
@@ -153,14 +156,6 @@ public class ActorFactory extends ComponentFactory {
         return img;
     }
 
-    protected Button createButton(ActionButtonRenderable button) {
-        if (button.getType().equals(Renderable.ACTOR_IMAGE_BUTTON))
-            return createImageButton(button);
-        else if (button.getType().equals(Renderable.ACTOR_TEXT_BUTTON))
-            return createTextButton(button);
-        return null;
-    }
-
     protected TextButtonWithEffect createTextButton(ActionButtonRenderable actionButtonRenderable) {
         TextButtonWithEffect btn = new TextButtonWithEffect(actionButtonRenderable.getTitle(), skin);
         setCommonAttrsAndListener(btn, actionButtonRenderable);
@@ -168,9 +163,12 @@ public class ActorFactory extends ComponentFactory {
     }
 
     protected ImageButtonWithEffect createImageButton(ActionButtonRenderable actionButtonRenderable) {
-        Drawable btnImage = new SpriteDrawable(new Sprite(new Texture(resourceLocator.getFilePath(actionButtonRenderable.getImgPath()))));
+        Texture texture = new Texture(resourceLocator.getFilePath(actionButtonRenderable.getImgPath()));
+        Sprite sprite = new Sprite(texture);
+        Drawable btnImage = new SpriteDrawable(sprite);
         ImageButtonWithEffect btn = new ImageButtonWithEffect(btnImage);
         setCommonAttrsAndListener(btn, actionButtonRenderable);
+        textureList.add(texture);
         return btn;
     }
 

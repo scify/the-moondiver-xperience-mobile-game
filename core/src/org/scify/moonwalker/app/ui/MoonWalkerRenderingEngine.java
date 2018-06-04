@@ -375,11 +375,9 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     public synchronized void disposeResources() {
         bDisposalOngoing = true;
         System.out.println("disposing rendering engine resources...");
-        themeController.dispose();
         cameraController.disposeResources();
         audioEngine.disposeResources();
         worldImgTexture.dispose();
-
         bDisposalOngoing = false;
     }
 
