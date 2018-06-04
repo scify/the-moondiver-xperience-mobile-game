@@ -37,6 +37,7 @@ public class Renderable extends Positionable implements EffectTarget {
     public static final String ACTOR_EPISODE_MAIN_MENU = "main_menu";
     public static final String ACTOR_EPISODE_INTRO = "intro";
     public static final String ACTOR_EPISODE_ROOM = "room";
+    public static final String ACTOR_EPISODE_DREAMING_ROOM = "dreaming_room";
     public static final String ACTOR_EPISODE_FOREST = "forest";
     public static final String ACTOR_EPISODE_COCKPIT = "cockpit";
     public static final String ACTOR_EPISODE_CHARGER = "spaceship_charger";

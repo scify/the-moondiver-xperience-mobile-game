@@ -32,6 +32,13 @@ public class GdxAudioEngine implements AudioEngine {
     }
 
     @Override
+    public void stopAllSounds() {
+        for (String entry: stringAudiosMap.keySet()) {
+            stopSound(entry);
+        }
+    }
+
+    @Override
     public void disposeSound(String filePath) {
         if (stringAudiosMap.containsKey(filePath)) {
             persistentAudios.remove(filePath);

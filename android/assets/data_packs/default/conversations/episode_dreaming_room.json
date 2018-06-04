@@ -1,0 +1,20 @@
+[
+  {"id": "1", "order":"1", "speakerId":"player", "text":"[#ffeeaaff][[Τι στην ευχή; Πού είμαι;\nΚόκορας; Φτού!\nΌνειρο ήταν...]", "prerequisites":""},
+  {"id": "2", "order":"2", "speakerId":"player", "text":"[#ffeeaaff][[Η θεία Ηω! Στ' αλήθεια τώρα;]", "buttonText":"Chat","prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone,toggle"},
+  {"id": "3", "order":"3", "speakerId":"aunt", "text":"Ψτ!\nΤι κάνεις επαναστατικό μου ανήψι;", "prerequisites":"", "onExitCurrentOrderTrigger":"toggle"},
+  {"id": "4", "order":"4", "speakerId":"player", "text":"[#ffeeaaff]Εμ... Καλά νομίζω. Εσύ;", "prerequisites":""},
+  {"id": "5", "order":"4", "speakerId":"player", "text":"[#ffeeaaff]Ονειρεύομαι το ανέφικτο, όπως πάντα! Εσύ;", "prerequisites":""},
+  {"id": "6", "order":"5", "speakerId":"aunt", "text":"Θα έρθω Αθήνα την επόμενη εβδομάδα. Έχω να σου πω πολλά!", "prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone,toggle","onExitCurrentOrderTrigger":"toggle"},
+  {"id": "7", "order":"6", "speakerId":"player", "text":"[#ffeeaaff]Εγώ να δεις τι έχω να σου πω...", "prerequisites":""},
+  {"id": "8", "order":"6", "speakerId":"player", "text":"[#ffeeaaff]Να δούμε ποιος θα διασκεδάσει ποιον!", "prerequisites":""},
+  {"id": "9", "order":"7", "speakerId":"aunt", "text":"Χαχαχα! Μου έλειψες!", "prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone,toggle"},
+  {"id": "10", "order":"8", "speakerId":"aunt", "text":"Αχ.. Και μου έλειψε ο ήλιος της Ελλάδας...", "prerequisites":""},
+  {"id": "11", "order":"9", "speakerId":"aunt", "text":"Ξέρεις ότι ο Ήλιος θα μας πάει στις εσχατιές του διαστήματος;", "prerequisites":""},
+  {"id": "12", "order":"10", "speakerId":"aunt", "text":"Δουλεύουμε σε ένα πολύ καινοτόμο project. Θα στα πω όλα από κοντά!", "prerequisites":"","onExitCurrentOrderTrigger":"toggle"},
+  {"id": "13", "order":"11", "speakerId":"player", "text":"[#ffeeaaff]Δώσε μου μόνο ένα στοιχείο!", "prerequisites":""},
+  {"id": "14", "order":"11", "speakerId":"player", "text":"[#ffeeaaff]Μη με αφήνεις σε αγωνία!", "prerequisites":""},
+  {"id": "15", "order":"12", "speakerId":"aunt", "text":"Μόνο με ηλιακή ενέργεια μπορούν τα σκάφη μας να ταξιδέψουν μακριά!", "prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone,toggle"},
+  {"id": "16", "order":"13", "speakerId":"aunt", "text":"Πού να σου εξηγώ από το τηλέφωνο...", "prerequisites":""},
+  {"id": "17", "order":"14", "speakerId":"aunt", "text":"Διάβασε λίγο online και τα λέμε την άλλη Παρασκευή! Φιλιά!", "prerequisites":"","onExitCurrentOrderTrigger":"toggle"},
+  {"id": "18", "order":"15", "speakerId":"player", "text":"[#ffeeaaff][[Χμμμ. Τελικά μπορεί και να μην ήταν τόσο τρελό το όνειρo... Έχει γούστο...]", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
+]

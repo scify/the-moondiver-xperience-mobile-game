@@ -308,9 +308,14 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 break;
             case AUDIO_STOP_UI:
                 if (new Date().getTime() > gameEvent.delay) {
-                    if (audioEnabled)
-                        audioEngine.stopSound((String) gameEvent.parameters);
-                    listIterator.remove();
+                    if (audioEnabled) {
+                        if (gameEvent.parameters == null) {
+                            audioEngine.stopAllSounds();
+                        }else {
+                            audioEngine.stopSound((String) gameEvent.parameters);
+                        }
+                        listIterator.remove();
+                    }
                 }
                 break;
             case UPDATE_LABEL_TEXT_UI:

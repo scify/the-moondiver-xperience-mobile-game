@@ -11,6 +11,7 @@ public interface AudioEngine {
     void playSoundLoop(String filePath);
     void pauseAndPlaySound(String filePath);
     void stopSound(String filePath);
+    void stopAllSounds();
     void disposeResources();
     void loadSound(String filePath);
     void disposeSound(String filePath);

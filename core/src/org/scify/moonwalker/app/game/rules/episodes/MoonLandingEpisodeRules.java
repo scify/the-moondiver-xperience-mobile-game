@@ -4,6 +4,7 @@ import org.scify.engine.*;
 import org.scify.engine.renderables.effects.DelayEffect;
 import org.scify.engine.renderables.effects.EffectSequence;
 import org.scify.engine.renderables.effects.FunctionEffect;
+import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.ui.renderables.MoonLandingRenderable;
 
 import static org.scify.engine.renderables.Renderable.ACTOR_EPISODE_MOON_LANDING;
@@ -52,8 +53,11 @@ public class MoonLandingEpisodeRules extends FadingEpisodeRules<MoonLandingRende
 
             MoonLandingRenderable.calculateResPaths(gameInfo.getSelectedPlayer(), gameInfo.isGameFullySuccessfullyCompleted());
             renderable = new MoonLandingRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID, gameInfo.getSelectedPlayer(), gameInfo.isGameFullySuccessfullyCompleted());
-
-
+            if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
+                currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.BOY_MUSIC_AUDIO_PATH));
+            } else {
+                currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
+            }
             renderable.addAfterFadeIn(new Runnable() {
                 @Override
                 public void run() {

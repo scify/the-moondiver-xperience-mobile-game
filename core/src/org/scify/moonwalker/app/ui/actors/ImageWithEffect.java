@@ -84,9 +84,11 @@ public class ImageWithEffect extends Image implements EffectTarget, Updateable {
         setZIndex(renderable.getZIndex());
         ImageRenderable imageRenderable = (ImageRenderable) renderable;
         if (imageRenderable.getImgPathWasUpdated()) {
-            lastTexture.dispose();
-            lastTexture = new Texture(resourceLocator.getFilePath(imageRenderable.getImgPath()));
-            this.setDrawable(new TextureRegionDrawable(new TextureRegion(lastTexture)));
+            Texture texture = new Texture(resourceLocator.getFilePath(imageRenderable.getImgPath()));
+            this.setDrawable(new TextureRegionDrawable(new TextureRegion(texture)));
+            if (lastTexture != null)
+                lastTexture.dispose();
+            lastTexture = texture;
             imageRenderable.setImgPathWasUpdated(false);
         }
         renderable.wasUpdated();

@@ -1,5 +1,7 @@
 package org.scify.moonwalker.app.game;
 
+import org.scify.engine.Player;
+
 public class GameInfo {
 
     protected int currentDay;
