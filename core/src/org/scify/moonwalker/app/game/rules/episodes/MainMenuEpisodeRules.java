@@ -31,6 +31,7 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
             renderable = new MainMenuRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID);
             gameInfo.setSelectedPlayer(SelectedPlayer.unset);
             gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI));
+            gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI));
             // Start sound
             gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.MAINMENU_AUDIO_PATH));
 

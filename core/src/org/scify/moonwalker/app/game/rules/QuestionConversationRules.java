@@ -14,6 +14,8 @@ import static org.scify.moonwalker.app.game.rules.episodes.BaseEpisodeRules.GAME
 public class QuestionConversationRules extends ConversationRules {
     public static final String PLAYER_HAS_3_CORRECT = "player_has_3_correct";
     public static final String CORRECT_ANSWERS = "CORRECT_ANSWERS";
+    public static final String FIRST_TIME = "first_time";
+    public static final String RETRY = "retry";
     public static final String PLAYER_HAS_LESS_THAN_3_CORRECT = "player_has_less_than_3_correct";
 
     protected QuestionService questionService;
@@ -31,8 +33,10 @@ public class QuestionConversationRules extends ConversationRules {
     protected String quizFailedConversationFilePath;
     // we keep track of the last answer of the user to the quiz
     protected boolean lastQuizAnswerCorrect;
+    // we keep track of whether this scientist is visited for the first time
+    protected boolean firstTime;
 
-    public QuestionConversationRules(String conversationJSONFilePath, String bgImgPath, String quizSuccessFulConversationFilePath, String quizFailedConversationFilePath, String correctAudioPath, String wrongAudioPath) {
+    public QuestionConversationRules(String conversationJSONFilePath, String bgImgPath, String quizSuccessFulConversationFilePath, String quizFailedConversationFilePath, String correctAudioPath, String wrongAudioPath, boolean firstTime) {
         super(conversationJSONFilePath, bgImgPath);
         //questionService = QuestionServiceJSON.getInstance();
         questionService = new QuestionServiceJSON();
@@ -43,11 +47,12 @@ public class QuestionConversationRules extends ConversationRules {
         this.quizFailedConversationFilePath = quizFailedConversationFilePath;
         this.correctAudioPath = correctAudioPath;
         this.wrongAudioPath = wrongAudioPath;
+        this.firstTime = firstTime;
     }
 
     @Override
     public GameState getNextState(GameState gameState, UserAction userAction) {
-        if(gameState.getAdditionalDataEntry(CORRECT_ANSWERS) == null)
+        if (gameState.getAdditionalDataEntry(CORRECT_ANSWERS) == null)
             gameState.setAdditionalDataEntry(CORRECT_ANSWERS, "0");
         if (gotAnswer(userAction)) {
             // we need to check whether this answer was for a question-type
@@ -73,7 +78,7 @@ public class QuestionConversationRules extends ConversationRules {
         if (answer.isCorrect()) {
             increaseCorrectAnswers(gameState);
             gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, correctAudioPath));
-        }else {
+        } else {
             gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, wrongAudioPath));
         }
         this.lastQuizAnswerCorrect = answer.isCorrect();
@@ -110,6 +115,19 @@ public class QuestionConversationRules extends ConversationRules {
             return Integer.valueOf((String) currentGameState.getAdditionalDataEntry(CORRECT_ANSWERS)) < 3;
         }
 
+        if (next.getPrerequisites().contains(FIRST_TIME)) {
+            if (firstTime)
+                return true;
+            else
+                return false;
+        }
+
+        if (next.getPrerequisites().contains(RETRY)) {
+            if (firstTime)
+                return false;
+            else
+                return true;
+        }
 
         return true;
     }

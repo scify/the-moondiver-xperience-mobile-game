@@ -69,7 +69,7 @@ public class FadingTableRenderable extends TableRenderable {
         // Add actual fade effect
         fadeInEffects.addEffect(new FadeEffect(1.0, 0.0, 0));
         fadeInEffects.addEffect(new VisibilityEffect(true));
-        fadeInEffects.addEffect(new FadeEffect(0.0, 1.0, 2000));
+        fadeInEffects.addEffect(new FadeEffect(0.0, 1.0, 1000));
         // Add after effects
         for (final Runnable rCur : afterFadeIn) {
             fadeInEffects.addEffect(new FunctionEffect(rCur));
@@ -93,7 +93,7 @@ public class FadingTableRenderable extends TableRenderable {
             fadeOutEffects.addEffect(new FunctionEffect(rCur));
         }
         // Add actutal fade effects
-        fadeOutEffects.addEffect(new FadeEffect(1.0, 0.0, 2000));
+        fadeOutEffects.addEffect(new FadeEffect(1.0, 0.0, 1000));
         fadeOutEffects.addEffect(new VisibilityEffect(false));
 
         // Add after effects

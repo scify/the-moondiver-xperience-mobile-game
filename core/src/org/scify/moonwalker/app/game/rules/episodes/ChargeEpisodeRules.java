@@ -7,6 +7,7 @@ import org.scify.engine.renderables.effects.FadeEffect;
 import org.scify.engine.renderables.effects.VisibilityEffect;
 import org.scify.moonwalker.app.ui.actors.calculator.CalculatorController;
 import org.scify.moonwalker.app.ui.renderables.ChargeEpisodeRenderable;
+
 import java.util.ArrayList;
 
 /**
@@ -23,7 +24,7 @@ public class ChargeEpisodeRules extends FadingEpisodeRules<ChargeEpisodeRenderab
     protected CalculatorController calculatorController;
     protected int tutorialChatPhase;
 
-    public ChargeEpisodeRules () {
+    public ChargeEpisodeRules() {
         super();
         renderable = null;
         outroInitiated = false;
@@ -35,18 +36,25 @@ public class ChargeEpisodeRules extends FadingEpisodeRules<ChargeEpisodeRenderab
 
     @Override
     public GameState getNextState(final GameState gameState, UserAction userAction) {
-        if (gameInfo.isTutorialMode() && renderable != null && renderable.isChatEnabled()) {
-            if (tutorialChatPhase == 0) {
-                tutorialChatPhase = 1;
-                createConversation(gameState, "conversations/episode_charge1.json", renderable.CONVERSATION_BG_IMG_PATH);
-            }
-        }
-        if (conversationRules != null && conversationRules.isFinished() && tutorialChatPhase == 3) {
+        if (gameInfo.isTutorialMode() && renderable != null && renderable.isChatEnabled() && tutorialChatPhase == 0) {
+            tutorialChatPhase = 1;
+            createConversation(gameState, "conversations/episode_charge1.json", renderable.CONVERSATION_BG_IMG_PATH);
+        } else if (conversationRules != null && conversationRules.isFinished() && tutorialChatPhase == 1) {
+            tutorialChatPhase = 2;
+        } else if (conversationRules != null && conversationRules.isFinished() && tutorialChatPhase == 3) {
+            conversationRules = null;
+            createConversation(gameState, "conversations/episode_charge2.json", renderable.CONVERSATION_BG_IMG_PATH);
             tutorialChatPhase = 4;
+        } else if (conversationRules != null && conversationRules.isFinished() && tutorialChatPhase == 5) {
+            conversationRules = null;
+            createConversation(gameState, "conversations/episode_charge3.json", renderable.CONVERSATION_BG_IMG_PATH);
+            tutorialChatPhase = 6;
+        } else if (conversationRules != null && conversationRules.isFinished() && tutorialChatPhase == 6) {
+            tutorialChatPhase = 7;
             EffectSequence showEffect = new EffectSequence();
-            showEffect.addEffect(new FadeEffect(1, 0 , 0));
+            showEffect.addEffect(new FadeEffect(1, 0, 0));
             showEffect.addEffect(new VisibilityEffect(true));
-            showEffect.addEffect(new FadeEffect(0, 1 , 1000));
+            showEffect.addEffect(new FadeEffect(0, 1, 1000));
             renderable.getExitButton().addEffect(showEffect);
         }
         return super.getNextState(gameState, userAction);
@@ -56,7 +64,7 @@ public class ChargeEpisodeRules extends FadingEpisodeRules<ChargeEpisodeRenderab
     public void episodeStartedEvents(final GameState gameState) {
         if (!isEpisodeStarted(gameState)) {
             renderable = new ChargeEpisodeRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID);
-            int percentageTraveled = (int)((100 - gameInfo.getNextTravelPercentagePossible()) * gameInfo.getNextLocationDistance() / 100);
+            int percentageTraveled = (int) ((100 - gameInfo.getNextTravelPercentagePossible()) * gameInfo.getNextLocationDistance() / 100);
             renderable.setDistanceFromDestinationLabel(percentageTraveled + " Km");
             renderable.setDistancePerUnitLabel(gameInfo.getMotorEfficiency() + " Km/Unit");
             renderable.setEnergyLabel(gameInfo.getRemainingEnergy() + " Units");
@@ -79,7 +87,7 @@ public class ChargeEpisodeRules extends FadingEpisodeRules<ChargeEpisodeRenderab
         }
     }
 
-    protected void chargeOperation (GameState gameState) {
+    protected void chargeOperation(GameState gameState) {
         gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.POWER_UP_AUDIO_PATH));
         gameInfo.addEnergy(gameInfo.getUnitsOfMoonPhase(gameInfo.getCurrentMoonPhase()));
         gameInfo.dayPassed();
@@ -94,41 +102,36 @@ public class ChargeEpisodeRules extends FadingEpisodeRules<ChargeEpisodeRenderab
         switch (userAction.getActionCode()) {
             case UserActionCode.CHARGE_SPACESHIP_PASS_DAY: {
                 if (gameInfo.isTutorialMode()) {
-                    if (tutorialChatPhase == 1) {
+                    if (tutorialChatPhase == 2) {
                         chargeOperation(gameState);
-                        conversationRules = null;
-                        tutorialChatPhase = 2;
-                        createConversation(gameState, "conversations/episode_charge2.json", renderable.CONVERSATION_BG_IMG_PATH);
-                    }else if (tutorialChatPhase == 2) {
-                        chargeOperation(gameState);
-                        conversationRules = null;
                         tutorialChatPhase = 3;
-                        createConversation(gameState, "conversations/episode_charge3.json", renderable.CONVERSATION_BG_IMG_PATH);
+                    } else if (tutorialChatPhase == 4) {
+                        chargeOperation(gameState);
+                        tutorialChatPhase = 5;
                         gameInfo.setTravelRequestFlag();
-                    }else {
-                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI,renderable.WRONG_BUTTON_AUDIO_PATH));
+                    } else {
+                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
                     }
-                }else
+                } else
                     chargeOperation(gameState);
                 break;
             }
             case UserActionCode.CALCULATOR_OPERATION: {
-                String payload = (String)userAction.getActionPayload();
+                String payload = (String) userAction.getActionPayload();
                 String existingValue = renderable.getCalculatorValue();
                 String newValue = calculatorController.calculate(payload);
                 if (newValue.equals(existingValue)) {
-                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI,renderable.WRONG_BUTTON_AUDIO_PATH));
-                }else {
-                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI,renderable.CLICK_AUDIO_PATH));
+                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
+                } else {
+                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
                     renderable.setCalculatorLabel(newValue);
                 }
                 break;
             }
             case UserActionCode.QUIT: {
-                if (gameInfo.getRemainingEnergy()  > 0 && !gameInfo.isTutorialMode())
+                if (gameInfo.getRemainingEnergy() > 0 && !gameInfo.isTutorialMode())
                     gameInfo.resetFlags();
                 gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
-                gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.POWER_UP_AUDIO_PATH));
                 endEpisodeAndAddEventWithType(gameState, "");
                 break;
             }

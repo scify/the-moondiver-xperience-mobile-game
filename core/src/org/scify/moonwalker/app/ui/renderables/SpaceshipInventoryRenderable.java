@@ -43,10 +43,6 @@ public class SpaceshipInventoryRenderable extends FadingTableRenderable {
     //audio
     public final static String ADD_ITEM_AUDIO_PATH = "audio/episode_spaceship_inventory/addSpaceshipItemToInventory.mp3";
     public static final String UPGRADE_STATS_AUDIO_PATH = "audio/episode_spaceship_inventory/increaseStat.mp3";
-    //before moon launch
-    public static final String MOON_TAKE_OFF_AUDIO_PATH = "audio/episode_cockpit/moon_take_off.mp3";
-    public static final String FULL_SUCCESS_BG_AUDIO_PATH = "audio/episode_moon_landing/full_success/bg.mp3";
-    public static final String SIMPLE_SUCCESS_BG_AUDIO_PATH = "audio/episode_moon_landing/simple_success/bg.mp3";
 
     protected ImageRenderable solarPanel1;
     protected ImageRenderable solarPanel2;
@@ -156,7 +152,7 @@ public class SpaceshipInventoryRenderable extends FadingTableRenderable {
         EffectSequence fadeInEffects = new EffectSequence();
         fadeInEffects.addEffect(new FadeEffect(1.0, 0, 0));
         fadeInEffects.addEffect(new VisibilityEffect(true));
-        fadeInEffects.addEffect(new FadeEffect(0.0, 1.0, 2000));
+        fadeInEffects.addEffect(new FadeEffect(0.0, 1.0, 1000));
         return fadeInEffects;
     }
 
@@ -290,7 +286,7 @@ public class SpaceshipInventoryRenderable extends FadingTableRenderable {
     }
 
     public void fadeOutAllExtraRenderables() {
-        Effect effect = new FadeEffect(1, 0, 2000);
+        Effect effect = new FadeEffect(1, 0, 1000);
         exitButton.addEffect(effect);
         if (solarPanel1.isVisible())
             solarPanel1.addEffect(effect);

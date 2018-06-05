@@ -27,13 +27,6 @@ public class ForestEpisodeRules extends FadingEpisodeRules<ForestRenderable> {
     public GameState getNextState(final GameState gameState, UserAction userAction) {
         if (conversationRules != null && conversationRules.isFinished() && !outroInitiated) {
             outroInitiated = true;
-            renderable.addBeforeFadeOut(new Runnable() {
-                @Override
-                public void run() {
-                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.FOREST_AUDIO_PATH));
-                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.BORING_MUSIC_AUDIO_PATH));
-                }
-            });
             if (gameState.getGameEventWithType(conversationRules.CONVERSATION_FAILED)  != null) {
                 EffectSequence effects = new EffectSequence();
                 effects.addEffect(new DelayEffect(3000));
@@ -67,8 +60,8 @@ public class ForestEpisodeRules extends FadingEpisodeRules<ForestRenderable> {
                 }
             });
             currentState.addRenderable(renderable);
+            currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI));
             currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.FOREST_AUDIO_PATH));
-            //currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.BORING_MUSIC_AUDIO_PATH));
             super.episodeStartedEvents(currentState);
         }
     }
@@ -94,7 +87,6 @@ public class ForestEpisodeRules extends FadingEpisodeRules<ForestRenderable> {
         if (gsCurrent.eventsQueueContainsEvent(ConversationRules.ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT)) {
             eventTrigger = (Set<String>) gsCurrent.getGameEventWithType(ConversationRules.ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
             if (eventTrigger.contains(conversationRules.TAG_FAIL)) {
-                //gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.MAINMENU_AUDIO_PATH));
                 gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.FOREST_AUDIO_PATH));
                 gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.BORING_MUSIC_AUDIO_PATH));
                 gsCurrent.addGameEvent(new GameEvent(conversationRules.CONVERSATION_FAILED));

@@ -140,8 +140,8 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
         countDownLabel = (Label) bookKeeper.getUIRepresentationOfRenderable(renderable.getCountDownLabel());
         countDownLabel.setAlignment(Align.center);
         Label.LabelStyle ls = new Label.LabelStyle();
-        ThemeController themeController = new ThemeController(30, "controls");
-        ls.font = themeController.getFont();
+        ThemeController themeController = ThemeController.getThemeController();
+        ls.font = themeController.getFont(30, "controls");
         countDownLabel.setStyle(ls);
         countDownTable.add(countDownLabel).width(width).height(height);
         stack.add(countDownTable);

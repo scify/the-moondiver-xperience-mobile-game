@@ -179,8 +179,6 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                 gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.BG_DEFAULT_AUDIO_PATH));
                 gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.BG_NOWHERE1_AUDIO_PATH));
                 gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.BG_NOWHERE2_AUDIO_PATH));
-                gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.BG_NOWHERE1_AUDIO_PATH));
-                gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.BG_NOWHERE2_AUDIO_PATH));
                 gameInfo.setBackGroundMusicPlaying(false);
                 gameState.setAdditionalDataEntry(NEXT_LOCATION, gameInfo.getCurrentLocation());
                 goToEpisode(gameState, new GameEvent(LOCATION_EPISODE_STARTED, null, this));
@@ -351,10 +349,6 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
         if (percentage > 100)
             percentage = 100.0;
 
-        if (percentage < 100) {
-            /*gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.BG_NOWHERE1_AUDIO_PATH));
-            gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.BG_NOWHERE2_AUDIO_PATH));*/
-        }
         renderable.addAfterFadeOut(new Runnable() {
             @Override
             public void run() {
@@ -362,7 +356,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
             }
         });
         double newPercentagePossible = gameInfo.getNextTravelPercentagePossible() + percentage;
-        if (newPercentagePossible > 100.0)
+        if (newPercentagePossible > 99.0)
             newPercentagePossible = 100.0;
         gameInfo.setNextTravelPercentagePossible(newPercentagePossible);
     }

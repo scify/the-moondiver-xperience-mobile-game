@@ -41,7 +41,7 @@ public class SpaceshipInventoryActor extends FadingTableActor<SpaceshipInventory
         Label label = (Label) bookKeeper.getUIRepresentationOfRenderable(renderable.getUnitsLabel());
         label.setAlignment(Align.center);
         Label.LabelStyle ls = new Label.LabelStyle();
-        ThemeController themeController = new ThemeController(20, "dialog");
+        ThemeController themeController = ThemeController.getThemeController();
         ls.font = themeController.getFont();
         ls.fontColor = Color.valueOf("e8ffff");
         label.setStyle(ls);
@@ -62,7 +62,7 @@ public class SpaceshipInventoryActor extends FadingTableActor<SpaceshipInventory
         Label label = (Label) bookKeeper.getUIRepresentationOfRenderable(renderable.getDistancePerUnitLabel());
         label.setAlignment(Align.center);
         Label.LabelStyle ls = new Label.LabelStyle();
-        ThemeController themeController = new ThemeController(20, "dialog");
+        ThemeController themeController = ThemeController.getThemeController();
         ls.font = themeController.getFont();
         ls.fontColor = Color.valueOf("e8ffff");
         label.setStyle(ls);

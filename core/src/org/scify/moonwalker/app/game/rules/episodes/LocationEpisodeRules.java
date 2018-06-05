@@ -32,10 +32,8 @@ public class LocationEpisodeRules extends FadingEpisodeRules<LocationRenderable>
                 }
             });
             currentState.addRenderable(renderable);
+            currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI));
             currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.LOCATION_AUDIO_PATH));
-            /*currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.CORRECT_AUDIO_PATH));
-            currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.WRONG_AUDIO_PATH));
-            currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.DAYPASSED_AUDIO_PATH));*/
             super.episodeStartedEvents(currentState);
         }
     }
@@ -58,20 +56,11 @@ public class LocationEpisodeRules extends FadingEpisodeRules<LocationRenderable>
                             gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.DAYPASSED_AUDIO_PATH));
                 }
             });
-            renderable.addAfterFadeOut(new Runnable() {
-                @Override
-                public void run() {
-                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.LOCATION_AUDIO_PATH));
-                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.CORRECT_AUDIO_PATH));
-                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.WRONG_AUDIO_PATH));
-                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.DAYPASSED_AUDIO_PATH));
-                }
-            });
             endEpisodeAndAddEventWithType(gameState, "");
         } else if (renderable != null && renderable.isChatEnabled()) {
             // Initialize conversation
             if(conversationRules == null) {
-                conversationRules = new QuestionConversationRules(location.getConversationPath(), location.getConversationBG(), location.getConversationSuccessFilePath(), location.getConversationFailureFilePath(), renderable.CORRECT_AUDIO_PATH, renderable.WRONG_AUDIO_PATH);
+                conversationRules = new QuestionConversationRules(location.getConversationPath(), location.getConversationBG(), location.getConversationSuccessFilePath(), location.getConversationFailureFilePath(), renderable.CORRECT_AUDIO_PATH, renderable.WRONG_AUDIO_PATH, gameInfo.isQuizFirstTime());
                 conversationRules.setStarted(true);
                 initializeParseVariables();
             }
@@ -88,13 +77,18 @@ public class LocationEpisodeRules extends FadingEpisodeRules<LocationRenderable>
             if (gameInfo.isLastQuizSuccessFull()) {
                 gameInfo.setInventoryIncreased();
                 gameInfo.setInventoryRequestFlag();
+                gameInfo.setQuizFirstTime(true);
             }else {
                 gameInfo.setContactRequestFlag();
+                gameInfo.setQuizFirstTime(false);
             }
         }else {
             gameInfo.setContactRequestFlag();
             if (gameInfo.isLastQuizSuccessFull()) {
                 gameInfo.setInventoryIncreased();
+                gameInfo.setQuizFirstTime(true);
+            }else {
+                gameInfo.setQuizFirstTime(false);
             }
         }
         gameInfo.setAfterLocationQuizEpisode(true);

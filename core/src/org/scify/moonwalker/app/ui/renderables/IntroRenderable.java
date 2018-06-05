@@ -36,9 +36,6 @@ public class IntroRenderable extends FadingTableRenderable{
     //audio
     public static final String MAINMENU_AUDIO_PATH = "audio/episode_main_menu/bg.mp3";
     public static final String CLICK_AUDIO_PATH = "audio/button1.mp3";
-    //AUDIO BUFFERING FOR NEXT EPISODE
-    public static final String BOY_MUSIC_AUDIO_PATH = "audio/episode_room/boy_music.mp3";
-    public static final String GIRL_MUSIC_AUDIO_PATH = "audio/episode_room/girl_music.mp3";
 
     protected Set<Renderable> allRenderables;
 

@@ -37,7 +37,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     public static final String BORDER_UI = "BORDER_UI";
     public static final String EPISODE_SUCCESS_UI = "EPISODE_SUCCESS_UI";
     public static final String AUDIO_TOGGLE_UI = "GAME_EVENT_AUDIO_TOGGLE_UI";
-    public static final String AUDIO_LOAD_UI = "GAME_EVENT_AUDIO_LOAD_UI";
     public static final String AUDIO_DISPOSE_UI = "GAME_EVENT_AUDIO_DISPOSE_UI";
     public static final String AUDIO_START_UI = "GAME_EVENT_AUDIO_START_UI";
     public static final String AUDIO_START_LOOP_UI = "GAME_EVENT_AUDIO_START_LOOP_UI";
@@ -102,11 +101,12 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         bookKeeper.setStage(stage);
 
         audioEngine.pauseCurrentlyPlayingAudios();
-        /*audioEngine.loadSound(SOUND_EPISODE_MAIN_MENU_BG_PATH);
         audioEngine.loadSound("audio/button1.mp3");
         audioEngine.loadSound("audio/message.mp3");
         audioEngine.loadSound("audio/wrong.mp3");
-        audioEngine.loadSound("audio/episode_cockpit/bg.mp3");*/
+        audioEngine.loadSound("audio/episode_charge/power_up.mp3");
+        audioEngine.loadSound("audio/episode_location/correct.mp3");
+        audioEngine.loadSound("audio/episode_location/wrong.mp3");
 
         audioEnabled = true;
         printDebugInfo();
@@ -265,40 +265,38 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 listIterator.remove();
                 break;
             case BORDER_UI:
-                audioEngine.playSound(SOUND_BUMP_PATH);
+                audioEngine.playAudio(SOUND_BUMP_PATH);
                 listIterator.remove();
                 break;
             case EPISODE_SUCCESS_UI:
-                audioEngine.playSound(SOUND_SUCCESS_PATH);
+                audioEngine.playAudio(SOUND_SUCCESS_PATH);
                 listIterator.remove();
                 break;
             case AUDIO_TOGGLE_UI:
                 if (audioEnabled) {
                     audioEnabled = false;
-                    audioEngine.stopSound(SOUND_EPISODE_MAIN_MENU_BG_PATH);
+                    audioEngine.stopMusic(SOUND_EPISODE_MAIN_MENU_BG_PATH);
                 } else {
                     audioEnabled = true;
-                    audioEngine.playSoundLoop(SOUND_EPISODE_MAIN_MENU_BG_PATH);
+                    audioEngine.playMusicLoop(SOUND_EPISODE_MAIN_MENU_BG_PATH);
                 }
                 listIterator.remove();
                 break;
             case AUDIO_DISPOSE_UI:
-                if (new Date().getTime() > gameEvent.delay) {
-                    audioEngine.disposeSound((String) gameEvent.parameters);
-                    listIterator.remove();
-                }
+                audioEngine.disposeResources();
+                listIterator.remove();
                 break;
             case AUDIO_START_UI:
                 if (new Date().getTime() > gameEvent.delay) {
                     if (audioEnabled)
-                        audioEngine.playSound((String) gameEvent.parameters);
+                        audioEngine.playAudio((String) gameEvent.parameters);
                     listIterator.remove();
                 }
                 break;
             case AUDIO_START_LOOP_UI:
                 if (new Date().getTime() > gameEvent.delay) {
                     if (audioEnabled)
-                        audioEngine.playSoundLoop((String) gameEvent.parameters);
+                        audioEngine.playMusicLoop((String) gameEvent.parameters);
                     listIterator.remove();
                 }
                 break;
@@ -306,9 +304,9 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
                 if (new Date().getTime() > gameEvent.delay) {
                     if (audioEnabled) {
                         if (gameEvent.parameters == null) {
-                            audioEngine.stopAllSounds();
+                            audioEngine.stopAllMusic();
                         }else {
-                            audioEngine.stopSound((String) gameEvent.parameters);
+                            audioEngine.stopMusic((String) gameEvent.parameters);
                         }
                         listIterator.remove();
                     }
@@ -377,7 +375,8 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         bDisposalOngoing = true;
         System.out.println("disposing rendering engine resources...");
         cameraController.disposeResources();
-        audioEngine.disposeResources();
+        //themeController.dispose();
+        //audioEngine.disposeResources();
         worldImgTexture.dispose();
         bDisposalOngoing = false;
     }

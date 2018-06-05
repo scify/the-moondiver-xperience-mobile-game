@@ -30,13 +30,9 @@ public class DreamingRoomEpisodeRules extends FadingEpisodeRules<DreamingRoomRen
             gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CREDITS_AUDIO_PATH));
             if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
                 gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.BOY_MUSIC_AUDIO_PATH));
-                gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.BOY_MUSIC_AUDIO_PATH));
             } else {
                 gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
-                gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
             }
-            gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.DAYPASSED_AUDIO_PATH));
-            gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.WAKEUP_AUDIO_PATH));
             endEpisodeAndAddEventWithType(gsCurrent, "");
 
         } else if (renderable != null && renderable.isChatEnabled()) {
@@ -57,6 +53,7 @@ public class DreamingRoomEpisodeRules extends FadingEpisodeRules<DreamingRoomRen
             else {
                 renderable = new DreamingRoomRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID, false);
             }
+            currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI));
             renderable.addAfterFadeIn(new Runnable() {
                 @Override
                 public void run() {
@@ -64,10 +61,8 @@ public class DreamingRoomEpisodeRules extends FadingEpisodeRules<DreamingRoomRen
                     currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.DAYPASSED_AUDIO_PATH));
                     if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
                         currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.BOY_MUSIC_AUDIO_PATH));
-                        currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
                     } else {
                         currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
-                        currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.BOY_MUSIC_AUDIO_PATH));
                     }
                     renderable.getEyesRenderable().setVisible(true);
                 }

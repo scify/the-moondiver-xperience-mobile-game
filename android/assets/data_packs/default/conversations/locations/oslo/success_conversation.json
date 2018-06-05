@@ -1,10 +1,6 @@
 [
-  {"id": "1", "order":"1", "speakerId":"aunt", "text":"[#ffeeaaff]Τα κατάφερες και στη Νορβηγία!\nΜπράβο!", "prerequisites":""},
-  {"id": "2", "order":"2", "speakerId":"aunt", "text":"[#ffeeaaff]Τώρα έχεις 3 συλλέκτες και\nλείπει μόνο άλλος ένας.", "prerequisites":""},
-  {"id": "3", "order":"3", "speakerId":"player", "text":"Ανυπομονώ...", "prerequisites":""},
-  {"id": "4", "order":"4", "speakerId":"aunt", "text":"[#ffeeaaff]Πάμε λοιπόν!\nΕπόμενος προορισμός: Αθήνα.", "prerequisites":""},
-  {"id": "5", "order":"5", "speakerId":"aunt", "text":"[#ffeeaaff]Φιλόξενοι άνθρωποι,\nεκπληκτικοί  επιστήμονες!", "prerequisites":""},
-  {"id": "6", "order":"6", "speakerId":"aunt", "text":"[#ffeeaaff]Όρισε τον νέο προορισμό στον Χάρτη.", "prerequisites":""},
-  {"id": "7", "order":"7", "speakerId":"aunt", "text":"[#ffeeaaff]Στην οθόνη φόρτισης μάζεψε όση ενέργεια χρειάζεσαι.", "prerequisites":""},
-  {"id": "8", "order":"8", "speakerId":"aunt", "text":"[#ffeeaaff]Καλή επιτυχία!", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
+  {"id": "1", "order":"1", "speakerId":"aunt", "text":"Τα κατάφερες και στη Νορβηγία!\nΜπράβο, tώρα έχεις 3 συλλέκτες.", "prerequisites":""},
+  {"id": "2", "order":"2", "speakerId":"player", "text":"[#ffeeaaff]Ανυπομονώ...", "prerequisites":""},
+  {"id": "3", "order":"3", "speakerId":"aunt", "text":"Πάμε λοιπόν!\nΕπόμενος προορισμός: Αθήνα.", "prerequisites":""},
+  {"id": "4", "order":"4", "speakerId":"aunt", "text":"[#ffeeaaff]Φιλόξενοι άνθρωποι,\nεκπληκτικοί  επιστήμονες!\nΚαλή επιτυχία!", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
 ]

@@ -33,7 +33,7 @@ public abstract class ComponentFactory<T> {
         while (listIterator.hasNext()) {
             Texture currentTexture = listIterator.next();
             currentTexture.dispose();
-            listIterator.remove();
         }
+        textureList.clear();
     }
 }

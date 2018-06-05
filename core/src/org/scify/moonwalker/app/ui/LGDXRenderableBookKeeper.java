@@ -33,9 +33,6 @@ public class LGDXRenderableBookKeeper {
     protected LGDXEffectFactory<LGDXEffect> effectFactory;
     protected UserInputHandlerImpl userInputHandler;
 
-//    protected Map<Actor, Map<Effect, LGDXEffect>> actorEffects;
-//    protected Map<Sprite, Map<Effect, LGDXEffect>> spriteEffects;
-
     protected Batch batch;
     protected Stage stage;
 
@@ -203,10 +200,11 @@ public class LGDXRenderableBookKeeper {
             for(Actor actor : stage.getActors()) {
                 System.out.println("removing: " + actor.getName());
                 actor.addAction(Actions.removeActor());
-                //actor.remove();
             }
             actorFactory.disposeResources();
             spriteFactory.disposeResources();
+            stage.clear();
+            System.out.println(stage.getActors().size);
             reset();
         }
     }

@@ -172,8 +172,6 @@ public class MapEpisodeRules extends BaseEpisodeRules {
                 eFadeOutAndEnd.addEffect(new FunctionEffect(new Runnable() {
                     @Override
                     public void run() {
-                        gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.LOCATION_SELECTED_AUDIO_PATH));
-                        gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.TRAVEL_AUDIO_PATH));
                         endEpisodeAndAddEventWithType(gsCurrent, "");
                     }
                 }));

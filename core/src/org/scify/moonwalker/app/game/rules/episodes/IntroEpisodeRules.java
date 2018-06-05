@@ -45,7 +45,6 @@ public class IntroEpisodeRules extends FadingEpisodeRules<IntroRenderable> {
             @Override
             public void run() {
                 gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.MAINMENU_AUDIO_PATH));
-                gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI, renderable.MAINMENU_AUDIO_PATH));
             }
         });
         endEpisodeAndAddEventWithType(gameState, sEpisodeEndEventType);

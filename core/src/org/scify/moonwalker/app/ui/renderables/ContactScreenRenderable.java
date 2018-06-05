@@ -19,11 +19,9 @@ public class ContactScreenRenderable extends ChattableRenderable {
     protected final static String AUNT_AVATAR_ID = "aunt_avatar";
     //audio
     public final static String MOBILE_AUDIO_PATH = "audio/message.mp3";
-    public final static String WRONG_BUTTON_AUDIO_PATH = "audio/wrong.mp3";
 
     protected ImageRenderable contactDescription;
     protected ImageRenderable contactAvatar;
-    protected ActionButtonRenderable exitButton;
 
     protected Set<Renderable> allRenderables;
 

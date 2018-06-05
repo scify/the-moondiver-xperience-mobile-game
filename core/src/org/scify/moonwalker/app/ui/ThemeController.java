@@ -12,38 +12,38 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ThemeController {
 
-    private BitmapFont font;
     private Skin skin;
     private ResourceLocator resourceLocator;
     private AppInfo appInfo;
     private TextureAtlas textureAtlas;
+    private static ThemeController instance;
+    private Map<String, Map<Integer, BitmapFont>> fonts;
 
-    public ThemeController(int fontSize, String fontId) {
-        this.resourceLocator = new ResourceLocator();
-        this.appInfo = AppInfo.getInstance();
-        initFontAndSkin(fontSize, fontId);
+    public static ThemeController getThemeController() {
+        if (instance == null) {
+            instance = new ThemeController();
+            return instance;
+        } else
+            return instance;
     }
 
-    public ThemeController(int fontSize) {
+    protected ThemeController() {
         this.resourceLocator = new ResourceLocator();
         this.appInfo = AppInfo.getInstance();
-        initFontAndSkin(fontSize, "dialog");
+        fonts = new HashMap<>();
     }
 
-    public ThemeController() {
-        this.resourceLocator = new ResourceLocator();
-        this.appInfo = AppInfo.getInstance();
-        initFontAndSkin(20, "dialog");
-    }
-
-    protected void initFontAndSkin(int fontSize, String fontId) {
+    protected BitmapFont initFontAndSkin(int fontSize, String fontId) {
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.characters=FreeTypeFontGenerator.DEFAULT_CHARS + "α  β  γ  δ  ε  ζ  η  θ  ι  κ  λ  μ  ν  ξ  ο  π  ρ  σ  τ  υ  φ  χ  ψ  ω  ς  Α  Β  Γ  Δ  Ε  Ζ  Η  Θ  Ι  Κ  Λ  Μ  Ν  Ξ  Ο  Π  Ρ  Σ  Τ  Υ  Φ  Χ  Ψ  Ω ά έ ή ί ό ύ ώ ΐ ΰ Ά Έ Ή Ί Ό Ύ Ώ";
+        parameter.characters = FreeTypeFontGenerator.DEFAULT_CHARS + "α  β  γ  δ  ε  ζ  η  θ  ι  κ  λ  μ  ν  ξ  ο  π  ρ  σ  τ  υ  φ  χ  ψ  ω  ς  Α  Β  Γ  Δ  Ε  Ζ  Η  Θ  Ι  Κ  Λ  Μ  Ν  Ξ  Ο  Π  Ρ  Σ  Τ  Υ  Φ  Χ  Ψ  Ω ϊ ά έ ή ί ό ύ ώ ΐ ΰ Ά Έ Ή Ί Ό Ύ Ώ";
         int width = appInfo.getScreenWidth();
-        float ratio = width /731f;
-        parameter.size = (int)(ratio * fontSize);
+        float ratio = width / 731f;
+        parameter.size = (int) (ratio * fontSize);
         parameter.magFilter = Texture.TextureFilter.Linear;
         parameter.minFilter = Texture.TextureFilter.Linear;
         FreeTypeFontGenerator generator;
@@ -58,11 +58,7 @@ public class ThemeController {
                 generator = new FreeTypeFontGenerator(Gdx.files.internal(resourceLocator.getFilePath("fonts/CYN_EdraNR.otf")));
                 break;
         }
-        if(font != null) {
-            System.out.println("disposing font");
-            dispose();
-        }
-        font = generator.generateFont(parameter);
+        BitmapFont font = generator.generateFont(parameter);
         font.getData().markupEnabled = true;
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         skin = new Skin();
@@ -71,20 +67,43 @@ public class ThemeController {
         skin.addRegions(textureAtlas);
         skin.load(Gdx.files.internal(resourceLocator.getFilePath("fonts/uiskin.json")));
         generator.dispose();
+        return font;
+    }
+
+    public BitmapFont getFont(int fontSize) {
+        return getFont(fontSize, "dialog");
+    }
+
+    public BitmapFont getFont(int fontSize, String fontId) {
+        if (fonts.containsKey(fontId)) {
+            Map<Integer, BitmapFont> sizeToFont = fonts.get(fontId);
+            if (sizeToFont.containsKey(fontSize))
+                return sizeToFont.get(fontSize);
+            else {
+                BitmapFont font = initFontAndSkin(fontSize, fontId);
+                sizeToFont.put(fontSize, font);
+                return font;
+            }
+        }else {
+            BitmapFont font = initFontAndSkin(fontSize, fontId);
+            Map<Integer, BitmapFont> sizeToFont = new HashMap<>();
+            sizeToFont.put(fontSize, font);
+            return font;
+        }
     }
 
     public BitmapFont getFont() {
-        return font;
+        return getFont(20, "dialog");
     }
 
     public Skin getSkin() {
         return skin;
     }
 
-    protected void dispose() {
+    /*protected void dispose() {
         font.dispose();
         textureAtlas.dispose();
         skin.dispose();
-    }
+    }*/
 
 }

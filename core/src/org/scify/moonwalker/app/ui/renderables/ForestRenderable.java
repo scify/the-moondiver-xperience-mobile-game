@@ -10,7 +10,6 @@ public class ForestRenderable extends ChattableRenderable {
     public final static String FOREST_AUDIO_PATH = "audio/episode_forest/bg.mp3";
     public final static String BORING_MUSIC_AUDIO_PATH = "audio/episode_forest/boring_music.mp3";
     public final static String MOBILE_AUDIO_PATH = "audio/message.mp3";
-    public final static String MAINMENU_AUDIO_PATH = "audio/episode_main_menu/bg.mp3";
 
     public ForestRenderable(float xPos, float yPos, float width, float height, String id) {
         super(xPos, yPos, width, height, ACTOR_EPISODE_FOREST, id, BG_IMG_PATH);

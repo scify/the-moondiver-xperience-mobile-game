@@ -1,7 +1,5 @@
 package org.scify.moonwalker.app.game;
 
-import org.scify.engine.Player;
-
 public class GameInfo {
 
     protected int currentDay;
@@ -29,6 +27,7 @@ public class GameInfo {
     protected boolean afterLocationQuizEpisode;
     protected boolean lastQuizSuccessFull;
     protected boolean BackGroundMusicPlaying;
+    protected boolean quizFirstTime;
 
     /**
      * The travel percentage complete in the LAST travel
@@ -56,6 +55,9 @@ public class GameInfo {
             instance = new GameInfo();
         return instance;
     }
+
+    public void setQuizFirstTime(boolean quizFirstTime) { this.quizFirstTime = quizFirstTime; }
+
     private GameInfo() {
         moonPhasesController = new MoonPhasesController();
         atForest = true;
@@ -77,7 +79,11 @@ public class GameInfo {
         afterLocationQuizEpisode = false;
         lastQuizSuccessFull = false;
         BackGroundMusicPlaying = false;
+        quizFirstTime = true;
     }
+
+    public boolean isQuizFirstTime () { return quizFirstTime; }
+
 
     public int getCurrentDay() {
         return currentDay;

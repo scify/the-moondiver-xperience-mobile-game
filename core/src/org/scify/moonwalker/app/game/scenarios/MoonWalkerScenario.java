@@ -89,6 +89,7 @@ public class MoonWalkerScenario extends Scenario {
         addEpisodeAfter(room, forest);
         Episode cockpit = new CockpitEpisode();
         addEpisodeAfter(forest, cockpit);
+        //addEpisodeAfter(intro, cockpit);
         Episode moonLanding = new MoonLandingEpisode();
         addEpisodeAfter(cockpit, moonLanding);
         Episode dreamingRoomEpisode = new DreamingRoomEpisode();

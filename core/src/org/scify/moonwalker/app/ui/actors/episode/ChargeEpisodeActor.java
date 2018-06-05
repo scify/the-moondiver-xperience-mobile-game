@@ -22,7 +22,7 @@ public class ChargeEpisodeActor extends FadingTableActor<ChargeEpisodeRenderable
 
     protected void init() {
         ls = new Label.LabelStyle();
-        ThemeController themeController = new ThemeController(20, "dialog");
+        ThemeController themeController = ThemeController.getThemeController();
         ls.font = themeController.getFont();
         ls.fontColor = Color.valueOf("e8ffff");
         float screenHeight = getHeight();
@@ -120,8 +120,8 @@ public class ChargeEpisodeActor extends FadingTableActor<ChargeEpisodeRenderable
         Label calculatorResult = (Label) bookKeeper.getUIRepresentationOfRenderable(renderable.getCalculatorLabel());
         calculatorResult.setAlignment(Align.right);
         Label.LabelStyle calculatorStyle = new Label.LabelStyle();
-        ThemeController themeController = new ThemeController(25,"controls");
-        calculatorStyle.font = themeController.getFont();
+        ThemeController themeController = ThemeController.getThemeController();
+        calculatorStyle.font = themeController.getFont(25,"controls");
         calculatorStyle.fontColor = Color.valueOf("113b3e");
         calculatorResult.setStyle(calculatorStyle);
         calculator.add(calculatorResult).height(0.2f * tableHeight).right().colspan(4).padRight(widthOfLeftAndRight);
