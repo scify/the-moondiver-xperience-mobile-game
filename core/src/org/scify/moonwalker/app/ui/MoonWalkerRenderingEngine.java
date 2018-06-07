@@ -78,7 +78,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
 
         this.userInputHandler = (UserInputHandlerImpl) userInputHandler;
         audioEngine = new GdxAudioEngine();
-        themeController = new ThemeController();
+        themeController = ThemeController.getThemeController();
 
         appInfo = AppInfo.getInstance();
         this.batch = batch;
