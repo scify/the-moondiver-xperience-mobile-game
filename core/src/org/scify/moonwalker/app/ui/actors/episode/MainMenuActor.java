@@ -91,7 +91,7 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
         stack.addActor(boyAvatarButton);
 
         // Add button
-        //Table buttonTable = new TableActor<TableRenderable>(getSkin(), this.renderable);
+        //Table buttonTable = new TableActor<TableRenderable>(getDefaultSkin(), this.renderable);
         Table buttonTable = new Table();
         buttonTable.defaults();
         buttonTable.bottom();
@@ -140,7 +140,7 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
         countDownLabel = (Label) bookKeeper.getUIRepresentationOfRenderable(renderable.getCountDownLabel());
         countDownLabel.setAlignment(Align.center);
         Label.LabelStyle ls = new Label.LabelStyle();
-        ThemeController themeController = ThemeController.getThemeController();
+        ThemeController themeController = ThemeController.getInstance();
         ls.font = themeController.getFont(30, "controls");
         countDownLabel.setStyle(ls);
         countDownTable.add(countDownLabel).width(width).height(height);

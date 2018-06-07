@@ -13,13 +13,14 @@ import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.effects.Effect;
 import org.scify.engine.renderables.effects.EffectTarget;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
+import org.scify.moonwalker.app.ui.LGDXRenderableBookKeeper;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class ImageWithEffect extends Image implements EffectTarget, Updateable {
     protected ResourceLocator resourceLocator;
-    protected Texture lastTexture;
+    protected LGDXRenderableBookKeeper bookKeeper = LGDXRenderableBookKeeper.getInstance();
 
     public ImageWithEffect() {
         super();
@@ -84,11 +85,7 @@ public class ImageWithEffect extends Image implements EffectTarget, Updateable {
         setZIndex(renderable.getZIndex());
         ImageRenderable imageRenderable = (ImageRenderable) renderable;
         if (imageRenderable.getImgPathWasUpdated()) {
-            Texture texture = new Texture(resourceLocator.getFilePath(imageRenderable.getImgPath()));
-            this.setDrawable(new TextureRegionDrawable(new TextureRegion(texture)));
-            if (lastTexture != null)
-                lastTexture.dispose();
-            lastTexture = texture;
+            this.setDrawable(new TextureRegionDrawable(new TextureRegion(bookKeeper.getTexture(imageRenderable.getImgPath()))));
             imageRenderable.setImgPathWasUpdated(false);
         }
         renderable.wasUpdated();

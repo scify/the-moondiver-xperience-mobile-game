@@ -8,8 +8,17 @@ public class ResourceLocator {
     private String rootDataPath;
     private String rootDataPathDefault;
     private MoonWalkerConfiguration configuration;
+    private static ResourceLocator instance;
 
-    public ResourceLocator() {
+    public static ResourceLocator getInstance() {
+        if (instance == null) {
+            instance = new ResourceLocator();
+            return instance;
+        }else
+            return instance;
+    }
+
+    private ResourceLocator() {
         configuration = new MoonWalkerConfiguration();
         this.rootDataPath = "data_packs/" + configuration.getProjectProperty("DATA_PACKAGE") + "/";
         this.rootDataPathDefault = "data_packs/" + configuration.getProjectProperty("DATA_PACKAGE_DEFAULT") + "/";

@@ -1,6 +1,7 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
+import org.scify.engine.renderables.TableRenderable;
 import org.scify.moonwalker.app.game.rules.SinglePlayerRules;
 
 public class BaseEpisodeRules extends SinglePlayerRules {

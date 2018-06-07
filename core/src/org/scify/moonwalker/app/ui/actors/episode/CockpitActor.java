@@ -90,7 +90,7 @@ public class CockpitActor extends FadingTableActor<CockpitRenderable> {
         daysLeftLabel = (Label) bookKeeper.getUIRepresentationOfRenderable(renderable.getDaysLeftLabel());
         daysLeftLabel.setAlignment(Align.center);
         Label.LabelStyle ls = new Label.LabelStyle();
-        ThemeController themeController = ThemeController.getThemeController();
+        ThemeController themeController = ThemeController.getInstance();
         ls.font = themeController.getFont(25, "dialog");
         ls.fontColor = Color.valueOf("912d25");
         daysLeftLabel.setStyle(ls);
@@ -175,7 +175,7 @@ public class CockpitActor extends FadingTableActor<CockpitRenderable> {
     protected void drawBottom(float screenWidth, float screenHeight) {
 
         Label.LabelStyle labelStyle = new Label.LabelStyle();
-        ThemeController themeController = ThemeController.getThemeController();
+        ThemeController themeController = ThemeController.getInstance();
         labelStyle.font = themeController.getFont(16, "controls");
         labelStyle.fontColor = Color.valueOf("436272");
 

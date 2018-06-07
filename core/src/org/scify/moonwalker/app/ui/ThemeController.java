@@ -1,9 +1,6 @@
 package org.scify.moonwalker.app.ui;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Colors;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -17,14 +14,14 @@ import java.util.Map;
 
 public class ThemeController {
 
-    private Skin skin;
+    private Skin defaultSkin;
     private ResourceLocator resourceLocator;
     private AppInfo appInfo;
     private TextureAtlas textureAtlas;
     private static ThemeController instance;
     private Map<String, Map<Integer, BitmapFont>> fonts;
 
-    public static ThemeController getThemeController() {
+    public static ThemeController getInstance() {
         if (instance == null) {
             instance = new ThemeController();
             return instance;
@@ -33,12 +30,14 @@ public class ThemeController {
     }
 
     protected ThemeController() {
-        this.resourceLocator = new ResourceLocator();
+        this.resourceLocator = ResourceLocator.getInstance();
         this.appInfo = AppInfo.getInstance();
         fonts = new HashMap<>();
+        defaultSkin = new Skin();
+        setDefaultFontOfSkin();
     }
 
-    protected BitmapFont initFontAndSkin(int fontSize, String fontId) {
+    protected BitmapFont initFontAndSkin(Skin skin, int fontSize, String fontId) {
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.characters = FreeTypeFontGenerator.DEFAULT_CHARS + "α  β  γ  δ  ε  ζ  η  θ  ι  κ  λ  μ  ν  ξ  ο  π  ρ  σ  τ  υ  φ  χ  ψ  ω  ς  Α  Β  Γ  Δ  Ε  Ζ  Η  Θ  Ι  Κ  Λ  Μ  Ν  Ξ  Ο  Π  Ρ  Σ  Τ  Υ  Φ  Χ  Ψ  Ω ϊ ά έ ή ί ό ύ ώ ΐ ΰ Ά Έ Ή Ί Ό Ύ Ώ";
         int width = appInfo.getScreenWidth();
@@ -61,7 +60,6 @@ public class ThemeController {
         BitmapFont font = generator.generateFont(parameter);
         font.getData().markupEnabled = true;
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        skin = new Skin();
         skin.add("default-font", font, BitmapFont.class);
         textureAtlas = new TextureAtlas(Gdx.files.internal(resourceLocator.getFilePath("fonts/uiskin.atlas")));
         skin.addRegions(textureAtlas);
@@ -80,30 +78,38 @@ public class ThemeController {
             if (sizeToFont.containsKey(fontSize))
                 return sizeToFont.get(fontSize);
             else {
-                BitmapFont font = initFontAndSkin(fontSize, fontId);
+                BitmapFont font = initFontAndSkin(new Skin(), fontSize, fontId);
                 sizeToFont.put(fontSize, font);
                 return font;
             }
-        }else {
-            BitmapFont font = initFontAndSkin(fontSize, fontId);
+        } else {
+            BitmapFont font = initFontAndSkin(new Skin(), fontSize, fontId);
             Map<Integer, BitmapFont> sizeToFont = new HashMap<>();
             sizeToFont.put(fontSize, font);
+            fonts.put(fontId, sizeToFont);
             return font;
         }
+    }
+
+    protected void setDefaultFontOfSkin() {
+        BitmapFont font = initFontAndSkin(defaultSkin, 20, "dialog");
+        Map<Integer, BitmapFont> sizeToFont = new HashMap<>();
+        sizeToFont.put(20, font);
+        fonts.put("dialog", sizeToFont);
     }
 
     public BitmapFont getFont() {
         return getFont(20, "dialog");
     }
 
-    public Skin getSkin() {
-        return skin;
+    public Skin getDefaultSkin() {
+        return defaultSkin;
     }
 
     /*protected void dispose() {
         font.dispose();
         textureAtlas.dispose();
-        skin.dispose();
+        defaultSkin.dispose();
     }*/
 
 }

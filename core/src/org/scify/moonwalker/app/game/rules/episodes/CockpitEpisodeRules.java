@@ -358,6 +358,9 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
         double newPercentagePossible = gameInfo.getNextTravelPercentagePossible() + percentage;
         if (newPercentagePossible > 99.0)
             newPercentagePossible = 100.0;
+        else {
+            gameInfo.dayPassed();
+        }
         gameInfo.setNextTravelPercentagePossible(newPercentagePossible);
     }
 }

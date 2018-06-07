@@ -34,4 +34,5 @@ public class EpisodeWithEndState extends Episode<EpisodeEndState> {
         // Only keeps basic params
         return new EpisodeWithEndState(rules);
     }
+
 }

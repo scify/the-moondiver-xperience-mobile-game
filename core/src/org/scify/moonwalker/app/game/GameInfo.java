@@ -59,6 +59,7 @@ public class GameInfo {
     public void setQuizFirstTime(boolean quizFirstTime) { this.quizFirstTime = quizFirstTime; }
 
     private GameInfo() {
+        tutorialMode = true;
         moonPhasesController = new MoonPhasesController();
         atForest = true;
         currentDay = 1;
@@ -66,7 +67,6 @@ public class GameInfo {
         remainingEnergy = 0;
         LocationController lc = LocationController.getInstance();
         setMoonPhases();
-        tutorialMode = true;
         resetFlags();
         setContactRequestFlag();
         //setMapRequestFlag();

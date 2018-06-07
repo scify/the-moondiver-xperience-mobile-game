@@ -72,13 +72,13 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     protected int lowerUpdatedZIndex = Integer.MAX_VALUE;
 
     public MoonWalkerRenderingEngine(UserInputHandler userInputHandler, SpriteBatch batch, ZIndexedStage stage) {
-        this.resourceLocator = new ResourceLocator();
+        this.resourceLocator = ResourceLocator.getInstance();
         cameraController = new CameraController();
         cameraController.initCamera(stage);
 
         this.userInputHandler = (UserInputHandlerImpl) userInputHandler;
         audioEngine = new GdxAudioEngine();
-        themeController = ThemeController.getThemeController();
+        themeController = ThemeController.getInstance();
 
         appInfo = AppInfo.getInstance();
         this.batch = batch;
@@ -87,7 +87,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         painter = new MoonwalkerUIPainter(stage, cameraController);
         painter.setOverallBackground(createBackgroundDefaultImg());
         painter.setFont(themeController.getFont());
-        painter.setSkin(themeController.getSkin());
+        painter.setSkin(themeController.getDefaultSkin());
 
         gameViewport = stage.getViewport();
         try {
@@ -326,7 +326,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             worldImgTexture.dispose();
         }
         // Update texture
-        worldImgTexture = new Texture(resourceLocator.getFilePath(imgPath));
+        worldImgTexture = bookKeeper.getTexture(resourceLocator.getFilePath(imgPath));
         Image iRes = new Image(worldImgTexture);
         // Apply app size to image (stretch it to fit the app stage)
         iRes.setSize(appInfo.getScreenWidth(), appInfo.getScreenHeight());
@@ -375,8 +375,6 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         bDisposalOngoing = true;
         System.out.println("disposing rendering engine resources...");
         cameraController.disposeResources();
-        //themeController.dispose();
-        //audioEngine.disposeResources();
         worldImgTexture.dispose();
         bDisposalOngoing = false;
     }

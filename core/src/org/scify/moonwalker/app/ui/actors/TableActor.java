@@ -2,7 +2,6 @@ package org.scify.moonwalker.app.ui.actors;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.scify.engine.renderables.ImageRenderable;
@@ -11,10 +10,7 @@ import org.scify.engine.renderables.effects.Effect;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.LGDXRenderableBookKeeper;
-
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public class TableActor<T extends Renderable> extends TableWithEffect {
@@ -31,7 +27,7 @@ public class TableActor<T extends Renderable> extends TableWithEffect {
     public TableActor(Skin skin, T rRenderable) {
         super(skin);
         appInfo = AppInfo.getInstance();
-        resourceLocator = new ResourceLocator();
+        resourceLocator = ResourceLocator.getInstance();
         renderable = rRenderable;
         effects = new HashSet<>();
     }

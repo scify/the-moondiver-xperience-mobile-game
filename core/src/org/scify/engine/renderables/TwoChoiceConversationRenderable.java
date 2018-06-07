@@ -40,7 +40,7 @@ public class TwoChoiceConversationRenderable extends ConversationRenderable {
         width = 0.96f * screenWidth;
         height = 0.3f * screenHeight;
 
-        avatar_bg = createImageRenderable(AVATAR_BG_ID + id, AVATAR_BG_IMG_PATH, false, true, 102);
+        avatar_bg = createImageRenderable(AVATAR_BG_ID, AVATAR_BG_IMG_PATH, false, true, 102);
         initSubRenderables();
     }
 
@@ -65,9 +65,7 @@ public class TwoChoiceConversationRenderable extends ConversationRenderable {
     }
 
     public void setAvatarImg (String imgPath) {
-        avatar = new ImageRenderable(AVATAR_IMAGE_ID, imgPath);
-        avatar.setZIndex(103);
-        avatar.setPositionDrawable(false);
+        avatar = createImageRenderable(AVATAR_IMAGE_ID + imgPath, imgPath,false, true, 103);
         allRenderables.add(avatar);
     }
 

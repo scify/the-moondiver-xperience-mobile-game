@@ -26,9 +26,7 @@ public class ChargeEpisodeRenderable extends ChattableRenderable {
     //renderable ids
     protected static final String CHARGE_BUTTON_ID = "charge_button";
     protected static final String EXIT_BUTTON_ID = "exit_button";
-    protected static final String MOON_PHASE1_ID = "moon_phase";
-    protected static final String MOON_PHASE2_ID = "moon_phase";
-    protected static final String MOON_PHASE3_ID = "moon_phase";
+    protected static final String MOON_PHASE_ID = "moon_phase";
     protected static final String UNITS_PER_NIGHT1_ID = "units_per_night1";
     protected static final String UNITS_PER_NIGHT2_ID = "units_per_night2";
     protected static final String UNITS_PER_NIGHT3_ID = "units_per_night3";
@@ -191,7 +189,7 @@ public class ChargeEpisodeRenderable extends ChattableRenderable {
     public void setCurrentMoonPhaseInfo (int energy, String imgPath) {
         nextUnitsValue1 = energy + " UNITS";
         if (moonPhase1 == null) {
-            moonPhase1 = createImageRenderable(MOON_PHASE1_ID, imgPath, false, true, 5);
+            moonPhase1 = createImageRenderable(MOON_PHASE_ID + "1" +  imgPath, imgPath, false, true, 5);
             allRenderables.add(moonPhase1);
             unitsLabel1.setLabel(nextUnitsValue1);
         }else {
@@ -203,7 +201,7 @@ public class ChargeEpisodeRenderable extends ChattableRenderable {
     public void setNextMoonPhaseInfo (int energy, String imgPath) {
         nextUnitsValue2 = energy + " UNITS";
         if (moonPhase2 == null) {
-            moonPhase2 = createImageRenderable(MOON_PHASE2_ID, imgPath, false, true, 5);
+            moonPhase2 = createImageRenderable(MOON_PHASE_ID + "2" + imgPath, imgPath, false, true, 5);
             allRenderables.add(moonPhase2);
             unitsLabel2.setLabel(nextUnitsValue2);
         }else {
@@ -215,7 +213,7 @@ public class ChargeEpisodeRenderable extends ChattableRenderable {
     public void setPostNextMoonPhaseInfo (int energy, String imgPath) {
         nextUnitsValue3 = energy + " UNITS";
         if (moonPhase3 == null) {
-            moonPhase3 = createImageRenderable(MOON_PHASE3_ID, imgPath, false, true, 5);
+            moonPhase3 = createImageRenderable(MOON_PHASE_ID + "3" + imgPath, imgPath, false, true, 5);
             allRenderables.add(moonPhase3);
             unitsLabel3.setLabel(nextUnitsValue3);
         }else {

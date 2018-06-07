@@ -38,8 +38,8 @@ public class ConversationRules extends MoonWalkerBaseRules {
      * this conversation.
      */
     protected List<ConversationLine> conversationLines;
-    private Json json;
-    protected ResourceLocator resourceLocator;
+    private static Json json;
+    protected static ResourceLocator resourceLocator;
     protected Renderable lastConversationRenderable;
     protected RandomResponseFactory randomResponseFactory;
     protected String bgImgPath;
@@ -75,9 +75,6 @@ public class ConversationRules extends MoonWalkerBaseRules {
     protected boolean finished = false;
     protected boolean paused = false;
 
-
-    private AppInfo appInfo;
-
     /**
      * This id is used as a key when storing the current conversation line
      * in the game state
@@ -98,10 +95,12 @@ public class ConversationRules extends MoonWalkerBaseRules {
     public ConversationRules(String conversationJSONFilePath, String bgImgPath) {
         appInfo = AppInfo.getInstance();
         conversationLines = new ArrayList<>();
-        resourceLocator = new ResourceLocator();
-        json = new Json();
-        json.setUsePrototypes(false);
-        json.setIgnoreUnknownFields(false);
+        resourceLocator = ResourceLocator.getInstance();
+        if (json == null) {
+            json = new Json();
+            json.setUsePrototypes(false);
+            json.setIgnoreUnknownFields(false);
+        }
         conversationLines = json.fromJson(ArrayList.class, ConversationLine.class, Gdx.files.internal(resourceLocator.getFilePath(conversationJSONFilePath)));
         ID = UUID.randomUUID().toString();
         oldConversationLines = new ArrayList<>();
@@ -367,7 +366,9 @@ public class ConversationRules extends MoonWalkerBaseRules {
     }
 
     private Effect getOutroEffect() {
-        Effect ret = new FadeEffect(1.0, 0.0, 200);
+        final EffectSequence ret = new EffectSequence();
+        ret.addEffect(new FadeEffect(1.0, 0.0, 200));
+        ret.addEffect(new VisibilityEffect(false));
         return ret;
     }
 
@@ -397,7 +398,11 @@ public class ConversationRules extends MoonWalkerBaseRules {
 
     @Override
     public void disposeResources() {
-        oldConversationLines = new ArrayList<>();
+        oldConversationLines.clear();
+        replaceLexicon.clear();
+        lastConversationRenderable = null;
+        nextLines.clear();
+        sPrvSpeakerID = "";
     }
 
     @Override

@@ -35,7 +35,7 @@ public class RandomResponseFactory {
     }
 
     private RandomResponseFactory() {
-        resourceLocator = new ResourceLocator();
+        resourceLocator = ResourceLocator.getInstance();
         json = new Json();
         json.setUsePrototypes(false);
         json.setIgnoreUnknownFields(false);

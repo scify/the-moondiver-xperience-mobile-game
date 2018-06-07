@@ -38,7 +38,7 @@ public class SingleChoiceConversationRenderable extends ConversationRenderable {
         width = 0.96f * screenWidth;
         height = 0.3f * screenHeight;
         buttonActive = true;
-        avatar_bg = createImageRenderable(AVATAR_BG_ID + id, AVATAR_BG_IMG_PATH, false, true, 102);
+        avatar_bg = createImageRenderable(AVATAR_BG_ID, AVATAR_BG_IMG_PATH, false, true, 102);
         initSubRenderables();
     }
 
@@ -48,7 +48,7 @@ public class SingleChoiceConversationRenderable extends ConversationRenderable {
     }
 
     public void setAvatarImg(String imgPath) {
-        avatar = createImageRenderable(AVATAR_IMAGE_ID + conversationId, imgPath,false, true, 103);
+        avatar = createImageRenderable(AVATAR_IMAGE_ID + imgPath, imgPath,false, true, 103);
         allRenderables.add(avatar);
     }
 

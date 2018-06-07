@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.scify.engine.renderables.*;
 import org.scify.moonwalker.app.ui.ComponentFactory;
 import org.scify.engine.renderables.UnsupportedRenderableTypeException;
+import org.scify.moonwalker.app.ui.LGDXRenderableBookKeeper;
 import org.scify.moonwalker.app.ui.actors.episode.ChargeEpisodeActor;
 import org.scify.moonwalker.app.ui.actors.conversation.MultipleChoiceConversationActor;
 import org.scify.moonwalker.app.ui.actors.conversation.SingleChoiceConversationActor;
@@ -28,14 +29,14 @@ public class ActorFactory extends ComponentFactory {
         return factory;
     }
 
-    public static ActorFactory getInstance(Skin skin) {
-        factory = new ActorFactory(skin);
+    public static ActorFactory getInstance(Skin skin, LGDXRenderableBookKeeper bookKeeper) {
+        factory = new ActorFactory(skin,bookKeeper);
         return factory;
     }
     // USE AS SINGLETON - END
 
-    private ActorFactory(Skin skin) {
-        super(skin);
+    private ActorFactory(Skin skin, LGDXRenderableBookKeeper bookKeeper) {
+        super(skin, bookKeeper);
     }
 
     public Actor createResourceForType(Renderable renderable) {
@@ -46,13 +47,13 @@ public class ActorFactory extends ComponentFactory {
                 label.setWidth(renderable.getWidth());
                 label.setHeight(renderable.getHeight());
                 label.setWrap(true);
-                label.setText(((TextLabelRenderable)renderable).getLabel());
+                label.setText(((TextLabelRenderable) renderable).getLabel());
                 toReturn = label;
                 break;
             case Renderable.ACTOR_ROTATABLE_LABEL:
                 Stack gParent = new StackWithEffect<ActorLabelWithEffect>();
                 gParent.setTransform(true);
-                label = new ActorLabelWithEffect(((TextLabelRenderable)renderable).getLabel(), skin);
+                label = new ActorLabelWithEffect(((TextLabelRenderable) renderable).getLabel(), skin);
                 gParent.setWidth(renderable.getWidth());
                 gParent.setHeight(renderable.getHeight());
                 gParent.setZIndex(renderable.getZIndex());
@@ -66,7 +67,7 @@ public class ActorFactory extends ComponentFactory {
             case Renderable.ACTOR_ROTATABLE_TEXT_BUTTON:
                 gParent = new StackWithEffect<TextButtonWithEffect>();
                 gParent.setTransform(true);
-                TextButton tbBtn =  createTextButton((ActionButtonRenderable) renderable);
+                TextButton tbBtn = createTextButton((ActionButtonRenderable) renderable);
                 tbBtn.setWidth(renderable.getWidth());
                 tbBtn.setHeight(renderable.getHeight());
                 gParent.add(tbBtn);
@@ -124,7 +125,7 @@ public class ActorFactory extends ComponentFactory {
                 toReturn = createLocationActor((LocationRenderable) renderable);
                 break;
             case Renderable.ACTOR_TABLE:
-                toReturn = createTableActor((TableRenderable)renderable);
+                toReturn = createTableActor((TableRenderable) renderable);
                 break;
             default:
                 throw new UnsupportedRenderableTypeException("renderable with type " + renderable.getType() + " is unsupported.");
@@ -143,10 +144,9 @@ public class ActorFactory extends ComponentFactory {
     }
 
     protected ImageWithEffect createImage(String imgFileRelevantPath, Renderable renderable) {
-        Texture texture = new Texture(resourceLocator.getFilePath(imgFileRelevantPath));
+        Texture texture = bookKeeper.getTexture(imgFileRelevantPath);
         TextureRegion textureRegion = new TextureRegion(texture);
         TextureRegionDrawable textureRegionDrawable = new TextureRegionDrawable(textureRegion);
-        textureList.add(texture);
         ImageWithEffect img = new ImageWithEffect(textureRegionDrawable, resourceLocator);
 
         if (renderable.getWidth() == 0 && renderable.getHeight() == 0) {
@@ -166,12 +166,11 @@ public class ActorFactory extends ComponentFactory {
     }
 
     protected ImageButtonWithEffect createImageButton(ActionButtonRenderable actionButtonRenderable) {
-        Texture texture = new Texture(resourceLocator.getFilePath(actionButtonRenderable.getImgPath()));
+        Texture texture = bookKeeper.getTexture(actionButtonRenderable.getImgPath());
         Sprite sprite = new Sprite(texture);
         Drawable btnImage = new SpriteDrawable(sprite);
         ImageButtonWithEffect btn = new ImageButtonWithEffect(btnImage);
         setCommonAttrsAndListener(btn, actionButtonRenderable);
-        textureList.add(texture);
         return btn;
     }
 

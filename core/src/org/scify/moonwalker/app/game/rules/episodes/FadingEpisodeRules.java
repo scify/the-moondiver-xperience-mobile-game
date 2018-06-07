@@ -1,6 +1,7 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.GameState;
+import org.scify.engine.renderables.TableRenderable;
 import org.scify.moonwalker.app.ui.renderables.FadingTableRenderable;
 
 public class FadingEpisodeRules<T extends FadingTableRenderable> extends BaseEpisodeRules {
@@ -47,5 +48,18 @@ public class FadingEpisodeRules<T extends FadingTableRenderable> extends BaseEpi
 
         // Perform fade out
         renderable.fadeOut();
+    }
+
+    @Override
+    protected GameState cleanUpGameState(GameState currentState) {
+        super.cleanUpGameState(currentState);
+        TableRenderable.resetBufferedRenderables();
+        return currentState;
+    }
+
+    @Override
+    public void disposeResources() {
+        super.disposeResources();
+        renderable = null;
     }
 }

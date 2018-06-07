@@ -95,6 +95,6 @@ public abstract class Episode<T> implements Callable<T>, Cloneable {
                 gameEngine.disposeResources();
             }
         });
-
+        rules = null;
     }
 }

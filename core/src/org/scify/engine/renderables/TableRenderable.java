@@ -2,9 +2,13 @@ package org.scify.engine.renderables;
 
 import org.scify.engine.UserAction;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class TableRenderable extends Renderable {
     protected ImageRenderable tableBGRenderable = null;
     protected String bgImgPath;
+    protected static Map<String, ImageRenderable> imageRenderableBuffer;
 
     public ImageRenderable getTableBGRenderable() {
         return tableBGRenderable;
@@ -13,13 +17,19 @@ public class TableRenderable extends Renderable {
     public TableRenderable(float xPos, float yPos, float width, float height, String type, String id) {
         super(xPos, yPos, width, height, type, id);
         bgImgPath = null;
+        if (imageRenderableBuffer == null) {
+            imageRenderableBuffer = new HashMap<>();
+        }
     }
 
     public TableRenderable(float xPos, float yPos, float width, float height, String type, String id, String bgImgPath) {
         super(xPos, yPos, width, height, type, id);
         this.bgImgPath = bgImgPath;
+        if (imageRenderableBuffer == null) {
+            imageRenderableBuffer = new HashMap<>();
+        }
         if (bgImgPath != null) {
-            tableBGRenderable = new ImageRenderable("bg", bgImgPath);
+            tableBGRenderable = createImageRenderable("bg_" + bgImgPath, bgImgPath, false, true, 0);
         }
     }
 
@@ -39,7 +49,13 @@ public class TableRenderable extends Renderable {
     }
 
     protected ImageRenderable createImageRenderable(String id, String img, boolean positionDrawable, boolean visibility, int zIndex) {
-        ImageRenderable ret = new ImageRenderable(id, img);
+        ImageRenderable ret;
+        if (imageRenderableBuffer.containsKey(id)) {
+            ret = imageRenderableBuffer.get(id);
+        } else {
+            ret = new ImageRenderable(id, img);
+            imageRenderableBuffer.put(id, ret);
+        }
         setRenderableAttributes(ret, positionDrawable, visibility, zIndex);
         return ret;
     }
@@ -62,5 +78,9 @@ public class TableRenderable extends Renderable {
         renderable.setPositionDrawable(positionDrawable);
         renderable.setVisible(visibility);
         renderable.setZIndex(zIndex);
+    }
+
+    public static void resetBufferedRenderables() {
+        imageRenderableBuffer.clear();
     }
 }

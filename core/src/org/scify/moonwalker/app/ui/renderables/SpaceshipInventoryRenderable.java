@@ -273,7 +273,7 @@ public class SpaceshipInventoryRenderable extends FadingTableRenderable {
     }
 
     public void setMoonPhase(MoonPhase moonPhase) {
-        this.moonPhase = createImageRenderable(MOON_PHASE_ID, moonPhase.getImgPath(), false, true, 4);
+        this.moonPhase = createImageRenderable(MOON_PHASE_ID + moonPhase.getImgPath(), moonPhase.getImgPath(), false, true, 4);
         allRenderables.add(this.moonPhase);
     }
 

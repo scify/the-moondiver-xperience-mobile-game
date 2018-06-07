@@ -8,8 +8,8 @@ import org.scify.moonwalker.app.ui.sprites.SpriteWithEffects;
 
 public class SpriteFactory extends ComponentFactory{
 
-    public SpriteFactory(Skin skin) {
-        super(skin);
+    public SpriteFactory(Skin skin, LGDXRenderableBookKeeper bookKeeper) {
+        super(skin, bookKeeper);
     }
 
     @Override
@@ -18,26 +18,23 @@ public class SpriteFactory extends ComponentFactory{
         // Get a sprite for this world object type
         switch (renderable.getType()) {
             case Renderable.SPRITE_IMAGE: {
-                Texture texture = new Texture(resourceLocator.getFilePath(renderable.getImgPath()));
+                Texture texture = bookKeeper.getTexture(renderable.getImgPath());
                 Sprite sprite = new SpriteWithEffects(texture);
                 sprite.setSize(renderable.getWidth(), renderable.getHeight());
-                textureList.add(texture);
                 sToReturn = sprite;
                 }
                 break;
             case Renderable.SPRITE_BACKGROUND_IMAGE: {
-                Texture texture = new Texture(resourceLocator.getFilePath(renderable.getImgPath()));
+                Texture texture = bookKeeper.getTexture(renderable.getImgPath());
                 Sprite sprite = new SpriteWithEffects(texture);
                 sprite.setSize(renderable.getWidth(), renderable.getHeight());
-                textureList.add(texture);
                 sToReturn = sprite;
             }
                 break;
             case Renderable.SPRITE_PLAYER: {
-                Texture playerImg = new Texture(resourceLocator.getFilePath("img/player.png"));
+                Texture playerImg = bookKeeper.getTexture("img/player.png");
                 Sprite playerSprite = new SpriteWithEffects(playerImg);
                 playerSprite.setSize(renderable.getWidth(), renderable.getHeight());
-                textureList.add(playerImg);
                 sToReturn = playerSprite;
             }
                 break;

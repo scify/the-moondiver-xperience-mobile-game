@@ -19,7 +19,7 @@ public class QuestionServiceJSON implements QuestionService {
 
     public QuestionServiceJSON() {
         json = new Json();
-        resourceLocator = new ResourceLocator();
+        resourceLocator = ResourceLocator.getInstance();
         allQuestions = getQuestionsFromDB();
         allQuestionCategories = getQuestionCategoriesFromDB();
         questionIndex = 0;

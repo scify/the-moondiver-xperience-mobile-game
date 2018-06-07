@@ -100,8 +100,9 @@ public abstract class Scenario {
             return;
         }
         currentEpisode.init();
-        if(lastEpisodeEndState != null)
+        if(lastEpisodeEndState != null) {
             currentEpisode.setInitialEpisodeState(lastEpisodeEndState);
+        }
         // The endState is a variable containing a code describing the way
         // the episode was terminated, as well as the current game state
         lastEpisodeEndState = (EpisodeEndState) currentEpisode.play(renderingEngine, userInputHandler);

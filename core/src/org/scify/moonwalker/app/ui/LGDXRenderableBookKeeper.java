@@ -1,5 +1,6 @@
 package org.scify.moonwalker.app.ui;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -15,6 +16,7 @@ import org.scify.engine.renderables.effects.libgdx.EffectNotRegisteredException;
 import org.scify.engine.renderables.effects.libgdx.LGDXEffect;
 import org.scify.engine.renderables.effects.libgdx.LGDXEffectFactory;
 import org.scify.engine.renderables.ActionButtonRenderable;
+import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.actors.ActorFactory;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 
@@ -28,20 +30,36 @@ public class LGDXRenderableBookKeeper {
 
     protected Map<Renderable, Sprite> renderableSpriteMap;
     protected Map<Renderable, Actor> renderableActorMap;
+    protected Map<String, Texture> textureMap;
     protected ComponentFactory<Actor> actorFactory;
     protected ComponentFactory<Sprite> spriteFactory;
     protected LGDXEffectFactory<LGDXEffect> effectFactory;
     protected UserInputHandlerImpl userInputHandler;
+    protected ResourceLocator resourceLocator;
 
     protected Batch batch;
     protected Stage stage;
 
     public LGDXRenderableBookKeeper(ThemeController themeController, UserInputHandler userInputHandler) {
         this.userInputHandler = (UserInputHandlerImpl) userInputHandler;
-        actorFactory = ActorFactory.getInstance(themeController.getSkin());
+        actorFactory = ActorFactory.getInstance(themeController.getDefaultSkin(), this);
         actorFactory.setUserInputHandler(userInputHandler);
-        this.spriteFactory = new SpriteFactory(themeController.getSkin());
+        this.spriteFactory = new SpriteFactory(themeController.getDefaultSkin(), this);
         this.effectFactory = LGDXEffectFactory.getFactorySingleton();
+        renderableSpriteMap = new HashMap<>();
+        renderableActorMap = new HashMap<>();
+        textureMap = new HashMap<>();
+        resourceLocator = ResourceLocator.getInstance();
+    }
+
+    public Texture getTexture(String imagePath) {
+        if (textureMap.containsKey(imagePath))
+            return textureMap.get(imagePath);
+        else {
+            Texture texture = new Texture(resourceLocator.getFilePath(imagePath));
+            textureMap.put(imagePath, texture);
+            return texture;
+        }
     }
 
     /**
@@ -51,7 +69,8 @@ public class LGDXRenderableBookKeeper {
 
     /**
      * Initializes the LGDXRenderableBookKeeper with a given environment (theme controller, user input handler)
-     * @param themeController The controller.
+     *
+     * @param themeController  The controller.
      * @param userInputHandler The user input handler.
      * @return The bookkeeper instance created.
      */
@@ -59,8 +78,7 @@ public class LGDXRenderableBookKeeper {
         if (instance == null) {
             instance = new LGDXRenderableBookKeeper(themeController, userInputHandler);
             return instance;
-        }
-        else
+        } else
             throw new AlreadyInitializedBookKeeperException("Bookkeeper already initialized.");
 
     }
@@ -69,6 +87,7 @@ public class LGDXRenderableBookKeeper {
     /**
      * Returns the singleton instance of bookkeeper, if it was initialized before, through a call to initBookKeeper.
      * Throws a runtime {@link UninitializedBookKeeperException}, if the keeper was not initialized.
+     *
      * @return The {@link LGDXRenderableBookKeeper}.
      */
     public static LGDXRenderableBookKeeper getInstance() {
@@ -89,6 +108,7 @@ public class LGDXRenderableBookKeeper {
     /**
      * Returns an LGDX equivalent of the renderable, also updating any applied effects.
      * If an equivalent has not been created, it also creates it.
+     *
      * @param renderable The renderable we want to return.
      * @return The updated LGDX equivalent of the renderable.
      */
@@ -120,7 +140,7 @@ public class LGDXRenderableBookKeeper {
             return sprite;
         } else {
             // else we create as an actor
-           return createActorResourceFor(renderable);
+            return createActorResourceFor(renderable);
         }
     }
 
@@ -148,7 +168,7 @@ public class LGDXRenderableBookKeeper {
         try {
             // createSpriteResourceForType
             Sprite newResourceForRenderable = spriteFactory.createResourceForType(toDraw);
-            if(newResourceForRenderable != null) {
+            if (newResourceForRenderable != null) {
                 resource = newResourceForRenderable;
             }
         } catch (UnsupportedRenderableTypeException e) {
@@ -166,7 +186,7 @@ public class LGDXRenderableBookKeeper {
         Actor resource = null;
         try {
             Actor newActorForRenderable = cfFactory.createResourceForType(toDraw);
-            if(newActorForRenderable != null) {
+            if (newActorForRenderable != null) {
                 resource = newActorForRenderable;
                 addActor(toDraw, newActorForRenderable);
 
@@ -180,31 +200,33 @@ public class LGDXRenderableBookKeeper {
     protected Actor addActor(final Renderable toDraw, Actor newActorForRenderable) {
 //        addClickListenerIfButton(toDraw, newActorForRenderable);
         renderableActorMap.put(toDraw, newActorForRenderable);
-        return  newActorForRenderable;
+        return newActorForRenderable;
     }
 
     protected void addClickListenerIfButton(final Renderable toDraw, Actor newActorForRenderable) {
-        if(toDraw.getType().equals("text_button") || toDraw.getType().equals("image_button")) {
+        if (toDraw.getType().equals("text_button") || toDraw.getType().equals("image_button")) {
             userInputHandler.addClickListenerForActor((ActionButtonRenderable) toDraw, newActorForRenderable);
         }
     }
 
     public void reset() {
-        renderableSpriteMap = new HashMap<>();
-        renderableActorMap = new HashMap<>();
+        renderableSpriteMap.clear();
+        renderableActorMap.clear();
+        textureMap.clear();
     }
 
     public void dispose() {
         synchronized (stage) {
             // Dispose of actors
-            for(Actor actor : stage.getActors()) {
+            for (Actor actor : stage.getActors()) {
                 System.out.println("removing: " + actor.getName());
                 actor.addAction(Actions.removeActor());
             }
-            actorFactory.disposeResources();
-            spriteFactory.disposeResources();
+            for (Map.Entry<String,Texture> texture: textureMap.entrySet()) {
+                System.out.println("removing: " + texture.getKey());
+                texture.getValue().dispose();
+            }
             stage.clear();
-            System.out.println(stage.getActors().size);
             reset();
         }
     }
@@ -223,7 +245,7 @@ public class LGDXRenderableBookKeeper {
 
     public Actor getOrCreateActorResourceFor(Renderable renderable) {
         Actor toReturn;
-        if(renderableExistsAsActor(renderable))
+        if (renderableExistsAsActor(renderable))
             toReturn = renderableActorMap.get(renderable);
         else
             toReturn = createActorResourceFor(renderable);
@@ -238,7 +260,7 @@ public class LGDXRenderableBookKeeper {
 
     public void printActors() {
         System.out.println("printActors");
-        for(Actor stageActor : stage.getActors()) {
+        for (Actor stageActor : stage.getActors()) {
             System.out.println("Actor " + stageActor.getClass() + " " + stageActor.getName() + " " + stageActor.getZIndex());
         }
     }
@@ -254,7 +276,7 @@ public class LGDXRenderableBookKeeper {
 
 
         // For each effect on the renderable
-        for (Effect eCur: lEffects) {
+        for (Effect eCur : lEffects) {
             // Mark effect for removal, if complete
             if (eCur.complete())
                 toRemove.add(eCur);
@@ -269,7 +291,7 @@ public class LGDXRenderableBookKeeper {
         }
 
         // For each completed effect
-        for (Effect eToRemove: toRemove) {
+        for (Effect eToRemove : toRemove) {
             // DEBUG LINES
 //             System.err.println("Removing " + eToRemove + " from " + renderable.toString());
             //////////////

@@ -17,7 +17,7 @@ public class GdxAudioEngine implements AudioEngine {
     public GdxAudioEngine() {
         stringMusicMap = new HashMap<>();
         stringSoundMap = new HashMap<>();
-        resourceLocator = new ResourceLocator();
+        resourceLocator = ResourceLocator.getInstance();
     }
 
     @Override
