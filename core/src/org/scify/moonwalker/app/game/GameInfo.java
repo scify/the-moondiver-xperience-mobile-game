@@ -58,18 +58,16 @@ public class GameInfo {
 
     public void setQuizFirstTime(boolean quizFirstTime) { this.quizFirstTime = quizFirstTime; }
 
-    private GameInfo() {
-        tutorialMode = true;
-        moonPhasesController = new MoonPhasesController();
+    public void reset() {
+        selectedPlayer = SelectedPlayer.unset;
         atForest = true;
         currentDay = 1;
         initialDaysToSuccessfullyCompleteGame = 30;
         remainingEnergy = 0;
-        LocationController lc = LocationController.getInstance();
         setMoonPhases();
         resetFlags();
         setContactRequestFlag();
-        //setMapRequestFlag();
+        LocationController lc = LocationController.getInstance();
         setCurrentLocation(lc.getInitialLocation());
         setNextAllowedLocation(lc.getAfterInitialLocation());
         //inventory
@@ -80,6 +78,12 @@ public class GameInfo {
         lastQuizSuccessFull = false;
         BackGroundMusicPlaying = false;
         quizFirstTime = true;
+    }
+
+    private GameInfo() {
+        tutorialMode = true;
+        moonPhasesController = new MoonPhasesController();
+        reset();
     }
 
     public boolean isQuizFirstTime () { return quizFirstTime; }

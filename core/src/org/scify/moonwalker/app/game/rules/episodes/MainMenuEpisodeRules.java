@@ -103,8 +103,8 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
                     break;
                 case UserActionCode.SCREEN_TOUCHED:
                     if (renderable.isAboutMode()) {
-                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
                         renderable.disableInput();
+                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
                         renderable.hideAbout();
                     }
                     break;

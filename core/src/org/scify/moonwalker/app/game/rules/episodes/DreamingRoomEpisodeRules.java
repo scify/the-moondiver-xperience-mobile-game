@@ -108,7 +108,7 @@ public class DreamingRoomEpisodeRules extends FadingEpisodeRules<DreamingRoomRen
     public EpisodeEndState determineEndState(GameState gsCurrent) {
         String code = EpisodeEndStateCode.EPISODE_FINISHED_FAILURE;
         if (gsCurrent.eventsQueueContainsEvent(conversationRules.CONVERSATION_FINISHED)) {
-            code = EpisodeEndStateCode.SCENARIO_NEEDS_RESTART;
+            code = EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS;
             conversationRules.cleanUpState(gsCurrent);
         }
         return new EpisodeEndState(code, cleanUpGameState(gsCurrent));

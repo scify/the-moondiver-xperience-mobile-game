@@ -18,11 +18,11 @@ public class MoonLandingRenderable extends ChattableRenderable {
     }
 
     public static void calculateResPaths(String playerSex, boolean isGameFullySuccessfullyCompleted) {
-        IMG_PATH += isGameFullySuccessfullyCompleted ? "full_success/" : "simple_success/";
-        BG_IMG_PATH = playerSex.equals(SelectedPlayer.boy) ? MoonLandingRenderable.IMG_PATH + "boy_bg.png" : MoonLandingRenderable.IMG_PATH + "girl_bg.png";
-        CONVERSATION_BG_IMG_PATH = IMG_PATH + "conversation_bg.png";
-        AUDIO_PATH += isGameFullySuccessfullyCompleted ? "full_success/" : "simple_success/";
-        AUDIO_BG_PATH = AUDIO_PATH + "bg.mp3";
+        String imagePath = IMG_PATH + (isGameFullySuccessfullyCompleted ? "full_success/" : "simple_success/");
+        BG_IMG_PATH = playerSex.equals(SelectedPlayer.boy) ? imagePath + "boy_bg.png" : imagePath + "girl_bg.png";
+        CONVERSATION_BG_IMG_PATH = imagePath + "conversation_bg.png";
+        String audioPath = AUDIO_PATH + (isGameFullySuccessfullyCompleted ? "full_success/" : "simple_success/");
+        AUDIO_BG_PATH = audioPath + "bg.mp3";
     }
 
 }

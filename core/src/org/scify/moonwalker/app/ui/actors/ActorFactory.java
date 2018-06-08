@@ -97,6 +97,9 @@ public class ActorFactory extends ComponentFactory {
             case Renderable.ACTOR_EPISODE_MOON_LANDING:
                 toReturn = createMoonLandingActor((MoonLandingRenderable) renderable);
                 break;
+            case Renderable.ACTOR_EPISODE_CREDITS:
+                toReturn = createCreditsActor((CreditsRenderable) renderable);
+                break;
             case Renderable.ACTOR_EPISODE_COCKPIT:
                 toReturn = createCockpitActor((CockpitRenderable) renderable);
                 break;
@@ -222,6 +225,12 @@ public class ActorFactory extends ComponentFactory {
 
     private Actor createMoonLandingActor(final MoonLandingRenderable renderable) {
         MoonLandingActor actor = new MoonLandingActor(skin, renderable);
+        actor.setZIndex(0);
+        return actor;
+    }
+
+    private Actor createCreditsActor(final CreditsRenderable renderable) {
+        CreditsActor actor = new CreditsActor(skin, renderable);
         actor.setZIndex(0);
         return actor;
     }

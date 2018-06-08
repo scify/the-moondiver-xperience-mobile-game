@@ -42,9 +42,8 @@ public class UserInputHandlerImpl extends ChangeListener implements UserInputHan
         } else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             pendingUserActions.add(new UserAction(UserActionCode.DOWN));
         }
-
         // Touch screen listeners
-        if(Gdx.input.justTouched() || Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
+        if(Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
             //touchInputs();
             pendingUserActions.add(new UserAction(UserActionCode.SCREEN_TOUCHED));
         }

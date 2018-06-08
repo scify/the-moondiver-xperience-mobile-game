@@ -1,9 +1,6 @@
 package org.scify.engine;
 
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The Scenario objects provide an episode-based view of an interactive story. It manages the order of appearance
@@ -53,12 +50,16 @@ public abstract class Scenario {
      */
     protected Episode lastEpisode;
 
+    public Scenario() {
+        episodeListMap = new HashMap<>();
+    }
+
     /**
      * Sets the first episode that begins the story.
      * @param firstEpisode the given episode
      */
     protected void setFirstEpisode(Episode firstEpisode) {
-        initEpisodesList();
+        episodeListMap.clear();
         initListForEpisode(firstEpisode);
         currentEpisode = firstEpisode;
     }
@@ -67,13 +68,6 @@ public abstract class Scenario {
         episodeListMap.clear();
         currentEpisode = null;
         lastEpisode = null;
-    }
-
-    /**
-     * Initializes and clears the episode order structure.
-     */
-    protected void initEpisodesList() {
-        episodeListMap = new LinkedHashMap<>();
     }
 
     /**

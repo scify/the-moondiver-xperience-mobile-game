@@ -30,8 +30,7 @@ public class MoonWalkerScenario extends Scenario {
         Episode newCurrentEpisode = null;
         switch (endStateCode) {
             case EpisodeEndStateCode.SCENARIO_NEEDS_RESTART:
-                clear();
-                GameInfo.getInstance().setSelectedPlayer(SelectedPlayer.unset);
+                GameInfo.getInstance().reset();
                 return createBasicScenario();
             case EpisodeEndStateCode.CONTACT_SCREEN_EPISODE_STARTED:
                 if (currentEpisode instanceof CockpitEpisode)
@@ -79,6 +78,7 @@ public class MoonWalkerScenario extends Scenario {
     }
 
     protected Episode createBasicScenario () {
+        clear();
         Episode mainMenu = new MainMenuEpisode();
         setFirstEpisode(mainMenu);
         Episode intro = new IntroEpisode();
@@ -88,14 +88,13 @@ public class MoonWalkerScenario extends Scenario {
         Episode forest = new ForestEpisode();
         addEpisodeAfter(room, forest);
         Episode cockpit = new CockpitEpisode();
-        addEpisodeAfter(forest, cockpit);
-        //addEpisodeAfter(intro, cockpit);
+        addEpisodeAfter(intro, cockpit);
         Episode moonLanding = new MoonLandingEpisode();
         addEpisodeAfter(cockpit, moonLanding);
         Episode dreamingRoomEpisode = new DreamingRoomEpisode();
         addEpisodeAfter(moonLanding, dreamingRoomEpisode);
-        /*Episode dreamingRoomEpisode = new DreamingRoomEpisode();
-        addEpisodeAfter(mainMenu, dreamingRoomEpisode);*/
+        Episode creditsEpisode = new CreditsEpisode();
+        addEpisodeAfter(dreamingRoomEpisode, creditsEpisode);
         return mainMenu;
     }
 
