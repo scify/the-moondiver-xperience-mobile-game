@@ -63,6 +63,8 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
             currentState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
             currentState.addRenderable(renderable);
             currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI));
+            gameInfo.setMainEpisodeCounter(2);
+            gameInfo.save();
             super.episodeStartedEvents(currentState);
             if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
                 currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.BOY_MUSIC_AUDIO_PATH));

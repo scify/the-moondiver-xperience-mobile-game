@@ -36,6 +36,8 @@ public class IntroEpisodeRules extends FadingEpisodeRules<IntroRenderable> {
             });
             currentState.addRenderable(renderable);
             currentState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
+            gameInfo.setMainEpisodeCounter(1);
+            gameInfo.save();
             super.episodeStartedEvents(currentState);
         }
     }

@@ -46,6 +46,8 @@ public class ForestEpisodeRules extends FadingEpisodeRules<ForestRenderable> {
             // Initialize conversation
             createConversation(gameState, "conversations/episode_forest.json", renderable.CONVERSATION_BG_IMG_PATH);
         }
+        gameInfo.setMainEpisodeCounter(3);
+        gameInfo.save();
         return super.getNextState(gameState, userAction);
     }
 

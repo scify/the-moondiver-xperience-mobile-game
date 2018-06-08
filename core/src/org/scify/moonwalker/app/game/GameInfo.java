@@ -1,19 +1,25 @@
 package org.scify.moonwalker.app.game;
 
-public class GameInfo {
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 
+import java.util.Iterator;
+
+public class GameInfo {
+    protected String selectedPlayer;
     protected int currentDay;
     protected int remainingEnergy;
     protected int initialDaysToSuccessfullyCompleteGame;
     protected int inventoryItemsCounter;
+    protected int mainEpisodeCounter;
     protected Location currentLocation;
     protected Location nextLocation;
     protected Location nextAllowedLocation;
+    LocationController lc;
     protected MoonPhase currentMoonPhase;
     protected MoonPhase nextMoonPhase;
     protected MoonPhase postNextMoonPhase;
     protected MoonPhasesController moonPhasesController;
-    protected String selectedPlayer;
     protected boolean tutorialMode;
     protected boolean contactRequestFlag;
     protected boolean mapRequestFlag;
@@ -28,6 +34,7 @@ public class GameInfo {
     protected boolean lastQuizSuccessFull;
     protected boolean BackGroundMusicPlaying;
     protected boolean quizFirstTime;
+    protected Preferences prefs;
 
     /**
      * The travel percentage complete in the LAST travel
@@ -62,12 +69,12 @@ public class GameInfo {
         selectedPlayer = SelectedPlayer.unset;
         atForest = true;
         currentDay = 1;
+        mainEpisodeCounter = 0;
         initialDaysToSuccessfullyCompleteGame = 30;
         remainingEnergy = 0;
         setMoonPhases();
         resetFlags();
         setContactRequestFlag();
-        LocationController lc = LocationController.getInstance();
         setCurrentLocation(lc.getInitialLocation());
         setNextAllowedLocation(lc.getAfterInitialLocation());
         //inventory
@@ -80,9 +87,69 @@ public class GameInfo {
         quizFirstTime = true;
     }
 
+    public void save() {
+        prefs.putString("selectedPlayer", selectedPlayer);
+        prefs.putString("currentLocationName", currentLocation.getName());
+        prefs.putInteger("currentDay", currentDay);
+        prefs.putInteger("mainEpisodeCounter", mainEpisodeCounter);
+        prefs.putInteger("remainingEnergy", remainingEnergy);
+        prefs.putInteger("initialDaysToSuccessfullyCompleteGame", initialDaysToSuccessfullyCompleteGame);
+        prefs.putInteger("inventoryItemsCounter", inventoryItemsCounter);
+        prefs.putBoolean("tutorialMode", tutorialMode);
+        prefs.putBoolean("contactRequestFlag", contactRequestFlag);
+        prefs.putBoolean("mapRequestFlag", mapRequestFlag);
+        prefs.putBoolean("chargeRequestFlag", chargeRequestFlag);
+        prefs.putBoolean("inventoryRequestFlag",inventoryRequestFlag );
+        prefs.putBoolean("travelRequestFlag", travelRequestFlag);
+        prefs.putBoolean("launchRequestFlag",launchRequestFlag );
+        prefs.putBoolean("inventoryIncreased",inventoryIncreased );
+        prefs.putBoolean("atForest", atForest);
+        prefs.putBoolean("afterTravel", afterTravel);
+        prefs.putBoolean("afterLocationQuizEpisode", afterLocationQuizEpisode);
+        prefs.putBoolean("lastQuizSuccessFull", lastQuizSuccessFull);
+        prefs.putBoolean("quizFirstTime", quizFirstTime);
+        prefs.flush();
+    }
+
+    public void load() {
+        reset();
+        selectedPlayer = prefs.getString("selectedPlayer");
+        String currentLocationName = prefs.getString("currentLocationName");
+        Location loc = null;
+        Iterator<Location> lcIter = lc.locations.iterator();
+        while (loc == null) {
+            Location nextLocation = lcIter.next();
+            if (nextLocation.getName().equals(currentLocationName)) {
+                loc = nextLocation;
+            }
+        }
+        setCurrentLocation(loc);
+        setNextAllowedLocation(lc.getLocationAfter(loc));
+        currentDay = prefs.getInteger("currentDay");
+        mainEpisodeCounter = prefs.getInteger("mainEpisodeCounter");
+        remainingEnergy = prefs.getInteger("remainingEnergy");
+        initialDaysToSuccessfullyCompleteGame = prefs.getInteger("initialDaysToSuccessfullyCompleteGame");
+        inventoryItemsCounter = prefs.getInteger("inventoryItemsCounter");
+        tutorialMode = prefs.getBoolean("tutorialMode");
+        contactRequestFlag = prefs.getBoolean("contactRequestFlag");
+        mapRequestFlag = prefs.getBoolean("mapRequestFlag");
+        chargeRequestFlag = prefs.getBoolean("chargeRequestFlag");
+        inventoryRequestFlag = prefs.getBoolean("inventoryRequestFlag");
+        travelRequestFlag = prefs.getBoolean("travelRequestFlag");
+        launchRequestFlag = prefs.getBoolean("launchRequestFlag");
+        inventoryIncreased = prefs.getBoolean("inventoryIncreased");
+        atForest = prefs.getBoolean("atForest");
+        afterTravel = prefs.getBoolean("afterTravel");
+        afterLocationQuizEpisode = prefs.getBoolean("afterLocationQuizEpisode");
+        lastQuizSuccessFull = prefs.getBoolean("lastQuizSuccessFull");
+        quizFirstTime = prefs.getBoolean("quizFirstTime");
+    }
+
     private GameInfo() {
         tutorialMode = true;
         moonPhasesController = new MoonPhasesController();
+        prefs = Gdx.app.getPreferences("default_save");
+        lc = LocationController.getInstance();
         reset();
     }
 
@@ -342,5 +409,13 @@ public class GameInfo {
 
     public void setBackGroundMusicPlaying(boolean backGroundMusicPlaying) {
         BackGroundMusicPlaying = backGroundMusicPlaying;
+    }
+
+    public int getMainEpisodeCounter() {
+        return mainEpisodeCounter;
+    }
+
+    public void setMainEpisodeCounter(int mainEpisodeCounter) {
+        this.mainEpisodeCounter = mainEpisodeCounter;
     }
 }

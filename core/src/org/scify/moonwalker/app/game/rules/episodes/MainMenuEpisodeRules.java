@@ -12,6 +12,7 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
     public static final String AVATAR_SELECTED = "AVATAR_SELECTED";
     public static final String APP_QUIT = "APP_QUIT";
     public static final String NEW_GAME = "NEW_GAME";
+    public static final String LOAD = "LOAD";
 
     public static final String RENDERABLE_ID = "main_menu";
 
@@ -74,6 +75,12 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
                     if (mainMenuButtonsEnabled) {
                         gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
                         initPlayerSelection(gameState);
+                    }
+                    break;
+                case UserActionCode.CONTINUE:
+                    if (mainMenuButtonsEnabled) {
+                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
+                        endEpisode(gameState, LOAD);
                     }
                     break;
                 case UserActionCode.TOGGLE_AUDIO:
@@ -168,7 +175,9 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
     @Override
     public EpisodeEndState determineEndState(GameState currentState) {
         EpisodeEndState endState = null;
-        if (currentState.eventsQueueContainsEvent(APP_QUIT))
+        if (currentState.eventsQueueContainsEvent(LOAD)) {
+            endState = new EpisodeEndState(EpisodeEndStateCode.SCENARIO_LOAD, currentState);
+        } else if (currentState.eventsQueueContainsEvent(APP_QUIT))
             endState = new EpisodeEndState(EpisodeEndStateCode.APP_QUIT, currentState);
         else if (currentState.eventsQueueContainsEvent(NEW_GAME))
             endState = new EpisodeEndState(EpisodeEndStateCode.EPISODE_FINISHED_SUCCESS, currentState);

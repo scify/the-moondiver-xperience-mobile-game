@@ -4,6 +4,7 @@ public class EpisodeEndStateCode {
     public static final String EPISODE_FINISHED_SUCCESS = "EPISODE_FINISHED_SUCCESS";
     public static final String EPISODE_FINISHED_FAILURE = "EPISODE_FINISHED_FAILURE";
     public static final String SCENARIO_NEEDS_RESTART = "SCENARIO_NEEDS_RESTART";
+    public static final String SCENARIO_LOAD = "SCENARIO_LOAD";
     public static final String EPISODE_INTERRUPTED = "EPISODE_INTERRUPTED";
     public static final String CALCULATOR_STARTED = "GAME_EVENT_CALCULATOR_STARTED";
     public static final String PREVIOUS_EPISODE = "GAME_EVENT_PREVIOUS_EPISODE";
