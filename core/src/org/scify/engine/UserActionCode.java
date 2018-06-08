@@ -20,7 +20,6 @@ public class UserActionCode {
     public static final String BOY_SELECTED = "BOY_SELECTED";
     public static final String GIRL_SELECTED = "GIRL_SELECTED";
     public static final String BACK = "BACK";
-    public static final String CALCULATOR_EPISODE = "CALCULATOR_EPISODE";
     public static final String LAUNCH = "LAUNCH";
     public static final String TRAVEL = "TRAVEL";
     public static final String MAP_EPISODE = "MAP_EPISODE";
@@ -29,4 +28,5 @@ public class UserActionCode {
     public static final String SPACESHIP_INVENTORY_EPISODE = "SPACESHIP_INVENTORY_EPISODE";
     public static final String CHARGE_SPACESHIP_PASS_DAY = "CHARGE_SPACESHIP_PASS_DAY";
     public static final String CALCULATOR_OPERATION = "CALCULATOR_OPERATION";
+    public static final String SCREEN_TOUCHED = "SCREEN_TOUCHED";
 }

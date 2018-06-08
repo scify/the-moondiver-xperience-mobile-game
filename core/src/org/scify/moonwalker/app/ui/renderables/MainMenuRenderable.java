@@ -12,6 +12,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class MainMenuRenderable extends FadingTableRenderable {
+    protected static final String ABOUT_TEXT = "Το παιχνίδι ____ δημιουργήθηκε από τη SciFY στο Πλαίσιο του προγράμματος Stem Powering Youth με την ευγενική χορηγία του Ιδρύματος Vodafone.\n" +
+            "\nGame creation: SciFY\n" +
+            "Εικονογράφηση: Λέλα Στρούτση\n" +
+            "Sounds/Audio FX: Λευτέρης Δούρος / Άννα Δρόσου\n";
     //renderable image paths
     protected static final String BG_IMG_PATH = "img/episode_main_menu/bg.png";
     protected static final String TOP_BANNER_IMG_PATH = "img/episode_main_menu/top.png";
@@ -24,6 +28,7 @@ public class MainMenuRenderable extends FadingTableRenderable {
     protected static final String TOGGLE_AUDIO_BUTTON_IMG_PATH = "img/episode_main_menu/toggleAudio.png";
     protected static final String ABOUT_BUTTON_IMG_PATH = "img/episode_main_menu/about.png";
     protected static final String QUIT_BUTTON_IMG_PATH = "img/episode_main_menu/quit.png";
+    protected static final String ABOUT_BG_IMG_PATH = "img/episode_charge/conversation_bg.png";
 
     //renderable ids
     protected static final String TOP_BANNER_ID = "top_banner";
@@ -37,6 +42,8 @@ public class MainMenuRenderable extends FadingTableRenderable {
     protected static final String ABOUT_BUTTON_ID = "aboutButton";
     protected static final String QUIT_BUTOON_ID = "quitButton";
     protected static final String COUNTDOWN_LABEL_ID = "countDownLabel";
+    protected static final String ABOUT_LABEL_ID = "aboutLabel";
+    protected static final String ABOUT_BG_ID = "aboutBG";
 
     //AUDIO
     public static final String MAINMENU_AUDIO_PATH = "audio/episode_main_menu/bg.mp3";
@@ -55,9 +62,13 @@ public class MainMenuRenderable extends FadingTableRenderable {
     protected ImageRenderable topBannerRenderable;
     protected TextLabelRenderable countDownLabel;
 
+    protected ImageRenderable aboutBGRenderable;
+    protected TextLabelRenderable aboutLabel;
+
     protected int countDownValue;
     protected boolean playerSelectionStatus;
     protected boolean inputEnabled;
+    protected boolean aboutMode;
     protected String selectedPlayer = "";
 
     protected Set<Renderable> allRenderables;
@@ -70,6 +81,7 @@ public class MainMenuRenderable extends FadingTableRenderable {
         super(xPos, yPos, width, height, ACTOR_EPISODE_MAIN_MENU, id, BG_IMG_PATH);
         inputEnabled = false;
         playerSelectionStatus = false;
+        aboutMode = false;
         countDownValue = 5;
         initSubRenderables();
     }
@@ -111,6 +123,12 @@ public class MainMenuRenderable extends FadingTableRenderable {
 
         countDownLabel = createTextLabelRenderable(COUNTDOWN_LABEL_ID, countDownValue + "", false, false, 1);
         allRenderables.add(countDownLabel);
+
+        aboutLabel = createTextLabelRenderable(ABOUT_LABEL_ID, ABOUT_TEXT, false, false, 2);
+        allRenderables.add(aboutLabel);
+
+        aboutBGRenderable = createImageRenderable(ABOUT_BG_ID, ABOUT_BG_IMG_PATH, false, false, 1);
+        allRenderables.add(aboutBGRenderable);
 
         // Indicate all children as parented
         for (Renderable rCur : allRenderables) {
@@ -162,6 +180,52 @@ public class MainMenuRenderable extends FadingTableRenderable {
         return countDownValue;
     }
 
+    public void showAbout() {
+        double fadingEffectsDuration = 1000;
+        EffectSequence aboutEffect = new EffectSequence();
+        aboutEffect.addEffect(new FadeEffect(1.0, 0.0, 0.0));
+        aboutEffect.addEffect(new VisibilityEffect(true));
+        aboutEffect.addEffect(new FadeEffect(0.0, 1, fadingEffectsDuration));
+        aboutEffect.addEffect(new FunctionEffect(new Runnable() {
+            @Override
+            public void run() {
+                if (inputEnabled == false)
+                    inputEnabled = true;
+                if (aboutMode == false)
+                    aboutMode = true;
+            }
+        }));
+        aboutLabel.addEffect(aboutEffect);
+        aboutBGRenderable.addEffect(aboutEffect);
+        fadeOutMainMenu(fadingEffectsDuration);
+    }
+
+    public void hideAbout() {
+        aboutMode = false;
+        double fadingEffectsDuration = 1000;
+        EffectSequence aboutEffect = new EffectSequence();
+        aboutEffect.addEffect(new FadeEffect(1.0, 0.0, fadingEffectsDuration));
+        aboutEffect.addEffect(new VisibilityEffect(false));
+        aboutEffect.addEffect(new FunctionEffect(new Runnable() {
+            @Override
+            public void run() {
+                if (inputEnabled == false)
+                    inputEnabled = true;
+            }
+        }));
+        aboutLabel.addEffect(aboutEffect);
+        aboutBGRenderable.addEffect(aboutEffect);
+        //show menu
+        EffectSequence menuButtonsEffect = new EffectSequence();
+        menuButtonsEffect.addEffect(new VisibilityEffect(true));
+        menuButtonsEffect.addEffect(new FadeEffect(0.0, 1.0, fadingEffectsDuration));
+        getStartGameButton().addEffect(menuButtonsEffect);
+        getContinueGameButton().addEffect(menuButtonsEffect);
+        getToggleAudioButton().addEffect(menuButtonsEffect);
+        getAboutButton().addEffect(menuButtonsEffect);
+        getQuitButton().addEffect(menuButtonsEffect);
+    }
+
     public void initiatePlayerSelection() {
         if (playerSelectionStatus == false) {
             playerSelectionStatus = true;
@@ -188,16 +252,20 @@ public class MainMenuRenderable extends FadingTableRenderable {
             topBannerRenderable.addEffect(imgEffect);
             boyButton.addEffect(imgEffect);
             girlButton.addEffect(imgEffect);
-
-            Effect fadeOutEffect = new FadeEffect(1.0, 0.0, fadingEffectsDuration);
-            getStartGameButton().addEffect(fadeOutEffect);
-            getContinueGameButton().addEffect(fadeOutEffect);
-            getToggleAudioButton().addEffect(fadeOutEffect);
-            getAboutButton().addEffect(fadeOutEffect);
-            getQuitButton().addEffect(fadeOutEffect);
-
+            fadeOutMainMenu(fadingEffectsDuration);
             markAsNeedsUpdate();
         }
+    }
+
+    protected void fadeOutMainMenu(double fadingEffectsDuration) {
+        EffectSequence effects = new EffectSequence();
+        effects.addEffect(new FadeEffect(1.0, 0.0, fadingEffectsDuration));
+        effects.addEffect(new VisibilityEffect(false));
+        getStartGameButton().addEffect(effects);
+        getContinueGameButton().addEffect(effects);
+        getToggleAudioButton().addEffect(effects);
+        getAboutButton().addEffect(effects);
+        getQuitButton().addEffect(effects);
     }
 
     public String getSelectedPlayer() {
@@ -255,4 +323,10 @@ public class MainMenuRenderable extends FadingTableRenderable {
     public TextLabelRenderable getCountDownLabel() {
         return countDownLabel;
     }
+
+    public TextLabelRenderable getAboutLabel() { return aboutLabel; }
+
+    public boolean isAboutMode() { return aboutMode; }
+
+    public ImageRenderable getAboutBGRenderable() { return aboutBGRenderable; }
 }

@@ -21,6 +21,7 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
     protected Table menuTable;
     protected Table countDownTable;
     protected Label countDownLabel;
+    protected Label aboutLabel;
 
     protected Button boyButton;
     protected Button boyAvatarButton;
@@ -28,6 +29,7 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
     protected Button girlAvatarButton;
 
     protected Image topBannerImage;
+    protected Image aboutBGImage;
     protected boolean actorInitiated;
 
 
@@ -45,11 +47,31 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
         float screenWidth = getWidth();
         float screenHeight = getHeight();
         top();
+
+        Stack basicStack = new Stack();
+
+        // About
+        Table aboutTable = new Table();
+        Stack aboutStack = new Stack();
+        aboutBGImage = (ImageWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getAboutBGRenderable());
+        aboutStack.add(aboutBGImage);
+
+        aboutLabel = (Label) bookKeeper.getUIRepresentationOfRenderable(renderable.getAboutLabel());
+        aboutLabel.setAlignment(Align.center);
+        Label.LabelStyle lsAbout = new Label.LabelStyle();
+        lsAbout.font = ThemeController.getInstance().getFont();
+        aboutLabel.setStyle(lsAbout);
+        aboutLabel.setWrap(true);
+        aboutStack.add(aboutLabel);
+        aboutTable.add(aboutStack).width(0.8f * screenWidth).height(0.8f * screenHeight).center();
+        basicStack.add(aboutTable);
+        // Basic
+        Table basicTable = new Table();
         float heightOfTopRow = 0.05f * screenHeight;
-        add().colspan(3).height(heightOfTopRow).width(screenWidth);
-        row();
-        float heightLeft = createTopBanner(heightOfTopRow);
-        row().height(heightLeft).width(screenWidth);
+        basicTable.add().colspan(3).height(heightOfTopRow).width(screenWidth);
+        basicTable.row();
+        float heightLeft = createTopBanner(basicTable, heightOfTopRow);
+        basicTable.row().height(heightLeft).width(screenWidth);
 
         // create actors for menu
         startButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getStartGameButton());
@@ -65,25 +87,27 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
         girlAvatarButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getGirlAvatarButton());
 
         // Create episode-specific background
-        createBoySelection();
-        createMenuButtons();
-        createGirlSelection();
+        createBoySelection(basicTable);
+        createMenuButtons(basicTable);
+        createGirlSelection(basicTable);
+        basicStack.add(basicTable);
 
+        add(basicStack).width(screenWidth).height(screenHeight);
         actorInitiated = true;
     }
 
     //returns heightLeftForBottom
-    protected float createTopBanner(float heightOfTopRow) {
+    protected float createTopBanner(Table basicTable, float heightOfTopRow) {
         topBannerImage = (ImageWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getTopBannerRenderable());
         float width = convertWidth(topBannerImage.getWidth());
         float height = convertHeight(topBannerImage.getHeight());
-        row().height(height).width(width);
-        add(topBannerImage).maxHeight(height).maxWidth(width).colspan(3).top();
+        basicTable.row().height(height).width(width);
+        basicTable.add(topBannerImage).maxHeight(height).maxWidth(width).colspan(3).top();
 
         return getHeight() - (height + heightOfTopRow);
     }
 
-    protected void createBoySelection() {
+    protected void createBoySelection(Table basicTable) {
         Stack stack = new StackWithEffect<>();
 
         //Add Image
@@ -101,10 +125,10 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
         stack.addActor(buttonTable);
         buttonTable.row().height(buttonHeight / 2);
         buttonTable.add();
-        add(stack).width(width);
+        basicTable.add(stack).width(width);
     }
 
-    protected void createMenuButtons() {
+    protected void createMenuButtons(Table basicTable) {
         Stack stack = new Stack();
         menuTable = new TableWithEffect();
         menuTable.defaults();
@@ -139,17 +163,17 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
         countDownTable.center();
         countDownLabel = (Label) bookKeeper.getUIRepresentationOfRenderable(renderable.getCountDownLabel());
         countDownLabel.setAlignment(Align.center);
-        Label.LabelStyle ls = new Label.LabelStyle();
+        Label.LabelStyle lsCountDown = new Label.LabelStyle();
         ThemeController themeController = ThemeController.getInstance();
-        ls.font = themeController.getFont(30, "controls");
-        countDownLabel.setStyle(ls);
+        lsCountDown.font = themeController.getFont(30, "controls");
+        countDownLabel.setStyle(lsCountDown);
         countDownTable.add(countDownLabel).width(width).height(height);
         stack.add(countDownTable);
 
-        add(stack).width(width);
+        basicTable.add(stack).width(width);
     }
 
-    protected void createGirlSelection() {
+    protected void createGirlSelection(Table basicTable) {
         Stack stack = new StackWithEffect();
 
         //Add Image
@@ -166,7 +190,7 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
         stack.addActor(buttonTable);
         buttonTable.row().height(buttonHeight / 2);
         buttonTable.add();
-        add(stack).width(width);
+        basicTable.add(stack).width(width);
     }
 
     protected String selectedPlayer = "";

@@ -88,11 +88,25 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
                         endEpisode(gameState, APP_QUIT);
                     }
                     break;
+                case UserActionCode.ABOUT:
+                    if (mainMenuButtonsEnabled) {
+                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
+                        renderable.disableInput();
+                        renderable.showAbout();
+                    }
+                    break;
                 case UserActionCode.BOY_SELECTED:
                     setSelectedPlayer(gameState, SelectedPlayer.boy);
                     break;
                 case UserActionCode.GIRL_SELECTED:
                     setSelectedPlayer(gameState, SelectedPlayer.girl);
+                    break;
+                case UserActionCode.SCREEN_TOUCHED:
+                    if (renderable.isAboutMode()) {
+                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
+                        renderable.disableInput();
+                        renderable.hideAbout();
+                    }
                     break;
             }
         }
