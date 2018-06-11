@@ -179,7 +179,7 @@ public class GameInfo {
     }
 
     private GameInfo() {
-        tutorialMode = false;
+        tutorialMode = true;
         moonPhasesController = new MoonPhasesController();
         prefs = Gdx.app.getPreferences("default_save");
         lc = LocationController.getInstance();
