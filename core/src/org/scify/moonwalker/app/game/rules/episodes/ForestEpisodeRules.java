@@ -54,6 +54,8 @@ public class ForestEpisodeRules extends FadingEpisodeRules<ForestRenderable> {
     @Override
     public void episodeStartedEvents(final GameState currentState) {
         if (!isEpisodeStarted(currentState)) {
+            if (gameInfo.isFromLoad())
+                currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI));
             renderable = new ForestRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID);
             renderable.addAfterFadeIn(new Runnable() {
                 @Override

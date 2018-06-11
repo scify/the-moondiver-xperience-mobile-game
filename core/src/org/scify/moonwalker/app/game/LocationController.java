@@ -151,4 +151,8 @@ public class LocationController {
     public Location getAfterInitialLocation() {
         return afterInitialLocation;
     }
+
+    public static void setSelectFirstMiddleOfNowhere(boolean selectFirstMiddleOfNowhere) {
+        LocationController.selectFirstMiddleOfNowhere = selectFirstMiddleOfNowhere;
+    }
 }

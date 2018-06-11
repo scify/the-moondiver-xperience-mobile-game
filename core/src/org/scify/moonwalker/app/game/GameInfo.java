@@ -34,17 +34,19 @@ public class GameInfo {
     protected boolean lastQuizSuccessFull;
     protected boolean BackGroundMusicPlaying;
     protected boolean quizFirstTime;
+    protected boolean showArrivalConversation;
+    protected boolean isFromLoad;
     protected Preferences prefs;
 
     /**
      * The travel percentage complete in the LAST travel
      */
-    protected double previousTravelPercentageComplete;
+    protected float previousTravelPercentageComplete;
 
     /**
      * The travel percentage we will reach in the NEXT travel
      */
-    protected double nextTravelPercentagePossible;
+    protected float nextTravelPercentagePossible;
 
 
     public Location getNextAllowedLocation() {
@@ -85,11 +87,21 @@ public class GameInfo {
         lastQuizSuccessFull = false;
         BackGroundMusicPlaying = false;
         quizFirstTime = true;
+        showArrivalConversation = false;
+        isFromLoad = false;
     }
 
     public void save() {
         prefs.putString("selectedPlayer", selectedPlayer);
         prefs.putString("currentLocationName", currentLocation.getName());
+        if (nextLocation == null)
+            prefs.putString("nextLocationName", "");
+        else
+            prefs.putString("nextLocationName", nextLocation.getName());
+        if (nextAllowedLocation == null) {
+            prefs.putString("nextAllowedLocationName", "");
+        }else
+            prefs.putString("nextAllowedLocationName", nextAllowedLocation.getName());
         prefs.putInteger("currentDay", currentDay);
         prefs.putInteger("mainEpisodeCounter", mainEpisodeCounter);
         prefs.putInteger("remainingEnergy", remainingEnergy);
@@ -108,24 +120,39 @@ public class GameInfo {
         prefs.putBoolean("afterLocationQuizEpisode", afterLocationQuizEpisode);
         prefs.putBoolean("lastQuizSuccessFull", lastQuizSuccessFull);
         prefs.putBoolean("quizFirstTime", quizFirstTime);
+        prefs.putBoolean("showArrivalConversation", showArrivalConversation);
+        prefs.putBoolean("selectFirstMiddleOfNowhere", LocationController.isSelectFirstMiddleOfNowhere());
+        prefs.putFloat("previousTravelPercentageComplete", previousTravelPercentageComplete);
+        prefs.putFloat("nextTravelPercentagePossible", nextTravelPercentagePossible);
         prefs.flush();
+        isFromLoad = false;
+    }
+
+    protected Location getLocationGivenName(String locationName) {
+        if (locationName.equals(""))
+            return null;
+        else {
+            Location loc = null;
+            Iterator<Location> lcIter = lc.locations.iterator();
+            while (loc == null) {
+                Location nextLocation = lcIter.next();
+                if (nextLocation.getName().equals(locationName)) {
+                    loc = nextLocation;
+                }
+            }
+            return loc;
+        }
     }
 
     public void load() {
         reset();
-        selectedPlayer = prefs.getString("selectedPlayer");
-        String currentLocationName = prefs.getString("currentLocationName");
-        Location loc = null;
-        Iterator<Location> lcIter = lc.locations.iterator();
-        while (loc == null) {
-            Location nextLocation = lcIter.next();
-            if (nextLocation.getName().equals(currentLocationName)) {
-                loc = nextLocation;
-            }
-        }
-        setCurrentLocation(loc);
-        setNextAllowedLocation(lc.getLocationAfter(loc));
         currentDay = prefs.getInteger("currentDay");
+        selectedPlayer = prefs.getString("selectedPlayer");
+        setCurrentLocation(getLocationGivenName(prefs.getString("currentLocationName")));
+        setNextLocation(getLocationGivenName(prefs.getString("nextLocationName")));
+        setNextAllowedLocation(getLocationGivenName(prefs.getString("nextAllowedLocationName")));
+        if (nextLocation != null)
+            getNextLocation().setDistanceInKilometers(getCurrentLocation().getDistanceFromLocation(nextLocation));
         mainEpisodeCounter = prefs.getInteger("mainEpisodeCounter");
         remainingEnergy = prefs.getInteger("remainingEnergy");
         initialDaysToSuccessfullyCompleteGame = prefs.getInteger("initialDaysToSuccessfullyCompleteGame");
@@ -143,14 +170,27 @@ public class GameInfo {
         afterLocationQuizEpisode = prefs.getBoolean("afterLocationQuizEpisode");
         lastQuizSuccessFull = prefs.getBoolean("lastQuizSuccessFull");
         quizFirstTime = prefs.getBoolean("quizFirstTime");
+        showArrivalConversation = prefs.getBoolean("showArrivalConversation");
+        LocationController.setSelectFirstMiddleOfNowhere(prefs.getBoolean("selectFirstMiddleOfNowhere"));
+        previousTravelPercentageComplete = prefs.getFloat("previousTravelPercentageComplete");
+        nextTravelPercentagePossible = prefs.getFloat("nextTravelPercentagePossible");
+        setMoonPhases();
+        isFromLoad = true;
     }
 
     private GameInfo() {
-        tutorialMode = true;
+        tutorialMode = false;
         moonPhasesController = new MoonPhasesController();
         prefs = Gdx.app.getPreferences("default_save");
         lc = LocationController.getInstance();
         reset();
+    }
+
+    public boolean isSaveAvailable() {
+        if (prefs.get().size() == 0)
+            return false;
+        else
+            return true;
     }
 
     public boolean isQuizFirstTime () { return quizFirstTime; }
@@ -237,15 +277,15 @@ public class GameInfo {
         return selectedPlayer;
     }
 
-    public double getPreviousTravelPercentageComplete() {
+    public float getPreviousTravelPercentageComplete() {
         return previousTravelPercentageComplete;
     }
 
-    public double getNextTravelPercentagePossible() {
+    public float getNextTravelPercentagePossible() {
         return nextTravelPercentagePossible;
     }
 
-    public void setNextTravelPercentagePossible(double nextTravelPercentagePossible) {
+    public void setNextTravelPercentagePossible(float nextTravelPercentagePossible) {
         // the previous travel is equal as the previous value of the next travel percentage
         this.previousTravelPercentageComplete = this.nextTravelPercentagePossible;
         this.nextTravelPercentagePossible = nextTravelPercentagePossible;
@@ -257,7 +297,7 @@ public class GameInfo {
 
     public int increaseInventoryItemsCounter() {
         inventoryItemsCounter++;
-        inventoryIncreased = false;
+        inventoryIncreased = true;
         return inventoryItemsCounter;
     }
 
@@ -418,4 +458,10 @@ public class GameInfo {
     public void setMainEpisodeCounter(int mainEpisodeCounter) {
         this.mainEpisodeCounter = mainEpisodeCounter;
     }
+
+    public boolean isShowArrivalConversation() { return showArrivalConversation; }
+
+    public void setShowArrivalConversation(boolean showArrivalConversation) { this.showArrivalConversation = showArrivalConversation; }
+
+    public boolean isFromLoad() { return isFromLoad; }
 }

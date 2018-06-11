@@ -18,6 +18,7 @@ public class LocationEpisodeRules extends FadingEpisodeRules<LocationRenderable>
         renderable = null;
         outroInitiated = false;
         this.location = location;
+        gameInfo.setShowArrivalConversation(false);
      }
 
     @Override

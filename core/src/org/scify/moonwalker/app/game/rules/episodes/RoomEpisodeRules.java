@@ -28,7 +28,7 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
         if (conversationRules != null && conversationRules.isFinished() && !outroInitiated) {
             outroInitiated = true;
             renderable.turnOffPhone();
-            if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
+            if (gameInfo.getSelectedPlayer().equals(SelectedPlayer.boy)) {
                 gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.BOY_MUSIC_AUDIO_PATH));
             } else {
                 gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
@@ -37,7 +37,7 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
             endEpisodeAndAddEventWithType(gsCurrent, "");
 
         } else if (renderable != null && renderable.isChatEnabled()) {
-            if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy)
+            if (gameInfo.getSelectedPlayer().equals(SelectedPlayer.boy))
                 createConversation(gsCurrent, "conversations/episode_room.json", renderable.BOY_CONVERSATION_BG_IMG_PATH);
             else
                 createConversation(gsCurrent, "conversations/episode_room.json", renderable.GIRL_CONVERSATION_BG_IMG_PATH);
@@ -48,7 +48,9 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
     @Override
     public void episodeStartedEvents(GameState currentState) {
         if (!isEpisodeStarted(currentState)) {
-            if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
+            if (gameInfo.isFromLoad())
+                currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI));
+            if (gameInfo.getSelectedPlayer().equals(SelectedPlayer.boy)) {
                 renderable = new RoomRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID, true);
             }
             else {
@@ -63,14 +65,14 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
             currentState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
             currentState.addRenderable(renderable);
             currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI));
-            gameInfo.setMainEpisodeCounter(2);
-            gameInfo.save();
-            super.episodeStartedEvents(currentState);
-            if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
+            if (gameInfo.getSelectedPlayer().equals(SelectedPlayer.boy)) {
                 currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.BOY_MUSIC_AUDIO_PATH));
             } else {
                 currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
             }
+            gameInfo.setMainEpisodeCounter(2);
+            gameInfo.save();
+            super.episodeStartedEvents(currentState);
         }
     }
 

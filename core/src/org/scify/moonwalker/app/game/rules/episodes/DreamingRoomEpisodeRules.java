@@ -27,14 +27,9 @@ public class DreamingRoomEpisodeRules extends FadingEpisodeRules<DreamingRoomRen
     public GameState getNextState(GameState gsCurrent, UserAction userAction) {
         if (conversationRules != null && conversationRules.isFinished() && !outroInitiated) {
             outroInitiated = true;
+            gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI));
             gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CREDITS_AUDIO_PATH));
-            if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
-                gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.BOY_MUSIC_AUDIO_PATH));
-            } else {
-                gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.GIRL_MUSIC_AUDIO_PATH));
-            }
             endEpisodeAndAddEventWithType(gsCurrent, "");
-
         } else if (renderable != null && renderable.isChatEnabled()) {
             if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy)
                 createConversation(gsCurrent, "conversations/episode_dreaming_room.json", renderable.BOY_CONVERSATION_BG_IMG_PATH);
@@ -47,13 +42,15 @@ public class DreamingRoomEpisodeRules extends FadingEpisodeRules<DreamingRoomRen
     @Override
     public void episodeStartedEvents(final GameState currentState) {
         if (!isEpisodeStarted(currentState)) {
+            if (gameInfo.isFromLoad())
+                currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI));
+            currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI));
             if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
                 renderable = new DreamingRoomRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID, true);
             }
             else {
                 renderable = new DreamingRoomRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID, false);
             }
-            currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI));
             renderable.addAfterFadeIn(new Runnable() {
                 @Override
                 public void run() {
@@ -68,11 +65,11 @@ public class DreamingRoomEpisodeRules extends FadingEpisodeRules<DreamingRoomRen
                 }
             });
             currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI));
-            //currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.DAYPASSED_AUDIO_PATH));
             currentState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
             currentState.addRenderable(renderable);
             currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WAKEUP_AUDIO_PATH));
-            //currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_LOAD_UI, renderable.CREDITS_AUDIO_PATH));
+            gameInfo.setMainEpisodeCounter(6);
+            gameInfo.save();
             super.episodeStartedEvents(currentState);
         }
     }

@@ -80,7 +80,11 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
                 case UserActionCode.CONTINUE:
                     if (mainMenuButtonsEnabled) {
                         gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
-                        endEpisode(gameState, LOAD);
+                        if (gameInfo.isSaveAvailable()) {
+                            endEpisode(gameState, LOAD);
+                        }else {
+                            initPlayerSelection(gameState);
+                        }
                     }
                     break;
                 case UserActionCode.TOGGLE_AUDIO:

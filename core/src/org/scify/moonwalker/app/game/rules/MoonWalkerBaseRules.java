@@ -114,7 +114,7 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
         Map<String, String> replaceLexicon = new HashMap<>();
         replaceLexicon.put("num_of_days", gameInfo.getDaysLeftForDestination() + "");
         conversationRules.setReplaceLexicon(replaceLexicon);
-        if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy)
+        if (gameInfo.getSelectedPlayer().equals(SelectedPlayer.boy))
             conversationRules.setKeepFirstDuringParsing(true);
         else
             conversationRules.setKeepFirstDuringParsing(false);

@@ -28,12 +28,12 @@ public class CalculatorController {
     }
 
     public String calculate(String buttonId) {
-        if (buttonId == RESET) {
+        if (buttonId.equals(RESET)) {
             resetCalculator();
-        } else if (buttonId == RESULT) {
+        } else if (buttonId.equals(RESULT)) {
             resultReturned = true;
             return parseResult();
-        } else if (buttonId == SUBTRACT || buttonId == MULTIPLY || buttonId == DIVIDE || buttonId == ADD) {
+        } else if (buttonId.equals(SUBTRACT) || buttonId.equals(MULTIPLY) || buttonId.equals(DIVIDE) || buttonId.equals(ADD)) {
             if (resultReturned)
                 resetCalculator();
             setOperation(buttonId);

@@ -44,13 +44,13 @@ public class MoonPhasesController {
         if (inventorySize < 3)
             return ret;
         else if (inventorySize == 3)
-            return (int)(ret * 1.5);
+            return (int)(ret * 1.25);
         else if (inventorySize == 4)
-            return ret * 2;
+            return (int)(ret * 1.5);
         else if (inventorySize == 5)
-            return (int)(ret * 2.5);
+            return (int)(ret * 1.75);
         else
-            return ret * 3;
+            return ret * 2;
     }
 
 }
