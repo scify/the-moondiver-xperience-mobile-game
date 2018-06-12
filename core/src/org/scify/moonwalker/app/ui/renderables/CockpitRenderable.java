@@ -63,7 +63,6 @@ public class CockpitRenderable extends FadingTableRenderable {
     public static final String BG_NOWHERE2_AUDIO_PATH = "audio/episode_cockpit/bg_nowhere2.mp3";
     public static final String LOW_ENERGY_AUDIO_PATH = "audio/episode_cockpit/low_energy.mp3";
     public static final String TAKE_OFF_AUDIO_PATH = "audio/episode_cockpit/take_off.mp3";
-    public static final String MOON_TAKE_OFF_AUDIO_PATH = "audio/episode_cockpit/moon_take_off.mp3";
 
     protected TextLabelRenderable motorEfficiencyLabel;
     protected TextLabelRenderable energyLabel;
