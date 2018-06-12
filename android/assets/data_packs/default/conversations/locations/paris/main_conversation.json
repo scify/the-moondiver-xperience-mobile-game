@@ -29,10 +29,11 @@
   {"id": "28", "order":"24", "speakerId":"oratios", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_response_for_question"},
   {"id": "29", "order":"25", "speakerId":"oratios", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_question_2"},
   {"id": "30", "order":"26", "speakerId":"oratios", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_response_for_question"},
-  {"id": "31", "order":"27", "speakerId":"aunt", "text":"Είμαι τόσο περήφανη για σένα!\nΌλοι μας είμαστε, τα κατάφερες!", "prerequisites":"player_has_3_correct"},
-  {"id": "32", "order":"28", "speakerId":"aunt", "text":"Το τελευταίο εξάρτημα που θα πάρεις\nείναι η εξελιγμένη μπαταρία.", "prerequisites":"player_has_3_correct"},
-  {"id": "33", "order":"29", "speakerId":"aunt", "text":"Πλέον είναι πολύ ασφαλής,\nδεν εκφορτίζει σε κάθε προσγείωση.", "prerequisites":"player_has_3_correct"},
-  {"id": "34", "order":"30", "speakerId":"aunt", "text":"Είμαστε έτοιμοι για την εκτόξευση!\nΚαλό σας ταξίδι!", "prerequisites":"player_has_3_correct"},
-  {"id": "35", "order":"31", "speakerId":"oratios", "text":"Ξεκινάμε!", "prerequisites":"player_has_3_correct", "onExitCurrentOrderTrigger":"end"},
-  {"id": "36", "order":"32", "speakerId":"aunt", "text":"Χμ... Δεν έδωσες αρκετές σωστές απαντήσεις\nΈλα πίσω ξανά αύριο.", "prerequisites":"player_has_less_than_3_correct", "onExitCurrentOrderTrigger":"end"}
+  {"id": "31", "order":"27", "speakerId":"oratios", "text":"Μπράβο!\nΈδωσες αρκετές σωστές απαντήσεις!", "prerequisites":"player_has_3_correct"},
+  {"id": "32", "order":"28", "speakerId":"aunt", "text":"Είμαι τόσο περήφανη για σένα!\nΌλοι μας είμαστε, τα κατάφερες!", "prerequisites":"player_has_3_correct"},
+  {"id": "33", "order":"29", "speakerId":"aunt", "text":"Το τελευταίο εξάρτημα που θα πάρεις\nείναι η εξελιγμένη μπαταρία.", "prerequisites":"player_has_3_correct"},
+  {"id": "34", "order":"30", "speakerId":"aunt", "text":"Πλέον είναι πολύ ασφαλής,\nδεν εκφορτίζει σε κάθε προσγείωση.", "prerequisites":"player_has_3_correct"},
+  {"id": "35", "order":"31", "speakerId":"aunt", "text":"Είμαστε έτοιμοι για την εκτόξευση!\nΚαλό σας ταξίδι!", "prerequisites":"player_has_3_correct"},
+  {"id": "36", "order":"32", "speakerId":"oratios", "text":"Ξεκινάμε!", "prerequisites":"player_has_3_correct", "onExitCurrentOrderTrigger":"end"},
+  {"id": "37", "order":"31", "speakerId":"oratios", "text":"Χμ... Δεν έδωσες αρκετές σωστές απαντήσεις\nΈλα πίσω ξανά αύριο.", "prerequisites":"player_has_less_than_3_correct", "onExitCurrentOrderTrigger":"end"}
 ]
