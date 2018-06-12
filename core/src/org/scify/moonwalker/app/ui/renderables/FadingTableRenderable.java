@@ -15,6 +15,7 @@ public class FadingTableRenderable extends TableRenderable {
     public static final String CLICK_AUDIO_PATH = "audio/button1.mp3";
     public static final String WRONG_BUTTON_AUDIO_PATH = "audio/wrong.mp3";
     public final static String MOBILE_AUDIO_PATH = "audio/message.mp3";
+    public final static String DAYPASSED_AUDIO_PATH = "audio/episode_location/day_passed.mp3";
 
     protected List<Runnable> beforeFadeIn = new ArrayList<>();
     protected List<Runnable> afterFadeIn = new ArrayList<>();

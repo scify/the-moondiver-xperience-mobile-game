@@ -107,6 +107,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         audioEngine.loadSound("audio/episode_charge/power_up.mp3");
         audioEngine.loadSound("audio/episode_location/correct.mp3");
         audioEngine.loadSound("audio/episode_location/wrong.mp3");
+        audioEngine.loadSound("audio/episode_location/day_passed.mp3");
 
         audioEnabled = true;
         printDebugInfo();

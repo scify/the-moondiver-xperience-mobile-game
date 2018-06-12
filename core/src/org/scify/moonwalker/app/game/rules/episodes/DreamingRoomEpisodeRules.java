@@ -31,7 +31,7 @@ public class DreamingRoomEpisodeRules extends FadingEpisodeRules<DreamingRoomRen
             gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CREDITS_AUDIO_PATH));
             endEpisodeAndAddEventWithType(gsCurrent, "");
         } else if (renderable != null && renderable.isChatEnabled()) {
-            if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy)
+            if (gameInfo.getSelectedPlayer().equals(SelectedPlayer.boy))
                 createConversation(gsCurrent, "conversations/episode_dreaming_room.json", renderable.BOY_CONVERSATION_BG_IMG_PATH);
             else
                 createConversation(gsCurrent, "conversations/episode_dreaming_room.json", renderable.GIRL_CONVERSATION_BG_IMG_PATH);
@@ -45,7 +45,7 @@ public class DreamingRoomEpisodeRules extends FadingEpisodeRules<DreamingRoomRen
             if (gameInfo.isFromLoad())
                 currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI));
             currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI));
-            if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
+            if (gameInfo.getSelectedPlayer().equals(SelectedPlayer.boy)) {
                 renderable = new DreamingRoomRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID, true);
             }
             else {
@@ -56,7 +56,7 @@ public class DreamingRoomEpisodeRules extends FadingEpisodeRules<DreamingRoomRen
                 public void run() {
                     renderable.enableChat();
                     currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.DAYPASSED_AUDIO_PATH));
-                    if (gameInfo.getSelectedPlayer() == SelectedPlayer.boy) {
+                    if (gameInfo.getSelectedPlayer().equals(SelectedPlayer.boy)) {
                         currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.BOY_MUSIC_AUDIO_PATH));
                     } else {
                         currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.GIRL_MUSIC_AUDIO_PATH));

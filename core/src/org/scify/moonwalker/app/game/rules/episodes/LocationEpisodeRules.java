@@ -49,7 +49,7 @@ public class LocationEpisodeRules extends FadingEpisodeRules<LocationRenderable>
                 gameInfo.dayPassed();
             }
             final boolean dayPassed = !success;
-            renderable.addBeforeFadeOut(new Runnable() {
+            renderable.addAfterFadeOut(new Runnable() {
                 @Override
                 public void run() {
                     gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.LOCATION_AUDIO_PATH));

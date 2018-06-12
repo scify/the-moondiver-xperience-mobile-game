@@ -30,7 +30,6 @@ public class DreamingRoomRenderable extends ChattableRenderable {
     public final static String CREDITS_AUDIO_PATH = "audio/episode_dreaming_room/credits.mp3";
     public final static String BOY_MUSIC_AUDIO_PATH = "audio/episode_room/boy_music.mp3";
     public final static String GIRL_MUSIC_AUDIO_PATH = "audio/episode_room/girl_music.mp3";
-    public static final String DAYPASSED_AUDIO_PATH = "audio/episode_location/day_passed.mp3";
 
     protected Set<Renderable> allRenderables;
 
