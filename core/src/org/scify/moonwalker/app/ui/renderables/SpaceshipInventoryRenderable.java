@@ -77,7 +77,7 @@ public class SpaceshipInventoryRenderable extends FadingTableRenderable {
         allRenderables = new HashSet<>();
         float height = appInfo.getScreenHeight();
         float width = appInfo.getScreenWidth();
-        EffectSequence effect = getShowPartEffectSequence();
+        EffectSequence effect = getShowPartEffectSequence(false);
 
         centralTurbine = createImageRenderable(CENTRAL_TURBINE_ID, CENTRAL_TURBINE_IMG_PATH, true, false, 14);
         centralTurbine.setHeight(height);
@@ -148,16 +148,25 @@ public class SpaceshipInventoryRenderable extends FadingTableRenderable {
         return tableBGRenderable;
     }
 
-    protected EffectSequence getShowPartEffectSequence() {
+    protected EffectSequence getShowPartEffectSequence(boolean newItem) {
         EffectSequence fadeInEffects = new EffectSequence();
+        int duration = 1000;
+        if (newItem)
+            duration = 500;
         fadeInEffects.addEffect(new FadeEffect(1.0, 0, 0));
         fadeInEffects.addEffect(new VisibilityEffect(true));
-        fadeInEffects.addEffect(new FadeEffect(0.0, 1.0, 1000));
+        fadeInEffects.addEffect(new FadeEffect(0.0, 1.0, duration));
+        if (newItem) {
+            fadeInEffects.addEffect(new FadeEffect(1, 0, duration));
+            fadeInEffects.addEffect(new FadeEffect(0, 1, duration));
+            fadeInEffects.addEffect(new FadeEffect(1, 0, duration));
+            fadeInEffects.addEffect(new FadeEffect(0, 1, duration));
+        }
         return fadeInEffects;
     }
 
     protected EffectSequence addStatsUpdateToEffectSequence(final TextLabelRenderable label, final String nextValue, final GameState gameState) {
-        EffectSequence fadeInEffects = getShowPartEffectSequence();
+        EffectSequence fadeInEffects = getShowPartEffectSequence(true);
         if (label != null) {
             fadeInEffects.addEffect(new FunctionEffect(new Runnable() {
                 @Override
@@ -172,6 +181,10 @@ public class SpaceshipInventoryRenderable extends FadingTableRenderable {
                         @Override
                         public void run() { label.setLabel(nextValue); }
                     }));
+                    effects.addEffect(new FadeEffect(0, 1, 500));
+                    effects.addEffect(new FadeEffect(1, 0, 500));
+                    effects.addEffect(new FadeEffect(0, 1, 500));
+                    effects.addEffect(new FadeEffect(1, 0, 500));
                     effects.addEffect(new FadeEffect(0, 1, 500));
                     effects.addEffect(new FunctionEffect(new Runnable() {
                         @Override

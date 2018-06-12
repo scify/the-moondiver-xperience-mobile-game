@@ -1,7 +1,6 @@
 package org.scify.moonwalker.app.ui.renderables;
 
 import org.scify.engine.UserAction;
-import org.scify.engine.UserActionCode;
 import org.scify.engine.renderables.ActionButtonRenderable;
 import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.Renderable;
@@ -41,8 +40,6 @@ public class MapEpisodeRenderable extends Renderable {
     protected List<Location> locations;
     protected List<Renderable> locationPoints;
     protected Map<Location, Renderable> renderablePerLocation;
-
-    //protected ActionButtonRenderable closeButton;
     protected TextLabelRenderable missionHUD;
 
     protected TextLabelRenderable locationNameHUD;
@@ -73,7 +70,6 @@ public class MapEpisodeRenderable extends Renderable {
         allRenderables.add(getMissionHUD());
         allRenderables.add(getLocationNameHUD());
         allRenderables.add(getDistanceHUD());
-        //allRenderables.add(getCloseButton());
 
         allRenderables.addAll(getHUDLabels());
 
@@ -119,16 +115,6 @@ public class MapEpisodeRenderable extends Renderable {
         return lRes;
     }
 
-    public void setCurrentLocation(Location currentLocation) {
-        this.currentLocation = currentLocation;
-        markAsNeedsUpdate();
-    }
-
-    public void setNextAllowedLocation(Location nextAllowedLocation) {
-        this.nextAllowedLocation = nextAllowedLocation;
-        markAsNeedsUpdate();
-    }
-
     public void setLocationSelected(boolean locationSelected) {
         this.locationSelected = locationSelected;
         markAsNeedsUpdate();
@@ -145,21 +131,6 @@ public class MapEpisodeRenderable extends Renderable {
     public boolean isLocationSelected() {
         return locationSelected;
     }
-
-
-    /*public ActionButtonRenderable  getCloseButton() {
-        if (closeButton == null) {
-            closeButton = new ActionButtonRenderable(appInfo.convertX(1750f), appInfo.convertY(1090 - 30 - 128f),
-                    appInfo.convertX(128),appInfo.convertY(128), Renderable.ACTOR_IMAGE_BUTTON, "closeBtn");
-            closeButton.setImgPath(QUIT_BUTTON_IMG_PATH);
-            closeButton.setUserAction(new UserAction(UserActionCode.QUIT, null));
-            closeButton.setVisible(false);
-            closeButton.setZIndex(100); // On top of the world
-        }
-
-        return closeButton;
-
-    }*/
 
     public List<Location> getLocations() {
         return locations;
