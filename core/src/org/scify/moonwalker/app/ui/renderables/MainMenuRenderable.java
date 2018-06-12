@@ -40,7 +40,6 @@ public class MainMenuRenderable extends FadingTableRenderable {
 
     //AUDIO
     public static final String MAINMENU_AUDIO_PATH = "audio/episode_main_menu/bg.mp3";
-    public static final String CLICK_AUDIO_PATH = "audio/button1.mp3";
 
     protected ActionButtonRenderable boyAvatarButton;
     protected ActionButtonRenderable girlAvatarButton;

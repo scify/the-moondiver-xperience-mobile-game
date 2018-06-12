@@ -11,6 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FadingTableRenderable extends TableRenderable {
+    //audio
+    public static final String CLICK_AUDIO_PATH = "audio/button1.mp3";
+    public static final String WRONG_BUTTON_AUDIO_PATH = "audio/wrong.mp3";
+    public final static String MOBILE_AUDIO_PATH = "audio/message.mp3";
+
     protected List<Runnable> beforeFadeIn = new ArrayList<>();
     protected List<Runnable> afterFadeIn = new ArrayList<>();
     protected List<Runnable> beforeFadeOut = new ArrayList<>();

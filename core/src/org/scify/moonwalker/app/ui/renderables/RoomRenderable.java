@@ -28,7 +28,6 @@ public class RoomRenderable extends ChattableRenderable {
     //AUDIO
     public final static String BOY_MUSIC_AUDIO_PATH = "audio/episode_room/boy_music.mp3";
     public final static String GIRL_MUSIC_AUDIO_PATH = "audio/episode_room/girl_music.mp3";
-    public final static String MOBILE_AUDIO_PATH = "audio/message.mp3";
 
     protected boolean permanentlyOn;
 

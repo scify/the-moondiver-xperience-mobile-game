@@ -53,8 +53,6 @@ public class ChargeEpisodeRenderable extends ChattableRenderable {
 
     //audio
     public static final String POWER_UP_AUDIO_PATH = "audio/episode_charge/power_up.mp3";
-    public static final String CLICK_AUDIO_PATH = "audio/button1.mp3";
-    public static final String WRONG_BUTTON_AUDIO_PATH = "audio/wrong.mp3";
 
     protected ImageRenderable moonPhase1 = null;
     protected ImageRenderable moonPhase2 = null;

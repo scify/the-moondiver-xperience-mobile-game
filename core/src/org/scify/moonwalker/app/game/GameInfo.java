@@ -297,7 +297,7 @@ public class GameInfo {
 
     public int increaseInventoryItemsCounter() {
         inventoryItemsCounter++;
-        inventoryIncreased = true;
+        inventoryIncreased = false;
         return inventoryItemsCounter;
     }
 

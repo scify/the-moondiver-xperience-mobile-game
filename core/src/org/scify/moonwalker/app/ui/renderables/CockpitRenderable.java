@@ -58,8 +58,6 @@ public class CockpitRenderable extends FadingTableRenderable {
     protected static final String OUTSIDE_BACKGROUND_ID = "outside_background";
 
     //audio
-    public static final String CLICK_AUDIO_PATH = "audio/button1.mp3";
-    public static final String WRONG_BUTTON_AUDIO_PATH = "audio/wrong.mp3";
     public static final String BG_DEFAULT_AUDIO_PATH = "audio/episode_cockpit/bg.mp3";
     public static final String BG_NOWHERE1_AUDIO_PATH = "audio/episode_cockpit/bg_nowhere1.mp3";
     public static final String BG_NOWHERE2_AUDIO_PATH = "audio/episode_cockpit/bg_nowhere2.mp3";

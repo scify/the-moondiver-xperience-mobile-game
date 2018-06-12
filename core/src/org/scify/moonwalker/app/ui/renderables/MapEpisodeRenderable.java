@@ -17,7 +17,6 @@ public class MapEpisodeRenderable extends Renderable {
     public static final String MAP_SELECT_ACTION = "MAP_SELECT";
 
     public static final String BG_IMAGE_PATH = "img/episode_map/bg.png";
-    //public static final String QUIT_BUTTON_IMG_PATH = "img/close.png";
 
     public static final String DESTINATION_HUD_IMG_PATH = "img/episode_map/destination.png";
     public static final String DISTANCE_HUD_IMG_PATH = "img/episode_map/distance.png";

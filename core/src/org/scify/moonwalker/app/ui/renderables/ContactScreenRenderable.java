@@ -17,8 +17,6 @@ public class ContactScreenRenderable extends ChattableRenderable {
     //renderable ids
     protected final static String AUNT_TEXT_ID = "aunt_text";
     protected final static String AUNT_AVATAR_ID = "aunt_avatar";
-    //audio
-    public final static String MOBILE_AUDIO_PATH = "audio/message.mp3";
 
     protected ImageRenderable contactDescription;
     protected ImageRenderable contactAvatar;
