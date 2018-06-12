@@ -3,6 +3,10 @@ package org.scify.engine.renderables;
 import org.scify.engine.UserAction;
 import org.scify.engine.UserActionCode;
 import org.scify.engine.conversation.ConversationLine;
+import org.scify.engine.renderables.effects.Effect;
+import org.scify.engine.renderables.effects.EffectSequence;
+import org.scify.engine.renderables.effects.FadeEffect;
+import org.scify.engine.renderables.effects.VisibilityEffect;
 
 import java.util.*;
 
@@ -59,13 +63,21 @@ public class SingleChoiceConversationRenderable extends ConversationRenderable {
 
         String buttonText = conversationLine.getButtonText();
         if (buttonText != null) {
-            conversationButton = createTextButton(SINGLE_CHOICE_BUTTON_ID + id, buttonText, new UserAction(UserActionCode.SINGLE_CHOICE_CONVERSATION_LINE, conversationLine), false, true, 102);
+            conversationButton = createTextButton(SINGLE_CHOICE_BUTTON_ID + id, buttonText, new UserAction(UserActionCode.SINGLE_CHOICE_CONVERSATION_LINE, conversationLine), false, false, 102);
         }else {
-            conversationButton = createTextButton(SINGLE_CHOICE_BUTTON_ID + id, "Επόμενο", new UserAction(UserActionCode.SINGLE_CHOICE_CONVERSATION_LINE, conversationLine), false, true, 102);
+            conversationButton = createTextButton(SINGLE_CHOICE_BUTTON_ID + id, "Επόμενο", new UserAction(UserActionCode.SINGLE_CHOICE_CONVERSATION_LINE, conversationLine), false, false, 102);
         }
         conversationText = createTextLabelRenderable(CONVERSATION_TEXT_ID + conversationId, parseText(conversationLine.getText()),false, true, 102);
         allRenderables.add(conversationText);
         allRenderables.add(conversationButton);
+    }
+
+    public void showButton() {
+        EffectSequence es = new EffectSequence();
+        es.addEffect(new FadeEffect(1,0,0));
+        es.addEffect(new VisibilityEffect(true));
+        es.addEffect(new FadeEffect(0,1,300));
+        conversationButton.addEffect(es);
     }
 
     public void setConversationLine(ConversationLine conversationLine) {

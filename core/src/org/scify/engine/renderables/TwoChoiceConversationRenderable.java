@@ -3,6 +3,9 @@ package org.scify.engine.renderables;
 import org.scify.engine.UserAction;
 import org.scify.engine.UserActionCode;
 import org.scify.engine.conversation.ConversationLine;
+import org.scify.engine.renderables.effects.EffectSequence;
+import org.scify.engine.renderables.effects.FadeEffect;
+import org.scify.engine.renderables.effects.VisibilityEffect;
 
 import java.util.HashSet;
 import java.util.List;
@@ -57,11 +60,20 @@ public class TwoChoiceConversationRenderable extends ConversationRenderable {
     public void setConversationLines(List<ConversationLine> conversationLines) {
         this.conversationLines = conversationLines;
         ConversationLine conversationLine = conversationLines.get(0);
-        conversationButtonTop = createTextButton(TOP_BUTTON_ID+ conversationLine.getId(),parseText(conversationLine.getText()),new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine),false, true,102);
+        conversationButtonTop = createTextButton(TOP_BUTTON_ID+ conversationLine.getId(),parseText(conversationLine.getText()),new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine),false, false,102);
         allRenderables.add(conversationButtonTop);
         conversationLine = conversationLines.get(1);
-        conversationButtonBottom = createTextButton(BOTTOM_BUTTON_ID+ conversationLine.getId(),parseText(conversationLine.getText()),new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine),false, true,102);
+        conversationButtonBottom = createTextButton(BOTTOM_BUTTON_ID+ conversationLine.getId(),parseText(conversationLine.getText()),new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine),false, false,102);
         allRenderables.add(conversationButtonBottom);
+    }
+
+    public void showButtons() {
+        EffectSequence es = new EffectSequence();
+        es.addEffect(new FadeEffect(1,0,0));
+        es.addEffect(new VisibilityEffect(true));
+        es.addEffect(new FadeEffect(0,1,300));
+        conversationButtonTop.addEffect(es);
+        conversationButtonBottom.addEffect(es);
     }
 
     public void setAvatarImg (String imgPath) {
