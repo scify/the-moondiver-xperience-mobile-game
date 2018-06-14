@@ -52,6 +52,7 @@ public class SpaceshipInventoryEpisodeRules extends FadingEpisodeRules<Spaceship
             gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.ADD_ITEM_AUDIO_PATH));
             renderable.addNextItem(inventoryItemsCounter, gameState);
             exitButtonVisibilityNotHandled = false;
+            gameInfo.setMapRequestFlag();
         }else if (introComplete && exitButtonVisibilityNotHandled) {
             exitButtonVisibilityNotHandled = false;
             renderable.showExitButton();

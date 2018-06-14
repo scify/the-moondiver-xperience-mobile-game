@@ -182,7 +182,7 @@ public class LGDXRenderableBookKeeper {
     }
 
 
-    protected Actor createActorResourceFor(final Renderable toDraw, ComponentFactory<Actor> cfFactory) {
+    protected Actor createActorResourceFor(Renderable toDraw, ComponentFactory<Actor> cfFactory) {
         Actor resource = null;
         try {
             Actor newActorForRenderable = cfFactory.createResourceForType(toDraw);
@@ -197,7 +197,7 @@ public class LGDXRenderableBookKeeper {
         return resource;
     }
 
-    protected Actor addActor(final Renderable toDraw, Actor newActorForRenderable) {
+    protected Actor addActor(Renderable toDraw, Actor newActorForRenderable) {
 //        addClickListenerIfButton(toDraw, newActorForRenderable);
         renderableActorMap.put(toDraw, newActorForRenderable);
         return newActorForRenderable;

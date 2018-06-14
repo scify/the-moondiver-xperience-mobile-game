@@ -34,10 +34,12 @@ public class MapEpisodeRules extends BaseEpisodeRules {
     protected Location targetMiddleOfNowhere;
     protected Location originLocation;
     protected Location targetLocation;
+    protected boolean acceptInput;
 
 
     public MapEpisodeRules(boolean bTravelOnly) {
         super();
+        acceptInput = false;
         travelOnly = bTravelOnly;
         locationController = LocationController.getInstance();
     }
@@ -70,7 +72,15 @@ public class MapEpisodeRules extends BaseEpisodeRules {
             currentState.addRenderable(renderable);
 
             if (!travelOnly) {
-                renderable.fadeIn(null);
+                renderable.fadeIn(new Runnable() {
+                    @Override
+                    public void run() {
+                        renderable.getMissionHUD().setVisible(false);
+                        renderable.getDistanceHUD().setVisible(false);
+                        renderable.getLocationNameHUD().setVisible(false);
+                        acceptInput = true;
+                    }
+                });
             } else {
                 renderable.fadeIn(new Runnable() {
                     @Override
@@ -151,18 +161,25 @@ public class MapEpisodeRules extends BaseEpisodeRules {
         String actionCode = userAction.getActionCode();
         switch (actionCode) {
             case MapEpisodeRenderable.MAP_SELECT_ACTION:
-
-                // Update next location
-                Location nextLocation = (Location)userAction.getActionPayload();
-                renderable.setNextLocation(nextLocation);
                 // And show appropriate effect
                 if (!travelOnly) {
                     // Also update game info
-                    gameInfo.setNextLocation(nextLocation);
-                    gameInfo.getNextLocation().setDistanceInKilometers(gameInfo.getCurrentLocation().getDistanceFromLocation(nextLocation));
-                    gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.LOCATION_SELECTED_AUDIO_PATH));
-                    gameInfo.setChargeRequestFlag();
+                    if (acceptInput) {
+                        // Update next location
+                        Location nextLocation = (Location)userAction.getActionPayload();
+                        renderable.setNextLocation(nextLocation);
+                        gameInfo.setNextLocation(nextLocation);
+                        gameInfo.getNextLocation().setDistanceInKilometers(gameInfo.getCurrentLocation().getDistanceFromLocation(nextLocation));
+                        gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.LOCATION_SELECTED_AUDIO_PATH));
+                        gameInfo.setChargeRequestFlag();
+                        acceptInput = false;
+                    }else {
+                        gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
+                    }
                 }else {
+                    // Update next location
+                    Location nextLocation = (Location)userAction.getActionPayload();
+                    renderable.setNextLocation(nextLocation);
                     gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.TRAVEL_AUDIO_PATH));
                 }
                 createSpaceshipMovementEffect(gsCurrent);
@@ -192,8 +209,18 @@ public class MapEpisodeRules extends BaseEpisodeRules {
         final float dEndY = rNextLocation.getyPos();
 
         if (!travelOnly) {
+            EffectSequence effectSequence = new EffectSequence();
+            effectSequence.addEffect(new DelayEffect(3000));
+            effectSequence.addEffect(new FunctionEffect(new Runnable() {
+                @Override
+                public void run() {
+                    handleUserAction(gsCurrent, new UserAction(UserActionCode.QUIT));
+                }
+            }));
+            renderable.addEffect(effectSequence);
+        }
             // Add movement effect to spaceship
-            Renderable rStar = new ImageRenderable("star_route_img", MapEpisodeRenderable.STAR_IMG_PATH);
+            /*Renderable rStar = new ImageRenderable("star_route_img", MapEpisodeRenderable.STAR_IMG_PATH);
             rStar.setVisible(false);
             rStar.setZIndex(10);
 
@@ -220,7 +247,7 @@ public class MapEpisodeRules extends BaseEpisodeRules {
             rStar.addEffect(esRes);
             // Add star to renderables
             gsCurrent.addRenderable(rStar);
-        }
+        }*/
 
 
         // If only travel

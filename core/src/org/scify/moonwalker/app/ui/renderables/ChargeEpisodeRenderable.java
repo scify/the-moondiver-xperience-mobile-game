@@ -88,6 +88,7 @@ public class ChargeEpisodeRenderable extends ChattableRenderable {
     protected TextLabelRenderable energyLabel;
     protected String nextEnergyValue;
     protected TextLabelRenderable calculatorLabel;
+    protected boolean waitingForUpdateEffectToFinish;
 
     protected Set<Renderable> allRenderables;
 
@@ -103,6 +104,7 @@ public class ChargeEpisodeRenderable extends ChattableRenderable {
         nextUnitsValue3 = null;
         nextEnergyValue = null;
         chatEnabled = false;
+        waitingForUpdateEffectToFinish = false;
     }
 
     private void initSubRenderables() {
@@ -184,39 +186,39 @@ public class ChargeEpisodeRenderable extends ChattableRenderable {
         allRenderables.add(calculatorButtonEquals);
     }
 
-    public void setCurrentMoonPhaseInfo (int energy, String imgPath) {
+    public void setCurrentMoonPhaseInfo(int energy, String imgPath) {
         nextUnitsValue1 = energy + " UNITS";
         if (moonPhase1 == null) {
-            moonPhase1 = createImageRenderable(MOON_PHASE_ID + "1" +  imgPath, imgPath, false, true, 5);
+            moonPhase1 = createImageRenderable(MOON_PHASE_ID + "1" + imgPath, imgPath, false, true, 5);
             allRenderables.add(moonPhase1);
             unitsLabel1.setLabel(nextUnitsValue1);
-        }else {
+        } else {
             updateImage(moonPhase1, imgPath);
-            updateLabel(unitsLabel1, nextUnitsValue1);
+            updateLabel(unitsLabel1, nextUnitsValue1, true);
         }
     }
 
-    public void setNextMoonPhaseInfo (int energy, String imgPath) {
+    public void setNextMoonPhaseInfo(int energy, String imgPath) {
         nextUnitsValue2 = energy + " UNITS";
         if (moonPhase2 == null) {
             moonPhase2 = createImageRenderable(MOON_PHASE_ID + "2" + imgPath, imgPath, false, true, 5);
             allRenderables.add(moonPhase2);
             unitsLabel2.setLabel(nextUnitsValue2);
-        }else {
+        } else {
             updateImage(moonPhase2, imgPath);
-            updateLabel(unitsLabel2, nextUnitsValue2);
+            updateLabel(unitsLabel2, nextUnitsValue2, false);
         }
     }
 
-    public void setPostNextMoonPhaseInfo (int energy, String imgPath) {
+    public void setPostNextMoonPhaseInfo(int energy, String imgPath) {
         nextUnitsValue3 = energy + " UNITS";
         if (moonPhase3 == null) {
             moonPhase3 = createImageRenderable(MOON_PHASE_ID + "3" + imgPath, imgPath, false, true, 5);
             allRenderables.add(moonPhase3);
             unitsLabel3.setLabel(nextUnitsValue3);
-        }else {
+        } else {
             updateImage(moonPhase3, imgPath);
-            updateLabel(unitsLabel3, nextUnitsValue3);
+            updateLabel(unitsLabel3, nextUnitsValue3, false);
         }
     }
 
@@ -224,7 +226,7 @@ public class ChargeEpisodeRenderable extends ChattableRenderable {
         return tableBGRenderable;
     }
 
-    protected void updateLabel(final TextLabelRenderable label, final String nextValue) {
+    protected void updateLabel(final TextLabelRenderable label, final String nextValue, boolean handleWaitingEffect) {
         EffectSequence effects = new EffectSequence();
         effects.addEffect(new FadeEffect(1, 0, 500));
         effects.addEffect(new FunctionEffect(new Runnable() {
@@ -234,6 +236,15 @@ public class ChargeEpisodeRenderable extends ChattableRenderable {
             }
         }));
         effects.addEffect(new FadeEffect(0, 1, 500));
+        if (handleWaitingEffect) {
+            waitingForUpdateEffectToFinish = true;
+            effects.addEffect(new FunctionEffect(new Runnable() {
+                @Override
+                public void run() {
+                    waitingForUpdateEffectToFinish = false;
+                }
+            }));
+        }
         label.addEffect(effects);
     }
 
@@ -296,50 +307,84 @@ public class ChargeEpisodeRenderable extends ChattableRenderable {
     }
 
     public void setDistanceFromDestinationLabel(String distance) {
-        updateLabel(distanceFromDestinationLabel, distance);
+        updateLabel(distanceFromDestinationLabel, distance, false);
     }
 
     public void setDistancePerUnitLabel(String distancePerUnit) {
-        updateLabel(distancePerUnitLabel, distancePerUnit);
+        updateLabel(distancePerUnitLabel, distancePerUnit, false);
     }
 
     public void setEnergyLabel(String energy) {
-        updateLabel(energyLabel, energy);
+        updateLabel(energyLabel, energy, false);
     }
 
-    public TextLabelRenderable getCalculatorLabel() { return calculatorLabel; }
+    public TextLabelRenderable getCalculatorLabel() {
+        return calculatorLabel;
+    }
 
-    public ActionButtonRenderable getCalculatorButton1() { return calculatorButton1; }
+    public ActionButtonRenderable getCalculatorButton1() {
+        return calculatorButton1;
+    }
 
-    public ActionButtonRenderable getCalculatorButton2() { return calculatorButton2; }
+    public ActionButtonRenderable getCalculatorButton2() {
+        return calculatorButton2;
+    }
 
-    public ActionButtonRenderable getCalculatorButton3() { return calculatorButton3; }
+    public ActionButtonRenderable getCalculatorButton3() {
+        return calculatorButton3;
+    }
 
-    public ActionButtonRenderable getCalculatorButton4() { return calculatorButton4; }
+    public ActionButtonRenderable getCalculatorButton4() {
+        return calculatorButton4;
+    }
 
-    public ActionButtonRenderable getCalculatorButton5() { return calculatorButton5; }
+    public ActionButtonRenderable getCalculatorButton5() {
+        return calculatorButton5;
+    }
 
-    public ActionButtonRenderable getCalculatorButton6() { return calculatorButton6; }
+    public ActionButtonRenderable getCalculatorButton6() {
+        return calculatorButton6;
+    }
 
-    public ActionButtonRenderable getCalculatorButton7() { return calculatorButton7; }
+    public ActionButtonRenderable getCalculatorButton7() {
+        return calculatorButton7;
+    }
 
-    public ActionButtonRenderable getCalculatorButton8() { return calculatorButton8; }
+    public ActionButtonRenderable getCalculatorButton8() {
+        return calculatorButton8;
+    }
 
-    public ActionButtonRenderable getCalculatorButton9() { return calculatorButton9; }
+    public ActionButtonRenderable getCalculatorButton9() {
+        return calculatorButton9;
+    }
 
-    public ActionButtonRenderable getCalculatorButton0() { return calculatorButton0; }
+    public ActionButtonRenderable getCalculatorButton0() {
+        return calculatorButton0;
+    }
 
-    public ActionButtonRenderable getCalculatorButtonC() { return calculatorButtonC; }
+    public ActionButtonRenderable getCalculatorButtonC() {
+        return calculatorButtonC;
+    }
 
-    public ActionButtonRenderable getCalculatorButtonEquals() { return calculatorButtonEquals; }
+    public ActionButtonRenderable getCalculatorButtonEquals() {
+        return calculatorButtonEquals;
+    }
 
-    public ActionButtonRenderable getCalculatorButtonPlus() { return calculatorButtonPlus; }
+    public ActionButtonRenderable getCalculatorButtonPlus() {
+        return calculatorButtonPlus;
+    }
 
-    public ActionButtonRenderable getCalculatorButtonMinus() { return calculatorButtonMinus; }
+    public ActionButtonRenderable getCalculatorButtonMinus() {
+        return calculatorButtonMinus;
+    }
 
-    public ActionButtonRenderable getCalculatorButtonMulti() { return calculatorButtonMulti; }
+    public ActionButtonRenderable getCalculatorButtonMulti() {
+        return calculatorButtonMulti;
+    }
 
-    public ActionButtonRenderable getCalculatorButtonDiv() { return calculatorButtonDiv; }
+    public ActionButtonRenderable getCalculatorButtonDiv() {
+        return calculatorButtonDiv;
+    }
 
     public void setCalculatorLabel(String value) {
         calculatorLabel.setLabel(value);
@@ -347,5 +392,9 @@ public class ChargeEpisodeRenderable extends ChattableRenderable {
 
     public String getCalculatorValue() {
         return calculatorLabel.getLabel();
+    }
+
+    public boolean NotWaitingForUpdateEffectToFinish() {
+        return !waitingForUpdateEffectToFinish;
     }
 }

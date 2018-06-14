@@ -15,7 +15,7 @@ public class MoonWalkerScenario extends Scenario {
     public static final String NEXT_LOCATION = "NEXT_LOCATION";
 
     public MoonWalkerScenario() {
-        if (true) {
+        if (false) {
             createBasicScenario(0);
         }
         else {
@@ -130,10 +130,10 @@ public class MoonWalkerScenario extends Scenario {
     }
 
     protected Episode createTestingScenario() {
-        if (true) {
+        if (false) {
             return new ForestEpisode();
         } else {
-            return getPlaygroundEpisode();
+            return getMapEpisode();
         }
     }
 
@@ -169,7 +169,7 @@ public class MoonWalkerScenario extends Scenario {
     private Episode getMapEpisode() {
         Random rRnd = new Random();
 
-        Episode mapEpisode = new MapEpisode(true);
+        Episode mapEpisode = new MapEpisode(false);
         setFirstEpisode(mapEpisode);
         GameInfo info = GameInfo.getInstance();
 

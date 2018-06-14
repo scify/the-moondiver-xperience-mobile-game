@@ -4,9 +4,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Align;
 import org.scify.engine.renderables.Renderable;
+import org.scify.engine.renderables.effects.*;
 import org.scify.moonwalker.app.game.Location;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.ui.LGDXRenderableBookKeeper;
+import org.scify.moonwalker.app.ui.actors.ActorLabelWithEffect;
 import org.scify.moonwalker.app.ui.actors.ActorWithEffects;
 import org.scify.moonwalker.app.ui.actors.StackWithEffect;
 import org.scify.moonwalker.app.ui.actors.Updateable;
@@ -23,52 +25,58 @@ public class MapEpisodeActor extends ActorWithEffects implements Updateable<MapE
     public MapEpisodeActor(Skin skin, MapEpisodeRenderable rRenderable) {
         super();
         renderable = rRenderable;
+
     }
 
 
-    private Label getMissionHUD() {
-        return (Label)((StackWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getMissionHUD())).getChildren().get(0);
+    private ActorLabelWithEffect getMissionHUD() {
+        return (ActorLabelWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getMissionHUD());
     }
 
-    private Label getDistanceHUD() {
-        return (Label)((StackWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getDistanceHUD())).getChildren().get(0);
+    private ActorLabelWithEffect getDistanceHUD() {
+        return (ActorLabelWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getDistanceHUD());
     }
 
-    private Label getLocationNameHUD() {
-        return (Label)((StackWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getLocationNameHUD())).getChildren().get(0);
+    private ActorLabelWithEffect getLocationNameHUD() {
+        return (ActorLabelWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getLocationNameHUD());
     }
 
     @Override
-    public void update(MapEpisodeRenderable renderable) {
+    public void update(final MapEpisodeRenderable renderable) {
 //        // If location is selected
         if (renderable.isLocationSelected() && !bSelectedOnce) {
             bSelectedOnce = true;
             Location lTarget = renderable.getTargetLocation();
+
             // Update HUD
-            Label lCur = getLocationNameHUD();
-            lCur.setAlignment(Align.center);
-            lCur.setText(lTarget.getName());
-//            centerRenderableByActorSize(renderable.getLocationNameHUD(), lCur);
+            final ActorLabelWithEffect locationName = getLocationNameHUD();
+            locationName.setAlignment(Align.center);
+            renderable.getLocationNameHUD().setLabel(lTarget.getName());
             // Update distance
-            lCur = getDistanceHUD();
-            lCur.setAlignment(Align.center);
-            lCur.setText(String.valueOf(lTarget.getDistanceFromLocation(renderable.getOriginLocation())) + "KM");
-//            centerRenderableByActorSize(renderable.getDistanceHUD(), lCur);
-            // Update mission
-            lCur = getMissionHUD();
-            lCur.setAlignment(Align.center);
-            lCur.setText(lTarget.getMission());
-//            centerRenderableByActorSize(renderable.getMissionHUD(), lCur);
+            final ActorLabelWithEffect distance = getDistanceHUD();
+            distance.setAlignment(Align.center);
+            renderable.getDistanceHUD().setLabel(String.valueOf(lTarget.getDistanceFromLocation(renderable.getOriginLocation())) + " Km");
+            //Update Mission
+            final ActorLabelWithEffect mission = getMissionHUD();
+            mission.setAlignment(Align.center);
+            renderable.getMissionHUD().setLabel(lTarget.getMission());
+
+            if (!renderable.isTravelOnly()) {
+                renderable.getLocationNameHUD().addEffect(getFadeInSequence(0.0));
+                renderable.getDistanceHUD().addEffect(getFadeInSequence(1000.0));
+                renderable.getMissionHUD().addEffect(getFadeInSequence(2000.0));
+            }
         }
         renderable.wasUpdated();
     }
 
-    protected void centerRenderableByActorSize(Renderable rToMove, Label lLabel) {
-//        double dNewX = rToMove.getxPos() - lLabel.getWidth() / 2.0;
-//        double dNewY = rToMove.getyPos() + lLabel.getHeight() / 2.0;
-//
-//        rToMove.setxPos((float) dNewX);
-//        rToMove.setyPos((float) dNewY);
-//        rToMove.markAsNeedsUpdate();
+    protected EffectSequence getFadeInSequence(double dInitialDelay) {
+        EffectSequence effectSequence = new EffectSequence();
+        effectSequence.addEffect(new FadeEffect(1, 0, 0));
+        effectSequence.addEffect(new VisibilityEffect(true));
+        effectSequence.addEffect(new DelayEffect(dInitialDelay));
+        effectSequence.addEffect(new FadeEffect(0, 1, 1000));
+
+        return effectSequence;
     }
 }

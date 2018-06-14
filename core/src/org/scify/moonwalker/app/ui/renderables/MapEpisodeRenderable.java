@@ -14,7 +14,6 @@ import java.util.*;
 public class MapEpisodeRenderable extends Renderable {
 
     public static final String MAP_SELECT_ACTION = "MAP_SELECT";
-
     public static final String BG_IMAGE_PATH = "img/episode_map/bg.png";
 
     public static final String DESTINATION_HUD_IMG_PATH = "img/episode_map/destination.png";
@@ -23,12 +22,14 @@ public class MapEpisodeRenderable extends Renderable {
 
     public static final String CITY_DOT_IMG_PATH = "img/episode_map/city_dot.png";
     public static final String PIN_IMG_PATH = "img/episode_map/pin.png";
+    public static final String TRANSPARENT_BUTTON_IMG_PATH = "img/episode_map/transparent_button.png";
     public static final String SPACESHIP_IMG_PATH = "img/episode_map/spaceship.png";
     public static final String STAR_IMG_PATH = "img/episode_map/star_red1.png";
     public static final String STAR2_IMG_PATH = "img/episode_map/star_grey1.png";
 
     public static final String LOCATION_SELECTED_AUDIO_PATH = "audio/episode_map/location_selected.mp3";
     public static final String TRAVEL_AUDIO_PATH = "audio/episode_map/travel.mp3";
+    public static final String WRONG_BUTTON_AUDIO_PATH = "audio/wrong.mp3";
 
 
     protected Location currentLocation;
@@ -46,6 +47,10 @@ public class MapEpisodeRenderable extends Renderable {
     protected TextLabelRenderable distanceHUD;
 
     protected Set<Renderable> allRenderables;
+
+    public boolean isTravelOnly() {
+        return travelOnly;
+    }
 
     protected boolean travelOnly;
 
@@ -138,15 +143,12 @@ public class MapEpisodeRenderable extends Renderable {
 
     public TextLabelRenderable getLocationNameHUD() {
         if (locationNameHUD == null) {
-            locationNameHUD = new TextLabelRenderable(appInfo.convertX(250f),appInfo.convertY(1080 - 275f), appInfo.convertX(0), appInfo.convertY(0), Renderable.ACTOR_ROTATABLE_LABEL, "locationNameHUD") {
-                @Override
-                public boolean needsRepaint() {
-                    return true;
-                }
-            };
+            locationNameHUD = new TextLabelRenderable(appInfo.convertX(250f), appInfo.convertY(1080 - 275f), appInfo.convertX(0), appInfo.convertY(0), Renderable.ACTOR_LABEL, "locationNameHUD");
             locationNameHUD.setLabel("");
-            missionHUD.setZIndex(5);
+            locationNameHUD.setPositionDrawable(true);
+            locationNameHUD.setZIndex(5);
             locationNameHUD.setVisible(false);
+//            locationNameHUD.markAsNeedsUpdate();
         }
 
         return locationNameHUD;
@@ -155,31 +157,25 @@ public class MapEpisodeRenderable extends Renderable {
 
     public TextLabelRenderable getDistanceHUD() {
         if (distanceHUD == null) {
-            distanceHUD = new TextLabelRenderable(appInfo.convertX(250f),appInfo.convertY(1080 - 525f), appInfo.convertX(0), appInfo.convertY(0), Renderable.ACTOR_ROTATABLE_LABEL, "distanceHUD") {
-                @Override
-                public boolean needsRepaint() {
-                    return true;
-                }
-            };
+            distanceHUD = new TextLabelRenderable(appInfo.convertX(250f), appInfo.convertY(1080 - 525f), appInfo.convertX(0), appInfo.convertY(0), Renderable.ACTOR_LABEL, "distanceHUD");
             distanceHUD.setLabel("");
-            missionHUD.setZIndex(5);
+            distanceHUD.setPositionDrawable(true);
+            distanceHUD.setZIndex(5);
             distanceHUD.setVisible(false);
+//            distanceHUD.markAsNeedsUpdate();
         }
 
         return distanceHUD;
     }
 
-    public Renderable getMissionHUD() {
+    public TextLabelRenderable getMissionHUD() {
         if (missionHUD == null) {
-            missionHUD = new TextLabelRenderable(appInfo.convertX(250f),appInfo.convertY(1080 - 885f), appInfo.convertX(0), appInfo.convertY(0), Renderable.ACTOR_ROTATABLE_LABEL, "missionHUD") {
-                @Override
-                public boolean needsRepaint() {
-                    return true;
-                }
-            };
+            missionHUD = new TextLabelRenderable(appInfo.convertX(250f), appInfo.convertY(1080 - 885f), appInfo.convertX(0), appInfo.convertY(0), Renderable.ACTOR_LABEL, "missionHUD");
             missionHUD.setLabel("");
+            missionHUD.setPositionDrawable(true);
             missionHUD.setZIndex(5);
             missionHUD.setVisible(false);
+//            missionHUD.markAsNeedsUpdate();
         }
 
         return missionHUD;
@@ -195,22 +191,22 @@ public class MapEpisodeRenderable extends Renderable {
                 // Create appropriate renderable
                 Renderable btn;
                 if (lCur.equals(nextAllowedLocation)) {
-                    btn = createNextAllowedLocationRenderable(lCur);
+                    Renderable pin = createNextAllowedLocationPinRenderable(lCur);
+                    btn = createNextAllowedLocationButtonRenderable(lCur);
                     // Set z-index high
-                    btn.setZIndex(4);
-                }
-                else if (lCur.equals(currentLocation)) {
+                    btn.setZIndex(100);
+                    pin.setZIndex(4);
+                    locationPoints.add(pin);
+                } else if (lCur.equals(currentLocation)) {
                     btn = createCurrentLocationRenderable(lCur);
                     // Set z-index high (over others)
                     btn.setZIndex(5);
-                }
-                else if (lCur.getName().equals(MapEpisodeRules.TARGET_MIDDLE_OF_NOWHERE) ||
-                        lCur.getName().equals(MapEpisodeRules.ORIGIN_MIDDLE_OF_NOWHERE)){
+                } else if (lCur.getName().equals(MapEpisodeRules.TARGET_MIDDLE_OF_NOWHERE) ||
+                        lCur.getName().equals(MapEpisodeRules.ORIGIN_MIDDLE_OF_NOWHERE)) {
                     btn = createMiddleOfNowhereRenderable(lCur);
                     // Set z-index high
                     btn.setZIndex(4);
-                }
-                else {
+                } else {
                     btn = createCityPointRenderable(lCur);
                     // Set z-index high
                     btn.setZIndex(3);
@@ -225,16 +221,15 @@ public class MapEpisodeRenderable extends Renderable {
 
                 // Add to return list
                 locationPoints.add(btn);
-
             }
         }
 
         return locationPoints;
     }
 
-    protected  Renderable createMiddleOfNowhereRenderable(Location lCur) {
+    protected Renderable createMiddleOfNowhereRenderable(Location lCur) {
         ActionButtonRenderable btn = new ActionButtonRenderable(appInfo.convertX(lCur.getPosX() - 50), appInfo.convertY(lCur.getPosY() - 50),
-                appInfo.convertX(100), appInfo.convertY(100),  Renderable.ACTOR_IMAGE_BUTTON, "point" + lCur.getName());
+                appInfo.convertX(100), appInfo.convertY(100), Renderable.ACTOR_IMAGE_BUTTON, "point" + lCur.getName());
         btn.setImgPath(STAR2_IMG_PATH);
         return btn;
 
@@ -242,16 +237,16 @@ public class MapEpisodeRenderable extends Renderable {
 
     protected ActionButtonRenderable createCityPointRenderable(Location lCur) {
         ActionButtonRenderable btn;
-        btn = new ActionButtonRenderable( appInfo.convertX(lCur.getPosX() - 8), appInfo.convertY(lCur.getPosY() - 8),
-                appInfo.convertX(16), appInfo.convertY(16),  Renderable.ACTOR_IMAGE_BUTTON, "point" + lCur.getName());
+        btn = new ActionButtonRenderable(appInfo.convertX(lCur.getPosX() - 8), appInfo.convertY(lCur.getPosY() - 8),
+                appInfo.convertX(16), appInfo.convertY(16), Renderable.ACTOR_IMAGE_BUTTON, "point" + lCur.getName());
         btn.setImgPath(CITY_DOT_IMG_PATH);
         return btn;
     }
 
     protected ImageRenderable createCurrentLocationRenderable(Location lCur) {
         ImageRenderable btn;
-        btn = new ImageRenderable( appInfo.convertX(lCur.getPosX() - 33), appInfo.convertY(lCur.getPosY() - 72),
-                appInfo.convertX(66), appInfo.convertY(36),  "currentPoint", SPACESHIP_IMG_PATH);
+        btn = new ImageRenderable(appInfo.convertX(lCur.getPosX() - 33), appInfo.convertY(lCur.getPosY() - 72),
+                appInfo.convertX(66), appInfo.convertY(36), "currentPoint", SPACESHIP_IMG_PATH);
         btn.setImgPath(SPACESHIP_IMG_PATH);
 
         EffectSequence esCur = new EffectSequence();
@@ -264,23 +259,30 @@ public class MapEpisodeRenderable extends Renderable {
         return btn;
     }
 
-    protected ActionButtonRenderable createNextAllowedLocationRenderable(Location lCur) {
+    protected ActionButtonRenderable createNextAllowedLocationButtonRenderable(Location lCur) {
         ActionButtonRenderable btn;
-        btn = new ActionButtonRenderable( appInfo.convertX(lCur.getPosX() - 45), appInfo.convertY(lCur.getPosY() + 5),
-                appInfo.convertX(40), appInfo.convertY(60),  Renderable.ACTOR_IMAGE_BUTTON, "nextAllowedPoint");
-        btn.setImgPath(PIN_IMG_PATH);
+        float length = appInfo.convertX(80);
+        btn = new ActionButtonRenderable(appInfo.convertX(lCur.getPosX()) - length / 2, appInfo.convertY(lCur.getPosY()) - length / 2, length, length, Renderable.ACTOR_IMAGE_BUTTON, "nextAllowedPointButton");
+        btn.setImgPath(TRANSPARENT_BUTTON_IMG_PATH);
 
         if (!travelOnly) {
             btn.setUserAction(new UserAction(MAP_SELECT_ACTION, lCur));
+        }
+        return btn;
+    }
 
+    protected ImageRenderable createNextAllowedLocationPinRenderable(Location lCur) {
+        ImageRenderable pin;
+        pin = new ImageRenderable(appInfo.convertX(lCur.getPosX() - 45), appInfo.convertY(lCur.getPosY() + 5), appInfo.convertX(40), appInfo.convertY(60),  Renderable.ACTOR_IMAGE, "nextAllowedPointPin");
+        pin.setImgPath(PIN_IMG_PATH);
+        if (!travelOnly) {
             // and highlighted
             EffectSequence eConstant = new EffectSequence();
             eConstant.addEffect(new DelayEffect(3000)); // Await normal fade in
             eConstant.addEffect(new BounceEffect(0, 20, 2000));
-            btn.addEffect(eConstant);
+            pin.addEffect(eConstant);
         }
-
-        return btn;
+        return pin;
     }
 
     public Renderable getBackground() {
@@ -293,9 +295,9 @@ public class MapEpisodeRenderable extends Renderable {
     public void fadeIn(Runnable rAfterFadeIn) {
         // Apply to all except close button (see below)
         EffectSequence eFadeIn = getDefaultFadeInEffect();
-        for (Renderable rCur: getAllRenderables()) {
+        for (Renderable rCur : getAllRenderables()) {
             if (rCur != missionHUD) {
-            // if (rCur != closeButton) {
+                // if (rCur != closeButton) {
                 rCur.addEffect(eFadeIn);
             }
         }
@@ -316,7 +318,7 @@ public class MapEpisodeRenderable extends Renderable {
 
     public void fadeOut() {
         Effect eFadeOut = getDefaultFadeOutEffect();
-        for (Renderable r: getAllRenderables()) {
+        for (Renderable r : getAllRenderables()) {
             r.addEffect(eFadeOut);
         }
     }

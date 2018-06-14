@@ -43,14 +43,18 @@ public class ChargeEpisodeRules extends FadingEpisodeRules<ChargeEpisodeRenderab
             tutorialChatPhase = 2;
         } else if (conversationRules != null && conversationRules.isFinished() && tutorialChatPhase == 3) {
             conversationRules = null;
-            createConversation(gameState, "conversations/episode_charge2.json", renderable.CONVERSATION_BG_IMG_PATH);
             tutorialChatPhase = 4;
-        } else if (conversationRules != null && conversationRules.isFinished() && tutorialChatPhase == 5) {
-            conversationRules = null;
-            createConversation(gameState, "conversations/episode_charge3.json", renderable.CONVERSATION_BG_IMG_PATH);
-            tutorialChatPhase = 6;
+        } else if (tutorialChatPhase == 4 && renderable.NotWaitingForUpdateEffectToFinish()) {
+            createConversation(gameState, "conversations/episode_charge2.json", renderable.CONVERSATION_BG_IMG_PATH);
+            tutorialChatPhase = 5;
         } else if (conversationRules != null && conversationRules.isFinished() && tutorialChatPhase == 6) {
+            conversationRules = null;
             tutorialChatPhase = 7;
+        } else if (tutorialChatPhase == 7 && renderable.NotWaitingForUpdateEffectToFinish()) {
+            createConversation(gameState, "conversations/episode_charge3.json", renderable.CONVERSATION_BG_IMG_PATH);
+            tutorialChatPhase = 8;
+        } else if (conversationRules != null && conversationRules.isFinished() && tutorialChatPhase == 8) {
+            tutorialChatPhase = 9;
             EffectSequence showEffect = new EffectSequence();
             showEffect.addEffect(new FadeEffect(1, 0, 0));
             showEffect.addEffect(new VisibilityEffect(true));
@@ -105,9 +109,9 @@ public class ChargeEpisodeRules extends FadingEpisodeRules<ChargeEpisodeRenderab
                     if (tutorialChatPhase == 2) {
                         chargeOperation(gameState);
                         tutorialChatPhase = 3;
-                    } else if (tutorialChatPhase == 4) {
+                    } else if (tutorialChatPhase == 5) {
                         chargeOperation(gameState);
-                        tutorialChatPhase = 5;
+                        tutorialChatPhase = 6;
                         gameInfo.setTravelRequestFlag();
                     } else {
                         gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
