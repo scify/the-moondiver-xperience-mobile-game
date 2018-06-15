@@ -261,10 +261,9 @@ public class MapEpisodeRenderable extends Renderable {
 
     protected ActionButtonRenderable createNextAllowedLocationButtonRenderable(Location lCur) {
         ActionButtonRenderable btn;
-        float length = appInfo.convertX(80);
+        float length = appInfo.convertX(200);
         btn = new ActionButtonRenderable(appInfo.convertX(lCur.getPosX()) - length / 2, appInfo.convertY(lCur.getPosY()) - length / 2, length, length, Renderable.ACTOR_IMAGE_BUTTON, "nextAllowedPointButton");
         btn.setImgPath(TRANSPARENT_BUTTON_IMG_PATH);
-
         if (!travelOnly) {
             btn.setUserAction(new UserAction(MAP_SELECT_ACTION, lCur));
         }
@@ -273,8 +272,9 @@ public class MapEpisodeRenderable extends Renderable {
 
     protected ImageRenderable createNextAllowedLocationPinRenderable(Location lCur) {
         ImageRenderable pin;
-        pin = new ImageRenderable(appInfo.convertX(lCur.getPosX() - 45), appInfo.convertY(lCur.getPosY() + 5), appInfo.convertX(40), appInfo.convertY(60),  Renderable.ACTOR_IMAGE, "nextAllowedPointPin");
+        pin = new ImageRenderable(appInfo.convertX(lCur.getPosX() - 45), appInfo.convertY(lCur.getPosY() + 5), appInfo.convertX(40), appInfo.convertY(60), Renderable.ACTOR_IMAGE, "nextAllowedPointPin");
         pin.setImgPath(PIN_IMG_PATH);
+        pin.setVisible(false);
         if (!travelOnly) {
             // and highlighted
             EffectSequence eConstant = new EffectSequence();
