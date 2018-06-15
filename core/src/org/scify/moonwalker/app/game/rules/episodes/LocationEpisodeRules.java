@@ -1,10 +1,17 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
+import org.scify.engine.conversation.ConversationLine;
 import org.scify.moonwalker.app.game.Location;
 import org.scify.moonwalker.app.game.LocationController;
+import org.scify.moonwalker.app.game.rules.ConversationRules;
 import org.scify.moonwalker.app.game.rules.QuestionConversationRules;
 import org.scify.moonwalker.app.ui.renderables.LocationRenderable;
+
+import java.util.Set;
+
+import static org.scify.moonwalker.app.game.rules.ConversationRules.EVENT_RING_PHONE;
+import static org.scify.moonwalker.app.game.rules.ConversationRules.EVENT_TADA;
 
 public class LocationEpisodeRules extends FadingEpisodeRules<LocationRenderable> {
 
@@ -67,6 +74,16 @@ public class LocationEpisodeRules extends FadingEpisodeRules<LocationRenderable>
             }
         }
         return super.getNextState(gameState, userAction);
+    }
+
+    @Override
+    protected void onEnterConversationOrder(GameState gsCurrent, ConversationLine lineEntered) {
+        Set<String> eventTrigger;
+        eventTrigger = (Set<String>) gsCurrent.getGameEventWithType(ConversationRules.ON_ENTER_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
+        if (eventTrigger.contains(EVENT_TADA)) {
+            gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.TADA_AUDIO_PATH));
+        }
+        super.onEnterConversationOrder(gsCurrent, lineEntered);
     }
 
     @Override

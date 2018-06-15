@@ -29,7 +29,7 @@
   {"id": "28", "order":"24", "speakerId":"oratios", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_response_for_question"},
   {"id": "29", "order":"25", "speakerId":"oratios", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_question_2"},
   {"id": "30", "order":"26", "speakerId":"oratios", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_response_for_question"},
-  {"id": "31", "order":"27", "speakerId":"oratios", "text":"Μπράβο!\nΈδωσες αρκετές σωστές απαντήσεις!", "prerequisites":"player_has_3_correct"},
+  {"id": "31", "order":"27", "speakerId":"oratios", "text":"Μπράβο!\nΈδωσες αρκετές σωστές απαντήσεις!", "prerequisites":"player_has_3_correct", "onEnterCurrentOrderTrigger":"tada"},
   {"id": "32", "order":"28", "speakerId":"aunt", "text":"Είμαι τόσο περήφανη για σένα!\nΌλοι μας είμαστε, τα κατάφερες!", "prerequisites":"player_has_3_correct"},
   {"id": "33", "order":"29", "speakerId":"aunt", "text":"Το τελευταίο εξάρτημα που θα πάρεις\nείναι η εξελιγμένη μπαταρία.", "prerequisites":"player_has_3_correct"},
   {"id": "34", "order":"30", "speakerId":"aunt", "text":"Πλέον είναι πολύ ασφαλής,\nδεν εκφορτίζει σε κάθε προσγείωση.", "prerequisites":"player_has_3_correct"},

@@ -30,6 +30,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
     public static final String EVENT_RANDOM_BORING = "random_boring";
     public static final String EVENT_LOAD_QUESTION = "load_question";
     public static final String EVENT_RING_PHONE = "ring_phone";
+    public static final String EVENT_TADA = "tada";
     public static final String EVENT_SHOW_QUIZ_EPISODE = "show_quiz_episode";
     public static final String EVENT_RANDOM_RESPONSE = "load_response_for_question";
 
