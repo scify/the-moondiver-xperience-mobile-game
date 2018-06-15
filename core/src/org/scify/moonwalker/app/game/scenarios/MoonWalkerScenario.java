@@ -15,7 +15,7 @@ public class MoonWalkerScenario extends Scenario {
     public static final String NEXT_LOCATION = "NEXT_LOCATION";
 
     public MoonWalkerScenario() {
-        if (false) {
+        if (true) {
             createBasicScenario(0);
         }
         else {
