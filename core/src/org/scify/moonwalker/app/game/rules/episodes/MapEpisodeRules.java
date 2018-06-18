@@ -205,8 +205,8 @@ public class MapEpisodeRules extends BaseEpisodeRules {
         Renderable rNextLocation = renderable.getRenderableForLocation(renderable.getTargetLocation());
         final float dStartX = rCurLocation.getxPos();
         final float dStartY = rCurLocation.getyPos();
-        final float dEndX = rNextLocation.getxPos();
-        final float dEndY = rNextLocation.getyPos();
+        final float dEndX = (float) (rNextLocation.getxPos() + rNextLocation.getWidth() / 2.0);
+        final float dEndY = (float) (rNextLocation.getyPos() + rNextLocation.getHeight() / 2.0);
 
         if (!travelOnly) {
             EffectSequence effectSequence = new EffectSequence();
