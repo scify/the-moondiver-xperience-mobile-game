@@ -28,6 +28,14 @@ public class UserInputHandlerImpl extends ChangeListener implements UserInputHan
     private List<UserAction> pendingUserActions = Collections.synchronizedList(new ArrayList<UserAction>());
     protected AppInfo appInfo;
 
+    protected static UserInputHandlerImpl instance;
+
+    public static UserInputHandlerImpl getInstance() {
+        if (instance == null)
+            instance = new UserInputHandlerImpl();
+        return instance;
+    }
+
     public UserInputHandlerImpl() {
         appInfo = AppInfo.getInstance();
     }

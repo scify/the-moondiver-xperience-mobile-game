@@ -79,7 +79,8 @@ public class LGDXRenderableBookKeeper {
             instance = new LGDXRenderableBookKeeper(themeController, userInputHandler);
             return instance;
         } else
-            throw new AlreadyInitializedBookKeeperException("Bookkeeper already initialized.");
+            //throw new AlreadyInitializedBookKeeperException("Bookkeeper already initialized.");
+            return instance;
 
     }
 

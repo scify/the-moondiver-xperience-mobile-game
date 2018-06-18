@@ -27,6 +27,7 @@ public class GameLauncher implements Screen {
     private Viewport gameViewport;
     private OrthographicCamera mainCamera;
     private AppInfo appInfo;
+    Thread thread;
 
     /**
      * We initialize the game, taking into account the underlying MoonWalker (LibGDX) application.
@@ -55,23 +56,18 @@ public class GameLauncher implements Screen {
      * Starts the game.
      */
     private void startNewGame() {
-        final UserInputHandler userInputHandler = new UserInputHandlerImpl();
+        final UserInputHandler userInputHandler = UserInputHandlerImpl.getInstance();
         final RenderingEngine renderingEngine = new MoonWalkerRenderingEngine(userInputHandler, batch, stage);
         final Scenario mainGameScenario = new MoonWalkerScenario();
 
         app.setScreen(new GamePlayScreen(renderingEngine));
-        Thread thread = new Thread(new Runnable() {
+        thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 mainGameScenario.start(renderingEngine, userInputHandler);
-                Gdx.app.exit();
+                //Gdx.app.exit();
             }
         });
-        try {
-            Thread.sleep(1000);
-        }catch (Exception e) {
-
-        }
 
         thread.start();
     }
@@ -98,7 +94,7 @@ public class GameLauncher implements Screen {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
