@@ -155,4 +155,8 @@ public class LocationController {
     public static void setSelectFirstMiddleOfNowhere(boolean selectFirstMiddleOfNowhere) {
         LocationController.selectFirstMiddleOfNowhere = selectFirstMiddleOfNowhere;
     }
+
+    public void dispose() {
+        instance = null;
+    }
 }

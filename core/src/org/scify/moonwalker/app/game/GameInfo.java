@@ -92,6 +92,7 @@ public class GameInfo {
     }
 
     public void save() {
+        System.err.println("INFO: Saving game... Episode " + String.valueOf(mainEpisodeCounter));
         prefs.putString("selectedPlayer", selectedPlayer);
         prefs.putString("currentLocationName", currentLocation.getName());
         if (nextLocation == null)
@@ -125,6 +126,7 @@ public class GameInfo {
         prefs.putFloat("previousTravelPercentageComplete", previousTravelPercentageComplete);
         prefs.putFloat("nextTravelPercentagePossible", nextTravelPercentagePossible);
         prefs.flush();
+        System.err.println("INFO: Saving game... Done.");
         isFromLoad = false;
     }
 
@@ -146,6 +148,8 @@ public class GameInfo {
 
     public void load() {
         reset();
+        System.err.println("INFO: Loading game... Done.");
+
         currentDay = prefs.getInteger("currentDay");
         selectedPlayer = prefs.getString("selectedPlayer");
         setCurrentLocation(getLocationGivenName(prefs.getString("currentLocationName")));

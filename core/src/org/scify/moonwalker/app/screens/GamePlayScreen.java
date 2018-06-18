@@ -3,6 +3,7 @@ package org.scify.moonwalker.app.screens;
 import com.badlogic.gdx.Screen;
 import org.scify.engine.RenderingEngine;
 import org.scify.moonwalker.app.game.GameInfo;
+import org.scify.moonwalker.app.game.LocationController;
 import org.scify.moonwalker.app.game.conversation.RandomResponse;
 import org.scify.moonwalker.app.game.conversation.RandomResponseFactory;
 import org.scify.moonwalker.app.helpers.AppInfo;
@@ -76,6 +77,8 @@ public class GamePlayScreen implements Screen {
         AppInfo.getInstance().dispose();
 
         RandomResponseFactory.getInstance().dispose();
+
+        LocationController.getInstance().dispose();
 
 
         // Clean-up self

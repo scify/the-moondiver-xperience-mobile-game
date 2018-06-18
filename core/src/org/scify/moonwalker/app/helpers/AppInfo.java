@@ -11,12 +11,15 @@ public class AppInfo {
     public static final int REFERENCE_SCREEN_HEIGHT = 1080;
     public static final int REFERENCE_SCREEN_WIDTH = 1920;
 
-    private static AppInfo instance = new AppInfo();
+    private static AppInfo instance;
     private int screenWidth;
     private int screenHeight;
     private float screenDensity = 1;
 
     public static AppInfo getInstance() {
+        if (instance == null) {
+            instance = new AppInfo();
+        }
         return instance;
     }
 

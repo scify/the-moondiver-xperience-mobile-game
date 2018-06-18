@@ -46,8 +46,6 @@ public class ForestEpisodeRules extends FadingEpisodeRules<ForestRenderable> {
             // Initialize conversation
             createConversation(gameState, "conversations/episode_forest.json", renderable.CONVERSATION_BG_IMG_PATH);
         }
-        gameInfo.setMainEpisodeCounter(3);
-        gameInfo.save();
         return super.getNextState(gameState, userAction);
     }
 
@@ -66,6 +64,10 @@ public class ForestEpisodeRules extends FadingEpisodeRules<ForestRenderable> {
             currentState.addRenderable(renderable);
             currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI));
             currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.FOREST_AUDIO_PATH));
+
+            gameInfo.setMainEpisodeCounter(3);
+            gameInfo.save();
+
             super.episodeStartedEvents(currentState);
         }
     }
