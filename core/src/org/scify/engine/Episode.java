@@ -50,12 +50,10 @@ public abstract class Episode<T> implements Callable<T>, Cloneable {
         gameEngine.setRenderingEngine(renderingEngine);
         gameEngine.setInputHandler(userInputHandler);
         T result = null;
-        ExecutorService es = Executors.newFixedThreadPool(1);
-        Future<T> future = es.submit(this);
-        es.shutdown();
+
         try {
-            result = future.get();
-        } catch (InterruptedException | ExecutionException e) {
+            result = this.call();
+        } catch (Exception e ) {
             e.printStackTrace();
         }
         return result;

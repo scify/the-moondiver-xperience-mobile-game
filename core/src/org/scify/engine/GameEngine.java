@@ -69,7 +69,16 @@ public class GameEngine {
         renderingEngine.setGameState(toHandle);
         // and keep on doing the loop in this thread
         // get next user action
-        UserAction uaToHandle = inputHandler.getNextUserAction();
+        UserAction uaToHandle = null;
+        try {
+            uaToHandle = inputHandler.getNextUserAction();
+
+        } catch (IllegalStateException e) {
+            // It may happen that the input is now invalid (e.g. during end of episode)
+            // ...so ignore the error.
+            e.printStackTrace(System.err);
+        }
+
         // apply it and determine the next state
         currentGameState = rules.getNextState(currentGameState, uaToHandle);
     }

@@ -1,7 +1,6 @@
 package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
-import org.scify.engine.renderables.TableRenderable;
 import org.scify.moonwalker.app.game.rules.SinglePlayerRules;
 
 public class BaseEpisodeRules extends SinglePlayerRules {
@@ -10,6 +9,7 @@ public class BaseEpisodeRules extends SinglePlayerRules {
     public static final String GAME_EVENT_EPISODE_STARTED = "GAME_EVENT_EPISODE_STARTED";
     public static final String GAME_EVENT_EPISODE_BACK = "BACK";
     public static final String GAME_EVENT_CALCULATOR_STARTED = "GAME_EVENT_CALCULATOR_STARTED";
+    public static final String GAME_EVENT_APP_HIDE = "GAME_EVENT_APP_HIDE";
 
     //audio related
     public static final String GAME_EVENT_AUDIO_START_UI = "GAME_EVENT_AUDIO_START_UI";
@@ -38,6 +38,10 @@ public class BaseEpisodeRules extends SinglePlayerRules {
     }
 
     protected void handleUserAction(GameState gsCurrent, UserAction userAction) {
+        if (gsCurrent.eventsQueueContainsEvent(GAME_EVENT_APP_HIDE)) {
+            episodeEndedEvents(gsCurrent);
+        }
+
         switch (userAction.getActionCode()) {
             case UserActionCode.FINISH_EPISODE:
                 episodeEndedEvents(gsCurrent);
@@ -56,8 +60,9 @@ public class BaseEpisodeRules extends SinglePlayerRules {
 
     @Override
     public EpisodeEndState determineEndState(GameState currentState) {
-        if (currentState.eventsQueueContainsEventOwnedBy(GAME_EVENT_CALCULATOR_STARTED, this))
-            return new EpisodeEndState(EpisodeEndStateCode.CALCULATOR_STARTED, cleanUpGameState(currentState));
+        if (currentState.eventsQueueContainsEvent(GAME_EVENT_APP_HIDE)) {
+            return new EpisodeEndState(EpisodeEndStateCode.APP_HIDE, currentState);
+        }
         return null;
     }
 

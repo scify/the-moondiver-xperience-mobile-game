@@ -183,4 +183,8 @@ public class AppInfo {
         System.out.println("Total: " + getTotalMemoryInMiB() + "\t Free: " + getFreeMemoryInMiB() + "\t Used: " + getUsedMemoryInMiB() + "\t Max: " + getMaxMemoryInMiB());
 
     }
+
+    public void dispose() {
+        instance = null;
+    }
 }

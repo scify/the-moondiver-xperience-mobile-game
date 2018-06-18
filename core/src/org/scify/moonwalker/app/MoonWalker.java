@@ -7,10 +7,15 @@ import com.badlogic.gdx.Screen;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.screens.GameLauncher;
 
+import java.lang.ref.PhantomReference;
+import java.lang.ref.WeakReference;
+
 /**
  * The MoonWalker class describes instances of the MoonWalker game.
  */
 public class MoonWalker extends Game {
+
+    GameLauncher gameLauncher;
 
     @Override
     public void create() {
@@ -18,7 +23,8 @@ public class MoonWalker extends Game {
         appInfo.setScreenWidth(Gdx.graphics.getWidth());
         appInfo.setScreenHeight(Gdx.graphics.getHeight());
         appInfo.setScreenDensity(Gdx.graphics.getDensity());
-        this.setScreen(new GameLauncher(this));
+        gameLauncher = new GameLauncher(this);
+        setScreen(gameLauncher);
     }
 
     @Override

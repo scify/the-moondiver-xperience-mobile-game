@@ -19,6 +19,7 @@ import org.scify.engine.audio.AudioEngine;
 import org.scify.engine.renderables.Renderable;
 import org.scify.moonwalker.app.MoonWalkerGameState;
 import org.scify.moonwalker.app.MoonwalkerUIPainter;
+import org.scify.moonwalker.app.game.rules.episodes.BaseEpisodeRules;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 import org.scify.moonwalker.app.ui.actors.Updateable;
@@ -121,6 +122,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         System.out.println("Screen width: " + appInfo.getScreenWidth());
         System.out.println("Density: " + Gdx.graphics.getDensity());
         System.out.println("GL version: " + Gdx.graphics.getGLVersion().getDebugVersionString());
+        System.out.println("I am " + toString());
         System.out.println("\n\n");
     }
 
@@ -355,7 +357,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
     @Override
     public synchronized void disposeRenderables() {
         bDisposalOngoing = true;
-        bookKeeper.dispose();
+        bookKeeper.disposeActorsAndTextures();
         resetEngine();
         bDisposalOngoing = false;
     }
@@ -417,5 +419,9 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         }
     }
 
+    @Override
+    public void sendHideEventToEpisode() {
+        currentGameState.addGameEvent(new GameEvent(BaseEpisodeRules.GAME_EVENT_APP_HIDE, null, 0, true));
 
+    }
 }

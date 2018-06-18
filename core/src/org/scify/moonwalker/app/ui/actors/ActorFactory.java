@@ -290,5 +290,8 @@ public class ActorFactory extends ComponentFactory {
         });
     }
 
+    public void dispose() {
+        factory = null;
+    }
 }
 

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeType;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.scify.moonwalker.app.helpers.AppInfo;
@@ -17,9 +18,8 @@ public class ThemeController {
     private Skin defaultSkin;
     private ResourceLocator resourceLocator;
     private AppInfo appInfo;
-    private TextureAtlas textureAtlas;
     private static ThemeController instance;
-    private Map<String, Map<Integer, BitmapFont>> fonts;
+    private Map<String, Map<Integer, FontData>> fonts;
 
     public static ThemeController getInstance() {
         if (instance == null) {
@@ -37,7 +37,7 @@ public class ThemeController {
         setDefaultFontOfSkin();
     }
 
-    protected BitmapFont initFontAndSkin(Skin skin, int fontSize, String fontId) {
+    protected FontData initFontAndSkin(Skin skin, int fontSize, String fontId) {
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.characters = FreeTypeFontGenerator.DEFAULT_CHARS + "α  β  γ  δ  ε  ζ  η  θ  ι  κ  λ  μ  ν  ξ  ο  π  ρ  σ  τ  υ  φ  χ  ψ  ω  ς  Α  Β  Γ  Δ  Ε  Ζ  Η  Θ  Ι  Κ  Λ  Μ  Ν  Ξ  Ο  Π  Ρ  Σ  Τ  Υ  Φ  Χ  Ψ  Ω ϊ ά έ ή ί ό ύ ώ ΐ ΰ Ά Έ Ή Ί Ό Ύ Ώ";
         int width = appInfo.getScreenWidth();
@@ -60,12 +60,15 @@ public class ThemeController {
         BitmapFont font = generator.generateFont(parameter);
         font.getData().markupEnabled = true;
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
         skin.add("default-font", font, BitmapFont.class);
-        textureAtlas = new TextureAtlas(Gdx.files.internal(resourceLocator.getFilePath("fonts/uiskin.atlas")));
+        TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal(resourceLocator.getFilePath("fonts/uiskin.atlas")));
         skin.addRegions(textureAtlas);
         skin.load(Gdx.files.internal(resourceLocator.getFilePath("fonts/uiskin.json")));
+
         generator.dispose();
-        return font;
+
+        return new FontData(textureAtlas, font);
     }
 
     public BitmapFont getFont(int fontSize) {
@@ -74,26 +77,26 @@ public class ThemeController {
 
     public BitmapFont getFont(int fontSize, String fontId) {
         if (fonts.containsKey(fontId)) {
-            Map<Integer, BitmapFont> sizeToFont = fonts.get(fontId);
+            Map<Integer, FontData> sizeToFont = fonts.get(fontId);
             if (sizeToFont.containsKey(fontSize))
-                return sizeToFont.get(fontSize);
+                return sizeToFont.get(fontSize).getFont();
             else {
-                BitmapFont font = initFontAndSkin(new Skin(), fontSize, fontId);
+                FontData font = initFontAndSkin(new Skin(), fontSize, fontId);
                 sizeToFont.put(fontSize, font);
-                return font;
+                return font.getFont();
             }
         } else {
-            BitmapFont font = initFontAndSkin(new Skin(), fontSize, fontId);
-            Map<Integer, BitmapFont> sizeToFont = new HashMap<>();
+            FontData font = initFontAndSkin(new Skin(), fontSize, fontId);
+            Map<Integer, FontData> sizeToFont = new HashMap<>();
             sizeToFont.put(fontSize, font);
             fonts.put(fontId, sizeToFont);
-            return font;
+            return font.getFont();
         }
     }
 
     protected void setDefaultFontOfSkin() {
-        BitmapFont font = initFontAndSkin(defaultSkin, 20, "dialog");
-        Map<Integer, BitmapFont> sizeToFont = new HashMap<>();
+        FontData font = initFontAndSkin(defaultSkin, 20, "dialog");
+        Map<Integer, FontData> sizeToFont = new HashMap<>();
         sizeToFont.put(20, font);
         fonts.put("dialog", sizeToFont);
     }
@@ -106,10 +109,15 @@ public class ThemeController {
         return defaultSkin;
     }
 
-    /*protected void dispose() {
-        font.dispose();
-        textureAtlas.dispose();
-        defaultSkin.dispose();
-    }*/
+    public void dispose() {
+        for (Map.Entry<String, Map<Integer, FontData>> fontMap: fonts.entrySet()) {
+            for(Map.Entry<Integer, FontData> font: fontMap.getValue().entrySet()){
+                font.getValue().dispose();
+            }
+        }
+        fonts.clear();
+        defaultSkin = null;
+        instance = null;
+    }
 
 }

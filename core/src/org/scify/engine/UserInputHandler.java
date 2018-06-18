@@ -8,4 +8,5 @@ public interface UserInputHandler extends ContactListener {
     void addUserActionForRenderable(Renderable r, Object payload);
     void disposeResources();
     void addUserAction(UserAction userAction);
+    void dispose();
 }

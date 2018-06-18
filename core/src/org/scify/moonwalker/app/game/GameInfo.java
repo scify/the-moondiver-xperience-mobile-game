@@ -464,4 +464,8 @@ public class GameInfo {
     public void setShowArrivalConversation(boolean showArrivalConversation) { this.showArrivalConversation = showArrivalConversation; }
 
     public boolean isFromLoad() { return isFromLoad; }
+
+    public void dispose() {
+        instance = null;
+    }
 }

@@ -30,4 +30,6 @@ public interface RenderingEngine<T extends GameState> {
     void render(Float delta);
 
     void resize(int width, int height);
+
+    void sendHideEventToEpisode();
 }

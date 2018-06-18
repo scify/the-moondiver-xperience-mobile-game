@@ -16,6 +16,9 @@ import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.ui.MoonWalkerRenderingEngine;
 import org.scify.moonwalker.app.ui.input.UserInputHandlerImpl;
 
+import java.lang.ref.PhantomReference;
+import java.lang.ref.WeakReference;
+
 /**
  * This class implements a screen (a.k.a. activity) which launches the MoonWalker game.
  */
@@ -28,6 +31,8 @@ public class GameLauncher implements Screen {
     private OrthographicCamera mainCamera;
     private AppInfo appInfo;
     Thread thread;
+    RenderingEngine renderingEngine;
+
 
     /**
      * We initialize the game, taking into account the underlying MoonWalker (LibGDX) application.
@@ -57,7 +62,7 @@ public class GameLauncher implements Screen {
      */
     private void startNewGame() {
         final UserInputHandler userInputHandler = UserInputHandlerImpl.getInstance();
-        final RenderingEngine renderingEngine = new MoonWalkerRenderingEngine(userInputHandler, batch, stage);
+        renderingEngine = new MoonWalkerRenderingEngine(userInputHandler, batch, stage);
         final Scenario mainGameScenario = new MoonWalkerScenario();
 
         app.setScreen(new GamePlayScreen(renderingEngine));
@@ -65,7 +70,6 @@ public class GameLauncher implements Screen {
             @Override
             public void run() {
                 mainGameScenario.start(renderingEngine, userInputHandler);
-                //Gdx.app.exit();
             }
         });
 
@@ -94,8 +98,8 @@ public class GameLauncher implements Screen {
 
     @Override
     public void hide() {
-        dispose();
     }
+
 
     @Override
     public void dispose() {

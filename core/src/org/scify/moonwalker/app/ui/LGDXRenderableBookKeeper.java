@@ -78,9 +78,9 @@ public class LGDXRenderableBookKeeper {
         if (instance == null) {
             instance = new LGDXRenderableBookKeeper(themeController, userInputHandler);
             return instance;
-        } else
-            //throw new AlreadyInitializedBookKeeperException("Bookkeeper already initialized.");
-            return instance;
+        } else {
+            throw new AlreadyInitializedBookKeeperException("Bookkeeper already initialized.");
+        }
 
     }
 
@@ -216,7 +216,7 @@ public class LGDXRenderableBookKeeper {
         textureMap.clear();
     }
 
-    public void dispose() {
+    public void disposeActorsAndTextures() {
         synchronized (stage) {
             // Dispose of actors
             for (Actor actor : stage.getActors()) {
@@ -230,6 +230,12 @@ public class LGDXRenderableBookKeeper {
             stage.clear();
             reset();
         }
+
+    }
+
+    public void dispose() {
+        disposeActorsAndTextures();
+        instance = null;
     }
 
     public boolean renderableUIRepresentationExists(Renderable renderable) {
@@ -342,4 +348,5 @@ public class LGDXRenderableBookKeeper {
             super(sMsg);
         }
     }
+
 }

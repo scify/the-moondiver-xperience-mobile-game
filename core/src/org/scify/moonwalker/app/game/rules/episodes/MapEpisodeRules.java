@@ -281,7 +281,7 @@ public class MapEpisodeRules extends BaseEpisodeRules {
                     return eRes;
                 }
             }));
-            // make sure you quit after a while
+            // make sure you hide after a while
             esRes.addEffect(new DelayEffect(dTransitionTime));
             esRes.addEffect(new FunctionEffect(new Runnable() {
                 @Override

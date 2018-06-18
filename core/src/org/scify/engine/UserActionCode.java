@@ -29,4 +29,5 @@ public class UserActionCode {
     public static final String CHARGE_SPACESHIP_PASS_DAY = "CHARGE_SPACESHIP_PASS_DAY";
     public static final String CALCULATOR_OPERATION = "CALCULATOR_OPERATION";
     public static final String SCREEN_TOUCHED = "SCREEN_TOUCHED";
+    public static final String APP_HIDE = "APP_HIDE";
 }

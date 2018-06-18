@@ -13,9 +13,9 @@ public class ResourceLocator {
     public static ResourceLocator getInstance() {
         if (instance == null) {
             instance = new ResourceLocator();
-            return instance;
-        }else
-            return instance;
+        }
+
+        return instance;
     }
 
     private ResourceLocator() {
@@ -70,5 +70,9 @@ public class ResourceLocator {
         } else {
             return configuration.getPropertyByName(fileHandle, file);
         }
+    }
+
+    public void dispose() {
+        instance = null;
     }
 }

@@ -118,4 +118,8 @@ public class RandomResponseFactory {
             randomResponse.setVisited(false);
         }
     }
+
+    public void dispose() {
+        factory = null;
+    }
 }

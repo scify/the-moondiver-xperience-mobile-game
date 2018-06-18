@@ -1,5 +1,8 @@
 package org.scify.engine;
 
+import com.badlogic.gdx.Gdx;
+import org.scify.moonwalker.app.ui.ThemeController;
+
 import java.util.*;
 
 /**
@@ -103,6 +106,16 @@ public abstract class Scenario {
         // get the next episode from the list of candidate episodes and set it
         // as the current episode
         currentEpisode.disposeEpisodeResources();
+        if (lastEpisodeEndState.endStateCode.equals(EpisodeEndStateCode.APP_QUIT)) {
+            Gdx.app.exit();
+            return;
+        }
+
+        if (lastEpisodeEndState.endStateCode.equals(EpisodeEndStateCode.APP_HIDE)) {
+            Gdx.app.exit();
+            return;
+        }
+
         setCurrentEpisode(getNextEpisode(lastEpisodeEndState));
         playCurrentEpisode();
     }

@@ -10,7 +10,7 @@ import java.util.Date;
 public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable> {
     public static final String COOLDOWN = "COOLDOWN";
     public static final String AVATAR_SELECTED = "AVATAR_SELECTED";
-    public static final String APP_QUIT = "APP_QUIT";
+    public static final String APP_QUIT = "APP_HIDE";
     public static final String NEW_GAME = "NEW_GAME";
     public static final String LOAD = "LOAD";
 

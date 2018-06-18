@@ -9,6 +9,7 @@ public class EpisodeEndStateCode {
     public static final String CALCULATOR_STARTED = "GAME_EVENT_CALCULATOR_STARTED";
     public static final String PREVIOUS_EPISODE = "GAME_EVENT_PREVIOUS_EPISODE";
     public static final String APP_QUIT = "APP_QUIT";
+    public static final String APP_HIDE = "APP_HIDE";
     public static final String SELECT_LOCATION_ON_MAP_EPISODE = "SELECT_LOCATION_ON_MAP_EPISODE";
     public static final String TEMP_EPISODE_FINISHED = "TEMP_EPISODE_FINISHED";
     public static final String SIMPLE_TIMED_IMAGE_EPISODE = "SIMPLE_TIMED_IMAGE_EPISODE";
