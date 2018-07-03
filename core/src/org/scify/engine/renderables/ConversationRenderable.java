@@ -1,8 +1,6 @@
 package org.scify.engine.renderables;
 
 import org.scify.engine.conversation.ConversationLine;
-import org.scify.moonwalker.app.game.GameInfo;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;

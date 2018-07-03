@@ -2,7 +2,7 @@
   {"id": "1", "order":"1", "speakerId":"aunt", "text":"Τα κατάφερες!\nΤώρα μας λείπει μόνο η μπαταρία.", "prerequisites":""},
   {"id": "2", "order":"2", "speakerId":"player", "text":"[#ffeeaaff]Τι κάνει η μπαταρία;", "prerequisites":""},
   {"id": "3", "order":"2", "speakerId":"player", "text":"[#ffeeaaff]Ανυπομονώ...", "prerequisites":""},
-  {"id": "4", "order":"3", "speakerId":"aunt", "text":"Με τη μπαταρία θα μπορέσεις να συλλέξεις\nόση ενέργεια χρειάζεσαι για τη Σελήνη!", "prerequisites":""},
+  {"id": "4", "order":"3", "speakerId":"aunt", "text":"Με τη μπαταρία θα έχεις όση ενέργεια χρειάζεσαι για τη Σελήνη!", "prerequisites":""},
   {"id": "5", "order":"4", "speakerId":"aunt", "text":"Πάμε στο Παρίσι για το τελευταίο μας εξάρτημα!", "prerequisites":""},
   {"id": "6", "order":"5", "speakerId":"aunt", "text":"Η Πόλη του Φωτός και μία έκπληξη σε περιμένει...", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
 ]

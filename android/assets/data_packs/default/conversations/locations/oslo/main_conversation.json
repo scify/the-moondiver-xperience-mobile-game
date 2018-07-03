@@ -18,8 +18,7 @@
   {"id": "17", "order":"16", "speakerId":"christian", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_response_for_question"},
   {"id": "18", "order":"17", "speakerId":"christian", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_question_5"},
   {"id": "19", "order":"18", "speakerId":"christian", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_response_for_question"},
-  {"id": "20", "order":"19", "speakerId":"christian", "text":"Μπράβο!\nΈδωσες αρκετές σωστές απαντήσεις!", "prerequisites":"player_has_3_correct", "onEnterCurrentOrderTrigger":"tada"},
-  {"id": "21", "order":"20", "speakerId":"christian", "text":"Άλλος ένας εξελιγμένος συλλέκτης\nηλιακής ακτινοβολίας είναι δικός σου!", "prerequisites":"player_has_3_correct"},
-  {"id": "22", "order":"21", "speakerId":"christian", "text":"Καλή επιτυχία!", "prerequisites":"player_has_3_correct", "onExitCurrentOrderTrigger":"end"},
-  {"id": "23", "order":"22", "speakerId":"christian", "text":"Χμ... Δεν έδωσες αρκετές σωστές απαντήσεις\nΈλα πίσω ξανά αύριο.", "prerequisites":"player_has_less_than_3_correct", "onExitCurrentOrderTrigger":"end"}
+  {"id": "20", "order":"19", "speakerId":"christian", "text":"Μπράβο! τα κατάφερες!", "prerequisites":"player_has_3_correct", "onEnterCurrentOrderTrigger":"tada"},
+  {"id": "21", "order":"20", "speakerId":"christian", "text":"O συλλέκτης X4000 είναι δικός σου!\nΚαλή συνέχεια!", "prerequisites":"player_has_3_correct", "onExitCurrentOrderTrigger":"end"},
+  {"id": "22", "order":"21", "speakerId":"christian", "text":"Χμ... Δεν έδωσες αρκετές σωστές απαντήσεις\nΈλα πίσω ξανά αύριο.", "prerequisites":"player_has_less_than_3_correct", "onExitCurrentOrderTrigger":"end"}
 ]

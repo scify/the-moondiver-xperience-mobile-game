@@ -14,6 +14,7 @@ import java.util.Set;
 
 import static org.scify.engine.EpisodeEndStateCode.*;
 import static org.scify.moonwalker.app.game.rules.ConversationRules.EVENT_SHOW_QUIZ_EPISODE;
+import static org.scify.moonwalker.app.game.rules.ConversationRules.EVENT_WAIT_UNTIL_NIGHT;
 import static org.scify.moonwalker.app.game.rules.episodes.MapEpisodeRules.ORIGIN_MIDDLE_OF_NOWHERE;
 import static org.scify.moonwalker.app.game.scenarios.MoonWalkerScenario.NEXT_LOCATION;
 
@@ -41,6 +42,8 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
     @Override
     public void episodeStartedEvents(final GameState gameState) {
         if (!isEpisodeStarted(gameState)) {
+            boolean nightMode = false;
+            boolean hasJustFailedToArriveAtLocation = false;
             init(gameState);
             renderable = new CockpitRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), COCKPIT_ID);
             // if last travel was successful
@@ -53,6 +56,8 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
             else if (isAtNowhereLocation()) {
                 episodeLocation = locationController.getNowhereLocation(ORIGIN_MIDDLE_OF_NOWHERE, 0, 0);
                 if (hasJustFailedToArriveAtLocation()) {
+                    hasJustFailedToArriveAtLocation = true;
+                    createConversation(gameState, "conversations/locations/middleOfNowhere.json", renderable.CONVERSATION_BG_IMG_PATH);
                     locationController.toggleSelectFirstMiddleOfNowhere();
                     episodeLocation = locationController.getNowhereLocation(ORIGIN_MIDDLE_OF_NOWHERE, 0, 0);
                     gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI));
@@ -60,6 +65,8 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                     if (gameInfo.getRemainingEnergy() == 0)
                         gameInfo.setChargeRequestFlag();
                     gameInfo.setAfterTravel(false);
+                } else if (gameInfo.isChargeRequestFlag()){
+                    nightMode = true;
                 }
                 if (!gameInfo.isBackGroundMusicPlaying()) {
                     gameInfo.setBackGroundMusicPlaying(true);
@@ -75,8 +82,10 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
             renderable.initSubRenderables(episodeLocation);
             renderable.setZIndex(1);
             setCockpitFieldValues();
+            if (hasJustFailedToArriveAtLocation)
+                gameInfo.dayPassed();
             addAfterEffectEventsForEpisodeRenderable(gameState);
-            setOutsideBackground(episodeLocation);
+            setOutsideBackground(episodeLocation, nightMode);
             addAudioGameEvents(gameState);
             gameState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
             gameState.addRenderable(renderable);
@@ -92,6 +101,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
         // set the next location to null, so the user has to select it from the map
         gameInfo.setNextLocation(null);
         initNextLocation(currentLocation);
+        gameInfo.setBackGroundMusicPlaying(false);
     }
 
     protected void initNextLocation(Location currentLocation) {
@@ -156,7 +166,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
         boolean isAtNowhere = isAtNowhereLocation();
         boolean isAfterTravel = gameInfo.isAfterTravel();
         boolean ret = isAfterTravel && isAtNowhere;
-        return  ret;
+        return ret;
     }
 
     protected boolean isAtNowhereLocation() {
@@ -164,11 +174,11 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
         return ret;
     }
 
-    protected void setOutsideBackground(Location location) {
+    protected void setOutsideBackground(Location location, boolean nightMode) {
         if (gameInfo.isAtForest()) {
-            renderable.setOutsideBackground(renderable.FOREST_BG_IMG_PATH);
+            renderable.setOutsideBackground(renderable.FOREST_BG_IMG_PATH, nightMode);
         } else {
-            renderable.setOutsideBackground(location.getCockpitBG());
+            renderable.setOutsideBackground(location.getCockpitBG(), nightMode);
         }
     }
 
@@ -182,6 +192,11 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                 gameInfo.setBackGroundMusicPlaying(false);
                 gameState.setAdditionalDataEntry(NEXT_LOCATION, gameInfo.getCurrentLocation());
                 goToEpisode(gameState, new GameEvent(LOCATION_EPISODE_STARTED, null, this));
+            } else if (eventTrigger.contains(EVENT_WAIT_UNTIL_NIGHT)) {
+                gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.NIGHT_AUDIO_PATH));
+                renderable.updateDaysLeft(gameInfo.getDaysLeftForDestination());
+                renderable.setOutsideBackgroundNight();
+
             }
         }
 
@@ -352,9 +367,6 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
         float newPercentagePossible = gameInfo.getNextTravelPercentagePossible() + percentage;
         if (newPercentagePossible > 99.0f)
             newPercentagePossible = 100f;
-        else {
-            gameInfo.dayPassed();
-        }
         gameInfo.setNextTravelPercentagePossible(newPercentagePossible);
     }
 }

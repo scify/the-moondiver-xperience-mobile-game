@@ -6,10 +6,7 @@ import org.scify.engine.renderables.ActionButtonRenderable;
 import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.TextLabelRenderable;
-import org.scify.engine.renderables.effects.DelayEffect;
-import org.scify.engine.renderables.effects.EffectSequence;
-import org.scify.engine.renderables.effects.FadeEffect;
-import org.scify.engine.renderables.effects.VisibilityEffect;
+import org.scify.engine.renderables.effects.*;
 import org.scify.moonwalker.app.game.Location;
 
 import java.util.HashSet;
@@ -183,7 +180,7 @@ public class CockpitRenderable extends FadingTableRenderable {
         buttonRenderable.setVisible(false);
     }
 
-    public void turnOffLightOffAllButtons () {
+    public void turnOffLightOffAllButtons() {
         contactLightedButton.setVisible(false);
         mapLightedButton.setVisible(false);
         spaceshipInventoryLightedButton.setVisible(false);
@@ -266,7 +263,13 @@ public class CockpitRenderable extends FadingTableRenderable {
         return contactLightedButton;
     }
 
-    public void setOutsideBackground(String imgPath) {
+    protected double backGroundAlpha = 0.0;
+
+    public void setOutsideBackground(String imgPath, final boolean nightMode) {
+        if (nightMode)
+            backGroundAlpha = 0.5;
+        else
+            backGroundAlpha = 1.0;
         outside_background = createImageRenderable(OUTSIDE_BACKGROUND_ID, imgPath, true, false, 0);
         outside_background.setHeight(appInfo.getScreenHeight());
         outside_background.setWidth(appInfo.getScreenWidth());
@@ -274,12 +277,29 @@ public class CockpitRenderable extends FadingTableRenderable {
         fadeInEffects.addEffect(new FadeEffect(1.0, 0, 0));
         fadeInEffects.addEffect(new VisibilityEffect(true));
         fadeInEffects.addEffect(new DelayEffect(200));
-        fadeInEffects.addEffect(new FadeEffect(0.0, 1.0, 1500));
+        fadeInEffects.addEffect(new FadeEffect(0.0, backGroundAlpha, 1500));
         outside_background.addEffect(fadeInEffects);
         allRenderables.add(outside_background);
     }
 
+    public void setOutsideBackgroundNight() {
+        outside_background.addEffect(new FadeEffect(backGroundAlpha, 0.5, 1000));
+    }
+
     public void fadeoutOutsideBackground() {
-        outside_background.addEffect(new FadeEffect(1.0, 0, 700));
+        outside_background.addEffect(new FadeEffect(backGroundAlpha, 0, 700));
+    }
+
+    public void updateDaysLeft(final int value) {
+        EffectSequence es = new EffectSequence();
+        es.addEffect(new FadeEffect(1, 0, 1000));
+        es.addEffect(new FunctionEffect(new Runnable() {
+            @Override
+            public void run() {
+                daysLeftLabel.setLabel(value + "");
+            }
+        }));
+        es.addEffect(new FadeEffect(0, 1, 1000));
+        daysLeftLabel.addEffect(es);
     }
 }

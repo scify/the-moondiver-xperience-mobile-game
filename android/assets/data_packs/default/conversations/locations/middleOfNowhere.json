@@ -1,0 +1,3 @@
+[
+  {"id": "1", "order":"1", "speakerId":"player", "text":"[#ffeeaaff][[Φτού! Δεν υπολόγισα καλά και χάνω μία μέρα μέχρι να νυχτώσει!]", "prerequisites":"", "buttonText":"Περίμενε", "onExitCurrentOrderTrigger":"end,wait_until_night"}
+]

@@ -33,6 +33,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
     public static final String EVENT_TADA = "tada";
     public static final String EVENT_SHOW_QUIZ_EPISODE = "show_quiz_episode";
     public static final String EVENT_RANDOM_RESPONSE = "load_response_for_question";
+    public static final String EVENT_WAIT_UNTIL_NIGHT = "wait_until_night";
 
     /**
      * All conversation lines that are read from the json file for
