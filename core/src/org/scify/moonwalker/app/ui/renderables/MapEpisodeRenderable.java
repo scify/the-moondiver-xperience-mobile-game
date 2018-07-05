@@ -53,6 +53,7 @@ public class MapEpisodeRenderable extends Renderable {
     }
 
     protected boolean travelOnly;
+    protected boolean acceptInput;
 
     public Set<Renderable> getAllRenderables() {
         return allRenderables;
@@ -65,7 +66,7 @@ public class MapEpisodeRenderable extends Renderable {
         this.nextAllowedLocation = nextAllowedLocation;
         this.currentLocation = currentLocation;
         this.travelOnly = bTravelOnly;
-
+        acceptInput = false;
         initSubRenderables();
     }
 
@@ -279,6 +280,12 @@ public class MapEpisodeRenderable extends Renderable {
             // and highlighted
             EffectSequence eConstant = new EffectSequence();
             eConstant.addEffect(new DelayEffect(3000)); // Await normal fade in
+            eConstant.addEffect(new FunctionEffect(new Runnable() {
+                @Override
+                public void run() {
+                    acceptInput = true;
+                }
+            }));
             eConstant.addEffect(new BounceEffect(0, 20, 2000));
             pin.addEffect(eConstant);
         }
@@ -371,5 +378,13 @@ public class MapEpisodeRenderable extends Renderable {
 
     public void setTargetLocation(Location targetLocation) {
         this.targetLocation = targetLocation;
+    }
+
+    public boolean canAcceptInput() {
+        return acceptInput;
+    }
+
+    public void dissableInput() {
+        acceptInput = false;
     }
 }

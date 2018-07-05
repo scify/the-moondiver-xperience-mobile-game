@@ -34,12 +34,10 @@ public class MapEpisodeRules extends BaseEpisodeRules {
     protected Location targetMiddleOfNowhere;
     protected Location originLocation;
     protected Location targetLocation;
-    protected boolean acceptInput;
 
 
     public MapEpisodeRules(boolean bTravelOnly) {
         super();
-        acceptInput = false;
         travelOnly = bTravelOnly;
         locationController = LocationController.getInstance();
     }
@@ -78,7 +76,6 @@ public class MapEpisodeRules extends BaseEpisodeRules {
                         renderable.getMissionHUD().setVisible(false);
                         renderable.getDistanceHUD().setVisible(false);
                         renderable.getLocationNameHUD().setVisible(false);
-                        acceptInput = true;
                     }
                 });
             } else {
@@ -164,7 +161,7 @@ public class MapEpisodeRules extends BaseEpisodeRules {
                 // And show appropriate effect
                 if (!travelOnly) {
                     // Also update game info
-                    if (acceptInput) {
+                    if (renderable.canAcceptInput()) {
                         // Update next location
                         Location nextLocation = (Location)userAction.getActionPayload();
                         renderable.setNextLocation(nextLocation);
@@ -172,7 +169,8 @@ public class MapEpisodeRules extends BaseEpisodeRules {
                         gameInfo.getNextLocation().setDistanceInKilometers(gameInfo.getCurrentLocation().getDistanceFromLocation(nextLocation));
                         gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.LOCATION_SELECTED_AUDIO_PATH));
                         gameInfo.setChargeRequestFlag();
-                        acceptInput = false;
+                        renderable.dissableInput();
+                        createSpaceshipMovementEffect(gsCurrent);
                     }else {
                         gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WRONG_BUTTON_AUDIO_PATH));
                     }
@@ -181,8 +179,8 @@ public class MapEpisodeRules extends BaseEpisodeRules {
                     Location nextLocation = (Location)userAction.getActionPayload();
                     renderable.setNextLocation(nextLocation);
                     gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.TRAVEL_AUDIO_PATH));
+                    createSpaceshipMovementEffect(gsCurrent);
                 }
-                createSpaceshipMovementEffect(gsCurrent);
                 break;
             case UserActionCode.QUIT:
                 EffectSequence eFadeOutAndEnd = renderable.getDefaultFadeOutEffect();

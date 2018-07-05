@@ -7,10 +7,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class CreditsRenderable extends FadingTableRenderable {
-    protected static final String ABOUT_TEXT = "Το παιχνίδι ____ δημιουργήθηκε από τη SciFY στο Πλαίσιο του προγράμματος Stem Powering Youth με την ευγενική χορηγία του Ιδρύματος Vodafone.\n" +
+    protected static final String ABOUT_TEXT = "Το παιχνίδι The Moondiver Xperience δημιουργήθηκε από τη SciFY στο Πλαίσιο του προγράμματος Stem Powering Youth με την ευγενική χορηγία του Ιδρύματος Vodafone.\n" +
             "\nGame creation: SciFY\n" +
             "Εικονογράφηση: Λέλα Στρούτση\n" +
-            "Sounds/Audio FX: Λευτέρης Δούρος / Άννα Δρόσου\n";
+            "Sounds/Audio FX: Λευτέρης Δούρος / Άννα Δρόσου\n" +
+            "Fonts: Petros Vassiadis";
     //renderable image paths
     protected static final String ABOUT_BG_IMG_PATH = "img/episode_charge/conversation_bg.png";
 

@@ -4,5 +4,6 @@
   {"id": "3", "order":"3", "speakerId":"oratios", "text":"Εσύ ας πούμε τώρα δεν ζυγίζεις ούτε 13 κιλά!", "prerequisites":""},
   {"id": "4", "order":"4", "speakerId":"player", "text":"[#ffeeaaff]Αυτό έχεις να πεις μόνο; Αχ Οράτιε...", "prerequisites":""},
   {"id": "5", "order":"4", "speakerId":"player", "text":"[#ffeeaaff]Άσε τα κιλά και κοίτα εκεί!", "prerequisites":""},
-  {"id": "6", "order":"5", "speakerId":"oratios", "text":"Είναι μαγική η έκλειψη Ηλίου από εδώ! Σ’ ευχαριστώ {{μικρέ μου φίλε/μικρή μου φίλη}}...", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
+  {"id": "6", "order":"5", "speakerId":"oratios", "text":"Είναι μαγική η έκλειψη Ηλίου από εδώ! Σ’ ευχαριστώ {{μικρέ μου φίλε/μικρή μου φίλη}}...", "prerequisites":"", "onExitCurrentOrderTrigger":"rooster"},
+  {"id": "7", "order":"6", "speakerId":"player", "text":"[#ffeeaaff]Κόκορας; Στη Σελήνη;", "prerequisites":"","onExitCurrentOrderTrigger":"end"}
 ]

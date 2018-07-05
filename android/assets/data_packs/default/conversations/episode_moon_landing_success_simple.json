@@ -4,5 +4,6 @@
   {"id": "3", "order":"3", "speakerId":"oratios", "text":"Ελπίζω να βγάζει καλές φωτό η μπακατέλα σου...", "prerequisites":""},
   {"id": "4", "order":"4", "speakerId":"player", "text":"[#ffeeaaff]Μπακατέλα; Χα! Εδώ μιλάμε για εργαλείο, όχι αστεία!", "prerequisites":""},
   {"id": "5", "order":"5", "speakerId":"player", "text":"[#ffeeaaff]Μόνο αυτό μπορεί να βγάλει φωτό σε αυτές τις συνθήκες... [#ff0000ff]\u00b1", "prerequisites":""},
-  {"id": "6", "order":"6", "speakerId":"player", "text":"[#ffeeaaff] Δυστυχώς δεν προλάβαμε την έκλειψη Ηλίου...", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
+  {"id": "6", "order":"6", "speakerId":"player", "text":"[#ffeeaaff] Δυστυχώς δεν προλάβαμε την έκλειψη Ηλίου...", "prerequisites":"", "onExitCurrentOrderTrigger":"rooster"},
+  {"id": "7", "order":"7", "speakerId":"player", "text":"[#ffeeaaff]Κόκορας; Στη Σελήνη;", "prerequisites":"","onExitCurrentOrderTrigger":"end"}
 ]
