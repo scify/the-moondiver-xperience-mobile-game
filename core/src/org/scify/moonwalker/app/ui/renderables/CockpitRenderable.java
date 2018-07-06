@@ -284,6 +284,7 @@ public class CockpitRenderable extends FadingTableRenderable {
 
     public void setOutsideBackgroundNight() {
         outside_background.addEffect(new FadeEffect(backGroundAlpha, 0.5, 1000));
+        backGroundAlpha = 0.5;
     }
 
     public void fadeoutOutsideBackground() {

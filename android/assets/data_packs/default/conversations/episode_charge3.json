@@ -1,4 +1,4 @@
 [
   {"id": "1", "order":"1", "speakerId":"aunt", "text":"Πρόσεχε όμως: μη φορτίσεις παραπάνω, γιατί χάνεις χρόνο χωρίς λόγο και δεν θα προλάβουμε την έκλειψη!", "prerequisites":""},
-  {"id": "2", "order":"2", "speakerId":"aunt", "text":"Σούπερ! Είμαστε έτοιμοι για απογείωση! Ξεκίνα αμέσως! Πήγαινε στο πιλοτήριο και πάτησε \"Απογείωση\"", "prerequisites":"","onExitCurrentOrderTrigger":"end"}
+  {"id": "2", "order":"2", "speakerId":"aunt", "text":"Σούπερ! Είμαστε έτοιμοι για απογείωση! Πήγαινε στο πιλοτήριο και πάτησε \"Απογείωση\"", "prerequisites":"","onExitCurrentOrderTrigger":"end"}
 ]
