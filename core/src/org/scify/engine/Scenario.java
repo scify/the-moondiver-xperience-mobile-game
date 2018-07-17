@@ -102,7 +102,13 @@ public abstract class Scenario {
         }
         // The endState is a variable containing a code describing the way
         // the episode was terminated, as well as the current game state
-        lastEpisodeEndState = (EpisodeEndState) currentEpisode.play(renderingEngine, userInputHandler);
+        EpisodePlayResult<EpisodeEndState> playResult = currentEpisode.play(renderingEngine, userInputHandler);
+        if (!playResult.isSuccess()) {
+            System.err.println("ERROR : " + playResult.message);
+            throw new RuntimeException("ERROR : " + playResult.message);
+        }
+        lastEpisodeEndState = (EpisodeEndState) playResult.value;
+
         // get the next episode from the list of candidate episodes and set it
         // as the current episode
         currentEpisode.disposeEpisodeResources();

@@ -126,7 +126,8 @@ public class ConversationRules extends MoonWalkerBaseRules {
     @Override
     public GameState getNextState(GameState gameState, UserAction userAction) {
         // If got an answer (NEXT, TEXT, BUTTON, ...)
-        if (gotAnswer(userAction)) {
+        boolean isConversationAnswer = gotAnswer(userAction);
+        if (isConversationAnswer) {
             // Clear paused conversation flag
             resumeConversation(gameState);
             ConversationLine selected = getSelectedConversationLine(gameState, userAction);
@@ -143,11 +144,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
             return gameState;
 
         // Move to appropriate next order
-        if(userAction != null)
-            // If no explicit next order has been requested
-            updateCurrentConversationOrderBasedOnUserAction(gameState, userAction);
-        else
-            normallyUpdateConversationOrder();
+        updateCurrentConversationOrder(gameState, userAction);
 
         nextLines = extractNextLines(gameState, userAction);
         // Call event that handles conversation order change
@@ -157,12 +154,22 @@ public class ConversationRules extends MoonWalkerBaseRules {
         return gameState;
     }
 
-    protected void updateCurrentConversationOrderBasedOnUserAction(GameState gameState, UserAction userAction) {
-        if (getSelectedConversationLine(gameState, userAction).getNextOrder() == 0) {
-            currentConversationOrderId++; // Move to next normally
-        } else {
-            // else update order based on request from current conversation line
-            currentConversationOrderId = getSelectedConversationLine(gameState, userAction).getNextOrder();
+    protected void updateCurrentConversationOrder(GameState gameState, UserAction userAction) {
+        if (userAction == null)
+            normallyUpdateConversationOrder();
+        else {
+            ConversationLine cl = getSelectedConversationLine(gameState, userAction);
+            if (cl == null)
+                normallyUpdateConversationOrder();
+            else {
+                int nextOrder = cl.getNextOrder();
+                if (nextOrder == 0) {
+                    currentConversationOrderId++; // Move to next normally
+                } else {
+                    // else update order based on request from current conversation line
+                    currentConversationOrderId = nextOrder;
+                }
+            }
         }
     }
 

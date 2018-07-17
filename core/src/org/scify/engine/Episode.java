@@ -46,17 +46,15 @@ public abstract class Episode<T> implements Callable<T>, Cloneable {
      * @param userInputHandler The user input handler that provides the interaction.
      * @return An instance of an object which descirbes how the episode ended.
      */
-    public T play(RenderingEngine renderingEngine, UserInputHandler userInputHandler) {
+    public EpisodePlayResult<T> play(RenderingEngine renderingEngine, UserInputHandler userInputHandler) {
         gameEngine.setRenderingEngine(renderingEngine);
         gameEngine.setInputHandler(userInputHandler);
-        T result = null;
-
         try {
-            result = this.call();
+            return new EpisodePlayResult<>(true, this.call());
         } catch (Exception e ) {
             e.printStackTrace();
+            return new EpisodePlayResult<>(false, null, e.getMessage());
         }
-        return result;
     }
 
     public String getName() {
