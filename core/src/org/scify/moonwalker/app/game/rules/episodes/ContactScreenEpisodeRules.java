@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import static org.scify.moonwalker.app.game.rules.ConversationRules.EVENT_RING_PHONE;
+import static org.scify.moonwalker.app.game.rules.ConversationRules.EVENT_SKIP_TUTORIAL;
 
 public class ContactScreenEpisodeRules extends FadingEpisodeRules<ContactScreenRenderable> {
 
@@ -85,5 +86,17 @@ public class ContactScreenEpisodeRules extends FadingEpisodeRules<ContactScreenR
         }
 
         super.onEnterConversationOrder(gsCurrent, lineEntered);
+    }
+
+    @Override
+    protected void onExitConversationOrder(GameState gsCurrent, ConversationLine lineExited) {
+        Set<String> eventTrigger;
+        if (gsCurrent.eventsQueueContainsEvent(ConversationRules.ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT)) {
+            eventTrigger = (Set<String>) gsCurrent.getGameEventWithType(ConversationRules.ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
+            if (eventTrigger.contains(EVENT_SKIP_TUTORIAL)) {
+                gameInfo.setTutorialMode(false);
+            }
+        }
+        super.onExitConversationOrder(gsCurrent, lineExited);
     }
 }

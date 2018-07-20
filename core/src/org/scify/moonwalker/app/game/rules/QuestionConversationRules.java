@@ -12,11 +12,11 @@ import java.util.*;
 import static org.scify.moonwalker.app.game.rules.episodes.BaseEpisodeRules.GAME_EVENT_AUDIO_START_UI;
 
 public class QuestionConversationRules extends ConversationRules {
-    public static final String PLAYER_HAS_3_CORRECT = "player_has_3_correct";
+    public static final String PLAYER_HAS_ENOUGH_CORRECT = "player_has_enough_correct";
     public static final String CORRECT_ANSWERS = "CORRECT_ANSWERS";
     public static final String FIRST_TIME = "first_time";
     public static final String RETRY = "retry";
-    public static final String PLAYER_HAS_LESS_THAN_3_CORRECT = "player_has_less_than_3_correct";
+    public static final String PLAYER_HAS_LESS_THAN_ENOUGH_CORRECT = "player_has_less_than_enough_correct";
 
     protected QuestionService questionService;
     protected List<QuestionCategory> questionCategories;
@@ -35,8 +35,10 @@ public class QuestionConversationRules extends ConversationRules {
     protected boolean lastQuizAnswerCorrect;
     // we keep track of whether this scientist is visited for the first time
     protected boolean firstTime;
+    //minimum correct answers required
+    protected int minimumCorrectAnswers;
 
-    public QuestionConversationRules(String conversationJSONFilePath, String bgImgPath, String quizSuccessFulConversationFilePath, String quizFailedConversationFilePath, String correctAudioPath, String wrongAudioPath, boolean firstTime) {
+    public QuestionConversationRules(String conversationJSONFilePath, String bgImgPath, String quizSuccessFulConversationFilePath, String quizFailedConversationFilePath, String correctAudioPath, String wrongAudioPath, boolean firstTime, int minimumCorrectAnswers) {
         super(conversationJSONFilePath, bgImgPath);
         //questionService = QuestionServiceJSON.getInstance();
         questionService = new QuestionServiceJSON();
@@ -48,6 +50,7 @@ public class QuestionConversationRules extends ConversationRules {
         this.correctAudioPath = correctAudioPath;
         this.wrongAudioPath = wrongAudioPath;
         this.firstTime = firstTime;
+        this.minimumCorrectAnswers = minimumCorrectAnswers;
     }
 
     @Override
@@ -66,7 +69,7 @@ public class QuestionConversationRules extends ConversationRules {
                 evaluateAnswerAndSetGameInfo(answer, gameState);
             }
         }
-        if (Integer.valueOf((String) gameState.getAdditionalDataEntry(CORRECT_ANSWERS)) >= 3) {
+        if (Integer.valueOf((String) gameState.getAdditionalDataEntry(CORRECT_ANSWERS)) >= minimumCorrectAnswers) {
             gameInfo.setLastQuizSuccessFull(true);
         } else {
             gameInfo.setLastQuizSuccessFull(false);
@@ -107,12 +110,12 @@ public class QuestionConversationRules extends ConversationRules {
             return false;
 
         // If we need 3 correct
-        if (next.getPrerequisites().contains(PLAYER_HAS_3_CORRECT)) {
-            return Integer.valueOf((String) currentGameState.getAdditionalDataEntry(CORRECT_ANSWERS)) >= 3;
+        if (next.getPrerequisites().contains(PLAYER_HAS_ENOUGH_CORRECT)) {
+            return Integer.valueOf((String) currentGameState.getAdditionalDataEntry(CORRECT_ANSWERS)) >= minimumCorrectAnswers;
         }
 
-        if (next.getPrerequisites().contains(PLAYER_HAS_LESS_THAN_3_CORRECT)) {
-            return Integer.valueOf((String) currentGameState.getAdditionalDataEntry(CORRECT_ANSWERS)) < 3;
+        if (next.getPrerequisites().contains(PLAYER_HAS_LESS_THAN_ENOUGH_CORRECT)) {
+            return Integer.valueOf((String) currentGameState.getAdditionalDataEntry(CORRECT_ANSWERS)) < minimumCorrectAnswers;
         }
 
         if (next.getPrerequisites().contains(FIRST_TIME)) {
@@ -189,16 +192,19 @@ public class QuestionConversationRules extends ConversationRules {
         }
     }
 
+    protected Question question = null;
+
     protected void loadRandomQuestion(String eventName, ConversationLine lineEntered, GameState gsCurrent) {
-        Question question;
-        if (eventName.equals(conversationRules.EVENT_LOAD_QUESTION)) {
-            // load a random question regardless of it's category
-            question = questionService.nextQuestion();
-        } else {
-            // if a category is present, we need to the the number after the last underscore
-            // which indicates the id of the question category
-            String categoryId = eventName.substring(eventName.lastIndexOf('_') + 1).trim();
-            question = questionService.nextQuestionForCategory(Integer.parseInt(categoryId));
+        if (minimumCorrectAnswers > 1 || question == null) {
+            if (eventName.equals(conversationRules.EVENT_LOAD_QUESTION)) {
+                // load a random question regardless of it's category
+                question = questionService.nextQuestion();
+            } else {
+                // if a category is present, we need to the the number after the last underscore
+                // which indicates the id of the question category
+                String categoryId = eventName.substring(eventName.lastIndexOf('_') + 1).trim();
+                question = questionService.nextQuestionForCategory(Integer.parseInt(categoryId));
+            }
         }
         addQuestionAsRenderable(question, gsCurrent, lineEntered);
     }

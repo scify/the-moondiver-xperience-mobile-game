@@ -4,8 +4,8 @@
   {"id": "3", "order":"3", "speakerId":"christian", "text":"Αφού έφτασες ως εδώ, συγχαρητήρια!", "prerequisites":"first_time"},
   {"id": "4", "order":"4", "speakerId":"christian", "text":"Θα φύγεις από τη Γη λοιπόν...\nΤι ξέρεις όμως για κάποιους κινδύνους στο διάστημα;", "prerequisites":"first_time"},
   {"id": "5", "order":"5", "speakerId":"christian", "text":"Για τους μετεωρίτες; Για τους κομήτες;", "prerequisites":"first_time"},
-  {"id": "6", "order":"6", "speakerId":"player", "text":"Τα πάντα ξέρω! Ακούω...", "prerequisites":"", "prerequisites":"first_time"},
-  {"id": "7", "order":"6", "speakerId":"player", "text":"Για να δούμε...", "prerequisites":"", "prerequisites":"first_time"},
+  {"id": "6", "order":"6", "speakerId":"player", "text":"[#ffeeaaff]Τα πάντα ξέρω! Ακούω...", "prerequisites":"", "prerequisites":"first_time"},
+  {"id": "7", "order":"6", "speakerId":"player", "text":"[#ffeeaaff]Για να δούμε...", "prerequisites":"", "prerequisites":"first_time"},
   {"id": "8", "order":"7", "speakerId":"christian", "text":"Εντάξει λοιπόν, ας δούμε τι ξέρεις\nτώρα για τους μετεωρίτες και κομήτες...", "prerequisites":"first_time"},
   {"id": "9", "order":"8", "speakerId":"christian", "text":"Καλημέρα!\nΓια να δούμε πως θα τα πας σήμερα.", "prerequisites":"retry"},
   {"id": "10", "order":"9", "speakerId":"christian", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_question_5"},
@@ -18,7 +18,7 @@
   {"id": "17", "order":"16", "speakerId":"christian", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_response_for_question"},
   {"id": "18", "order":"17", "speakerId":"christian", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_question_5"},
   {"id": "19", "order":"18", "speakerId":"christian", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_response_for_question"},
-  {"id": "20", "order":"19", "speakerId":"christian", "text":"Μπράβο! τα κατάφερες!", "prerequisites":"player_has_3_correct", "onEnterCurrentOrderTrigger":"tada"},
-  {"id": "21", "order":"20", "speakerId":"christian", "text":"O συλλέκτης X4000 είναι δικός σου!\nΚαλή συνέχεια!", "prerequisites":"player_has_3_correct", "onExitCurrentOrderTrigger":"end"},
-  {"id": "22", "order":"21", "speakerId":"christian", "text":"Χμ... Δεν έδωσες αρκετές σωστές απαντήσεις\nΈλα πίσω ξανά αύριο.", "prerequisites":"player_has_less_than_3_correct", "onExitCurrentOrderTrigger":"end"}
+  {"id": "20", "order":"19", "speakerId":"christian", "text":"Μπράβο! τα κατάφερες!", "prerequisites":"player_has_enough_correct", "onEnterCurrentOrderTrigger":"tada"},
+  {"id": "21", "order":"20", "speakerId":"christian", "text":"O συλλέκτης X4000 είναι δικός σου!\nΚαλή συνέχεια!", "prerequisites":"player_has_enough_correct", "onExitCurrentOrderTrigger":"end"},
+  {"id": "22", "order":"21", "speakerId":"christian", "text":"Χμ... Δεν έδωσες αρκετές σωστές απαντήσεις\nΈλα πίσω ξανά αύριο.", "prerequisites":"player_has_less_than_enough_correct", "onExitCurrentOrderTrigger":"end"}
 ]

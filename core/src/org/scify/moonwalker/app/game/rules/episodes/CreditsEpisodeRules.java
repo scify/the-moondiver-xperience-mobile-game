@@ -37,8 +37,12 @@ public class CreditsEpisodeRules extends FadingEpisodeRules<CreditsRenderable> {
         if (renderable.isReadyForInput()) {
             switch (userAction.getActionCode()) {
                 case UserActionCode.SCREEN_TOUCHED:
-                    renderable.setInputEnabled(false);
-                    endEpisodeAndAddEventWithType(gameState,"");
+                    if (renderable.getAboutMode() == 1) {
+                        renderable.showAbout2();
+                    }else if (renderable.getAboutMode() == 2) {
+                        renderable.setInputEnabled(false);
+                        endEpisodeAndAddEventWithType(gameState, "");
+                    }
                     break;
             }
         }

@@ -672,30 +672,6 @@
     "type": "MULTIPLE_CHOICE"
   },
   {
-    "id": 28,
-    "title": "Ανακοινώθηκε αποστολή στη Σελήνη για εγκατάσταση\nΔικτύων 4G εντός του 2019. Από ποιον;",
-    "categoryId": 4,
-    "answers": [
-      {
-        "text": "Από τη Vodafone",
-        "isCorrect": true
-      },
-      {
-        "text": "Από κανέναν",
-        "isCorrect": false
-      },
-      {
-        "text": "Από την Κύπρο",
-        "isCorrect": false
-      },
-      {
-        "text": "Από τη Μέσα Ραχούλα",
-        "isCorrect": false
-      }
-    ],
-    "type": "MULTIPLE_CHOICE"
-  },
-  {
     "id": 29,
     "title": "Πόσες χώρες έχουν καταφέρει να στείλουν αστροναύτες που περπάτησαν στη Σελήνη;",
     "categoryId": 4,
@@ -1170,6 +1146,30 @@
       },
       {
         "text": "Ο Messi",
+        "isCorrect": false
+      }
+    ],
+    "type": "MULTIPLE_CHOICE"
+  },
+  {
+    "id": 49,
+    "title": "Ποιος είναι ο πιο κοντινός πλανήτης στη Σελήνη;",
+    "categoryId": 8,
+    "answers": [
+      {
+        "text": "Γη",
+        "isCorrect": true
+      },
+      {
+        "text": "Ερμής",
+        "isCorrect": false
+      },
+      {
+        "text": "Ουρανός",
+        "isCorrect": false
+      },
+      {
+        "text": "Δίας",
         "isCorrect": false
       }
     ],

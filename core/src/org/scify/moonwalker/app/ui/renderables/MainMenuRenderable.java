@@ -55,12 +55,18 @@ public class MainMenuRenderable extends FadingTableRenderable {
     protected TextLabelRenderable countDownLabel;
 
     protected ImageRenderable aboutBGRenderable;
-    protected TextLabelRenderable aboutLabel;
+    protected ImageRenderable aboutSciFYRenderable;
+    protected ImageRenderable aboutVodafoneRenderable;
+    protected ImageRenderable aboutStemYouthRenderable;
+
+    protected TextLabelRenderable aboutLabel1;
+    protected TextLabelRenderable aboutLabel2;
+
 
     protected int countDownValue;
     protected boolean playerSelectionStatus;
     protected boolean inputEnabled;
-    protected boolean aboutMode;
+    protected int aboutMode;
     protected String selectedPlayer = "";
 
     protected Set<Renderable> allRenderables;
@@ -73,7 +79,7 @@ public class MainMenuRenderable extends FadingTableRenderable {
         super(xPos, yPos, width, height, ACTOR_EPISODE_MAIN_MENU, id, BG_IMG_PATH);
         inputEnabled = false;
         playerSelectionStatus = false;
-        aboutMode = false;
+        aboutMode = 0;
         countDownValue = 5;
         initSubRenderables();
     }
@@ -116,11 +122,23 @@ public class MainMenuRenderable extends FadingTableRenderable {
         countDownLabel = createTextLabelRenderable(COUNTDOWN_LABEL_ID, countDownValue + "", false, false, 1);
         allRenderables.add(countDownLabel);
 
-        aboutLabel = createTextLabelRenderable(CreditsRenderable.ABOUT_LABEL_ID, CreditsRenderable.ABOUT_TEXT, false, false, 2);
-        allRenderables.add(aboutLabel);
-
         aboutBGRenderable = createImageRenderable(CreditsRenderable.ABOUT_BG_ID, CreditsRenderable.ABOUT_BG_IMG_PATH, false, false, 1);
         allRenderables.add(aboutBGRenderable);
+
+        aboutLabel1 = createTextLabelRenderable(CreditsRenderable.ABOUT_LABEL1_ID, CreditsRenderable.ABOUT_TEXT1, false, false, 2);
+        allRenderables.add(aboutLabel1);
+
+        aboutLabel2 = createTextLabelRenderable(CreditsRenderable.ABOUT_LABEL2_ID, CreditsRenderable.ABOUT_TEXT2, false, false, 2);
+        allRenderables.add(aboutLabel2);
+
+        aboutSciFYRenderable = createImageRenderable(CreditsRenderable.ABOUT_SCIFY_IMG_ID, CreditsRenderable.ABOUT_SCIFY_IMG_PATH, false, false, 2);
+        allRenderables.add(aboutSciFYRenderable);
+
+        aboutVodafoneRenderable = createImageRenderable(CreditsRenderable.ABOUT_VODAFONE_IMG_ID, CreditsRenderable.ABOUT_VODAFONE_IMG_PATH, false, false, 2);
+        allRenderables.add(aboutVodafoneRenderable);
+
+        aboutStemYouthRenderable = createImageRenderable(CreditsRenderable.ABOUT_STEM_YOUTH_IMG_ID, CreditsRenderable.ABOUT_STEM_YOUTH_IMG_PATH, false, false, 2);
+        allRenderables.add(aboutStemYouthRenderable);
 
         // Indicate all children as parented
         for (Renderable rCur : allRenderables) {
@@ -172,7 +190,8 @@ public class MainMenuRenderable extends FadingTableRenderable {
         return countDownValue;
     }
 
-    public void showAbout() {
+    public void showAbout1() {
+        inputEnabled = false;
         fadeOutMainMenu(500);
         final EffectSequence aboutBGEffects = new EffectSequence();
         aboutBGEffects.addEffect(new DelayEffect(300));
@@ -189,46 +208,94 @@ public class MainMenuRenderable extends FadingTableRenderable {
                 aboutLabelEffects.addEffect(new FunctionEffect(new Runnable() {
                     @Override
                     public void run() {
-                        inputEnabled = true;
-                        aboutMode = true;
+                        EffectSequence aboutLogosEffects = new EffectSequence();
+                        aboutLogosEffects.addEffect(new FadeEffect(1.0, 0.0, 0.0));
+                        aboutLogosEffects.addEffect(new VisibilityEffect(true));
+                        aboutLogosEffects.addEffect(new FadeEffect(0, 1.0, 300));
+                        aboutLogosEffects.addEffect(new FunctionEffect(new Runnable() {
+                            @Override
+                            public void run() {
+                                inputEnabled = true;
+                                aboutMode = 1;
+                            }
+                        }));
+                        aboutSciFYRenderable.addEffect(aboutLogosEffects);
+                        aboutStemYouthRenderable.addEffect(aboutLogosEffects);
+                        aboutVodafoneRenderable.addEffect(aboutLogosEffects);
                     }
                 }));
-                aboutLabel.addEffect(aboutLabelEffects);
+                aboutLabel1.addEffect(aboutLabelEffects);
             }
         }));
         aboutBGRenderable.addEffect(aboutBGEffects);
     }
 
+    public void showAbout2() {
+        inputEnabled = false;
+        final EffectSequence aboutBGEffects = new EffectSequence();
+        aboutBGEffects.addEffect(new DelayEffect(300));
+        aboutBGEffects.addEffect(new FadeEffect(1.0, 0.0, 300));
+        aboutBGEffects.addEffect(new VisibilityEffect(false));
+        aboutBGEffects.addEffect(new FunctionEffect(new Runnable() {
+            @Override
+            public void run() {
+                EffectSequence aboutLabelEffects = new EffectSequence();
+                aboutLabelEffects.addEffect(new FadeEffect(1.0, 0.0, 0.0));
+                aboutLabelEffects.addEffect(new VisibilityEffect(true));
+                aboutLabelEffects.addEffect(new FadeEffect(0, 1.0, 300));
+                aboutLabelEffects.addEffect(new FunctionEffect(new Runnable() {
+                    @Override
+                    public void run() {
+                        inputEnabled = true;
+                        aboutMode = 2;
+                    }
+                }));
+                aboutLabel2.addEffect(aboutLabelEffects);
+            }
+        }));
+        aboutLabel1.addEffect(aboutBGEffects);
+    }
+
     public void hideAbout() {
-        aboutMode = false;
+        inputEnabled = false;
         EffectSequence aboutLabelEffect = new EffectSequence();
         aboutLabelEffect.addEffect(new FadeEffect(1.0, 0.0, 300));
         aboutLabelEffect.addEffect(new VisibilityEffect(false));
         aboutLabelEffect.addEffect(new FunctionEffect(new Runnable() {
             @Override
             public void run() {
-                EffectSequence aboutBGEffect = new EffectSequence();
-                aboutBGEffect.addEffect(new FadeEffect(1.0, 0.0, 300));
-                aboutBGEffect.addEffect(new VisibilityEffect(false));
-                aboutBGEffect.addEffect(new FunctionEffect(new Runnable() {
-                    @Override
-                    public void run() {
-                        inputEnabled = true;
-                        EffectSequence menuButtonsEffect = new EffectSequence();
-                        menuButtonsEffect.addEffect(new VisibilityEffect(true));
-                        menuButtonsEffect.addEffect(new FadeEffect(0.0, 1.0, 300));
-                        getStartGameButton().addEffect(menuButtonsEffect);
-                        getContinueGameButton().addEffect(menuButtonsEffect);
-                        getToggleAudioButton().addEffect(menuButtonsEffect);
-                        getAboutButton().addEffect(menuButtonsEffect);
-                        getQuitButton().addEffect(menuButtonsEffect);
-                    }
-                }));
-                aboutBGRenderable.addEffect(aboutBGEffect);
+                if (aboutMode != 0) {
+                    EffectSequence aboutBGEffect = new EffectSequence();
+                    aboutBGEffect.addEffect(new FadeEffect(1.0, 0.0, 300));
+                    aboutBGEffect.addEffect(new VisibilityEffect(false));
+                    aboutBGEffect.addEffect(new FunctionEffect(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            aboutMode = 0;
+                            inputEnabled = true;
+                            EffectSequence menuButtonsEffect = new EffectSequence();
+                            menuButtonsEffect.addEffect(new VisibilityEffect(true));
+                            menuButtonsEffect.addEffect(new FadeEffect(0.0, 1.0, 300));
+                            getStartGameButton().addEffect(menuButtonsEffect);
+                            getContinueGameButton().addEffect(menuButtonsEffect);
+                            getToggleAudioButton().addEffect(menuButtonsEffect);
+                            getAboutButton().addEffect(menuButtonsEffect);
+                            getQuitButton().addEffect(menuButtonsEffect);
+
+                        }
+                    }));
+
+                    aboutBGRenderable.addEffect(aboutBGEffect);
+                }
                 //show menu
             }
         }));
-        aboutLabel.addEffect(aboutLabelEffect);
+        aboutLabel2.addEffect(aboutLabelEffect);
+        aboutSciFYRenderable.addEffect(aboutLabelEffect);
+        aboutVodafoneRenderable.addEffect(aboutLabelEffect);
+        aboutStemYouthRenderable.addEffect(aboutLabelEffect);
+
     }
 
     public void initiatePlayerSelection() {
@@ -329,15 +396,31 @@ public class MainMenuRenderable extends FadingTableRenderable {
         return countDownLabel;
     }
 
-    public TextLabelRenderable getAboutLabel() {
-        return aboutLabel;
+    public TextLabelRenderable getAboutLabel1() {
+        return aboutLabel1;
     }
 
-    public boolean isAboutMode() {
+    public TextLabelRenderable getAboutLabel2() {
+        return aboutLabel2;
+    }
+
+    public int getAboutMode() {
         return aboutMode;
     }
 
     public ImageRenderable getAboutBGRenderable() {
         return aboutBGRenderable;
+    }
+
+    public ImageRenderable getAboutSciFYRenderable() {
+        return aboutSciFYRenderable;
+    }
+
+    public ImageRenderable getAboutVodafoneRenderable() {
+        return aboutVodafoneRenderable;
+    }
+
+    public ImageRenderable getAboutStemYouthRenderable() {
+        return aboutStemYouthRenderable;
     }
 }

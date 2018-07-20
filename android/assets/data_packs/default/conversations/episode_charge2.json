@@ -1,4 +1,4 @@
 [
   {"id": "1", "order":"1", "speakerId":"aunt", "text":"Μπράβο! Τώρα έχεις 80 μονάδες", "prerequisites":""},
-  {"id": "2", "order":"2", "speakerId":"aunt", "text":"Πάτα \"Φόρτισε για 1 νύχτα ακόμα\" μία ο φορά και φτάσαμε στις 160!", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
+  {"id": "2", "order":"2", "speakerId":"aunt", "text":"Πάτα \"Φόρτισε για 1 νύχτα ακόμα\" μία μόνο φορά και φτάσαμε στις 160!", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
 ]

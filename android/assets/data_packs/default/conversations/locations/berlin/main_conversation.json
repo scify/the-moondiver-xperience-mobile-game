@@ -3,7 +3,7 @@
   {"id": "2", "order":"2", "speakerId":"wagner", "text":"Είμαι o Carl Wagner, επικεφαλής του Γερμανικού Ινστιτούτου Διαστημικής Πλοήγησης.", "prerequisites":"first_time"},
   {"id": "3", "order":"3", "speakerId":"wagner", "text":"Η θεία σου μου μίλησε με τα καλύτερα λόγια για εσένα.", "prerequisites":"first_time"},
   {"id": "4", "order":"4", "speakerId":"wagner", "text":"Αλλά φυσικά πρέπει να σιγουρευτούμε ότι μπορείς να τα καταφέρεις.", "prerequisites":"first_time"},
-  {"id": "5", "order":"5", "speakerId":"player", "text":"Θα τα καταφέρω!", "prerequisites":"first_time"},
+  {"id": "5", "order":"5", "speakerId":"player", "text":"[#ffeeaaff]Θα τα καταφέρω!", "prerequisites":"first_time"},
   {"id": "6", "order":"6", "speakerId":"wagner", "text":"Εντάξει λοιπόν, ας δούμε τώρα τι ξέρεις για το Φως και τις αποστάσεις στο διάστημα.", "prerequisites":"first_time"},
   {"id": "7", "order":"7", "speakerId":"wagner", "text":"Καλημέρα!\nΓια να δούμε πως θα τα πας σήμερα.", "prerequisites":"retry"},
   {"id": "8", "order":"8", "speakerId":"wagner", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_question_1"},
@@ -16,8 +16,8 @@
   {"id": "15", "order":"15", "speakerId":"wagner", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_response_for_question"},
   {"id": "16", "order":"16", "speakerId":"wagner", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_question_1"},
   {"id": "17", "order":"17", "speakerId":"wagner", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_response_for_question"},
-  {"id": "18", "order":"18", "speakerId":"wagner", "text":"Χμ... Δεν έδωσες αρκετές σωστές απαντήσεις\nΈλα πίσω ξανά αύριο.", "prerequisites":"player_has_less_than_3_correct", "onExitCurrentOrderTrigger":"end"},
-  {"id": "19", "order":"19", "speakerId":"wagner", "text":"Μπράβο!\nΈδωσες αρκετές σωστές απαντήσεις!", "prerequisites":"player_has_3_correct", "onEnterCurrentOrderTrigger":"tada"},
-  {"id": "20", "order":"20", "speakerId":"wagner", "text":"Σου προσφέρω λοιπόν το πρώτο εξάρτημα που θα χρειαστείς για το ταξίδι σου.", "prerequisites":"player_has_3_correct"},
-  {"id": "21", "order":"21", "speakerId":"wagner", "text":"Ένας ισχυρός προωθητήρας είναι δικός σου. Καλή επιτυχία!", "prerequisites":"player_has_3_correct", "onExitCurrentOrderTrigger":"end"}
+  {"id": "18", "order":"18", "speakerId":"wagner", "text":"Χμ... Δεν έδωσες αρκετές σωστές απαντήσεις\nΈλα πίσω ξανά αύριο.", "prerequisites":"player_has_less_than_enough_correct", "onExitCurrentOrderTrigger":"end"},
+  {"id": "19", "order":"19", "speakerId":"wagner", "text":"Μπράβο!\nΈδωσες αρκετές σωστές απαντήσεις!", "prerequisites":"player_has_enough_correct", "onEnterCurrentOrderTrigger":"tada"},
+  {"id": "20", "order":"20", "speakerId":"wagner", "text":"Σου προσφέρω λοιπόν το πρώτο εξάρτημα που θα χρειαστείς για το ταξίδι σου.", "prerequisites":"player_has_enough_correct"},
+  {"id": "21", "order":"21", "speakerId":"wagner", "text":"Ένας ισχυρός προωθητήρας είναι δικός σου. Καλή επιτυχία!", "prerequisites":"player_has_enough_correct", "onExitCurrentOrderTrigger":"end"}
 ]

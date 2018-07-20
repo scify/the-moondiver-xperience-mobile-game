@@ -133,7 +133,7 @@ public class MoonWalkerScenario extends Scenario {
         if (false) {
             return new ForestEpisode();
         } else {
-            return getMapEpisode();
+            return new CreditsEpisode();
         }
     }
 

@@ -102,8 +102,7 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
                 case UserActionCode.ABOUT:
                     if (mainMenuButtonsEnabled) {
                         gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
-                        renderable.disableInput();
-                        renderable.showAbout();
+                        renderable.showAbout1();
                     }
                     break;
                 case UserActionCode.BOY_SELECTED:
@@ -113,8 +112,10 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
                     setSelectedPlayer(gameState, SelectedPlayer.girl);
                     break;
                 case UserActionCode.SCREEN_TOUCHED:
-                    if (renderable.isAboutMode()) {
-                        renderable.disableInput();
+                    if (renderable.getAboutMode() == 1) {
+                        gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
+                        renderable.showAbout2();
+                    }else if (renderable.getAboutMode() == 2) {
                         gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
                         renderable.hideAbout();
                     }

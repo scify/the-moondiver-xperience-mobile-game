@@ -19,7 +19,7 @@ allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
 
-    version = '1.2'
+    version = '1.4'
     ext {
         appName = "moonwalker-mobile-game"
         gdxVersion = '1.9.7'

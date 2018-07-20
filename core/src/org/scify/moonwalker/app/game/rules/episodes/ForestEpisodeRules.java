@@ -6,6 +6,7 @@ import org.scify.engine.renderables.effects.DelayEffect;
 import org.scify.engine.renderables.effects.EffectSequence;
 import org.scify.engine.renderables.effects.FunctionEffect;
 import org.scify.moonwalker.app.game.rules.ConversationRules;
+import org.scify.moonwalker.app.game.rules.QuestionConversationRules;
 import org.scify.moonwalker.app.ui.renderables.ForestRenderable;
 
 import java.util.Set;
@@ -44,7 +45,11 @@ public class ForestEpisodeRules extends FadingEpisodeRules<ForestRenderable> {
             }
         } else if (renderable != null && renderable.isChatEnabled()) {
             // Initialize conversation
-            createConversation(gameState, "conversations/episode_forest.json", renderable.CONVERSATION_BG_IMG_PATH);
+            if(conversationRules == null) {
+                conversationRules = new QuestionConversationRules("conversations/episode_forest.json", renderable.CONVERSATION_BG_IMG_PATH, "", "", renderable.CORRECT_AUDIO_PATH, renderable.WRONG_AUDIO_PATH, true, 1);
+                conversationRules.setStarted(true);
+                initializeParseVariables();
+            }
         }
         return super.getNextState(gameState, userAction);
     }
