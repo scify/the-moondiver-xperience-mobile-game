@@ -3,10 +3,6 @@ package org.scify.engine.renderables;
 import org.scify.engine.UserAction;
 import org.scify.engine.UserActionCode;
 import org.scify.engine.conversation.ConversationLine;
-import org.scify.engine.renderables.effects.EffectSequence;
-import org.scify.engine.renderables.effects.FadeEffect;
-import org.scify.engine.renderables.effects.VisibilityEffect;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;

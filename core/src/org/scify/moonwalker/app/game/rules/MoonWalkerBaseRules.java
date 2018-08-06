@@ -21,7 +21,7 @@ public abstract class MoonWalkerBaseRules implements Rules<GameState, UserAction
     public static final String TIMED_EPISODE_MILLISECONDS = "timed_episode_milliseconds";
     protected int worldX;
     protected int worldY;
-    protected Map<String, org.scify.engine.renderables.Renderable> idToRenderable;
+    protected Map<String, Renderable> idToRenderable;
     protected ConversationRules conversationRules;
     protected AppInfo appInfo;
     protected MoonWalkerPhysicsRules physics;

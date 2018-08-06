@@ -331,9 +331,11 @@ public class ConversationRules extends MoonWalkerBaseRules {
         gameState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
         gameState.addRenderable(renderable);
         oldConversationLines.add(renderable);
+        conversationRenderable = renderable;
     }
 
 
+    ConversationRenderable conversationRenderable;
     protected void addMultipleConversationLines(List<ConversationLine> nextLines, GameState gameState,
                                                 boolean newSpeaker, ConversationRenderable renderable, Effect effect) {
         ConversationLine firstLine = nextLines.get(0);
@@ -350,6 +352,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
         gameState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
         gameState.addRenderable(renderable);
         oldConversationLines.add(renderable);
+        conversationRenderable = renderable;
     }
 
     protected EffectSequence getIntroEffectForMultipleChoiceRenderable() {

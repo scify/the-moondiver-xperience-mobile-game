@@ -65,6 +65,7 @@ public class SingleChoiceConversationActor extends TableActor<SingleChoiceConver
 
         //closeButton
         button = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getConversationButton());
+        button.setStyle(getSkin().get("default", TextButton.TextButtonStyle.class));
         add(button).right().width(0.2f * width);
         add().height(height).width(0.01f * width);
 

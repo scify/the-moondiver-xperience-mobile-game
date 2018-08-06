@@ -4,6 +4,7 @@ import org.scify.engine.*;
 import org.scify.engine.conversation.ConversationLine;
 import org.scify.moonwalker.app.game.Location;
 import org.scify.moonwalker.app.game.LocationController;
+import org.scify.moonwalker.app.game.quiz.Answer;
 import org.scify.moonwalker.app.game.rules.ConversationRules;
 import org.scify.moonwalker.app.game.rules.QuestionConversationRules;
 import org.scify.moonwalker.app.ui.renderables.LocationRenderable;

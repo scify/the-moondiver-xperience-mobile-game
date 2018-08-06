@@ -63,11 +63,13 @@ public class TwoChoiceConversationActor extends TableActor<TwoChoiceConversation
         float buttonWidth = 0.85f * width;
         float buttonHeight = 0.3f * height;
         buttonTop = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getConversationButtonTop());
+        buttonTop.setStyle(getSkin().get("default", TextButton.TextButtonStyle.class));
         buttonsTable.add(buttonTop).width(buttonWidth).height(buttonHeight);
         buttonsTable.row();
         buttonsTable.add().height(buttonHeight/2);
         buttonsTable.row();
         buttonBottom = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getConversationButtonBottom());
+        buttonBottom.setStyle(getSkin().get("default", TextButton.TextButtonStyle.class));
         buttonsTable.add(buttonBottom).width(buttonWidth).height(buttonHeight);
         add(buttonsTable).width(buttonWidth);
 
