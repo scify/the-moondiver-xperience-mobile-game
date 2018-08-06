@@ -13,8 +13,8 @@
     toggle: { down: default-round-down, checked: default-round-down, up: default-round }
   },
   com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
-    default: { down: default-round-down, up: default-round, font: default-font, fontColor: white, pressedOffsetX: 5, pressedOffsetY: -2 },
-    toggle: { down: default-round-down, up: default-round, checked: default-round-down, font: default-font, fontColor: white, downFontColor: red },
+    default: { down: default-round-down, up: default-round, font: default-font, fontColor: white, pressedOffsetX: 5, pressedOffsetY: -2, downFontColor: white},
+    toggle: { down: default-round-down, up: default-round, checked: default-round-down, font: default-font, fontColor: white, downFontColor: { r: 63, g: 81, b: 181, a: 1 } },
     green: {down: default-round-down, up: default-round-down, font: default-font, fontColor: green, pressedOffsetX: 5, pressedOffsetY: -5}
     red: {down: default-round-down, up: default-round-down, font: default-font, fontColor: green, pressedOffsetX: 5, pressedOffsetY: -5}
     close: {down: default-round-down, up: default-round-down, font: default-font, fontColor: black, pressedOffsetX: 3, pressedOffsetY: -3}
