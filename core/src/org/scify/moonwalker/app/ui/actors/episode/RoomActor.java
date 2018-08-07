@@ -26,15 +26,6 @@ public class RoomActor extends FadingTableActor<RoomRenderable> {
     protected void init() {
         phoneOffImage = (ImageWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getPhoneOffRenderable());
         phoneOnImage = (ImageWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getPhoneOnRenderable());
-        Stack phonesStack = new Stack();
-        phonesStack.add(phoneOffImage);
-        phonesStack.add(phoneOnImage);
-        add(phonesStack).width(convertWidth(phoneOffImage.getWidth())).height(convertHeight(phoneOffImage.getHeight()));
-        skipDialogButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getSkipDialogButtonRenderable());
-        Stack skipButtonStack = new Stack();
-        skipButtonStack.add(skipDialogButton);
-        //add(skipDialogButton).width(convertWidth(skipDialogButton.getWidth())).height(convertHeight(skipDialogButton.getHeight())).top().left();
-
         Table buttonTable = new Table();
         float ratio = skipDialogButton.getWidth() /skipDialogButton.getHeight();
         float height = getHeight() * 0.15f;
