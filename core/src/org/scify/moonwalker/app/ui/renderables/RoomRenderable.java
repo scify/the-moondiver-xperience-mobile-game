@@ -1,5 +1,8 @@
 package org.scify.moonwalker.app.ui.renderables;
 
+import org.scify.engine.UserAction;
+import org.scify.engine.UserActionCode;
+import org.scify.engine.renderables.ActionButtonRenderable;
 import org.scify.engine.renderables.ImageRenderable;
 import org.scify.engine.renderables.Renderable;
 
@@ -25,9 +28,13 @@ public class RoomRenderable extends ChattableRenderable {
     public final static String GIRL_PHONE_MESSAGE_IMG_PATH = GIRL_IMG_PATH + "phoneMessage.png";
     public final static String GIRL_CONVERSATION_BG_IMG_PATH = GIRL_IMG_PATH + "conversation_bg.png";
 
+    protected static final String SKIP_BUTTON_IMG_PATH = "img/episode_room/skip.png";
+    protected static final String SKIP_BUTTON_ID = "skipButton";
     //AUDIO
     public final static String BOY_MUSIC_AUDIO_PATH = "audio/episode_room/boy_music.mp3";
     public final static String GIRL_MUSIC_AUDIO_PATH = "audio/episode_room/girl_music.mp3";
+
+    protected ActionButtonRenderable skipDialogButton;
 
     protected boolean permanentlyOn;
 
@@ -62,6 +69,9 @@ public class RoomRenderable extends ChattableRenderable {
         allRenderables = new HashSet<>();
         allRenderables.add(phoneOnRenderable);
         allRenderables.add(phoneOffRenderable);
+        UserAction endEpisodeAction = new UserAction(UserActionCode.FINISH_EPISODE);
+        skipDialogButton = createImageButton(SKIP_BUTTON_ID, SKIP_BUTTON_IMG_PATH, endEpisodeAction, false, true, 2);
+        allRenderables.add(skipDialogButton);
     }
 
     public void togglePhone() {
@@ -83,6 +93,10 @@ public class RoomRenderable extends ChattableRenderable {
 
     public ImageRenderable getPhoneOnRenderable() {
         return phoneOnRenderable;
+    }
+
+    public ActionButtonRenderable getSkipDialogButtonRenderable() {
+        return skipDialogButton;
     }
 
 }

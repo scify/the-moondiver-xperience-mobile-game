@@ -1,7 +1,9 @@
 package org.scify.moonwalker.app.ui.actors.episode;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import org.scify.moonwalker.app.ui.actors.FadingTableActor;
 import org.scify.moonwalker.app.ui.actors.ImageWithEffect;
 import org.scify.moonwalker.app.ui.renderables.RoomRenderable;
@@ -10,6 +12,7 @@ public class RoomActor extends FadingTableActor<RoomRenderable> {
 
     protected ImageWithEffect phoneOffImage;
     protected ImageWithEffect phoneOnImage;
+    protected Button skipDialogButton;
 
     public RoomActor(Skin skin, RoomRenderable renderable) {
         super(skin, renderable);
@@ -27,6 +30,18 @@ public class RoomActor extends FadingTableActor<RoomRenderable> {
         phonesStack.add(phoneOffImage);
         phonesStack.add(phoneOnImage);
         add(phonesStack).width(convertWidth(phoneOffImage.getWidth())).height(convertHeight(phoneOffImage.getHeight()));
+        skipDialogButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getSkipDialogButtonRenderable());
+        Stack skipButtonStack = new Stack();
+        skipButtonStack.add(skipDialogButton);
+        //add(skipDialogButton).width(convertWidth(skipDialogButton.getWidth())).height(convertHeight(skipDialogButton.getHeight())).top().left();
+
+        Table buttonTable = new Table();
+        float ratio = skipDialogButton.getWidth() /skipDialogButton.getHeight();
+        float height = getHeight() * 0.15f;
+        buttonTable.add(skipDialogButton).height(height).width(ratio * height);
+        buttonTable.padTop(0.03f * getHeight());
+        add(buttonTable).expand().top();
+        add().width(0.2f *getWidth()).height(getHeight());
     }
 
 }

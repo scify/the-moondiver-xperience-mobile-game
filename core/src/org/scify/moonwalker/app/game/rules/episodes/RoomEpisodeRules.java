@@ -46,6 +46,16 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
     }
 
     @Override
+    protected void handleUserAction(GameState gameState, UserAction userAction) {
+        switch (userAction.getActionCode()) {
+            case UserActionCode.FINISH_EPISODE:
+                gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
+                break;
+        }
+        super.handleUserAction(gameState, userAction);
+    }
+
+    @Override
     public void episodeStartedEvents(GameState currentState) {
         if (!isEpisodeStarted(currentState)) {
             if (gameInfo.isFromLoad())
