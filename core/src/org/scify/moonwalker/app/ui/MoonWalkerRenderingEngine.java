@@ -331,7 +331,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             worldImgTexture.dispose();
         }
         // Update texture
-        worldImgTexture = bookKeeper.getTexture(resourceLocator.getFilePath(imgPath));
+        worldImgTexture = bookKeeper.getTexture(imgPath);
         Image iRes = new Image(worldImgTexture);
         // Apply app size to image (stretch it to fit the app stage)
         iRes.setSize(appInfo.getScreenWidth(), appInfo.getScreenHeight());

@@ -41,11 +41,9 @@ public class ResourceLocator {
             filePath = additionalPackFileName;
 
         String file = this.rootDataPath + filePath;
-        //System.err.println("trying to get: " + file);
         URL fileURL = getClass().getResource(file);
         if (fileURL == null) {
             file = this.rootDataPathDefault + filePath;
-            //System.out.println("File " + this.rootDataPath + path + fileName + " not found. Loaded default: " + file);
         }
         return file;
     }

@@ -86,7 +86,10 @@ public class MoonWalkerScenario extends Scenario {
         clear();
         Episode ret;
         Episode mainMenu = new MainMenuEpisode();
-        setFirstEpisode(mainMenu);
+        Episode splashEpisode = new SplashScreenEpisode();
+
+        setFirstEpisode(splashEpisode);
+        addEpisodeAfter(splashEpisode, mainMenu);
         ret = mainMenu;
         Episode intro = new IntroEpisode();
         if (episodeCounter == 1) {
