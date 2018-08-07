@@ -10,7 +10,7 @@
   {"id": "9", "order":"8", "speakerId":"player", "text":"[#ffeeaaff]Keep talking...", "prerequisites":"", "onEnterCurrentOrderTrigger":"toggle"},
   {"id": "10", "order":"8", "speakerId":"player", "text":"[#ffeeaaff]Τι πρέπει να κάνω;", "prerequisites":""},
   {"id": "11", "order":"9", "speakerId":"aunt", "text":"Αν θέλεις να ξεκινήσεις, μην πεις τίποτα σε κανέναν.", "prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone"},
-  {"id": "12", "order":"10", "speakerId":"aunt", "text":"Και την Παρασκευή το απόγευμα πήγαινε στο στο ξέφωτο που ξέρεις.", "prerequisites":""},
+  {"id": "12", "order":"10", "speakerId":"aunt", "text":"Και την Παρασκευή το απόγευμα πήγαινε στο ξέφωτο που ξέρεις.", "prerequisites":""},
   {"id": "13", "order":"11", "speakerId":"player", "text":"[#ffeeaaff]Σε μισώ [#ff0000ff]\u00b1[#ffeeaaff]. Θα είμαι εκεί.", "prerequisites":"", "onEnterCurrentOrderTrigger":"toggle"},
   {"id": "14", "order":"11", "speakerId":"player", "text":"[#ffeeaaff]Σε μισώ [#ff0000ff]\u00b1[#ffeeaaff]. Την Παρασκευή λοιπόν!", "prerequisites":""},
   {"id": "15", "order":"12", "speakerId":"aunt", "text":"Κι εγώ σε μισώ [#ff0000ff]\u00b1[WHITE]\nΣε περιμένω...", "prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone", "onExitCurrentOrderTrigger":"end"}

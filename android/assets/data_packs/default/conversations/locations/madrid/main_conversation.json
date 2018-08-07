@@ -1,12 +1,12 @@
 [
-  {"id": "1", "order":"1", "speakerId":"estrella", "text":"Buenos dias αστέρι! Θέλεις να ταξιδέψεις στη Σελήνη, ε;", "prerequisites":"first_time"},
+  {"id": "1", "order":"1", "speakerId":"estrella", "text":"Buenos dias αστέρι! Έμαθα ότι τα πήγες καλά ως τώρα.", "prerequisites":"first_time"},
   {"id": "2", "order":"2", "speakerId":"estrella", "text":"Είμαι η Estrella Brillante, επικεφαλής του Ισπανικού Κέντρου Διαστημικής Τεχνολογίας.", "prerequisites":"first_time"},
-  {"id": "3", "order":"3", "speakerId":"estrella", "text":"Έμαθα ότι τα πήγες καλά ως τώρα.", "prerequisites":"first_time"},
-  {"id": "4", "order":"4", "speakerId":"estrella", "text":"Αλλά φυσικά εμείς πρέπει να σιγουρευτούμε ότι ξέρεις\nκαλά την πηγή της ενέργειας που χρησιμοποιούμε.", "prerequisites":"first_time"},
+  {"id": "3", "order":"3", "speakerId":"estrella", "text":"Εντάξει λοιπόν, ας δούμε τώρα τι ξέρεις για τον Ήλιο...", "prerequisites":"first_time"},
+  {"id": "4", "order":"4", "speakerId":"estrella", "text":"Εντάξει λοιπόν, ας δούμε τώρα τι ξέρεις για τον Ήλιο...", "prerequisites":"retry"},
   {"id": "5", "order":"5", "speakerId":"player", "text":"[#ffeeaaff]Ξέρω τα πάντα για τον Ήλιο!", "prerequisites":"first_time"},
   {"id": "6", "order":"5", "speakerId":"player", "text":"[#ffeeaaff]Ε, κάτι θα καταφέρω...", "prerequisites":"first_time"},
-  {"id": "7", "order":"6", "speakerId":"estrella", "text":"Εντάξει λοιπόν, ας δούμε τώρα τι ξέρεις για τον Ήλιο...", "prerequisites":"first_time"},
-  {"id": "8", "order":"7", "speakerId":"estrella", "text":"Καλημέρα!\nΓια να δούμε πως θα τα πας σήμερα.", "prerequisites":"retry"},
+  {"id": "7", "order":"6", "speakerId":"estrella", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_question_6"},
+  {"id": "8", "order":"7", "speakerId":"estrella", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_response_for_question"},
   {"id": "9", "order":"8", "speakerId":"estrella", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_question_6"},
   {"id": "10", "order":"9", "speakerId":"estrella", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_response_for_question"},
   {"id": "11", "order":"10", "speakerId":"estrella", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_question_6"},
@@ -15,9 +15,7 @@
   {"id": "14", "order":"13", "speakerId":"estrella", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_response_for_question"},
   {"id": "15", "order":"14", "speakerId":"estrella", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_question_6"},
   {"id": "16", "order":"15", "speakerId":"estrella", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_response_for_question"},
-  {"id": "17", "order":"16", "speakerId":"estrella", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_question_6"},
-  {"id": "18", "order":"17", "speakerId":"estrella", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_response_for_question"},
-  {"id": "19", "order":"18", "speakerId":"estrella", "text":"Μπράβο! τα κάταφερες!\nΠάρε το επόμενο εξάρτημα που θα χρειαστείς", "prerequisites":"player_has_enough_correct", "onEnterCurrentOrderTrigger":"tada"},
-  {"id": "20", "order":"19", "speakerId":"estrella", "text":"Δύο ακόμη προωθητήρες είναι δικοί σου.\nΚαλή επιτυχία!", "prerequisites":"player_has_enough_correct", "onExitCurrentOrderTrigger":"end"},
-  {"id": "21", "order":"20", "speakerId":"estrella", "text":"Χμ... Δεν έδωσες αρκετές σωστές απαντήσεις\nΈλα πίσω ξανά αύριο.", "prerequisites":"player_has_less_than_enough_correct", "onExitCurrentOrderTrigger":"end"}
+  {"id": "17", "order":"16", "speakerId":"estrella", "text":"Μπράβο! τα κάταφερες!\nΠάρε το επόμενο εξάρτημα που θα χρειαστείς", "prerequisites":"player_has_enough_correct", "onEnterCurrentOrderTrigger":"tada"},
+  {"id": "18", "order":"17", "speakerId":"estrella", "text":"Δύο ακόμη προωθητήρες είναι δικοί σου.\nΚαλή επιτυχία!", "prerequisites":"player_has_enough_correct", "onExitCurrentOrderTrigger":"end"},
+  {"id": "19", "order":"18", "speakerId":"estrella", "text":"Χμ... Δεν έδωσες αρκετές σωστές απαντήσεις\nΈλα πίσω ξανά αύριο.", "prerequisites":"player_has_less_than_enough_correct", "onExitCurrentOrderTrigger":"end"}
 ]
