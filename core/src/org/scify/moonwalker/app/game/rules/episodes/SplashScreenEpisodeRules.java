@@ -2,6 +2,7 @@ package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.GameState;
 
+
 public class SplashScreenEpisodeRules extends SimpleTimedImageEpisodeRules {
 
     protected final int MILLISECONDS_FOR_EPISODE = 4000;

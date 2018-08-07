@@ -47,6 +47,7 @@ public class Renderable extends Positionable implements EffectTarget {
     public static final String ACTOR_EPISODE_LOCATION = "location";
     public static final String ACTOR_EPISODE_MOON_LANDING = "moon_landing";
     public static final String ACTOR_EPISODE_CREDITS = "credits";
+    public static final String ACTOR_EPISODE_FULL_IMAGE = "splash";
 
     protected String type;
     /**

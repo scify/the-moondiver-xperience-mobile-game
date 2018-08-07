@@ -100,6 +100,9 @@ public class ActorFactory extends ComponentFactory {
             case Renderable.ACTOR_EPISODE_CREDITS:
                 toReturn = createCreditsActor((CreditsRenderable) renderable);
                 break;
+            case Renderable.ACTOR_EPISODE_FULL_IMAGE:
+                toReturn = createFullImageActor((FullImageRenderable) renderable);
+                break;
             case Renderable.ACTOR_EPISODE_COCKPIT:
                 toReturn = createCockpitActor((CockpitRenderable) renderable);
                 break;
@@ -231,6 +234,12 @@ public class ActorFactory extends ComponentFactory {
 
     private Actor createCreditsActor(final CreditsRenderable renderable) {
         CreditsActor actor = new CreditsActor(skin, renderable);
+        actor.setZIndex(0);
+        return actor;
+    }
+
+    private Actor createFullImageActor(final FullImageRenderable renderable) {
+        FullImageActor actor = new FullImageActor(skin, renderable);
         actor.setZIndex(0);
         return actor;
     }

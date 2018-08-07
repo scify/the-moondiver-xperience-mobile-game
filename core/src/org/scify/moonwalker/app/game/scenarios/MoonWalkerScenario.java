@@ -85,44 +85,47 @@ public class MoonWalkerScenario extends Scenario {
     protected Episode createBasicScenario (int episodeCounter) {
         clear();
         Episode ret;
+        Episode splash = new SplashScreenEpisode();
+        setFirstEpisode(splash);
+        ret = splash;
         Episode mainMenu = new MainMenuEpisode();
-        Episode splashEpisode = new SplashScreenEpisode();
-
-        setFirstEpisode(splashEpisode);
-        addEpisodeAfter(splashEpisode, mainMenu);
-        ret = mainMenu;
-        Episode intro = new IntroEpisode();
         if (episodeCounter == 1) {
+            setFirstEpisode(mainMenu);
+            ret = mainMenu;
+        }
+        addEpisodeAfter(splash, mainMenu);
+        Episode intro = new IntroEpisode();
+        if (episodeCounter == 2) {
             setFirstEpisode(intro);
             ret = intro;
         }
         addEpisodeAfter(mainMenu, intro);
         Episode room = new RoomEpisode();
-        if (episodeCounter == 2) {
+        if (episodeCounter == 3) {
             setFirstEpisode(room);
             ret = room;
         }
         addEpisodeAfter(intro, room);
         Episode forest = new ForestEpisode();
-        if (episodeCounter == 3) {
+        if (episodeCounter == 4) {
             setFirstEpisode(forest);
             ret = forest;
         }
         addEpisodeAfter(room, forest);
         Episode cockpit = new CockpitEpisode();
-        if (episodeCounter == 4) {
+        if (episodeCounter == 5) {
             setFirstEpisode(cockpit);
             ret = cockpit;
         }
         addEpisodeAfter(forest, cockpit);
         Episode moonLanding = new MoonLandingEpisode();
-        if (episodeCounter == 5) {
+        if (episodeCounter == 6) {
             setFirstEpisode(moonLanding);
             ret = moonLanding;
         }
         addEpisodeAfter(cockpit, moonLanding);
         Episode dreamingRoomEpisode = new DreamingRoomEpisode();
-        if (episodeCounter == 6) {
+        if (episodeCounter == 7) {
             setFirstEpisode(dreamingRoomEpisode);
             ret = dreamingRoomEpisode;
         }
