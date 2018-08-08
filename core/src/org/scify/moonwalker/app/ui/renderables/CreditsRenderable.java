@@ -9,32 +9,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class CreditsRenderable extends FadingTableRenderable {
-    protected static final String ABOUT_TEXT1 = "[BLUE]Το παιχνίδι The Moondiver Xperience δημιουργήθηκε από τη SciFY στο Πλαίσιο του προγράμματος Stem Powering Youth με την ευγενική χορηγία του Ιδρύματος Vodafone.";
-
-    protected static final String ABOUT_TEXT2 = "[BLUE]Game creation: SciFY\n" +
-            "Εικονογράφηση: Λέλα Στρούτση\n" +
-            "Sounds/Audio FX: Λευτέρης Δούρος / Άννα Δρόσου\n" +
-            "Fonts: Petros Vassiadis";
     //renderable image paths
-    protected static final String ABOUT_BG_IMG_PATH = "img/episode_credits/bg.png";
-    protected static final String ABOUT_SCIFY_IMG_PATH = "img/episode_credits/SciFY.png";
-    protected static final String ABOUT_VODAFONE_IMG_PATH = "img/episode_credits/vodafone.png";
-    protected static final String ABOUT_STEM_YOUTH_IMG_PATH = "img/episode_credits/stem_youth.png";
+    protected static final String ABOUT_BG_IMG_PATH_1 = "img/episode_credits/bg1.png";
+    protected static final String ABOUT_BG_IMG_PATH_2 = "img/episode_credits/bg2.png";
 
     //renderable ids
-    protected static final String ABOUT_LABEL1_ID = "aboutLabel1";
-    protected static final String ABOUT_LABEL2_ID = "aboutLabel2";
-    protected static final String ABOUT_SCIFY_IMG_ID = "scify";
-    protected static final String ABOUT_VODAFONE_IMG_ID = "vodafone";
-    protected static final String ABOUT_STEM_YOUTH_IMG_ID = "stem_youth";
-    protected static final String ABOUT_BG_ID = "aboutBG";
+    protected static final String ABOUT_BG_ID_1 = "aboutBG1";
+    protected static final String ABOUT_BG_ID_2 = "aboutBG2";
 
-    protected ImageRenderable aboutBGRenderable;
-    protected ImageRenderable aboutSciFYRenderable;
-    protected ImageRenderable aboutVodafoneRenderable;
-    protected ImageRenderable aboutStemYouthRenderable;
-    protected TextLabelRenderable aboutLabel1;
-    protected TextLabelRenderable aboutLabel2;
+    protected ImageRenderable aboutBGRenderable1;
+    protected ImageRenderable aboutBGRenderable2;
 
     protected Set<Renderable> allRenderables;
 
@@ -55,23 +39,11 @@ public class CreditsRenderable extends FadingTableRenderable {
     private void initSubRenderables() {
         allRenderables = new HashSet<>();
 
-        aboutBGRenderable = createImageRenderable(ABOUT_BG_ID, ABOUT_BG_IMG_PATH, false, true, 1);
-        allRenderables.add(aboutBGRenderable);
+        aboutBGRenderable1 = createImageRenderable(ABOUT_BG_ID_1, ABOUT_BG_IMG_PATH_1, false, true, 1);
+        allRenderables.add(aboutBGRenderable1);
 
-        aboutLabel1 = createTextLabelRenderable(ABOUT_LABEL1_ID, ABOUT_TEXT1, false, true, 2);
-        allRenderables.add(aboutLabel1);
-
-        aboutLabel2 = createTextLabelRenderable(ABOUT_LABEL2_ID, ABOUT_TEXT2, false, false, 3);
-        allRenderables.add(aboutLabel2);
-
-        aboutSciFYRenderable = createImageRenderable(CreditsRenderable.ABOUT_SCIFY_IMG_ID, CreditsRenderable.ABOUT_SCIFY_IMG_PATH, false, true, 2);
-        allRenderables.add(aboutSciFYRenderable);
-
-        aboutVodafoneRenderable = createImageRenderable(CreditsRenderable.ABOUT_VODAFONE_IMG_ID, CreditsRenderable.ABOUT_VODAFONE_IMG_PATH, false, true, 2);
-        allRenderables.add(aboutVodafoneRenderable);
-
-        aboutStemYouthRenderable = createImageRenderable(CreditsRenderable.ABOUT_STEM_YOUTH_IMG_ID, CreditsRenderable.ABOUT_STEM_YOUTH_IMG_PATH, false, true, 2);
-        allRenderables.add(aboutStemYouthRenderable);
+        aboutBGRenderable2 = createImageRenderable(ABOUT_BG_ID_2, ABOUT_BG_IMG_PATH_2, false, false, 1);
+        allRenderables.add(aboutBGRenderable2);
     }
 
     public boolean isReadyForInput() {
@@ -84,22 +56,10 @@ public class CreditsRenderable extends FadingTableRenderable {
 
     public void setInputEnabled(boolean inputEnabled) { this.inputEnabled = inputEnabled; }
 
-    public TextLabelRenderable getAboutLabel1() { return aboutLabel1; }
+    public ImageRenderable getAboutBGRenderable1() { return aboutBGRenderable1; }
 
-    public TextLabelRenderable getAboutLabel2() { return aboutLabel2; }
-
-    public ImageRenderable getAboutBGRenderable() { return aboutBGRenderable; }
-
-    public ImageRenderable getAboutSciFYRenderable() {
-        return aboutSciFYRenderable;
-    }
-
-    public ImageRenderable getAboutVodafoneRenderable() {
-        return aboutVodafoneRenderable;
-    }
-
-    public ImageRenderable getAboutStemYouthRenderable() {
-        return aboutStemYouthRenderable;
+    public ImageRenderable getAboutBGRenderable2() {
+        return aboutBGRenderable2;
     }
 
     public void showAbout2() {
@@ -122,10 +82,10 @@ public class CreditsRenderable extends FadingTableRenderable {
                         aboutMode = 2;
                     }
                 }));
-                aboutLabel2.addEffect(aboutLabelEffects);
+                aboutBGRenderable2.addEffect(aboutLabelEffects);
             }
         }));
-        aboutLabel1.addEffect(aboutBGEffects);
+        aboutBGRenderable1.addEffect(aboutBGEffects);
     }
 
     public int getAboutMode() {

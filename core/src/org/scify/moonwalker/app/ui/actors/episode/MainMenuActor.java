@@ -21,8 +21,6 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
     protected Table menuTable;
     protected Table countDownTable;
     protected Label countDownLabel;
-    protected Label aboutLabel1;
-    protected Label aboutLabel2;
 
     protected Button boyButton;
     protected Button boyAvatarButton;
@@ -30,10 +28,8 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
     protected Button girlAvatarButton;
 
     protected Image topBannerImage;
-    protected Image aboutBGImage;
-    protected Image aboutSciFYImage;
-    protected Image aboutVodafoneImage;
-    protected Image aboutStemYouthImage;
+    protected Image aboutBGImage1;
+    protected Image aboutBGImage2;
     protected boolean actorInitiated;
 
 
@@ -58,36 +54,11 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
         Table aboutTable = new Table();
 
         Stack aboutStack = new StackWithEffect<>();
-        aboutBGImage = (ImageWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getAboutBGRenderable());
-        aboutStack.add(aboutBGImage);
+        aboutBGImage1 = (ImageWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getAboutBGRenderable1());
+        aboutBGImage2 = (ImageWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getAboutBGRenderable2());
+        aboutStack.add(aboutBGImage1);
+        aboutStack.add(aboutBGImage2);
 
-        Table innerAboutTable = new Table();
-        Stack aboutLabelStack = new StackWithEffect<>();
-        aboutLabel1 = (Label) bookKeeper.getUIRepresentationOfRenderable(renderable.getAboutLabel1());
-        aboutLabel1.setAlignment(Align.center);
-        Label.LabelStyle lsAbout = new Label.LabelStyle();
-        lsAbout.font = ThemeController.getInstance().getFont();
-        aboutLabel1.setStyle(lsAbout);
-        aboutLabel1.setWrap(true);
-        aboutLabelStack.add(aboutLabel1);
-        aboutLabel2 = (Label) bookKeeper.getUIRepresentationOfRenderable(renderable.getAboutLabel2());
-        aboutLabel2.setAlignment(Align.center);
-        aboutLabel2.setStyle(lsAbout);
-        aboutLabel2.setWrap(true);
-        aboutLabelStack.add(aboutLabel2);
-        innerAboutTable.add(aboutLabelStack).width(0.9f * screenWidth).height(0.4f * screenHeight).top().colspan(3);
-        innerAboutTable.row();
-        aboutSciFYImage = (ImageWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getAboutSciFYRenderable());
-        aboutVodafoneImage = (ImageWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getAboutVodafoneRenderable());
-        aboutStemYouthImage = (ImageWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getAboutStemYouthRenderable());
-        float widthOfSciFyLogo = 0.2f * screenWidth;
-        float widthOfVodafoneLogo = 0.35f * screenWidth;
-        float widthOfStemYouthLogo = 0.35f * screenWidth;
-        innerAboutTable.add(aboutVodafoneImage).width(widthOfVodafoneLogo).height(widthOfVodafoneLogo * 433 / 1157);
-        innerAboutTable.add(aboutSciFYImage).width(widthOfSciFyLogo).height(widthOfSciFyLogo * 600 / 500);
-        innerAboutTable.add(aboutStemYouthImage).width(widthOfStemYouthLogo).height(widthOfStemYouthLogo * 216 / 591);
-
-        aboutStack.add(innerAboutTable);
         aboutTable.add(aboutStack).width(0.9f * screenWidth).height(0.9f * screenHeight).top();
         basicStack.add(aboutTable);
         // Basic

@@ -69,9 +69,6 @@ public class MoonWalkerScenario extends Scenario {
                 Location target = (Location) gameState.getAdditionalDataEntry(NEXT_LOCATION);
                 addTemporaryEpisode(new LocationEpisode(new LocationEpisodeRules(target)), newCurrentEpisode);
                 break;
-            /*case EpisodeEndStateCode.SIMPLE_TIMED_IMAGE_EPISODE:
-                addTemporaryEpisode(new SimpleTimedImageEpisode());
-                break;*/
             case EpisodeEndStateCode.TEMP_EPISODE_FINISHED:
                 break;
             case EpisodeEndStateCode.PREVIOUS_EPISODE:
@@ -85,7 +82,7 @@ public class MoonWalkerScenario extends Scenario {
     protected Episode createBasicScenario (int episodeCounter) {
         clear();
         Episode ret;
-        Episode splash = new SplashScreenEpisode();
+        Episode splash = new CreditsEpisode();
         setFirstEpisode(splash);
         ret = splash;
         Episode mainMenu = new MainMenuEpisode();

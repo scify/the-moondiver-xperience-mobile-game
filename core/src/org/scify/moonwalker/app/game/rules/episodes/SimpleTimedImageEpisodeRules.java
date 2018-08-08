@@ -31,7 +31,6 @@ public class SimpleTimedImageEpisodeRules extends FadingEpisodeRules<FullImageRe
             }
             if (initialGameState.additionalDataEntryExists("timed_episode_img_path")) {
                 renderable = new FullImageRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), Renderable.ACTOR_EPISODE_FULL_IMAGE, "full_image", (String) initialGameState.getAdditionalDataEntry("timed_episode_img_path"));
-                // Add all children
                 currentState.addRenderable(renderable);
             }
             super.episodeStartedEvents(currentState);
