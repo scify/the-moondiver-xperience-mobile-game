@@ -121,4 +121,20 @@ public class FadingTableRenderable extends TableRenderable {
         return ret;
     }
 
+    protected EffectSequence getShowEffect() {
+        EffectSequence ret = new EffectSequence();
+        ret.addEffect(new FadeEffect(1,0, 0));
+        ret.addEffect(new VisibilityEffect(true));
+        ret.addEffect(new FadeEffect(0,1, 1000));
+        return ret;
+    }
+
+    public ImageRenderable getTableBGRenderable() {
+        return tableBGRenderable;
+    }
+
+    public void reveal(Renderable renderable) {
+        renderable.addEffect(getShowEffect());
+    }
+
 }

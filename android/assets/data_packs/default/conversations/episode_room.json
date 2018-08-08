@@ -1,6 +1,6 @@
 [
   {"id": "1", "order":"1", "speakerId":"player", "text":"[#ffeeaaff][[Αυτά είναι! Μουσικάρες, φεγγάρι απίστευτο...\nΆντε να συγκεντρωθείς τώρα...]", "prerequisites":""},
-  {"id": "2", "order":"2", "speakerId":"player", "text":"[#ffeeaaff]Ωωω! μήνυμα από τη σούπερ Θεία!", "buttonText":"Chat","prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone"},
+  {"id": "2", "order":"2", "speakerId":"player", "text":"[#ffeeaaff]Ωωω! μήνυμα από τη σούπερ Θεία!", "buttonText":"Chat","prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone,reveal_skip_button"},
   {"id": "3", "order":"3", "speakerId":"aunt", "text":"Ψτ!\nΤι κάνεις επαναστατικό μου ανήψι;", "prerequisites":""},
   {"id": "4", "order":"4", "speakerId":"player", "text":"[#ffeeaaff]Α, η “αντιπαθητική” θεία [#ff0000ff]\u00b1\u00b1️[#ffeeaaff]!\nΑκόμα να φτιάξεις κανά πύραυλο να βολτάρουμε στο διάστημα;", "prerequisites":"", "onEnterCurrentOrderTrigger":"toggle"},
   {"id": "5", "order":"5", "speakerId":"player", "text":"[#ffeeaaff]Τι κάνετε και αργείτε τόσο;", "prerequisites":""},

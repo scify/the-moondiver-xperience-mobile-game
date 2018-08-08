@@ -59,26 +59,6 @@ public class IntroRenderable extends FadingTableRenderable{
         allRenderables.add(arrowButton);
     }
 
-    private EffectSequence getShowEffect() {
-        EffectSequence ret = new EffectSequence();
-        ret.addEffect(new FadeEffect(1,0, 0));
-        ret.addEffect(new VisibilityEffect(true));
-        ret.addEffect(new FadeEffect(0,1, 1000));
-        return ret;
-    }
-
-    public ImageRenderable getTableBGRenderable() {
-        return tableBGRenderable;
-    }
-
-    public void reveal(ImageRenderable renderable) {
-        renderable.addEffect(getShowEffect());
-    }
-
-    public void reveal(ActionButtonRenderable renderable) {
-        renderable.addEffect(getShowEffect());
-    }
-
     public ImageRenderable getLeftImage() {
         return leftImage;
     }

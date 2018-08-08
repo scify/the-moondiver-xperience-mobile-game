@@ -14,6 +14,7 @@ import static org.scify.moonwalker.app.game.rules.ConversationRules.EVENT_RING_P
 
 public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
     public static final String TOGGLE = "toggle";
+    public static final String REVEAL_SKIP_BUTTON = "reveal_skip_button";
     public static final String RENDERABLE_ID = "room";
     protected boolean outroInitiated;
 
@@ -96,6 +97,9 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
         }
         if (eventTrigger.contains(TOGGLE)) {
             renderable.togglePhone();
+        }
+        if (eventTrigger.contains(REVEAL_SKIP_BUTTON)) {
+            renderable.reveal(renderable.getSkipDialogButtonRenderable());
         }
         super.onEnterConversationOrder(gsCurrent, lineEntered);
     }
