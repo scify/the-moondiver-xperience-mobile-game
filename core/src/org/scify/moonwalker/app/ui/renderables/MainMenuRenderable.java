@@ -126,6 +126,10 @@ public class MainMenuRenderable extends FadingTableRenderable {
         aboutBGRenderable1 = createImageRenderable(CreditsRenderable.ABOUT_BG_ID_1, CreditsRenderable.ABOUT_BG_IMG_PATH_1, false, false, 1);
         allRenderables.add(aboutBGRenderable1);
 
+        final EffectSequence firstImageEffects = new EffectSequence();
+        firstImageEffects.addEffect(new VisibilityEffect(false));
+        aboutBGRenderable1.addEffect(firstImageEffects);
+
         aboutBGRenderable2 = createImageRenderable(CreditsRenderable.ABOUT_BG_ID_2, CreditsRenderable.ABOUT_BG_IMG_PATH_2, false, false, 2);
         allRenderables.add(aboutBGRenderable2);
 
