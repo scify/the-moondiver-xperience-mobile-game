@@ -6,10 +6,12 @@ import org.scify.moonwalker.app.ui.renderables.FadingTableRenderable;
 
 public class FadingEpisodeRules<T extends FadingTableRenderable> extends BaseEpisodeRules {
     protected T renderable;
+    protected boolean finishedEventsCalled;
 
     public FadingEpisodeRules () {
         super();
         renderable = null;
+        finishedEventsCalled = false;
     }
 
     public void setRenderable(T mainRenderable) {
@@ -37,17 +39,21 @@ public class FadingEpisodeRules<T extends FadingTableRenderable> extends BaseEpi
 
     @Override
     protected void episodeEndedEvents(final GameState currentState) {
-        // Make sure we end the episode AFTER the fade
+        if(!finishedEventsCalled) {
 
-        renderable.addAfterFadeOut(new Runnable() {
-            @Override
-            public void run() {
-                superEpisodeEndedEvents(currentState);
-            }
-        });
+            finishedEventsCalled = true;
 
-        // Perform fade out
-        renderable.fadeOut();
+            // Make sure we end the episode AFTER the fade
+            renderable.addAfterFadeOut(new Runnable() {
+                @Override
+                public void run() {
+                    superEpisodeEndedEvents(currentState);
+                }
+            });
+
+            // Perform fade out
+            renderable.fadeOut();
+        }
     }
 
     @Override
