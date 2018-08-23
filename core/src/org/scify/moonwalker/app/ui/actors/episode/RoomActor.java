@@ -35,7 +35,7 @@ public class RoomActor extends FadingTableActor<RoomRenderable> {
         float ratio = skipDialogButton.getWidth() /skipDialogButton.getHeight();
         float height = getHeight() * 0.15f;
         buttonTable.add(skipDialogButton).height(height).width(ratio * height);
-        buttonTable.padTop(0.03f * getHeight());
+        buttonTable.padTop(0.03f * getHeight()).padLeft(0.05f * getWidth());
         add(buttonTable).expand().top();
         add().width(0.2f *getWidth()).height(getHeight());
     }

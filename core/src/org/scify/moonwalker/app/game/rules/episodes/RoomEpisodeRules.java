@@ -3,6 +3,7 @@ package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
 import org.scify.engine.conversation.ConversationLine;
+import org.scify.engine.renderables.effects.FadeEffect;
 import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.game.rules.ConversationRules;
 import org.scify.moonwalker.app.ui.renderables.RoomRenderable;
@@ -51,6 +52,7 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
         switch (userAction.getActionCode()) {
             case UserActionCode.FINISH_EPISODE:
                 gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
+                conversationRules.getLastConversationRenderable().addEffect(new FadeEffect(1,0,1000));
                 break;
         }
         super.handleUserAction(gameState, userAction);

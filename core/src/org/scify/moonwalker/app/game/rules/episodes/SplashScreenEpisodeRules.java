@@ -5,7 +5,7 @@ import org.scify.engine.GameState;
 
 public class SplashScreenEpisodeRules extends SimpleTimedImageEpisodeRules {
 
-    protected final int MILLISECONDS_FOR_EPISODE = 4000;
+    protected final int MILLISECONDS_FOR_EPISODE = 2000;
 
     @Override
     public void episodeStartedEvents(GameState currentState) {

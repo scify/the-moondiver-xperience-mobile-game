@@ -16,7 +16,7 @@ public class MoonWalkerScenario extends Scenario {
 
     public MoonWalkerScenario() {
         if (true) {
-            createBasicScenario(0);
+            createBasicScenario(0, true);
         }
         else {
             setFirstEpisode(createTestingScenario());
@@ -33,10 +33,10 @@ public class MoonWalkerScenario extends Scenario {
             case EpisodeEndStateCode.SCENARIO_LOAD:
                 GameInfo gameInfo = GameInfo.getInstance();
                 gameInfo.load();
-                return createBasicScenario(gameInfo.getMainEpisodeCounter());
+                return createBasicScenario(gameInfo.getMainEpisodeCounter(), false);
             case EpisodeEndStateCode.SCENARIO_NEEDS_RESTART:
                 GameInfo.getInstance().reset();
-                return createBasicScenario(0);
+                return createBasicScenario(0, false);
             case EpisodeEndStateCode.CONTACT_SCREEN_EPISODE_STARTED:
                 if (currentEpisode instanceof CockpitEpisode)
                     newCurrentEpisode = new CockpitEpisode();
@@ -79,50 +79,53 @@ public class MoonWalkerScenario extends Scenario {
         return super.getNextEpisode(state);
     }
 
-    protected Episode createBasicScenario (int episodeCounter) {
+    protected Episode createBasicScenario (int episodeCounter, boolean showSplashScreen) {
         clear();
         Episode ret;
-        Episode splash = new SplashScreenEpisode();
-        setFirstEpisode(splash);
-        ret = splash;
         Episode mainMenu = new MainMenuEpisode();
-        if (episodeCounter == 1) {
-            setFirstEpisode(mainMenu);
+
+        if (showSplashScreen) {
+            Episode splash = new SplashScreenEpisode();
+            setFirstEpisode(splash);
+            ret = splash;
+            addEpisodeAfter(splash, mainMenu);
+        }else {
             ret = mainMenu;
+            setFirstEpisode(mainMenu);
         }
-        addEpisodeAfter(splash, mainMenu);
+
         Episode intro = new IntroEpisode();
-        if (episodeCounter == 2) {
+        if (episodeCounter == 1) {
             setFirstEpisode(intro);
             ret = intro;
         }
         addEpisodeAfter(mainMenu, intro);
         Episode room = new RoomEpisode();
-        if (episodeCounter == 3) {
+        if (episodeCounter == 2) {
             setFirstEpisode(room);
             ret = room;
         }
         addEpisodeAfter(intro, room);
         Episode forest = new ForestEpisode();
-        if (episodeCounter == 4) {
+        if (episodeCounter == 3) {
             setFirstEpisode(forest);
             ret = forest;
         }
         addEpisodeAfter(room, forest);
         Episode cockpit = new CockpitEpisode();
-        if (episodeCounter == 5) {
+        if (episodeCounter == 4) {
             setFirstEpisode(cockpit);
             ret = cockpit;
         }
         addEpisodeAfter(forest, cockpit);
         Episode moonLanding = new MoonLandingEpisode();
-        if (episodeCounter == 6) {
+        if (episodeCounter == 5) {
             setFirstEpisode(moonLanding);
             ret = moonLanding;
         }
         addEpisodeAfter(cockpit, moonLanding);
         Episode dreamingRoomEpisode = new DreamingRoomEpisode();
-        if (episodeCounter == 7) {
+        if (episodeCounter == 6) {
             setFirstEpisode(dreamingRoomEpisode);
             ret = dreamingRoomEpisode;
         }
