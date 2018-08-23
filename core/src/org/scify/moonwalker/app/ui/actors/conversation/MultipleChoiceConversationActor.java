@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import org.scify.engine.renderables.MultipleChoiceConversationRenderable;
 import org.scify.engine.renderables.Renderable;
+import org.scify.moonwalker.app.ui.ThemeController;
 import org.scify.moonwalker.app.ui.actors.TableActor;
 import org.scify.moonwalker.app.ui.actors.Updateable;
 
@@ -14,6 +15,7 @@ public class MultipleChoiceConversationActor extends TableActor<MultipleChoiceCo
     protected Button buttonBottomLeft;
     protected Button buttonTopRight;
     protected Button buttonBottomRight;
+
 
     public MultipleChoiceConversationActor(Skin skin, MultipleChoiceConversationRenderable renderable) {
         super(skin, renderable);
@@ -49,22 +51,18 @@ public class MultipleChoiceConversationActor extends TableActor<MultipleChoiceCo
         float buttonWidth = 0.40f * width;
         float buttonHeight = 0.2f * height;
         buttonTopLeft = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getConversationButtonTopLeft());
-        buttonTopLeft.setStyle(getSkin().get("default", TextButton.TextButtonStyle.class));
-        buttonsTable.add(buttonTopLeft).width(buttonWidth).height(buttonHeight);
+        setButtonAttributes(buttonTopLeft, buttonsTable, buttonWidth, buttonHeight, renderable.getConversationButtonTopLeft().isDefaultButtonSkin());
         buttonsTable.add().height(buttonHeight).width(0.05f * width);
         buttonTopRight = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getConversationButtonTopRight());
-        buttonTopRight.setStyle(getSkin().get("default", TextButton.TextButtonStyle.class));
-        buttonsTable.add(buttonTopRight).width(buttonWidth).height(buttonHeight);
+        setButtonAttributes(buttonTopRight, buttonsTable, buttonWidth, buttonHeight, renderable.getConversationButtonTopRight().isDefaultButtonSkin());
         buttonsTable.row();
         buttonsTable.add().height(buttonHeight/2).colspan(3);
         buttonsTable.row();
         buttonBottomLeft = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getConversationButtonBottomLeft());
-        buttonBottomLeft.setStyle(getSkin().get("default", TextButton.TextButtonStyle.class));
-        buttonsTable.add(buttonBottomLeft).width(buttonWidth).height(buttonHeight);
+        setButtonAttributes(buttonBottomLeft, buttonsTable, buttonWidth, buttonHeight, renderable.getConversationButtonBottomLeft().isDefaultButtonSkin());
         buttonsTable.add().height(buttonHeight).width(0.05f * width);
         buttonBottomRight = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getConversationButtonBottomRight());
-        buttonBottomRight.setStyle(getSkin().get("default", TextButton.TextButtonStyle.class));
-        buttonsTable.add(buttonBottomRight).width(buttonWidth).height(buttonHeight);
+        setButtonAttributes(buttonBottomRight, buttonsTable, buttonWidth, buttonHeight, renderable.getConversationButtonBottomRight().isDefaultButtonSkin());
         centralTable.add(buttonsTable).width(buttonWidth);
         add(centralTable).height(height * 0.95f).width(width * 0.95f).center();
 
@@ -72,6 +70,14 @@ public class MultipleChoiceConversationActor extends TableActor<MultipleChoiceCo
 
     }
 
+    protected void setButtonAttributes(Button button, Table buttonsTable, float buttonWidth, float buttonHeight, boolean defaultButtonSkin) {
+        ThemeController themeController = ThemeController.getInstance();
+        Skin skinToDraw = getSkin();
+        if(!defaultButtonSkin)
+            skinToDraw = themeController.getWrongAnswerSkin();
+        button.setStyle(skinToDraw.get("default", TextButton.TextButtonStyle.class));
+        buttonsTable.add(button).width(buttonWidth).height(buttonHeight);
+    }
 
     @Override
     public void update(Renderable renderable) {

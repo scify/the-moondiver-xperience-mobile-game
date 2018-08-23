@@ -161,7 +161,7 @@ public class MainMenuActor extends FadingTableActor<MainMenuRenderable> implemen
         countDownLabel.setAlignment(Align.center);
         Label.LabelStyle lsCountDown = new Label.LabelStyle();
         ThemeController themeController = ThemeController.getInstance();
-        lsCountDown.font = themeController.getFont(30, "controls");
+        lsCountDown.font = themeController.getFont(30, "controls", true);
         countDownLabel.setStyle(lsCountDown);
         countDownTable.add(countDownLabel).width(width).height(height);
         stack.add(countDownTable);

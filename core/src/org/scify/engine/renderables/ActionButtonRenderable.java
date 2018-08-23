@@ -10,13 +10,16 @@ public class ActionButtonRenderable extends Renderable {
     protected UserAction userAction;
     protected float padding;
     protected String imgPath;
+    protected boolean defaultButtonSkin;
 
     public ActionButtonRenderable(float xPos, float yPos, float width, float height, String type, String id) {
         super(xPos, yPos, width, height, type, id);
+        defaultButtonSkin = true;
     }
 
     public ActionButtonRenderable(String type, String id) {
         super(type, id);
+        defaultButtonSkin = true;
     }
 
     public String getTitle() {
@@ -25,6 +28,14 @@ public class ActionButtonRenderable extends Renderable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public boolean isDefaultButtonSkin() {
+        return defaultButtonSkin;
+    }
+
+    public void setDefaultButtonSkin(boolean defaultButtonSkin) {
+        this.defaultButtonSkin = defaultButtonSkin;
     }
 
     public UserAction getUserAction() {

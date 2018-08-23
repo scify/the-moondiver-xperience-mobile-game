@@ -3,6 +3,8 @@ package org.scify.engine.renderables;
 import org.scify.engine.UserAction;
 import org.scify.engine.UserActionCode;
 import org.scify.engine.conversation.ConversationLine;
+import org.scify.moonwalker.app.game.quiz.Answer;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -51,17 +53,26 @@ public class MultipleChoiceConversationRenderable extends ConversationRenderable
     public void setConversationLines(List<ConversationLine> conversationLines) {
         this.conversationLines = conversationLines;
         ConversationLine conversationLine = conversationLines.get(0);
-        conversationButtonTopLeft = createTextButton(TOP_LEFT_BUTTON_ID + conversationLine.getId(), conversationLine.getText(), new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine), false, true, 102);
+        conversationButtonTopLeft = createTextButton(TOP_LEFT_BUTTON_ID + conversationLine.getId(), conversationLine.getText(), new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine), false, true, 102, ((Answer) conversationLine.getPayload()).isCorrect());
         allRenderables.add(conversationButtonTopLeft);
         conversationLine = conversationLines.get(1);
-        conversationButtonBottomLeft = createTextButton(BOTTOM_LEFT_BUTTON_ID + conversationLine.getId(), conversationLine.getText(), new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine), false, true, 102);
+        conversationButtonBottomLeft = createTextButton(BOTTOM_LEFT_BUTTON_ID + conversationLine.getId(), conversationLine.getText(), new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine), false, true, 102, ((Answer) conversationLine.getPayload()).isCorrect());
         allRenderables.add(conversationButtonBottomLeft);
         conversationLine = conversationLines.get(2);
-        conversationButtonTopRight = createTextButton(TOP_RIGHT_BUTTON_ID + conversationLine.getId(), conversationLine.getText(), new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine), false, true, 102);
+        conversationButtonTopRight = createTextButton(TOP_RIGHT_BUTTON_ID + conversationLine.getId(), conversationLine.getText(), new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine), false, true, 102, ((Answer) conversationLine.getPayload()).isCorrect());
         allRenderables.add(conversationButtonTopRight);
         conversationLine = conversationLines.get(3);
-        conversationButtonBottomRight = createTextButton(BOTTOM_RIGHT_BUTTON_ID + conversationLine.getId(), conversationLine.getText(), new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine), false, true, 102);
+        conversationButtonBottomRight = createTextButton(BOTTOM_RIGHT_BUTTON_ID + conversationLine.getId(), conversationLine.getText(), new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine), false, true, 102, ((Answer) conversationLine.getPayload()).isCorrect());
         allRenderables.add(conversationButtonBottomRight);
+    }
+
+    protected ActionButtonRenderable createTextButton(String id, String text, UserAction userAction, boolean positionDrawable, boolean visibility, int zIndex, boolean defaultButtonSkin) {
+        ActionButtonRenderable ret = new ActionButtonRenderable(Renderable.ACTOR_TEXT_BUTTON, id);
+        ret.setTitle(text);
+        ret.setUserAction(userAction);
+        ret.setDefaultButtonSkin(defaultButtonSkin);
+        setRenderableAttributes(ret, positionDrawable, visibility, zIndex);
+        return ret;
     }
 
 
