@@ -5,7 +5,7 @@
   {"id": "4", "order":"4", "speakerId":"stella_laluna", "text":"Εντάξει λοιπόν, ας δούμε τι ξέρεις\nτώρα για τη γειτονιά μας, το ηλιακό μας σύστημα...", "prerequisites":""},
   {"id": "5", "order":"5", "speakerId":"stella_laluna", "text":"Καλημέρα!\nΓια να δούμε πως θα τα πας σήμερα.", "prerequisites":"retry"},
   {"id": "6", "order":"6", "speakerId":"player", "text":"[#ffeeaaff]Θα αστειεύεστε, την ξέρω πολύ καλά!", "prerequisites":""},
-  {"id": "7", "order":"7", "speakerId":"player", "text":"[#ffeeaaff]Για να δούμε...", "prerequisites":""},
+  {"id": "7", "order":"6", "speakerId":"player", "text":"[#ffeeaaff]Για να δούμε...", "prerequisites":""},
   {"id": "8", "order":"7", "speakerId":"stella_laluna", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_question_3"},
   {"id": "9", "order":"8", "speakerId":"stella_laluna", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_response_for_question"},
   {"id": "10", "order":"9", "speakerId":"stella_laluna", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_question_3"},
