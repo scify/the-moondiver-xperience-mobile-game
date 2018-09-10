@@ -1,7 +1,7 @@
 [
   {"id": "1", "order":"1", "speakerId":"aphrodite", "text":"Καλώς όρισες στην ηλιόλουστη Αθήνα!\nΤα πας πολύ καλά, μπράβο!", "prerequisites":"first_time"},
   {"id": "2", "order":"2", "speakerId":"aphrodite", "text":"Είμαι η Αφροδίτη Αστερίου,\nεπικεφαλής του Ελληνικού Οργανισμού Ενεργειακής Έρευνας.", "prerequisites":"first_time"},
-  {"id": "3", "order":"3", "speakerId":"aphrodite", "text":"Είσαι όμως ερευνητικό μυαλό; Μύθοι και θεωρίες συνομωσίας δεν έχουν θέση εκεί έξω...", "prerequisites":""},
+  {"id": "3", "order":"3", "speakerId":"aphrodite", "text":"Είσαι όμως ερευνητικό μυαλό; Μύθοι και θεωρίες συνομωσίας δεν έχουν σχέση με την επιστήμη...", "prerequisites":""},
   {"id": "4", "order":"4", "speakerId":"player", "text":"[#ffeeaaff]Άλλο τα παραμύθια, άλλο η επιστήμη.", "prerequisites":""},
   {"id": "5", "order":"4", "speakerId":"player", "text":"[#ffeeaaff]Νομίζω ότι μπορώ να τα ξεχωρίσω...", "prerequisites":""},
   {"id": "6", "order":"5", "speakerId":"aphrodite", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_question_7"},

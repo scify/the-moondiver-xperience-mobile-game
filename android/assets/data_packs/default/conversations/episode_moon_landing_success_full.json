@@ -2,10 +2,7 @@
   {"id": "1", "order":"1", "speakerId":"player", "text":"[#ffeeaaff]Τα καταφέραμε! Είναι υπέροχα! Δεν νιώθεις\nανάλαφρος; Σα να πετάς;", "prerequisites":""},
   {"id": "2", "order":"2", "speakerId":"oratios", "text":"Ναι… Στη Σελήνη έχεις το 1/6 του βάρους σου...", "prerequisites":""},
   {"id": "3", "order":"3", "speakerId":"oratios", "text":"Εσύ ας πούμε τώρα δεν ζυγίζεις ούτε 13 κιλά!", "prerequisites":""},
-  {"id": "4", "order":"4", "speakerId":"player", "text":"[#ffeeaaff]Αυτό έχεις να πεις μόνο; Αχ Οράτιε...", "prerequisites":""},
-  {"id": "5", "order":"4", "speakerId":"player", "text":"[#ffeeaaff]Άσε τα κιλά και κοίτα εκεί!", "prerequisites":""},
-  {"id": "6", "order":"5", "speakerId":"oratios", "text":"Είναι μαγική η έκλειψη Ηλίου από εδώ! Σ' ευχαριστώ {{μικρέ μου φίλε/μικρή μου φίλη}}...", "prerequisites":""},
-  {"id": "7", "order":"6", "speakerId":"oratios", "text":"Τώρα πια η τεχνολογία μας θα γίνει ευρέως γνωστή.", "prerequisites":""},
-  {"id": "8", "order":"7", "speakerId":"oratios", "text":"Έτσι θα βρούμε χρηματοδότηση για να γίνει προσιτή σε όλους.", "prerequisites":"", "onExitCurrentOrderTrigger":"rooster"},
-  {"id": "9", "order":"8", "speakerId":"player", "text":"[#ffeeaaff]Κόκορας; Στη Σελήνη;", "prerequisites":"","onExitCurrentOrderTrigger":"end"}
+  {"id": "4", "order":"4", "speakerId":"player", "text":"[#ffeeaaff]Άσε τα κιλά και κοίτα εκεί!", "prerequisites":""},
+  {"id": "5", "order":"5", "speakerId":"oratios", "text":"Είναι μαγική η έκλειψη Ηλίου από εδώ! Σ' ευχαριστώ {{μικρέ μου φίλε/μικρή μου φίλη}}...", "prerequisites":"", "onExitCurrentOrderTrigger":"rooster"},
+  {"id": "6", "order":"6", "speakerId":"player", "text":"[#ffeeaaff]Κόκορας; Στη Σελήνη;", "prerequisites":"","onExitCurrentOrderTrigger":"end"}
 ]

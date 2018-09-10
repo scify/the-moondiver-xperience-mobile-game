@@ -2,6 +2,5 @@
   {"id": "1", "order":"1", "speakerId":"aunt", "text":"Τα κατάφερες κι εδώ!\nΜπράβο!", "prerequisites":""},
   {"id": "2", "order":"2", "speakerId":"aunt", "text":"Με τον συλλέκτη μπορείς να μαζεύεις\nπερισσότερη ενέργεια κάθε νύχτα.", "prerequisites":""},
   {"id": "3", "order":"3", "speakerId":"player", "text":"[#ffeeaaff] Ακόμα γρηγορότερη φόρτιση...", "prerequisites":""},
-  {"id": "4", "order":"4", "speakerId":"aunt", "text":"Σωστά!\nΕπόμενος προορισμός: Όσλο, Νορβηγία.", "prerequisites":""},
-  {"id": "5", "order":"5", "speakerId":"aunt", "text":"Ευγενικοί άνθρωποι,\nεξαίρετοι επιστήμονες!\nΚαλή επιτυχία!", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
+  {"id": "4", "order":"4", "speakerId":"aunt", "text":"Σωστά! Επόμενος προορισμός:\nΌσλο, Νορβηγία. Καλή επιτυχία!", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
 ]

@@ -1,17 +1,13 @@
 [
   {"id": "1", "order":"1", "speakerId":"player", "text":"[#ffeeaaff][[Αυτά είναι! Μουσικάρες, φεγγάρι απίστευτο...\nΆντε να συγκεντρωθείς τώρα...]", "prerequisites":""},
   {"id": "2", "order":"2", "speakerId":"player", "text":"[#ffeeaaff]Ωωω! μήνυμα από τη σούπερ Θεία!", "buttonText":"Chat","prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone,reveal_skip_button"},
-  {"id": "3", "order":"3", "speakerId":"aunt", "text":"Ψτ!\nΤι κάνεις επαναστατικό μου ανήψι;", "prerequisites":""},
-  {"id": "4", "order":"4", "speakerId":"player", "text":"[#ffeeaaff]Α, η “αντιπαθητική” θεία [#ff0000ff]\u00b1\u00b1️[#ffeeaaff]!\nΑκόμα να φτιάξεις κανά πύραυλο να βολτάρουμε στο διάστημα;", "prerequisites":"", "onEnterCurrentOrderTrigger":"toggle"},
-  {"id": "5", "order":"5", "speakerId":"player", "text":"[#ffeeaaff]Τι κάνετε και αργείτε τόσο;", "prerequisites":""},
-  {"id": "6", "order":"5", "speakerId":"player", "text":"[#ffeeaaff]Κανα διαστημικό ταξιδάκι θα πάμε;", "prerequisites":""},
+  {"id": "3", "order":"3", "speakerId":"aunt", "text":"Ψιτ!\nΤι κάνει το φανταστικό μου ανίψι;", "prerequisites":""},
+  {"id": "4", "order":"4", "speakerId":"player", "text":"[#ffeeaaff]Α, η “αντιπαθητική” θεία [#ff0000ff]\u00b1\u00b1️[#ffeeaaff]!\nΑκόμα περιμένω να με πας στο διάστημα.", "prerequisites":"", "onEnterCurrentOrderTrigger":"toggle"},
+  {"id": "5", "order":"5", "speakerId":"player", "text":"[#ffeeaaff]Τι κάνεις και αργείς τόσο;", "prerequisites":""},
+  {"id": "6", "order":"5", "speakerId":"player", "text":"[#ffeeaaff]Κανά διαστημικό ταξιδάκι θα πάμε;", "prerequisites":""},
   {"id": "7", "order":"6", "speakerId":"aunt", "text":"Πρόσεχε τι εύχεσαι [#d4aa00ff]\u00af[WHITE]\nΕίμαστε πολύ πιο μπροστά από όσο φαντάζεσαι...", "prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone"},
-  {"id": "8", "order":"7", "speakerId":"aunt", "text":"Εσύ όμως, τολμάς;\nΜπορείς να αποδείξεις ότι το αξίζεις;", "prerequisites":""},
-  {"id": "9", "order":"8", "speakerId":"player", "text":"[#ffeeaaff]Keep talking...", "prerequisites":"", "onEnterCurrentOrderTrigger":"toggle"},
-  {"id": "10", "order":"8", "speakerId":"player", "text":"[#ffeeaaff]Τι πρέπει να κάνω;", "prerequisites":""},
-  {"id": "11", "order":"9", "speakerId":"aunt", "text":"Αν θέλεις να ξεκινήσεις, μην πεις τίποτα σε κανέναν.", "prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone"},
-  {"id": "12", "order":"10", "speakerId":"aunt", "text":"Και την Παρασκευή το απόγευμα πήγαινε στο ξέφωτο που ξέρεις.", "prerequisites":""},
-  {"id": "13", "order":"11", "speakerId":"player", "text":"[#ffeeaaff]Σε μισώ [#ff0000ff]\u00b1[#ffeeaaff]. Θα είμαι εκεί.", "prerequisites":"", "onEnterCurrentOrderTrigger":"toggle"},
-  {"id": "14", "order":"11", "speakerId":"player", "text":"[#ffeeaaff]Σε μισώ [#ff0000ff]\u00b1[#ffeeaaff]. Την Παρασκευή λοιπόν!", "prerequisites":""},
-  {"id": "15", "order":"12", "speakerId":"aunt", "text":"Κι εγώ σε μισώ [#ff0000ff]\u00b1[WHITE]\nΣε περιμένω...", "prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone", "onExitCurrentOrderTrigger":"end"}
+  {"id": "11", "order":"7", "speakerId":"aunt", "text":"Αν θέλεις να ξεκινήσεις, μην πεις τίποτα σε κανέναν.", "prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone"},
+  {"id": "12", "order":"8", "speakerId":"aunt", "text":"Και την Παρασκευή το απόγευμα πήγαινε στο ξέφωτο που ξέρεις.", "prerequisites":""},
+  {"id": "13", "order":"9", "speakerId":"player", "text":"Οκ, τα λέμε εκεί! \u00b1[#ffeeaaff]", "prerequisites":"", "onEnterCurrentOrderTrigger":"toggle", "onExitCurrentOrderTrigger":"end"},
+  {"id": "14", "order":"9", "speakerId":"player", "text":"Την Παρασκευή λοιπόν! \u00b1[#ffeeaaff]", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
 ]

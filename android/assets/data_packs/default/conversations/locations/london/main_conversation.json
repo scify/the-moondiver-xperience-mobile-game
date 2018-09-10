@@ -3,7 +3,7 @@
   {"id": "2", "order":"2", "speakerId":"john_collector", "text":"Είμαι ο John Collector,\nεπικεφαλής του Βασιλικού Ινστιτούτου Διαστημικής Τεχνολογίας.", "prerequisites":"first_time"},
   {"id": "3", "order":"3", "speakerId":"john_collector", "text":"Ας δούμε τι ξέρεις\nτώρα για τις αποστολές στη Σελήνη...", "prerequisites":"first_time"},
   {"id": "4", "order":"4", "speakerId":"john_collector", "text":"Ας δούμε τι ξέρεις\nτώρα για τις αποστολές στη Σελήνη...", "prerequisites":"retry"},
-  {"id": "5", "order":"5", "speakerId":"player", "text":"[#ffeeaaff]Τα ξέρω όλα, πες πως ήμουν εκεί!", "prerequisites":""},
+  {"id": "5", "order":"5", "speakerId":"player", "text":"[#ffeeaaff]Παιχνιδάκι, πες πως ήμουν εκεί!", "prerequisites":""},
   {"id": "6", "order":"5", "speakerId":"player", "text":"[#ffeeaaff]Κάτι θυμάμαι, για λέγε...", "prerequisites":""},
   {"id": "7", "order":"6", "speakerId":"john_collector", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_question_4"},
   {"id": "8", "order":"7", "speakerId":"john_collector", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_response_for_question"},

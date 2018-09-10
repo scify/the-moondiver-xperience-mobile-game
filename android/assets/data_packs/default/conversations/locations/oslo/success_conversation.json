@@ -1,6 +1,5 @@
 [
   {"id": "1", "order":"1", "speakerId":"aunt", "text":"Τα κατάφερες και στη Νορβηγία!\nΜπράβο, τώρα έχεις 3 συλλέκτες.", "prerequisites":""},
   {"id": "2", "order":"2", "speakerId":"player", "text":"[#ffeeaaff]Ανυπομονώ...", "prerequisites":""},
-  {"id": "3", "order":"3", "speakerId":"aunt", "text":"Πάμε λοιπόν!\nΕπόμενος προορισμός: Αθήνα.", "prerequisites":""},
-  {"id": "4", "order":"4", "speakerId":"aunt", "text":"[#ffeeaaff]Φιλόξενοι άνθρωποι,\nεκπληκτικοί  επιστήμονες!\nΚαλή επιτυχία!", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
+  {"id": "3", "order":"3", "speakerId":"aunt", "text":"Πάμε λοιπόν!\nΕπόμενος προορισμός: Αθήνα. Καλή επιτυχία!", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
 ]

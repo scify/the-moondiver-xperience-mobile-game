@@ -2,10 +2,9 @@
   {"id": "1", "order":"1", "speakerId":"oratios", "text":"Τα καταφέραμε! Η Γη είναι υπέροχη από εδώ!", "prerequisites":""},
   {"id": "2", "order":"2", "speakerId":"player", "text":"[#ffeeaaff]Ναι, μπορούμε να στείλουμε απίστευτες selfies!", "prerequisites":""},
   {"id": "3", "order":"3", "speakerId":"oratios", "text":"Ελπίζω να βγάζει καλές φωτό η μπακατέλα σου...", "prerequisites":""},
-  {"id": "4", "order":"4", "speakerId":"player", "text":"[#ffeeaaff]Μπακατέλα; Χα! Εδώ μιλάμε για εργαλείο, όχι αστεία!", "prerequisites":""},
+  {"id": "4", "order":"4", "speakerId":"player", "text":"[#ffeeaaff]Μπακατέλα; Χα! Εδώ μιλάμε για προηγμένη τεχνολογία, όχι αστεία!", "prerequisites":""},
   {"id": "5", "order":"5", "speakerId":"player", "text":"[#ffeeaaff]Μόνο αυτό μπορεί να βγάλει φωτό σε αυτές τις συνθήκες... [#ff0000ff]\u00b1", "prerequisites":""},
   {"id": "6", "order":"6", "speakerId":"player", "text":"[#ffeeaaff] Δυστυχώς δεν προλάβαμε την έκλειψη Ηλίου...", "prerequisites":""},
-  {"id": "7", "order":"7", "speakerId":"oratios", "text":"Δεν πειράζει. Τώρα πια η τεχνολογία μας θα γίνει ευρέως γνωστή.", "prerequisites":""},
-  {"id": "8", "order":"8", "speakerId":"oratios", "text":"Έτσι θα βρούμε χρηματοδότηση για να γίνει προσιτή σε όλους.", "prerequisites":"", "onExitCurrentOrderTrigger":"rooster"},
-  {"id": "9", "order":"9", "speakerId":"player", "text":"[#ffeeaaff]Κόκορας; Στη Σελήνη;", "prerequisites":"","onExitCurrentOrderTrigger":"end"}
+  {"id": "7", "order":"7", "speakerId":"oratios", "text":"Δεν πειράζει. Όπως και να ‘χει, σ’ ευχαριστώ {{μικρέ/μικρή}} μου {{φίλε/φίλη}}...", "prerequisites":"", "onExitCurrentOrderTrigger":"rooster"},
+  {"id": "8", "order":"8", "speakerId":"player", "text":"[#ffeeaaff]Κόκορας; Στη Σελήνη;", "prerequisites":"","onExitCurrentOrderTrigger":"end"}
 ]

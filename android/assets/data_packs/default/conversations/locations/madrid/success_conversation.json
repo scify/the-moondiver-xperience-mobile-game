@@ -1,6 +1,5 @@
 [
   {"id": "1", "order":"1", "speakerId":"aunt", "text":"Συγχαρητήρια!\nΗ απόδοση του κινητήρα σου αυξήθηκε κι άλλο!", "prerequisites":""},
-  {"id": "2", "order":"2", "speakerId":"player", "text":"[#ffeeaaff]Τρελά γκάζια δηλαδή;", "prerequisites":""},
-  {"id": "3", "order":"3", "speakerId":"aunt", "text":"Εμ.. ναι, αλλά με προσοχή!\nΕπόμενος προορισμός: Λονδίνο, Αγγλία.", "prerequisites":""},
-  {"id": "4", "order":"4", "speakerId":"aunt", "text":"Υπέροχο, βροχερό, κοσμοπολίτικο...\nΚαλή επιτυχία!", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
+  {"id": "2", "order":"2", "speakerId":"player", "text":"[#ffeeaaff]Τούρμπο δηλαδή;", "prerequisites":""},
+  {"id": "3", "order":"3", "speakerId":"aunt", "text":"Εμ.. ναι, αλλά με προσοχή!\nΕπόμενος προορισμός: Λονδίνο, Αγγλία. Καλή επιτυχία!", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
 ]

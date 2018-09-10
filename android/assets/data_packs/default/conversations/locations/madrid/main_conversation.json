@@ -1,8 +1,8 @@
 [
   {"id": "1", "order":"1", "speakerId":"estrella", "text":"Buenos dias αστέρι! Έμαθα ότι τα πήγες καλά ως τώρα.", "prerequisites":"first_time"},
   {"id": "2", "order":"2", "speakerId":"estrella", "text":"Είμαι η Estrella Brillante, επικεφαλής του Ισπανικού Κέντρου Διαστημικής Τεχνολογίας.", "prerequisites":"first_time"},
-  {"id": "3", "order":"3", "speakerId":"estrella", "text":"Εντάξει λοιπόν, ας δούμε τώρα τι ξέρεις για τον Ήλιο...", "prerequisites":"first_time"},
-  {"id": "4", "order":"4", "speakerId":"estrella", "text":"Εντάξει λοιπόν, ας δούμε τώρα τι ξέρεις για τον Ήλιο...", "prerequisites":"retry"},
+  {"id": "3", "order":"3", "speakerId":"estrella", "text":"Aς δούμε τώρα τι ξέρεις για τον Ήλιο...", "prerequisites":"first_time"},
+  {"id": "4", "order":"4", "speakerId":"estrella", "text":"Aς δούμε τώρα τι ξέρεις για τον Ήλιο...", "prerequisites":"retry"},
   {"id": "5", "order":"5", "speakerId":"player", "text":"[#ffeeaaff]Ξέρω τα πάντα για τον Ήλιο!", "prerequisites":"first_time"},
   {"id": "6", "order":"5", "speakerId":"player", "text":"[#ffeeaaff]Ε, κάτι θα καταφέρω...", "prerequisites":"first_time"},
   {"id": "7", "order":"6", "speakerId":"estrella", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_question_6"},
