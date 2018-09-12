@@ -2,7 +2,7 @@
   {"id": "1", "order":"1", "speakerId":"player", "text":"[#ffeeaaff][[Αυτά είναι! Μουσικάρες, φεγγάρι απίστευτο...\nΆντε να συγκεντρωθείς τώρα...]", "prerequisites":""},
   {"id": "2", "order":"2", "speakerId":"player", "text":"[#ffeeaaff]Ωωω! μήνυμα από τη σούπερ Θεία!", "buttonText":"Chat","prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone,reveal_skip_button"},
   {"id": "3", "order":"3", "speakerId":"aunt", "text":"Ψιτ!\nΤι κάνει το φανταστικό μου ανίψι;", "prerequisites":""},
-  {"id": "4", "order":"4", "speakerId":"player", "text":"[#ffeeaaff]Α, η “αντιπαθητική” θεία [#ff0000ff]\u00b1\u00b1️[#ffeeaaff]!\nΑκόμα περιμένω να με πας στο διάστημα.", "prerequisites":"", "onEnterCurrentOrderTrigger":"toggle"},
+  {"id": "4", "order":"4", "speakerId":"player", "text":"[#ffeeaaff]Α, η “αντιπαθητική” θεία [#d4aa00ff]\u00af️[#ffeeaaff] !\nΑκόμα περιμένω να με πας στο διάστημα.", "prerequisites":"", "onEnterCurrentOrderTrigger":"toggle"},
   {"id": "5", "order":"5", "speakerId":"player", "text":"[#ffeeaaff]Τι κάνεις και αργείς τόσο;", "prerequisites":""},
   {"id": "6", "order":"5", "speakerId":"player", "text":"[#ffeeaaff]Κανά διαστημικό ταξιδάκι θα πάμε;", "prerequisites":""},
   {"id": "7", "order":"6", "speakerId":"aunt", "text":"Πρόσεχε τι εύχεσαι [#d4aa00ff]\u00af[WHITE]\nΕίμαστε πολύ πιο μπροστά από όσο φαντάζεσαι...", "prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone"},
