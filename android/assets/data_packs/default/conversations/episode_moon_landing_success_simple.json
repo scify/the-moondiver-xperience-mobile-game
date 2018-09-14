@@ -5,6 +5,6 @@
   {"id": "4", "order":"4", "speakerId":"player", "text":"[#ffeeaaff]Μπακατέλα; Χα! Εδώ μιλάμε για προηγμένη τεχνολογία, όχι αστεία!", "prerequisites":""},
   {"id": "5", "order":"5", "speakerId":"player", "text":"[#ffeeaaff]Μόνο αυτό μπορεί να βγάλει φωτό σε αυτές τις συνθήκες... [#ff0000ff]\u00b1", "prerequisites":""},
   {"id": "6", "order":"6", "speakerId":"player", "text":"[#ffeeaaff] Δυστυχώς δεν προλάβαμε την έκλειψη Ηλίου...", "prerequisites":""},
-  {"id": "7", "order":"7", "speakerId":"oratios", "text":"Δεν πειράζει. Όπως και να ‘χει, σ’ ευχαριστώ {{μικρέ/μικρή}} μου {{φίλε/φίλη}}...", "prerequisites":"", "onExitCurrentOrderTrigger":"rooster"},
+  {"id": "7", "order":"7", "speakerId":"oratios", "text":"Δεν πειράζει. Όπως και να ‘χει, σ’ ευχαριστώ {{μικρέ μου φίλε/μικρή μου φίλη}}...", "prerequisites":"", "onExitCurrentOrderTrigger":"rooster"},
   {"id": "8", "order":"8", "speakerId":"player", "text":"[#ffeeaaff]Κόκορας; Στη Σελήνη;", "prerequisites":"","onExitCurrentOrderTrigger":"end"}
 ]
