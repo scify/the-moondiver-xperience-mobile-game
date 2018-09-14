@@ -1,9 +1,11 @@
 [
   {"id": "1", "order":"1", "speakerId":"aunt", "text":"Μπράβο {{μικρέ/μικρή}}! Τα κατάφερες!\nΚαι τώρα η απόδοση του κινητήρα σου αυξήθηκε.", "prerequisites":""},
   {"id": "2", "order":"2", "speakerId":"player", "text":"[#ffeeaaff]Μη με λες {{μικρό/μικρή}}!", "prerequisites":""},
-  {"id": "3", "order":"3", "speakerId":"aunt", "text":"Επόμενος προορισμός: Ισπανία.", "prerequisites":""},
-  {"id": "4", "order":"4", "speakerId":"aunt", "text":"Όρισε τον νέο προορισμό στον Χάρτη.\nΈπειτα, φόρτισε το σκάφος όσο πρέπει.", "prerequisites":""},
-  {"id": "5", "order":"5", "speakerId":"aunt", "text":"Πρόσεξε όμως: Για λόγους ασφαλείας, η μπαταρία σου εκφορτίζει πλήρως σε κάθε προσγείωση.", "prerequisites":""},
-  {"id": "6", "order":"6", "speakerId":"aunt", "text":"Και μην ξεχνάς: Διαιρώντας Απόσταση/ Απόδοση βρίσκεις πόση ενέργεια χρειάζεσαι.", "prerequisites":""},
-  {"id": "7", "order":"7", "speakerId":"aunt", "text":"Καλή επιτυχία!", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
+  {"id": "3", "order":"3", "speakerId":"aunt", "text":"Όμως με τις μέρες που χάσαμε, δεν προλαβαίνουμε πια να δούμε την ηλιακή έκλειψη.", "prerequisites":"no_days_remaining"},
+  {"id": "4", "order":"4", "speakerId":"aunt", "text":"Δεν πειράζει όμως, θα πάμε στη Σελήνη έτσι κι αλλιώς.\nΑκόμα και τώρα θα είναι μοναδικό επίτευγμα!", "prerequisites":"no_days_remaining"},
+  {"id": "5", "order":"5", "speakerId":"aunt", "text":"Επόμενος προορισμός: Ισπανία.", "prerequisites":""},
+  {"id": "6", "order":"6", "speakerId":"aunt", "text":"Όρισε τον νέο προορισμό στον Χάρτη.\nΈπειτα, φόρτισε το σκάφος όσο πρέπει.", "prerequisites":""},
+  {"id": "7", "order":"7", "speakerId":"aunt", "text":"Πρόσεξε όμως: Για λόγους ασφαλείας, η μπαταρία σου εκφορτίζει πλήρως σε κάθε προσγείωση.", "prerequisites":""},
+  {"id": "8", "order":"8", "speakerId":"aunt", "text":"Και μην ξεχνάς: Διαιρώντας Απόσταση/ Απόδοση βρίσκεις πόση ενέργεια χρειάζεσαι.", "prerequisites":""},
+  {"id": "9", "order":"9", "speakerId":"aunt", "text":"Καλή επιτυχία!", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
 ]

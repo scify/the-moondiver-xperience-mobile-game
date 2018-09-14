@@ -4,5 +4,5 @@
   {"id": "3", "order":"3", "speakerId":"aunt", "text":"Οπότε, με αυτήν την απόδοση πόση ενέργεια πρέπει να συλλέξεις για να φτάσεις στον προορισμό;", "prerequisites":""},
   {"id": "4", "order":"4", "speakerId":"aunt", "text":"Το κομπιουτεράκι μπορεί να βοηθήσει: χρειάζεσαι 160 μονάδες (1600/10).", "prerequisites":""},
   {"id": "5", "order":"5", "speakerId":"aunt", "text":"Η ενέργεια από τη Σελήνη εξαρτάται από την \"Παρούσα φάση\" της.", "prerequisites":""},
-  {"id": "6", "order":"6", "speakerId":"aunt", "text":"Πάτησε \"Φόρτισε για 1 νύχτα ακόμα\"\nγια να φορτίσεις το σκάφος απόψε", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
+  {"id": "6", "order":"6", "speakerId":"aunt", "text":"Πάτησε \"Φόρτισε για 1 νύχτα ακόμα\" για να φορτίσεις το σκάφος απόψε", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
 ]
