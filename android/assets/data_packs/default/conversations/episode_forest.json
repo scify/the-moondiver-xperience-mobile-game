@@ -1,13 +1,12 @@
 [
   {"id": "1", "order":"1", "speakerId":"player", "text":"[#ffeeaaff][[Πλάκα μου κάνεις! Ένα σκάφος;\nH θεία Ηώ έχει ξεφύγει! Είναι τέλειο!]", "prerequisites":""},
-  {"id": "2", "order":"2", "speakerId":"player", "text":"[#ffeeaaff][[Εμ.. Αλλά πώς ανοίγει αυτό το πράγμα;]", "prerequisites":""},
-  {"id": "3", "order":"3", "speakerId":"player", "text":"[#ffeeaaff]“Αχά! Μήνυμα. Η θεία. Για να δούμε...", "buttonText":"Chat", "prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone"},
-  {"id": "4", "order":"4", "speakerId":"aunt", "text":"Απάντησε στο γρίφο για να συνεχίσεις.", "prerequisites":""},
-  {"id": "5", "order":"5", "speakerId":"player", "text":"[#ffeeaaff][Ας δούμε τον γρίφο...]", "prerequisites":"", "nextOrder":"7"},
-  {"id": "6", "order":"5", "speakerId":"player", "text":"[#ffeeaaff][Ας γυρίσω σπίτι καλύτερα]", "prerequisites":""},
-  {"id": "7", "order":"6", "speakerId":"player", "text":"[#ffeeaaff][Όχι, ΔΕΝ θέλω να μπω στο σκάφος!]", "prerequisites":"", "onExitCurrentOrderTrigger":"end,fail"},
-  {"id": "8", "order":"6", "speakerId":"player", "text":"[#ffeeaaff][Πλάκα κανω [#d4aa00ff]\u00af[#ffeeaaff]. Πάμε!]", "prerequisites":""},
-  {"id": "9", "order":"7", "speakerId":"aunt", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_question_8"},
-  {"id": "10", "order":"8", "speakerId":"player", "text":"Ωχ λάθος...", "prerequisites":"player_has_less_than_enough_correct", "nextOrder":"7"},
-  {"id": "11", "order":"9", "speakerId":"player", "text":"[#ffeeaaff]Τα κατάφερα!", "prerequisites":"player_has_enough_correct", "buttonText":"Μπες!", "onEnterCurrentOrderTrigger":"tada", "onExitCurrentOrderTrigger":"end"}
+  {"id": "2", "order":"2", "speakerId":"player", "text":"[#ffeeaaff]“Αχά! Μήνυμα. Η θεία. Για να δούμε...", "buttonText":"Chat", "prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone"},
+  {"id": "3", "order":"3", "speakerId":"aunt", "text":"Απάντησε στο γρίφο για να συνεχίσεις.", "prerequisites":""},
+  {"id": "4", "order":"4", "speakerId":"player", "text":"[#ffeeaaff][Ας δούμε τον γρίφο...]", "prerequisites":"", "nextOrder":"6"},
+  {"id": "5", "order":"4", "speakerId":"player", "text":"[#ffeeaaff][Ας γυρίσω σπίτι καλύτερα]", "prerequisites":""},
+  {"id": "6", "order":"5", "speakerId":"player", "text":"[#ffeeaaff][Όχι, ΔΕΝ θέλω να μπω στο σκάφος!]", "prerequisites":"", "onExitCurrentOrderTrigger":"end,fail"},
+  {"id": "7", "order":"5", "speakerId":"player", "text":"[#ffeeaaff][Πλάκα κανω [#d4aa00ff]\u00af[#ffeeaaff]. Πάμε!]", "prerequisites":""},
+  {"id": "8", "order":"6", "speakerId":"aunt", "text":"", "prerequisites":"", "onEnterCurrentOrderTrigger":"load_question_8"},
+  {"id": "9", "order":"7", "speakerId":"player", "text":"Ωχ λάθος...", "prerequisites":"player_has_less_than_enough_correct", "nextOrder":"8"},
+  {"id": "10", "order":"8", "speakerId":"player", "text":"[#ffeeaaff]Τα κατάφερα!", "prerequisites":"player_has_enough_correct", "buttonText":"Μπες!", "onEnterCurrentOrderTrigger":"tada", "onExitCurrentOrderTrigger":"end"}
 ]
