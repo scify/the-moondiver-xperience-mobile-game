@@ -18,6 +18,7 @@ public class QuestionConversationRules extends ConversationRules {
     public static final String RETRY = "retry";
     public static final String PLAYER_HAS_LESS_THAN_ENOUGH_CORRECT = "player_has_less_than_enough_correct";
 
+
     protected QuestionService questionService;
     protected List<QuestionCategory> questionCategories;
     protected List<Question> questions;

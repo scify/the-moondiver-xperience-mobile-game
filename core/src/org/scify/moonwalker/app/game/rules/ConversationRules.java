@@ -449,8 +449,6 @@ public class ConversationRules extends MoonWalkerBaseRules {
 
     protected void setCurrentConversationLine(GameState gameState, ConversationLine currentLine) {
         gameState.setAdditionalDataEntry(ID, currentLine);
-        // TODO
-        //addSpeakersAsNeeded(gameState, currentLine);
     }
 
     protected List<ConversationLine> extractNextLines(GameState currentGameState, UserAction userAction) {

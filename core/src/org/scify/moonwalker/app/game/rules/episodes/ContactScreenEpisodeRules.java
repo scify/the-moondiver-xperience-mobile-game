@@ -2,7 +2,9 @@ package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
 import org.scify.engine.conversation.ConversationLine;
+import org.scify.moonwalker.app.game.rules.ContactScreenConversationRules;
 import org.scify.moonwalker.app.game.rules.ConversationRules;
+import org.scify.moonwalker.app.game.rules.QuestionConversationRules;
 import org.scify.moonwalker.app.ui.renderables.ContactScreenRenderable;
 
 import java.util.ArrayList;
@@ -50,6 +52,15 @@ public class ContactScreenEpisodeRules extends FadingEpisodeRules<ContactScreenR
             }
         }
         return super.getNextState(gameState, userAction);
+    }
+
+    @Override
+    protected void createConversation(GameState gsCurrent, String conversationResFile, String conversationBgImgPath) {
+        if(conversationRules == null) {
+            conversationRules = new ContactScreenConversationRules(conversationResFile, conversationBgImgPath);
+            conversationRules.setStarted(true);
+            initializeParseVariables();
+        }
     }
 
     @Override
