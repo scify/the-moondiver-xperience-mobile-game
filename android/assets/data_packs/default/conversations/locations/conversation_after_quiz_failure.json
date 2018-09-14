@@ -1,8 +1,10 @@
 [
   {"id": "1", "order":"1", "speakerId":"aunt", "text":"[#ffeeaaff]Χάσαμε μία ημέρα και τώρα μας μένουν {{num_of_days}}. Δεν πειράζει όμως.", "prerequisites":"at_lest_one_day_remaining"},
   {"id": "2", "order":"2", "speakerId":"aunt", "text":"[#ffeeaaff]Ας ξαναδοκιμάσουμε λοιπόν!", "prerequisites":"at_lest_one_day_remaining", "onExitCurrentOrderTrigger":"end"},
-  {"id": "3", "order":"3", "speakerId":"aunt", "text":"[#ffeeaaff]Με τις μέρες που χάσαμε, δεν προλαβαίνουμε πια να δούμε την ηλιακή έκλειψη.", "prerequisites":"no_days_remaining"},
-  {"id": "4", "order":"4", "speakerId":"aunt", "text":"[#ffeeaaff]Δεν πειράζει όμως, θα πάμε στη Σελήνη έτσι κι αλλιώς.", "prerequisites":"no_days_remaining"},
-  {"id": "5", "order":"5", "speakerId":"aunt", "text":"[#ffeeaaff]Ακόμα και τώρα θα είναι μοναδικό επίτευγμα!", "prerequisites":"no_days_remaining"},
-  {"id": "6", "order":"6", "speakerId":"aunt", "text":"[#ffeeaaff]Ας ξαναδοκιμάσουμε λοιπόν!", "prerequisites":"no_days_remaining", "onExitCurrentOrderTrigger":"end"}
+  {"id": "3", "order":"3", "speakerId":"aunt", "text":"[#ffeeaaff]Με τις μέρες που χάσαμε, δεν προλαβαίνουμε πια να δούμε την ηλιακή έκλειψη.", "prerequisites":"no_days_remaining,notification_not_shown"},
+  {"id": "4", "order":"4", "speakerId":"aunt", "text":"[#ffeeaaff]Δεν πειράζει όμως, θα πάμε στη Σελήνη έτσι κι αλλιώς.", "prerequisites":"no_days_remaining,notification_not_shown"},
+  {"id": "5", "order":"5", "speakerId":"aunt", "text":"[#ffeeaaff]Ακόμα και τώρα θα είναι μοναδικό επίτευγμα!", "prerequisites":"no_days_remaining,notification_not_shown"},
+  {"id": "6", "order":"6", "speakerId":"aunt", "text":"[#ffeeaaff]Ας ξαναδοκιμάσουμε λοιπόν!", "prerequisites":"no_days_remaining,notification_not_shown", "onExitCurrentOrderTrigger":"end,set_notification_shown"},
+  {"id": "7", "order":"7", "speakerId":"aunt", "text":"[#ffeeaaff]Χάσαμε μία ημέρα, αλλά δεν πειράζει. Θα πάμε στη Σελήνη οπωσδήποτε!", "prerequisites":"no_days_remaining,notification_shown"},
+  {"id": "8", "order":"8", "speakerId":"aunt", "text":"[#ffeeaaff]Ας ξαναδοκιμάσουμε!", "prerequisites":"no_days_remaining,notification_shown", "onExitCurrentOrderTrigger":"end"}
 ]

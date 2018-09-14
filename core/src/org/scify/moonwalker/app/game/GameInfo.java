@@ -37,6 +37,7 @@ public class GameInfo {
     protected boolean showArrivalConversation;
     protected boolean isFromLoad;
     protected Preferences prefs;
+    protected boolean isNoDaysLeftNotificationShown;
 
     /**
      * The travel percentage complete in the LAST travel
@@ -89,6 +90,7 @@ public class GameInfo {
         quizFirstTime = true;
         showArrivalConversation = false;
         isFromLoad = false;
+        isNoDaysLeftNotificationShown = false;
     }
 
     public void save() {
@@ -123,6 +125,7 @@ public class GameInfo {
         prefs.putBoolean("quizFirstTime", quizFirstTime);
         prefs.putBoolean("showArrivalConversation", showArrivalConversation);
         prefs.putBoolean("selectFirstMiddleOfNowhere", LocationController.isSelectFirstMiddleOfNowhere());
+        prefs.putBoolean("isNoDaysLeftNotificationShown", isNoDaysLeftNotificationShown);
         prefs.putFloat("previousTravelPercentageComplete", previousTravelPercentageComplete);
         prefs.putFloat("nextTravelPercentagePossible", nextTravelPercentagePossible);
         prefs.flush();
@@ -175,6 +178,9 @@ public class GameInfo {
         lastQuizSuccessFull = prefs.getBoolean("lastQuizSuccessFull");
         quizFirstTime = prefs.getBoolean("quizFirstTime");
         showArrivalConversation = prefs.getBoolean("showArrivalConversation");
+        isNoDaysLeftNotificationShown = false;
+        if(prefs.contains("isNoDaysLeftNotificationShown"))
+            isNoDaysLeftNotificationShown = prefs.getBoolean("isNoDaysLeftNotificationShown");
         LocationController.setSelectFirstMiddleOfNowhere(prefs.getBoolean("selectFirstMiddleOfNowhere"));
         previousTravelPercentageComplete = prefs.getFloat("previousTravelPercentageComplete");
         nextTravelPercentagePossible = prefs.getFloat("nextTravelPercentagePossible");
@@ -471,5 +477,13 @@ public class GameInfo {
 
     public void dispose() {
         instance = null;
+    }
+
+    public boolean isNoDaysLeftNotificationShown() {
+        return isNoDaysLeftNotificationShown;
+    }
+
+    public void setNoDaysLeftNotificationShown(boolean noDaysLeftNotificationShown) {
+        isNoDaysLeftNotificationShown = noDaysLeftNotificationShown;
     }
 }
