@@ -17,7 +17,8 @@ public class QuestionConversationRules extends ConversationRules {
     public static final String FIRST_TIME = "first_time";
     public static final String RETRY = "retry";
     public static final String PLAYER_HAS_LESS_THAN_ENOUGH_CORRECT = "player_has_less_than_enough_correct";
-
+    public static final String NO_DAYS_REMAINING_FOR_THE_JOURNEY = "no_days_remaining";
+    public static final String AT_LEAST_ONE_DAY_REMAINING_FOR_THE_JOURNEY = "at_lest_one_day_remaining";
 
     protected QuestionService questionService;
     protected List<QuestionCategory> questionCategories;
@@ -104,36 +105,33 @@ public class QuestionConversationRules extends ConversationRules {
     }
 
     @Override
-    protected boolean satisfiesPrerequisites(ConversationLine next, GameState currentGameState) {
-        boolean bSuperOK = super.satisfiesPrerequisites(next, currentGameState);
-
-        if (!bSuperOK)
-            return false;
-
-        // If we need 3 correct
-        if (next.getPrerequisites().contains(PLAYER_HAS_ENOUGH_CORRECT)) {
-            return Integer.valueOf((String) currentGameState.getAdditionalDataEntry(CORRECT_ANSWERS)) >= minimumCorrectAnswers;
+    protected boolean satisfiesPrerequisite(String prerequisite, GameState currentGameState) {
+        boolean satisfiesPrerequisite = true;
+        if (prerequisite.equals(PLAYER_HAS_ENOUGH_CORRECT)) {
+            satisfiesPrerequisite = Integer.valueOf((String) currentGameState.getAdditionalDataEntry(CORRECT_ANSWERS)) >= minimumCorrectAnswers;
         }
 
-        if (next.getPrerequisites().contains(PLAYER_HAS_LESS_THAN_ENOUGH_CORRECT)) {
-            return Integer.valueOf((String) currentGameState.getAdditionalDataEntry(CORRECT_ANSWERS)) < minimumCorrectAnswers;
+        if (prerequisite.equals(PLAYER_HAS_LESS_THAN_ENOUGH_CORRECT)) {
+            satisfiesPrerequisite = Integer.valueOf((String) currentGameState.getAdditionalDataEntry(CORRECT_ANSWERS)) < minimumCorrectAnswers;
         }
 
-        if (next.getPrerequisites().contains(FIRST_TIME)) {
-            if (firstTime)
-                return true;
-            else
-                return false;
+        if (prerequisite.equals(FIRST_TIME)) {
+            satisfiesPrerequisite = firstTime;
         }
 
-        if (next.getPrerequisites().contains(RETRY)) {
-            if (firstTime)
-                return false;
-            else
-                return true;
+        if (prerequisite.equals(RETRY)) {
+            satisfiesPrerequisite = !firstTime;
         }
 
-        return true;
+        if (prerequisite.equals(AT_LEAST_ONE_DAY_REMAINING_FOR_THE_JOURNEY)) {
+            satisfiesPrerequisite = gameInfo.getDaysLeftForDestination() >= 1;
+        }
+
+        if (prerequisite.equals(NO_DAYS_REMAINING_FOR_THE_JOURNEY)) {
+            satisfiesPrerequisite = gameInfo.getDaysLeftForDestination() < 1;
+        }
+
+        return satisfiesPrerequisite;
     }
 
     protected void increaseCorrectAnswers(GameState currentGameState) {

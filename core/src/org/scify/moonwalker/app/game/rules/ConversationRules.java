@@ -480,13 +480,22 @@ public class ConversationRules extends MoonWalkerBaseRules {
     }
 
     protected boolean satisfiesPrerequisites(ConversationLine next, GameState currentGameState) {
-        // Get all prerequisites
         Set<String> sPrereqs = next.getPrerequisites();
+
         // If no prereqs
         if (sPrereqs.size() == 0)
             // all is OK
             return true;
+        Set<String> prerequisites = next.getPrerequisites();
 
+        for (String prerequisite : prerequisites) {
+            if(!satisfiesPrerequisite(prerequisite, currentGameState))
+                return false;
+        }
+        return true;
+    }
+
+    protected boolean satisfiesPrerequisite(String prerequisite, GameState currentGameState) {
         return true;
     }
 

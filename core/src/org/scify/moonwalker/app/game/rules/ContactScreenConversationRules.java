@@ -3,7 +3,6 @@ package org.scify.moonwalker.app.game.rules;
 import org.scify.engine.GameState;
 import org.scify.engine.conversation.ConversationLine;
 
-import java.util.Iterator;
 import java.util.Set;
 
 public class ContactScreenConversationRules extends ConversationRules {
@@ -19,20 +18,6 @@ public class ContactScreenConversationRules extends ConversationRules {
     }
 
     @Override
-    protected boolean satisfiesPrerequisites(ConversationLine next, GameState currentGameState) {
-        boolean bSuperOK = super.satisfiesPrerequisites(next, currentGameState);
-
-        if (!bSuperOK)
-            return false;
-        Set<String> prerequisites = next.getPrerequisites();
-
-        for (String prerequisite : prerequisites) {
-            if(!satisfiesPrerequisite(prerequisite, currentGameState))
-                return false;
-        }
-        return true;
-    }
-
     protected boolean satisfiesPrerequisite(String prerequisite, GameState currentGameState) {
         boolean satisfiesPrerequisite = true;
         if (prerequisite.equals(AT_LEAST_ONE_DAY_REMAINING_FOR_THE_JOURNEY)) {
