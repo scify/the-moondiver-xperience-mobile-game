@@ -30,8 +30,8 @@
   {"id": "29", "order":"25", "speakerId":"aunt", "text":"Είμαι τόσο περήφανη για σένα!\nΌλοι μας είμαστε, τα κατάφερες!", "prerequisites":"player_has_enough_correct"},
   {"id": "30", "order":"26", "speakerId":"aunt", "text":"Το τελευταίο εξάρτημα είναι μια πλήρως φορτισμένη εξελιγμένη μπαταρία.", "prerequisites":"player_has_enough_correct"},
   {"id": "31", "order":"27", "speakerId":"aunt", "text":"Με αυτήν μπορείτε να φτάσετε με ασφάλεια στη Σελήνη.", "prerequisites":"player_has_enough_correct"},
-  {"id": "32", "order":"28", "speakerId":"aunt", "text":"Όμως με τις μέρες που χάσαμε, δεν προλαβαίνουμε πια να δούμε την ηλιακή έκλειψη.", "prerequisites":"player_has_enough_correct,no_days_remaining"},
-  {"id": "33", "order":"29", "speakerId":"aunt", "text":"Δεν πειράζει όμως, θα πάμε στη Σελήνη έτσι κι αλλιώς.\nΑκόμα και τώρα θα είναι μοναδικό επίτευγμα!", "prerequisites":"player_has_enough_correct,no_days_remaining"},
+  {"id": "32", "order":"28", "speakerId":"aunt", "text":"Όμως με τις μέρες που χάσαμε, δεν προλαβαίνουμε πια να δούμε την ηλιακή έκλειψη.", "prerequisites":"player_has_enough_correct,no_days_remaining,notification_not_shown"},
+  {"id": "33", "order":"29", "speakerId":"aunt", "text":"Δεν πειράζει όμως, θα πάμε στη Σελήνη έτσι κι αλλιώς.\nΑκόμα και τώρα θα είναι μοναδικό επίτευγμα!", "prerequisites":"player_has_enough_correct,no_days_remaining,notification_not_shown"},
   {"id": "34", "order":"30", "speakerId":"aunt", "text":"Είμαστε έτοιμοι για την εκτόξευση!\nΚαλό σας ταξίδι!", "prerequisites":"player_has_enough_correct"},
   {"id": "35", "order":"31", "speakerId":"oratios", "text":"Ξεκινάμε!", "prerequisites":"player_has_enough_correct", "onExitCurrentOrderTrigger":"end"},
   {"id": "36", "order":"32", "speakerId":"oratios", "text":"Χμ... Δεν έδωσες αρκετές σωστές απαντήσεις\nΈλα πίσω ξανά αύριο.", "prerequisites":"player_has_less_than_enough_correct", "onExitCurrentOrderTrigger":"end"}

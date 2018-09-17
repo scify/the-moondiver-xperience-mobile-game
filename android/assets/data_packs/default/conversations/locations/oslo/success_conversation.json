@@ -1,7 +1,7 @@
 [
   {"id": "1", "order":"1", "speakerId":"aunt", "text":"Τα κατάφερες και στη Νορβηγία!\nΜπράβο, τώρα έχεις 3 συλλέκτες.", "prerequisites":""},
-  {"id": "2", "order":"2", "speakerId":"aunt", "text":"Όμως με τις μέρες που χάσαμε, δεν προλαβαίνουμε πια να δούμε την ηλιακή έκλειψη.", "prerequisites":"no_days_remaining"},
-  {"id": "3", "order":"3", "speakerId":"aunt", "text":"Δεν πειράζει όμως, θα πάμε στη Σελήνη έτσι κι αλλιώς.\nΑκόμα και τώρα θα είναι μοναδικό επίτευγμα!", "prerequisites":"no_days_remaining"},
+  {"id": "2", "order":"2", "speakerId":"aunt", "text":"Όμως με τις μέρες που χάσαμε, δεν προλαβαίνουμε πια να δούμε την ηλιακή έκλειψη.", "prerequisites":"no_days_remaining,notification_not_shown"},
+  {"id": "3", "order":"3", "speakerId":"aunt", "text":"Δεν πειράζει όμως, θα πάμε στη Σελήνη έτσι κι αλλιώς.\nΑκόμα και τώρα θα είναι μοναδικό επίτευγμα!", "prerequisites":"no_days_remaining,notification_not_shown", "onExitCurrentOrderTrigger":"set_notification_shown"},
   {"id": "4", "order":"4", "speakerId":"player", "text":"[#ffeeaaff]Ανυπομονώ...", "prerequisites":""},
   {"id": "5", "order":"5", "speakerId":"aunt", "text":"Πάμε λοιπόν!\nΕπόμενος προορισμός: Αθήνα. Καλή επιτυχία!", "prerequisites":"", "onExitCurrentOrderTrigger":"end"}
 ]

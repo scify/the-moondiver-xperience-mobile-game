@@ -17,8 +17,11 @@ public class QuestionConversationRules extends ConversationRules {
     public static final String FIRST_TIME = "first_time";
     public static final String RETRY = "retry";
     public static final String PLAYER_HAS_LESS_THAN_ENOUGH_CORRECT = "player_has_less_than_enough_correct";
-    public static final String NO_DAYS_REMAINING_FOR_THE_JOURNEY = "no_days_remaining";
     public static final String AT_LEAST_ONE_DAY_REMAINING_FOR_THE_JOURNEY = "at_lest_one_day_remaining";
+    public static final String AT_LEAST_ONE_DAY_NOTIFICATION_NOT_SHOWN = "notification_not_shown";
+    public static final String AT_LEAST_ONE_DAY_NOTIFICATION_SHOWN = "notification_shown";
+    public static final String NO_DAYS_REMAINING_FOR_THE_JOURNEY = "no_days_remaining";
+    public static final String SET_NOTIFICATION_SHOWN_EVENT = "set_notification_shown";
 
     protected QuestionService questionService;
     protected List<QuestionCategory> questionCategories;
@@ -131,7 +134,26 @@ public class QuestionConversationRules extends ConversationRules {
             satisfiesPrerequisite = gameInfo.getDaysLeftForDestination() < 1;
         }
 
+        if (prerequisite.equals(AT_LEAST_ONE_DAY_NOTIFICATION_NOT_SHOWN)) {
+            satisfiesPrerequisite = !gameInfo.isNoDaysLeftNotificationShown();
+        }
+
+        if (prerequisite.equals(AT_LEAST_ONE_DAY_NOTIFICATION_SHOWN)) {
+            satisfiesPrerequisite = gameInfo.isNoDaysLeftNotificationShown();
+        }
+
         return satisfiesPrerequisite;
+    }
+
+    @Override
+    protected void onExitConversationOrder(GameState gsCurrent, ConversationLine lineExited) {
+        Set<String> sAllEvents = lineExited.getOnExitCurrentOrderTrigger();
+
+        if (sAllEvents.contains(SET_NOTIFICATION_SHOWN_EVENT)) {
+            gameInfo.setNoDaysLeftNotificationShown(true);
+        }
+
+        super.onExitConversationOrder(gsCurrent, lineExited);
     }
 
     protected void increaseCorrectAnswers(GameState currentGameState) {
