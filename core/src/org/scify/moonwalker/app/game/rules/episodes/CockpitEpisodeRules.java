@@ -319,7 +319,11 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
     }
 
     protected void setCockpitFieldValues() {
-        renderable.setRemainingEnergyValue(String.valueOf(gameInfo.getRemainingEnergy()));
+        if(!gameInfo.isLaunchRequestFlag())
+            renderable.setRemainingEnergyValue(String.valueOf(gameInfo.getRemainingEnergy()));
+        else
+            renderable.setRemainingEnergyValue("MAX");
+
         renderable.setMotorEfficiencyValue(String.valueOf(gameInfo.getMotorEfficiency()));
 
         int daysLeft = gameInfo.getDaysLeftForDestination();
