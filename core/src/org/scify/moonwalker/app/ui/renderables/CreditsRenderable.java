@@ -39,7 +39,7 @@ public class CreditsRenderable extends FadingTableRenderable {
     private void initSubRenderables() {
         allRenderables = new HashSet<>();
 
-        aboutBGRenderable1 = createImageRenderable(ABOUT_BG_ID_1, ABOUT_BG_IMG_PATH_1, false, true, 1);
+        aboutBGRenderable1 = createImageRenderable(ABOUT_BG_ID_1, ABOUT_BG_IMG_PATH_1, false, true, 2);
         allRenderables.add(aboutBGRenderable1);
 
         aboutBGRenderable2 = createImageRenderable(ABOUT_BG_ID_2, ABOUT_BG_IMG_PATH_2, false, false, 1);
@@ -80,6 +80,8 @@ public class CreditsRenderable extends FadingTableRenderable {
                     public void run() {
                         inputEnabled = true;
                         aboutMode = 2;
+                        aboutBGRenderable1.setZIndex(1);
+                        aboutBGRenderable2.setZIndex(2);
                     }
                 }));
                 aboutBGRenderable2.addEffect(aboutLabelEffects);
