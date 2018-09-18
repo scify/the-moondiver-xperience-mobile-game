@@ -160,8 +160,11 @@ public class CockpitRenderable extends FadingTableRenderable {
         distanceLabel.setLabel(distance);
     }
 
-    public void setDaysLeftValue(String daysLeft) {
-        daysLeftLabel.setLabel(daysLeft);
+    public void setDaysLeftValue(int daysLeft) {
+        if(daysLeft < 0)
+            daysLeftLabel.setLabel("--");
+        else
+            daysLeftLabel.setLabel(daysLeft + "");
     }
 
     public void toogleButtonLight(ActionButtonRenderable buttonRenderable) {
@@ -297,7 +300,7 @@ public class CockpitRenderable extends FadingTableRenderable {
         es.addEffect(new FunctionEffect(new Runnable() {
             @Override
             public void run() {
-                daysLeftLabel.setLabel(value + "");
+                setDaysLeftValue(value);
             }
         }));
         es.addEffect(new FadeEffect(0, 1, 1000));

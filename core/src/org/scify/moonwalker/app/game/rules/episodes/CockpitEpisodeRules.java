@@ -196,7 +196,6 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
                 gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.NIGHT_AUDIO_PATH));
                 renderable.updateDaysLeft(gameInfo.getDaysLeftForDestination());
                 renderable.setOutsideBackgroundNight();
-
             }
         }
 
@@ -326,11 +325,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
 
         renderable.setMotorEfficiencyValue(String.valueOf(gameInfo.getMotorEfficiency()));
 
-        int daysLeft = gameInfo.getDaysLeftForDestination();
-        if(daysLeft < 0)
-            renderable.setDaysLeftValue("--");
-        else
-            renderable.setDaysLeftValue(daysLeft + "");
+        renderable.setDaysLeftValue(gameInfo.getDaysLeftForDestination());
 
         if (gameInfo.getNextLocation() != null) {
             int percentageTraveled = (int) ((100 - gameInfo.getNextTravelPercentagePossible()) * gameInfo.getNextLocationDistance() / 100);
