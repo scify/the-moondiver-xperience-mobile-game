@@ -10,7 +10,7 @@ public class SplashScreenEpisodeRules extends SimpleTimedImageEpisodeRules {
     @Override
     public void episodeStartedEvents(GameState currentState) {
         if (!isEpisodeStarted(currentState)) {
-            setFieldsForTimedEpisode(initialGameState, "img/episode_splash/bg.png", MILLISECONDS_FOR_EPISODE);
+            setFieldsForTimedEpisode(initialGameState, "img/episode_splash/bg.jpg", MILLISECONDS_FOR_EPISODE);
         }
         super.episodeStartedEvents(currentState);
     }
