@@ -1,7 +1,7 @@
 [
   {"id": "1", "order":"1", "speakerId":"player", "text":"[#ffeeaaff][[Τι στην ευχή; Πού είμαι;\nΚόκορας; Φτού!\nΌνειρο ήταν...]", "prerequisites":""},
   {"id": "2", "order":"2", "speakerId":"player", "text":"[#ffeeaaff][[Η θεία Ηω! Στ' αλήθεια τώρα;]", "buttonText":"Chat","prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone,toggle"},
-  {"id": "3", "order":"3", "speakerId":"aunt", "text":"Ψτ!\nΤι κάνεις επαναστατικό μου ανήψι;", "prerequisites":"", "onExitCurrentOrderTrigger":"toggle"},
+  {"id": "3", "order":"3", "speakerId":"aunt", "text":"Ψτ!\nΤι κάνεις φανταστικό μου ανίψι;", "prerequisites":"", "onExitCurrentOrderTrigger":"toggle"},
   {"id": "4", "order":"4", "speakerId":"player", "text":"[#ffeeaaff]Εμ... Καλά νομίζω. Εσύ;", "prerequisites":""},
   {"id": "5", "order":"4", "speakerId":"player", "text":"[#ffeeaaff]Ονειρεύομαι το ανέφικτο, όπως πάντα! Εσύ;", "prerequisites":""},
   {"id": "6", "order":"5", "speakerId":"aunt", "text":"Θα έρθω Αθήνα την επόμενη εβδομάδα. Έχω να σου πω πολλά!", "prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone,toggle","onExitCurrentOrderTrigger":"toggle"},
