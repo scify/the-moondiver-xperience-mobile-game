@@ -1,5 +1,5 @@
 [
-  {"id": "1", "order":"1", "speakerId":"player", "text":"[#ffeeaaff][[Επιτέλους! Η μουσική μου, φεγγάρι απίστευτο...\nΆντε να συγκεντρωθείς τώρα...]", "prerequisites":""},
+  {"id": "1", "order":"1", "speakerId":"player", "text":"[#ffeeaaff][[Τέλεια! Η μουσική μου, φεγγάρι απίστευτο...\nΆντε να συγκεντρωθείς τώρα...]", "prerequisites":""},
   {"id": "2", "order":"2", "speakerId":"player", "text":"[#ffeeaaff]Ωωω! μήνυμα από τη σούπερ Θεία! Ώρα για chat...", "buttonText":"Chat","prerequisites":"", "onEnterCurrentOrderTrigger":"ring_phone,reveal_skip_button"},
   {"id": "3", "order":"3", "speakerId":"aunt", "text":"Ψιτ!\nΤι κάνει το φανταστικό μου ανίψι;", "prerequisites":""},
   {"id": "4", "order":"4", "speakerId":"player", "text":"[#ffeeaaff]Α, η “αντιπαθητική” θεία [#d4aa00ff]\u00af️[#ffeeaaff] !\nΑκόμα περιμένω να με πας στο διάστημα.", "prerequisites":"", "onEnterCurrentOrderTrigger":"toggle"},
