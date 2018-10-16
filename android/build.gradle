@@ -19,9 +19,9 @@ android {
     }
     defaultConfig {
         applicationId "org.scify.moonwalker.game"
-        minSdkVersion 9
+        minSdkVersion 15
         targetSdkVersion 26
-        versionCode 11
+        versionCode 12
         versionName "1.0"
         jackOptions {
             enabled true
@@ -137,5 +137,9 @@ idea {
         }
     }
 }
+repositories {
+    maven { url 'https://maven.google.com' }
+}
 dependencies {
+    compile 'com.facebook.android:facebook-android-sdk:4.37.0'
 }
