@@ -126,3 +126,5 @@ Thumbs.db
 /ios-moe/xcode/native/
 
 /android/*.apk
+
+/android/assets/config.properties

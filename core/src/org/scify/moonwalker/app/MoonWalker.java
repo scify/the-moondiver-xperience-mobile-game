@@ -4,11 +4,14 @@ import com.badlogic.gdx.Game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.screens.GameLauncher;
 
-import java.lang.ref.PhantomReference;
-import java.lang.ref.WeakReference;
+import io.sentry.Sentry;
+
+import java.io.*;
+import java.util.Properties;
 
 /**
  * The MoonWalker class describes instances of the MoonWalker game.
@@ -19,12 +22,33 @@ public class MoonWalker extends Game {
 
     @Override
     public void create() {
+        initErrorLogger();
         AppInfo appInfo = AppInfo.getInstance();
         appInfo.setScreenWidth(Gdx.graphics.getWidth());
         appInfo.setScreenHeight(Gdx.graphics.getHeight());
         appInfo.setScreenDensity(Gdx.graphics.getDensity());
         gameLauncher = new GameLauncher(this);
         setScreen(gameLauncher);
+    }
+
+    private void initErrorLogger() {
+        try {
+            FileHandle propertiesFileHandle = Gdx.files
+                    .internal("config.properties");
+            Properties properties = new Properties();
+            properties.load(new BufferedInputStream(propertiesFileHandle.read()));
+            Sentry.init(properties.getProperty("Sentry.DSN"));
+            Sentry.getContext().addExtra("release", properties.getProperty("version"));
+            Sentry.getContext().addExtra("platform", Gdx.app.getType());
+            Sentry.getContext().addExtra("device_height", Gdx.app.getGraphics().getHeight());
+            Sentry.getContext().addExtra("device_width", Gdx.app.getGraphics().getWidth());
+            Sentry.getContext().addExtra("device_density", Gdx.app.getGraphics().getDensity());
+            Sentry.getContext().addExtra("device_delta_time", Gdx.app.getGraphics().getDeltaTime());
+            Sentry.getContext().addExtra("device_version", Gdx.app.getVersion());
+            Sentry.getContext().addExtra("full_screen", Gdx.app.getGraphics().isFullscreen());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
