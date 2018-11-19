@@ -1,5 +1,6 @@
 package org.scify.moonwalker.app;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 
 import com.badlogic.gdx.Gdx;
@@ -22,7 +23,10 @@ public class MoonWalker extends Game {
 
     @Override
     public void create() {
-        initErrorLogger();
+        // loading Sentry in desktop produces a
+        // "java.lang.NoClassDefFoundError: org/slf4j/LoggerFactory" exception to be thrown
+        if(!Gdx.app.getType().equals(Application.ApplicationType.Desktop))
+            initErrorLogger();
         AppInfo appInfo = AppInfo.getInstance();
         appInfo.setScreenWidth(Gdx.graphics.getWidth());
         appInfo.setScreenHeight(Gdx.graphics.getHeight());
