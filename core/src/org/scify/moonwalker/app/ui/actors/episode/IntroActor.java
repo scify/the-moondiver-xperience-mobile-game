@@ -1,7 +1,6 @@
 package org.scify.moonwalker.app.ui.actors.episode;
 
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import javafx.scene.transform.Scale;
 import org.scify.moonwalker.app.ui.actors.FadingTableActor;
 import org.scify.moonwalker.app.ui.actors.ImageButtonWithEffect;
 import org.scify.moonwalker.app.ui.actors.ImageWithEffect;
