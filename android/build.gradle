@@ -1,6 +1,6 @@
 android {
-    buildToolsVersion "27.0.2"
-    compileSdkVersion 26
+    buildToolsVersion "28.0.3"
+    compileSdkVersion 28
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -12,7 +12,7 @@ android {
             jniLibs.srcDirs = ['libs']
         }
 
-        instrumentTest.setRoot('tests')
+        androidTest.setRoot('tests')
     }
     packagingOptions {
         exclude 'META-INF/robovm/ios/robovm.xml'
@@ -20,12 +20,9 @@ android {
     defaultConfig {
         applicationId "org.scify.moonwalker.game"
         minSdkVersion 15
-        targetSdkVersion 26
+        targetSdkVersion 28
         versionCode 14
         versionName "1.0"
-        jackOptions {
-            enabled true
-        }
     }
     buildTypes {
         release {
@@ -36,10 +33,6 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
-    }
-    dexOptions {
-        incremental true
-        javaMaxHeapSize "4g"
     }
 }
 // called every time gradle gets executed, takes the native dependencies of
