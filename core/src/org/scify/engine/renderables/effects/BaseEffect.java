@@ -1,8 +1,17 @@
 package org.scify.engine.renderables.effects;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class BaseEffect implements Effect {
+    /**
+     * Supplies auto-inc to support ordering of effects based on their creation time
+      */
+
+    protected static AtomicLong idGenerator = new AtomicLong();
+
+    protected long effectOrder;
     protected Map<String,String> params;
     protected Map<String,Object> objectParams;
 
@@ -32,6 +41,7 @@ public class BaseEffect implements Effect {
         setNumericParameter(PARAM_DURATION, dDurationMSec);
         setBooleanParameter(PARAM_EXECUTE_AT_LEAST_ONCE, bExecuteOnce);
         setBooleanParameter(PARAM_EXECUTE_FINAL_STEP, bExecuteFinalStep);
+        effectOrder = idGenerator.incrementAndGet();
     }
 
     /**
@@ -52,6 +62,8 @@ public class BaseEffect implements Effect {
             // Copy the parameter to the new instance
             setObjectParameter(sObjParamName, eSource.getObjectParameter(sObjParamName));
         }
+        // TODO: Should we also copy the source ID?
+        effectOrder = idGenerator.incrementAndGet();
     }
 
     /**
@@ -191,5 +203,21 @@ public class BaseEffect implements Effect {
         target.addEffect(this);
 
         return target;
+    }
+
+    @Override
+    public int compareTo(Effect o) {
+        if (this.equals(o))
+            return 0;
+        long myOrder = effectOrder;
+        long otherOrder;
+
+        if (o instanceof BaseEffect) {
+             otherOrder = ((BaseEffect)o).effectOrder;
+        } else {
+            throw new IncompatibleClassChangeError("Cannot compare a generic effect to a BaseEffect subclass.");
+        }
+
+        return (int)(myOrder - otherOrder);
     }
 }

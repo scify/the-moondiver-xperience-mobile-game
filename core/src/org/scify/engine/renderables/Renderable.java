@@ -7,6 +7,7 @@ import org.scify.engine.renderables.effects.EffectTarget;
 import org.scify.moonwalker.app.helpers.AppInfo;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
  * Describes an object that is used in game and has substance in terms of game logic.
@@ -82,7 +83,7 @@ public class Renderable extends Positionable implements EffectTarget {
     /**
      * A map holding current effect state info.
      */
-    protected Set<Effect> effectInfo = new HashSet<>();
+    protected Set<Effect> effectInfo;
 
     /**
      * Describes the visibility of the renderable. A non-visible renderable is also disabled, i.e. cannot
@@ -101,6 +102,7 @@ public class Renderable extends Positionable implements EffectTarget {
         appInfo = AppInfo.getInstance();
         visible = true;
         needsUpdate = true;
+        effectInfo = new ConcurrentSkipListSet<>();
     }
 
     public Renderable(String type, String id) {
@@ -110,6 +112,7 @@ public class Renderable extends Positionable implements EffectTarget {
         appInfo = AppInfo.getInstance();
         visible = true;
         needsUpdate = true;
+        effectInfo = new ConcurrentSkipListSet<>();
     }
 
     public void markAsNeedsUpdate() {
@@ -170,18 +173,18 @@ public class Renderable extends Positionable implements EffectTarget {
     }
 
     @Override
-    public Set<Effect> getEffects() {
+    public synchronized Set<Effect> getEffects() {
         return new HashSet<>(effectInfo);
     }
 
     @Override
-    public EffectTarget addEffect(Effect effectOfInterest) {
+    public synchronized EffectTarget addEffect(Effect effectOfInterest) {
         effectInfo.add(effectOfInterest);
         return this;
     }
 
     @Override
-    public EffectTarget removeEffect(Effect eToRemove) {
+    public synchronized EffectTarget removeEffect(Effect eToRemove) {
         effectInfo.remove(eToRemove);
         return this;
     }

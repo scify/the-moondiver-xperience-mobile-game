@@ -2,7 +2,7 @@ package org.scify.engine.renderables.effects;
 
 import java.util.Set;
 
-public interface Effect {
+public interface Effect extends Comparable<Effect> {
     /**
      * Applies the effect results to the input target.
      * @param rTarget An EffectTarget, where the effect is applied.

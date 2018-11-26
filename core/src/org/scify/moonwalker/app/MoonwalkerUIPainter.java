@@ -174,17 +174,7 @@ public class MoonwalkerUIPainter {
     }
 
     public void applyActorVisibility(Actor aToDraw, Renderable renderable) {
-        // OBSOLETE:
-//        // If a container
-//        if (aToDraw instanceof IContainerActor) {
-//            IContainerActor<Renderable> caToDraw = (IContainerActor) aToDraw;
-//            // For every child
-//            for (Actor aCur : caToDraw.getChildrenActorsAndRenderables().keySet()) {
-//                // Apply effect to child
-//                applyActorVisibility(aCur, caToDraw.getChildrenActorsAndRenderables().get(aCur));
-//            }
-//
-//        }
+
 
         // Update visibility
         aToDraw.setVisible(renderable.isVisible());
