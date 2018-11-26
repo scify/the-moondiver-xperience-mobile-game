@@ -128,3 +128,4 @@ Thumbs.db
 /android/*.apk
 
 /android/assets/config.properties
+/android/google-services.json

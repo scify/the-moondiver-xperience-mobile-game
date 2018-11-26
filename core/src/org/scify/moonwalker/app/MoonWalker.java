@@ -6,6 +6,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
+import org.scify.moonwalker.app.helpers.AnalyticsLogger;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.screens.GameLauncher;
 
@@ -20,6 +21,11 @@ import java.util.Properties;
 public class MoonWalker extends Game {
 
     GameLauncher gameLauncher;
+
+    public MoonWalker(AnalyticsLogger analyticsLogger) {
+        AppInfo appInfo = AppInfo.getInstance();
+        appInfo.setAnalyticsLogger(analyticsLogger);
+    }
 
     @Override
     public void create() {

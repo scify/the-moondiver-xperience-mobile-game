@@ -69,6 +69,7 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
             else {
                 renderable = new RoomRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID, false);
             }
+            appInfo.logEpisodeStarted("Room episode");
             renderable.addAfterFadeIn(new Runnable() {
                 @Override
                 public void run() {
@@ -87,6 +88,12 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
             gameInfo.save();
             super.episodeStartedEvents(currentState);
         }
+    }
+
+    @Override
+    protected void episodeEndedEvents(GameState currentState) {
+        appInfo.logEpisodeEnded("Room episode");
+        super.episodeEndedEvents(currentState);
     }
 
     @Override

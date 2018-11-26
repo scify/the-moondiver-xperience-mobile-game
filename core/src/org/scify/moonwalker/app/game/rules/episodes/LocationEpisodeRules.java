@@ -43,8 +43,15 @@ public class LocationEpisodeRules extends FadingEpisodeRules<LocationRenderable>
             currentState.addRenderable(renderable);
             currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI));
             currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.LOCATION_AUDIO_PATH));
+            appInfo.logEpisodeStarted(this.location.getName());
             super.episodeStartedEvents(currentState);
         }
+    }
+
+    @Override
+    protected void episodeEndedEvents(GameState currentState) {
+        appInfo.logEpisodeEnded(this.location.getName());
+        super.episodeEndedEvents(currentState);
     }
 
     @Override

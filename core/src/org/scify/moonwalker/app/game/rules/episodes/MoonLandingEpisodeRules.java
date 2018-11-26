@@ -59,6 +59,8 @@ public class MoonLandingEpisodeRules extends FadingEpisodeRules<MoonLandingRende
         if (!isEpisodeStarted(currentState)) {
             if (gameInfo.isFromLoad())
                 currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI));
+            appInfo.logEpisodeStarted("Moon landing");
+            appInfo.logAnalyticsEvent("FULL_SUCCESS", String.valueOf(gameInfo.isGameFullySuccessfullyCompleted()));
             MoonLandingRenderable.calculateResPaths(gameInfo.getSelectedPlayer(), gameInfo.isGameFullySuccessfullyCompleted());
             renderable = new MoonLandingRenderable(0, 0, appInfo.getScreenWidth(), appInfo.getScreenHeight(), RENDERABLE_ID, gameInfo.getSelectedPlayer(), gameInfo.isGameFullySuccessfullyCompleted());
             renderable.addAfterFadeIn(new Runnable() {

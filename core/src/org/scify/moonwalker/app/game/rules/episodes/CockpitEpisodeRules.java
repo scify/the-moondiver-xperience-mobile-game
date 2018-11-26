@@ -91,6 +91,7 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
             gameState.addRenderable(renderable);
             gameInfo.setMainEpisodeCounter(4);
             gameInfo.save();
+            appInfo.logEpisodeStarted("Cockpit episode. Location: " + episodeLocation.getName());
             super.episodeStartedEvents(gameState);
         }
     }

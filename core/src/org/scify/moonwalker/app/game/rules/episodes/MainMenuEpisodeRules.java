@@ -44,6 +44,8 @@ public class MainMenuEpisodeRules extends FadingEpisodeRules<MainMenuRenderable>
                 }
             });
 
+            appInfo.logEpisodeStarted("Main Menu Episode");
+
             // Call parent starting process
             super.episodeStartedEvents(gameState);
             // Add all children

@@ -12,6 +12,6 @@ public class AndroidLauncher extends AndroidApplication {
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		// this sets the app to full screen
 		config.useImmersiveMode = true;
-		initialize(new MoonWalker(), config);
+		initialize(new MoonWalker(new AndroidAnalyticsLogger(getContext())), config);
 	}
 }

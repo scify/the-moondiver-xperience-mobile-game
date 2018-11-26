@@ -1,10 +1,14 @@
 package org.scify.moonwalker.app.helpers;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import org.scify.moonwalker.app.game.GameInfo;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class AppInfo {
 
@@ -15,6 +19,8 @@ public class AppInfo {
     private int screenWidth;
     private int screenHeight;
     private float screenDensity = 1;
+    protected AnalyticsLogger analyticsLogger;
+    protected GameInfo gameInfo;
 
     public static AppInfo getInstance() {
         if (instance == null) {
@@ -51,6 +57,49 @@ public class AppInfo {
 
     public float pixelsWithDensity(float pixels) {
         return pixels * screenDensity;
+    }
+
+    public void setAnalyticsLogger(AnalyticsLogger analyticsLogger) {
+        this.analyticsLogger = analyticsLogger;
+    }
+
+    public void logEpisodeStarted(String episodeName) {
+        if(gameInfo == null)
+            gameInfo = GameInfo.getInstance();
+        Map<String, String> attributesMap = getLogAttributesMap(episodeName);
+        this.logAnalyticsEvent("EPISODE_STARTED", attributesMap);
+    }
+
+    public void logEpisodeEnded(String episodeName) {
+        if(gameInfo == null)
+            gameInfo = GameInfo.getInstance();
+        Map<String, String> attributesMap = getLogAttributesMap(episodeName);
+        this.logAnalyticsEvent("EPISODE_ENDED", attributesMap);
+    }
+
+    protected Map getLogAttributesMap(String episodeName) {
+        Map<String, String> attributesMap = new HashMap<>();
+        attributesMap.put("CURRENT_LOCATION", gameInfo.getCurrentLocation().getName());
+        attributesMap.put("EPISODE_NAME", episodeName);
+        attributesMap.put("CURRENT_DAY", String.valueOf(gameInfo.getCurrentDay()));
+        return attributesMap;
+    }
+
+    public void logAnalyticsEvent(String eventName, Map<String, String> attributesMap) {
+
+        if(this.analyticsLogger != null)
+            this.analyticsLogger.logEvent(eventName, attributesMap);
+        else
+            Gdx.app.log("ANALYTICS", "Analytics instance is null. Platform: " + Gdx.app.getType());
+    }
+
+    public void logAnalyticsEvent(String eventName, String payload) {
+        if(gameInfo == null)
+            gameInfo = GameInfo.getInstance();
+        if(this.analyticsLogger != null)
+            this.analyticsLogger.logEvent(eventName, payload);
+        else
+            Gdx.app.log("ANALYTICS", "Analytics instance is null. Platform: " + Gdx.app.getType());
     }
 
     // TODO: Update all points in the game that use conversions

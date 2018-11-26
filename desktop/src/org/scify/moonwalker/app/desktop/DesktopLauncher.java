@@ -10,6 +10,6 @@ public class DesktopLauncher {
 		// Custom dimensions for desktop
 		config.height = 411;
 		config.width = 731;
-		new LwjglApplication(new MoonWalker(), config);
+		new LwjglApplication(new MoonWalker(new DesktopAnalyticsLogger()), config);
 	}
 }
