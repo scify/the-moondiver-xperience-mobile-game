@@ -4,9 +4,15 @@ import org.scify.engine.GameEvent;
 import org.scify.engine.GameState;
 import org.scify.engine.UserAction;
 import org.scify.engine.conversation.ConversationLine;
+import org.scify.engine.renderables.ActionButtonRenderable;
 import org.scify.engine.renderables.MultipleChoiceConversationRenderable;
+import org.scify.engine.renderables.Renderable;
+import org.scify.engine.renderables.effects.*;
 import org.scify.moonwalker.app.game.quiz.*;
+import org.scify.moonwalker.app.ui.LGDXRenderableBookKeeper;
+import org.scify.moonwalker.app.ui.ThemeController;
 
+import javax.swing.*;
 import java.util.*;
 
 import static org.scify.moonwalker.app.game.rules.episodes.BaseEpisodeRules.GAME_EVENT_AUDIO_START_UI;
@@ -22,12 +28,15 @@ public class QuestionConversationRules extends ConversationRules {
     public static final String AT_LEAST_ONE_DAY_NOTIFICATION_SHOWN = "notification_shown";
     public static final String NO_DAYS_REMAINING_FOR_THE_JOURNEY = "no_days_remaining";
     public static final String SET_NOTIFICATION_SHOWN_EVENT = "set_notification_shown";
+    public static final String GAME_EVENT_HIGHLIGHT_AS_CORRECT = "GAME_EVENT_HIGHLIGHT_AS_CORRECT";
+    public static final String GAME_EVENT_HIGHLIGHT_AS_WRONG = "GAME_EVENT_HIGHLIGHT_AS_WRONG";
 
     protected QuestionService questionService;
     protected List<QuestionCategory> questionCategories;
     protected List<Question> questions;
     protected String correctAudioPath;
     protected String wrongAudioPath;
+    protected UserAction selectionUserAction = null;
 
     // this variable describes whether the last process conversation line
     // was of a question type.
@@ -59,19 +68,78 @@ public class QuestionConversationRules extends ConversationRules {
     }
 
     @Override
-    public GameState getNextState(GameState gameState, UserAction userAction) {
+    public GameState getNextState(final GameState gameState, final UserAction userAction) {
         if (gameState.getAdditionalDataEntry(CORRECT_ANSWERS) == null)
             gameState.setAdditionalDataEntry(CORRECT_ANSWERS, "0");
+
+        // Handle correct/wrong events
+        if (gameState.eventsQueueContainsEvent(GAME_EVENT_HIGHLIGHT_AS_CORRECT)) {
+            GameEvent geCorrect = gameState.getGameEventWithType(GAME_EVENT_HIGHLIGHT_AS_CORRECT);
+            final Renderable rToHighlight = (Renderable)geCorrect.parameters;
+            final QuestionConversationRules qcr = this;
+            EffectSequence es = new EffectSequence();
+            es.addEffect(new FunctionEffect(new Runnable() {
+                @Override
+                public void run() {
+                    // TODO: Apply button update
+                    ((ActionButtonRenderable)rToHighlight).setButtonSkin(ThemeController.SKIN_CORRECT);
+                }
+            }));
+            es.addEffect(new DelayEffect(1000));
+            // Delayed call to handle conversation end
+            es.addEffect(new FunctionEffect(new Runnable() {
+                @Override
+                public void run() {
+                    qcr.superGetNextState(gameState, selectionUserAction);
+                    selectionUserAction = null;
+                }
+            }));
+            rToHighlight.addEffect(es);
+            gameState.removeGameEventsWithType(GAME_EVENT_HIGHLIGHT_AS_CORRECT);
+
+            return gameState;
+        }
+        // Handle correct/wrong events
+        if (gameState.eventsQueueContainsEvent(GAME_EVENT_HIGHLIGHT_AS_WRONG)) {
+            GameEvent geWrong = gameState.getGameEventWithType(GAME_EVENT_HIGHLIGHT_AS_WRONG);
+            final Renderable rToHighlight = (Renderable)geWrong.parameters;
+            final QuestionConversationRules qcr = this;
+            EffectSequence es = new EffectSequence();
+            es.addEffect(new FunctionEffect(new Runnable() {
+                @Override
+                public void run() {
+                    ((ActionButtonRenderable)rToHighlight).setButtonSkin(ThemeController.SKIN_WRONG);
+                }
+            }));
+            es.addEffect(new DelayEffect(1000));
+            // Delayed call to handle conversation end
+            es.addEffect(new FunctionEffect(new Runnable() {
+                @Override
+                public void run() {
+                    qcr.superGetNextState(gameState, selectionUserAction);
+                    selectionUserAction = null;
+                }
+            }));
+            rToHighlight.addEffect(es);
+            gameState.removeGameEventsWithType(GAME_EVENT_HIGHLIGHT_AS_WRONG);
+
+            return gameState;
+        }
+
+
         if (gotAnswer(userAction)) {
             // we need to check whether this answer was for a question-type
             // conversation line (which means that we got an answer
             // for a Question and we need to evaluate it)
             if (lineProcessedIsQuestion) {
-                ConversationLine selectedLine = (ConversationLine) userAction.getActionPayload();
+                Map.Entry<Renderable, ConversationLine> payload = (Map.Entry<Renderable, ConversationLine>)userAction.getActionPayload();
+                ConversationLine selectedLine = (ConversationLine) payload.getValue();
                 // the answer instance was set as a payload in the conversation line
                 // which is set as a payload to the user action
                 Answer answer = (Answer) selectedLine.getPayload();
-                evaluateAnswerAndSetGameInfo(answer, gameState);
+                evaluateAnswerAndSetGameInfo(answer, gameState, payload.getKey());
+                selectionUserAction = userAction; // Store user action
+                return gameState; // Do NOT follow normal conversation handling sequence, by calling parent.
             }
         }
         if (Integer.valueOf((String) gameState.getAdditionalDataEntry(CORRECT_ANSWERS)) >= minimumCorrectAnswers) {
@@ -79,15 +147,28 @@ public class QuestionConversationRules extends ConversationRules {
         } else {
             gameInfo.setLastQuizSuccessFull(false);
         }
+
+        // Go to parent to handle base conversation flow
         return super.getNextState(gameState, userAction);
     }
 
-    protected void evaluateAnswerAndSetGameInfo(Answer answer, GameState gameState) {
+    /**
+     * Shortcut to call super getNextState to ascertain handling by parent as needed.
+     * @param gameState The current game state
+     * @param userAction The current user action
+     */
+    protected GameState superGetNextState(GameState gameState, UserAction userAction) {
+        return super.getNextState(gameState, userAction);
+    }
+
+    protected void evaluateAnswerAndSetGameInfo(Answer answer, GameState gameState, Renderable source) {
         if (answer.isCorrect()) {
             increaseCorrectAnswers(gameState);
             gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, correctAudioPath));
+            gameState.addGameEvent(new GameEvent(GAME_EVENT_HIGHLIGHT_AS_CORRECT, source));
         } else {
             gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, wrongAudioPath));
+            gameState.addGameEvent(new GameEvent(GAME_EVENT_HIGHLIGHT_AS_WRONG, source));
         }
         this.lastQuizAnswerCorrect = answer.isCorrect();
     }

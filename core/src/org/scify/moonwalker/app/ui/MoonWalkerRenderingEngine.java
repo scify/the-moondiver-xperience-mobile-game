@@ -96,15 +96,14 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
         try {
             bookKeeper = LGDXRenderableBookKeeper.initBookKeeper(themeController, userInputHandler);
 
+            bookKeeper.setBatch(batch);
+            bookKeeper.setStage(stage);
         } catch (org.scify.moonwalker.app.ui.LGDXRenderableBookKeeper.AlreadyInitializedBookKeeperException e) {
             System.err.println("WARNING: Keeper already initialized. Full error:");
             e.printStackTrace(System.err);
             // Log anyway
             Sentry.capture(e);
         }
-
-        bookKeeper.setBatch(batch);
-        bookKeeper.setStage(stage);
 
         audioEngine.pauseCurrentlyPlayingAudios();
         audioEngine.loadSound("audio/button1.mp3");

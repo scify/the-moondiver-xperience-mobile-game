@@ -121,7 +121,7 @@ public class ChargeEpisodeActor extends FadingTableActor<ChargeEpisodeRenderable
         calculatorResult.setAlignment(Align.right);
         Label.LabelStyle calculatorStyle = new Label.LabelStyle();
         ThemeController themeController = ThemeController.getInstance();
-        calculatorStyle.font = themeController.getFont(25,"controls", true);
+        calculatorStyle.font = themeController.getFont(25,"controls", ThemeController.SKIN_DEFAULT);
         calculatorStyle.fontColor = Color.valueOf("113b3e");
         calculatorResult.setStyle(calculatorStyle);
         calculator.add(calculatorResult).height(0.2f * tableHeight).right().colspan(4).padRight(widthOfLeftAndRight);

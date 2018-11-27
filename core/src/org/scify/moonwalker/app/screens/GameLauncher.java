@@ -52,6 +52,8 @@ public class GameLauncher implements Screen {
         stage = new ZIndexedStage(gameViewport, batch);
     }
 
+
+
     @Override
     public void show() {
         startNewGame();

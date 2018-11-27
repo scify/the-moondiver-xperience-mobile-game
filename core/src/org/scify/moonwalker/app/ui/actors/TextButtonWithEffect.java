@@ -6,11 +6,15 @@ import org.scify.engine.renderables.ActionButtonRenderable;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.effects.Effect;
 import org.scify.engine.renderables.effects.EffectTarget;
+import org.scify.moonwalker.app.ui.ThemeController;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class TextButtonWithEffect extends TextButton implements EffectTarget, Updateable {
+
+    protected String lastSkinType = null;
+
     public TextButtonWithEffect(String text, Skin skin) {
         super(text, skin);
         getLabel().setWrap(true);
@@ -55,6 +59,20 @@ public class TextButtonWithEffect extends TextButton implements EffectTarget, Up
         if (!text.equals(getText()))
             setText(text);
         setZIndex(renderable.getZIndex());
+
+        // Update skin, if needed
+        if (renderable instanceof ActionButtonRenderable) {
+            String sNewSkinType = ((ActionButtonRenderable) renderable).getButtonSkin();
+            if (!sNewSkinType.equals(lastSkinType)) {
+                setSkin(ThemeController.getInstance().getSkinByType(sNewSkinType));
+                if (getSkin().has("default", TextButtonStyle.class)) {
+                    TextButton.TextButtonStyle newStyle = getSkin().get(TextButtonStyle.class);
+                    setStyle(newStyle);
+                }
+                lastSkinType = sNewSkinType;
+            }
+        }
+
         renderable.wasUpdated();
     }
 }

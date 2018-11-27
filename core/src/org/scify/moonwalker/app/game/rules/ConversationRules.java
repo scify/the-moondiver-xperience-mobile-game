@@ -257,7 +257,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
         ConversationLine answered = null;
         if (userAction.getActionCode().equals(UserActionCode.MULTIPLE_SELECTION_ANSWER) ||
                 userAction.getActionCode().equals(UserActionCode.SINGLE_CHOICE_CONVERSATION_LINE)) {
-            ConversationLine clickedLine = (ConversationLine) userAction.getActionPayload();
+            ConversationLine clickedLine = ((Map.Entry<Renderable,ConversationLine>) userAction.getActionPayload()).getValue();
             answered = getLineById(clickedLine.getId());
         }
 

@@ -51,18 +51,19 @@ public class MultipleChoiceConversationActor extends TableActor<MultipleChoiceCo
         float buttonWidth = 0.40f * width;
         float buttonHeight = 0.2f * height;
         buttonTopLeft = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getConversationButtonTopLeft());
-        setButtonAttributes(buttonTopLeft, buttonsTable, buttonWidth, buttonHeight, renderable.getConversationButtonTopLeft().isDefaultButtonSkin());
+        setButtonAttributes(buttonTopLeft, buttonsTable, buttonWidth, buttonHeight,
+                renderable.getConversationButtonTopLeft().getButtonSkin());
         buttonsTable.add().height(buttonHeight).width(0.05f * width);
         buttonTopRight = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getConversationButtonTopRight());
-        setButtonAttributes(buttonTopRight, buttonsTable, buttonWidth, buttonHeight, renderable.getConversationButtonTopRight().isDefaultButtonSkin());
+        setButtonAttributes(buttonTopRight, buttonsTable, buttonWidth, buttonHeight, renderable.getConversationButtonTopRight().getButtonSkin());
         buttonsTable.row();
         buttonsTable.add().height(buttonHeight/2).colspan(3);
         buttonsTable.row();
         buttonBottomLeft = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getConversationButtonBottomLeft());
-        setButtonAttributes(buttonBottomLeft, buttonsTable, buttonWidth, buttonHeight, renderable.getConversationButtonBottomLeft().isDefaultButtonSkin());
+        setButtonAttributes(buttonBottomLeft, buttonsTable, buttonWidth, buttonHeight, renderable.getConversationButtonBottomLeft().getButtonSkin());
         buttonsTable.add().height(buttonHeight).width(0.05f * width);
         buttonBottomRight = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getConversationButtonBottomRight());
-        setButtonAttributes(buttonBottomRight, buttonsTable, buttonWidth, buttonHeight, renderable.getConversationButtonBottomRight().isDefaultButtonSkin());
+        setButtonAttributes(buttonBottomRight, buttonsTable, buttonWidth, buttonHeight, renderable.getConversationButtonBottomRight().getButtonSkin());
         centralTable.add(buttonsTable).width(buttonWidth);
         add(centralTable).height(height * 0.95f).width(width * 0.95f).center();
 
@@ -70,11 +71,9 @@ public class MultipleChoiceConversationActor extends TableActor<MultipleChoiceCo
 
     }
 
-    protected void setButtonAttributes(Button button, Table buttonsTable, float buttonWidth, float buttonHeight, boolean defaultButtonSkin) {
+    protected void setButtonAttributes(Button button, Table buttonsTable, float buttonWidth, float buttonHeight, String skin) {
         ThemeController themeController = ThemeController.getInstance();
-        Skin skinToDraw = getSkin();
-        if(!defaultButtonSkin)
-            skinToDraw = themeController.getWrongAnswerSkin();
+        Skin skinToDraw = themeController.getSkinByType(skin);
         button.setStyle(skinToDraw.get("default", TextButton.TextButtonStyle.class));
         buttonsTable.add(button).width(buttonWidth).height(buttonHeight);
     }

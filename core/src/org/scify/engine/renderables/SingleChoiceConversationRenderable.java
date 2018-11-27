@@ -63,9 +63,43 @@ public class SingleChoiceConversationRenderable extends ConversationRenderable {
 
         String buttonText = conversationLine.getButtonText();
         if (buttonText != null) {
-            conversationButton = createTextButton(SINGLE_CHOICE_BUTTON_ID + id, buttonText, new UserAction(UserActionCode.SINGLE_CHOICE_CONVERSATION_LINE, conversationLine), false, false, 102);
+            conversationButton = createTextButton(SINGLE_CHOICE_BUTTON_ID + id, buttonText,
+                    new UserAction(UserActionCode.SINGLE_CHOICE_CONVERSATION_LINE, new Map.Entry<Renderable, ConversationLine>() {
+
+                        @Override
+                        public Renderable getKey() {
+                            return conversationButton;
+                        }
+
+                        @Override
+                        public ConversationLine getValue() {
+                            return conversationLine;
+                        }
+
+                        @Override
+                        public ConversationLine setValue(ConversationLine value) {
+                            return null;
+                        }
+                    }), false, false, 102);
         }else {
-            conversationButton = createTextButton(SINGLE_CHOICE_BUTTON_ID + id, "Επόμενο", new UserAction(UserActionCode.SINGLE_CHOICE_CONVERSATION_LINE, conversationLine), false, false, 102);
+            conversationButton = createTextButton(SINGLE_CHOICE_BUTTON_ID + id, "Επόμενο",
+                    new UserAction(UserActionCode.SINGLE_CHOICE_CONVERSATION_LINE, new Map.Entry<Renderable, ConversationLine>() {
+
+                        @Override
+                        public Renderable getKey() {
+                            return conversationButton;
+                        }
+
+                        @Override
+                        public ConversationLine getValue() {
+                            return conversationLine;
+                        }
+
+                        @Override
+                        public ConversationLine setValue(ConversationLine value) {
+                            return null;
+                        }
+                    }), false, false, 102);
         }
         conversationText = createTextLabelRenderable(CONVERSATION_TEXT_ID + conversationId, parseText(conversationLine.getText()),false, true, 102);
         allRenderables.add(conversationText);

@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.helpers.ResourceLocator;
 
+import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -116,6 +117,19 @@ public class ThemeController {
 
     public Skin getDefaultSkin() {
         return defaultSkin;
+    }
+
+    public Skin getSkinByType(String skinType) {
+        switch (skinType) {
+            case SKIN_DEFAULT:
+                return defaultSkin;
+            case SKIN_CORRECT:
+                return correctAnswerSkin;
+            case SKIN_WRONG:
+                return wrongAnswerSkin;
+            default:
+                throw new InvalidParameterException("Cannot find skin for skin-type " + skinType);
+        }
     }
 
     public Skin getWrongAnswerSkin() {

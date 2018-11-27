@@ -3,6 +3,7 @@ package org.scify.engine.renderables;
 import org.scify.engine.UserAction;
 import org.scify.engine.renderables.effects.Effect;
 import org.scify.engine.renderables.effects.EffectTarget;
+import org.scify.moonwalker.app.ui.ThemeController;
 
 public class ActionButtonRenderable extends Renderable {
 
@@ -10,16 +11,16 @@ public class ActionButtonRenderable extends Renderable {
     protected UserAction userAction;
     protected float padding;
     protected String imgPath;
-    protected boolean defaultButtonSkin;
+    protected String skin;
 
     public ActionButtonRenderable(float xPos, float yPos, float width, float height, String type, String id) {
         super(xPos, yPos, width, height, type, id);
-        defaultButtonSkin = true;
+        skin = ThemeController.SKIN_DEFAULT;
     }
 
     public ActionButtonRenderable(String type, String id) {
         super(type, id);
-        defaultButtonSkin = true;
+        skin = ThemeController.SKIN_DEFAULT;
     }
 
     public String getTitle() {
@@ -30,12 +31,13 @@ public class ActionButtonRenderable extends Renderable {
         this.title = title;
     }
 
-    public boolean isDefaultButtonSkin() {
-        return defaultButtonSkin;
+    public String getButtonSkin() {
+        return skin;
     }
 
-    public void setDefaultButtonSkin(boolean defaultButtonSkin) {
-        this.defaultButtonSkin = defaultButtonSkin;
+    public void setButtonSkin(String skin) {
+        this.skin = skin;
+        markAsNeedsUpdate();
     }
 
     public UserAction getUserAction() {
@@ -61,6 +63,7 @@ public class ActionButtonRenderable extends Renderable {
     public void setImgPath(String imgPath) {
         this.imgPath = imgPath;
     }
+
     @Override
     public EffectTarget apply(Effect toApply) {
         return toApply.applyTo(this);

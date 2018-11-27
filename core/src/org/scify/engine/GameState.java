@@ -28,10 +28,10 @@ public abstract class GameState {
     public GameState(List<GameEvent> eventQueue) {
         this.eventQueue = eventQueue;
         clearRendereablesList();
-        additionalDataMap = new HashMap<>();
+        additionalDataMap = Collections.synchronizedMap(new HashMap<String, Object>());
     }
 
-    public void clearRendereablesList() {
+    public synchronized void clearRendereablesList() {
         renderableList = Collections.synchronizedList(new LinkedList<Renderable>());
     }
 
@@ -43,8 +43,10 @@ public abstract class GameState {
         return eventQueue;
     }
 
-    public void addGameEvent(GameEvent event) {
-        eventQueue.add(event);
+    public synchronized void addGameEvent(GameEvent event) {
+        synchronized (eventQueue) {
+            eventQueue.add(event);
+        }
     }
 
     /**
@@ -52,15 +54,17 @@ public abstract class GameState {
      * @param eventType the type of the event
      * @return true if the event exists in the events list
      */
-    public boolean eventsQueueContainsEvent(String eventType) {
-        Iterator<GameEvent> iter = eventQueue.iterator();
-        GameEvent currentGameEvent;
-        while (iter.hasNext()) {
-            currentGameEvent = iter.next();
-            if(currentGameEvent.type.equals(eventType))
-                return true;
+    public synchronized boolean eventsQueueContainsEvent(String eventType) {
+        synchronized (eventQueue) {
+            ListIterator<GameEvent> iter = eventQueue.listIterator();
+            GameEvent currentGameEvent;
+            while (iter.hasNext()) {
+                currentGameEvent = iter.next();
+                if (currentGameEvent.type.equals(eventType))
+                    return true;
+            }
+            return false;
         }
-        return false;
     }
 
     /**
@@ -69,15 +73,17 @@ public abstract class GameState {
      * @param owner the owner (creator) class of the event
      * @return true if the event exists in the events list
      */
-    public boolean eventsQueueContainsEventOwnedBy(String eventType, Object owner) {
-        Iterator<GameEvent> iter = eventQueue.iterator();
-        GameEvent currentGameEvent;
-        while (iter.hasNext()) {
-            currentGameEvent = iter.next();
-            if(currentGameEvent.type.equals(eventType) && currentGameEvent.owner == owner)
-                return true;
+    public synchronized boolean eventsQueueContainsEventOwnedBy(String eventType, Object owner) {
+        synchronized (eventQueue) {
+            ListIterator<GameEvent> iter = eventQueue.listIterator();
+            GameEvent currentGameEvent;
+            while (iter.hasNext()) {
+                currentGameEvent = iter.next();
+                if (currentGameEvent.type.equals(eventType) && currentGameEvent.owner == owner)
+                    return true;
+            }
+            return false;
         }
-        return false;
     }
 
     public void setAdditionalDataEntry(String dataId, Object dataPayload) {
@@ -97,7 +103,7 @@ public abstract class GameState {
      * @param type
      * @return the first event found with that type
      */
-    public GameEvent getGameEventWithType(String type) {
+    public synchronized GameEvent getGameEventWithType(String type) {
         synchronized (eventQueue) {
             ListIterator<GameEvent> listIterator = eventQueue.listIterator();
             while (listIterator.hasNext()) {
@@ -113,7 +119,7 @@ public abstract class GameState {
      * Removes all game events that have a given type
      * @param gameEventType
      */
-    public void removeGameEventsWithType(String gameEventType) {
+    public synchronized void removeGameEventsWithType(String gameEventType) {
         synchronized (eventQueue) {
             ListIterator<GameEvent> listIterator = eventQueue.listIterator();
             while (listIterator.hasNext()) {
@@ -124,7 +130,7 @@ public abstract class GameState {
         }
     }
 
-    public void removeGameEventsWithTypeOwnedBy(String gameEventType, Object owner) {
+    public synchronized void removeGameEventsWithTypeOwnedBy(String gameEventType, Object owner) {
         synchronized (eventQueue) {
             ListIterator<GameEvent> listIterator = eventQueue.listIterator();
             while (listIterator.hasNext()) {
@@ -139,7 +145,7 @@ public abstract class GameState {
      * Remove all game events added by a given owner class
      * @param owner the owner of the game events
      */
-    public void removeAllGameEventsOwnedBy(Object owner) {
+    public synchronized void removeAllGameEventsOwnedBy(Object owner) {
         synchronized (eventQueue) {
             ListIterator<GameEvent> listIterator = eventQueue.listIterator();
             while (listIterator.hasNext()) {
@@ -152,24 +158,24 @@ public abstract class GameState {
         }
     }
 
-    public List<org.scify.engine.renderables.Renderable> getRenderableList() {
+    public synchronized List<org.scify.engine.renderables.Renderable> getRenderableList() {
         return renderableList;
     }
 
 
-    public void addRenderable(org.scify.engine.renderables.Renderable r) {
+    public synchronized void addRenderable(org.scify.engine.renderables.Renderable r) {
         renderableList.add(r);
     }
 
-    public void addRenderables(List<org.scify.engine.renderables.Renderable> renderables) {
+    public synchronized void addRenderables(List<org.scify.engine.renderables.Renderable> renderables) {
         renderableList.addAll(renderables);
     }
 
-    public void removeRenderable(Renderable r) {
+    public synchronized void removeRenderable(Renderable r) {
         renderableList.remove(r);
     }
 
-    public Renderable getRenderable(Renderable renderable){
+    public synchronized Renderable getRenderable(Renderable renderable){
         synchronized (renderableList) {
             ListIterator<Renderable> listIterator = renderableList.listIterator();
             while (listIterator.hasNext()) {

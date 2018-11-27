@@ -74,7 +74,7 @@ public class LGDXRenderableBookKeeper {
      * @param userInputHandler The user input handler.
      * @return The bookkeeper instance created.
      */
-    public static LGDXRenderableBookKeeper initBookKeeper(ThemeController themeController, UserInputHandler userInputHandler) throws AlreadyInitializedBookKeeperException {
+    public synchronized static LGDXRenderableBookKeeper initBookKeeper(ThemeController themeController, UserInputHandler userInputHandler) throws AlreadyInitializedBookKeeperException {
         if (instance == null) {
             instance = new LGDXRenderableBookKeeper(themeController, userInputHandler);
             return instance;
@@ -91,7 +91,7 @@ public class LGDXRenderableBookKeeper {
      *
      * @return The {@link LGDXRenderableBookKeeper}.
      */
-    public static LGDXRenderableBookKeeper getInstance() {
+    public synchronized static LGDXRenderableBookKeeper getInstance() {
         if (instance == null)
             throw new UninitializedBookKeeperException("Should first call init book keeper.");
 

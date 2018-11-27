@@ -59,11 +59,45 @@ public class TwoChoiceConversationRenderable extends ConversationRenderable {
     @Override
     public void setConversationLines(List<ConversationLine> conversationLines) {
         this.conversationLines = conversationLines;
-        ConversationLine conversationLine = conversationLines.get(0);
-        conversationButtonTop = createTextButton(TOP_BUTTON_ID+ conversationLine.getId(),parseText(conversationLine.getText()),new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine),false, false,102);
+        final ConversationLine conversationLine1 = conversationLines.get(0);
+        conversationButtonTop = createTextButton(TOP_BUTTON_ID+ conversationLine1.getId(),parseText(conversationLine1.getText()),
+                new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, new Map.Entry<Renderable, ConversationLine>() {
+
+                    @Override
+                    public Renderable getKey() {
+                        return conversationButtonTop;
+                    }
+
+                    @Override
+                    public ConversationLine getValue() {
+                        return conversationLine1;
+                    }
+
+                    @Override
+                    public ConversationLine setValue(ConversationLine value) {
+                        return null;
+                    }
+                }),false, false,102);
         allRenderables.add(conversationButtonTop);
-        conversationLine = conversationLines.get(1);
-        conversationButtonBottom = createTextButton(BOTTOM_BUTTON_ID+ conversationLine.getId(),parseText(conversationLine.getText()),new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, conversationLine),false, false,102);
+        final ConversationLine conversationLine2 = conversationLines.get(1);
+        conversationButtonBottom = createTextButton(BOTTOM_BUTTON_ID+ conversationLine2.getId(),parseText(conversationLine2.getText()),
+                new UserAction(UserActionCode.MULTIPLE_SELECTION_ANSWER, new Map.Entry<Renderable, ConversationLine>() {
+
+                    @Override
+                    public Renderable getKey() {
+                        return conversationButtonBottom;
+                    }
+
+                    @Override
+                    public ConversationLine getValue() {
+                        return conversationLine2;
+                    }
+
+                    @Override
+                    public ConversationLine setValue(ConversationLine value) {
+                        return null;
+                    }
+                }),false, false,102);
         allRenderables.add(conversationButtonBottom);
     }
 

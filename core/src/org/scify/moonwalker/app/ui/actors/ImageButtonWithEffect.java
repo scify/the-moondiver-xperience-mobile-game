@@ -3,14 +3,18 @@ package org.scify.moonwalker.app.ui.actors;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import org.scify.engine.renderables.ActionButtonRenderable;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.effects.Effect;
 import org.scify.engine.renderables.effects.EffectTarget;
+import org.scify.moonwalker.app.ui.ThemeController;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class ImageButtonWithEffect extends ImageButton implements EffectTarget, Updateable {
+    protected String lastSkinType = null;
+
     public ImageButtonWithEffect(Skin skin) {
         super(skin);
     }
@@ -63,6 +67,20 @@ public class ImageButtonWithEffect extends ImageButton implements EffectTarget, 
     @Override
     public void update(Renderable renderable) {
         setZIndex(renderable.getZIndex());
+        // Update skin, if needed
+        if (renderable instanceof ActionButtonRenderable) {
+            String sNewSkinType = ((ActionButtonRenderable) renderable).getButtonSkin();
+            if (!sNewSkinType.equals(lastSkinType)) {
+                setSkin(ThemeController.getInstance().getSkinByType(sNewSkinType));
+                if (getSkin().has("default", ImageButton.ImageButtonStyle.class)) {
+                    ImageButton.ImageButtonStyle newStyle = getSkin().get(ImageButton.ImageButtonStyle.class);
+                    setStyle(newStyle);
+                }
+                lastSkinType = sNewSkinType;
+            }
+        }
+
+
         renderable.wasUpdated();
     }
 }
