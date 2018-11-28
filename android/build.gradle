@@ -137,6 +137,7 @@ idea {
 }
 repositories {
     maven { url 'https://maven.google.com' }
+    jcenter()
 }
 dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:4.37.0'
