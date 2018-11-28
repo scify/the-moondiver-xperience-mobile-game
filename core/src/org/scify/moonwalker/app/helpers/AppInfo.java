@@ -64,24 +64,30 @@ public class AppInfo {
     }
 
     public void logEpisodeStarted(String episodeName) {
-        if(gameInfo == null)
-            gameInfo = GameInfo.getInstance();
-        Map<String, String> attributesMap = getLogAttributesMap(episodeName);
-        this.logAnalyticsEvent("EPISODE_STARTED", attributesMap);
+        prepareLogAttributesAndLogEvent("EPISODE_STARTED", episodeName);
     }
 
     public void logEpisodeEnded(String episodeName) {
+        prepareLogAttributesAndLogEvent("EPISODE_ENDED", episodeName);
+    }
+
+    public void logEpisodeSkipped(String episodeName) {
+        prepareLogAttributesAndLogEvent("EPISODE_SKIPPED", episodeName);
+    }
+
+    protected void prepareLogAttributesAndLogEvent(String eventName, String episodeName) {
         if(gameInfo == null)
             gameInfo = GameInfo.getInstance();
         Map<String, String> attributesMap = getLogAttributesMap(episodeName);
-        this.logAnalyticsEvent("EPISODE_ENDED", attributesMap);
+        this.logAnalyticsEvent(eventName, attributesMap);
     }
 
     protected Map getLogAttributesMap(String episodeName) {
         Map<String, String> attributesMap = new HashMap<>();
-        attributesMap.put("CURRENT_LOCATION", gameInfo.getCurrentLocation().getName());
+        attributesMap.put("CURRENT_LOCATION", gameInfo.getCurrentLocation().getName() + "_" + String.valueOf(gameInfo.getCurrentLocation().getLocationIndex()));
         attributesMap.put("EPISODE_NAME", episodeName);
         attributesMap.put("CURRENT_DAY", String.valueOf(gameInfo.getCurrentDay()));
+        attributesMap.put("PLAYER", gameInfo.getSelectedPlayer());
         return attributesMap;
     }
 
@@ -239,4 +245,5 @@ public class AppInfo {
     public void dispose() {
         instance = null;
     }
+
 }

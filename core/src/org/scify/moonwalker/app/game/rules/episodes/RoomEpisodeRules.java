@@ -52,6 +52,7 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
         switch (userAction.getActionCode()) {
             case UserActionCode.FINISH_EPISODE:
                 gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
+                appInfo.logEpisodeSkipped("ROOM_EPISODE");
                 conversationRules.getLastConversationRenderable().addEffect(new FadeEffect(1,0,1000));
                 break;
         }

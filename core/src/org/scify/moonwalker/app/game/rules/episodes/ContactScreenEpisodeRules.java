@@ -106,6 +106,7 @@ public class ContactScreenEpisodeRules extends FadingEpisodeRules<ContactScreenR
             eventTrigger = (Set<String>) gsCurrent.getGameEventWithType(ConversationRules.ON_EXIT_CONVERSATION_ORDER_TRIGGER_EVENT).parameters;
             if (eventTrigger.contains(EVENT_SKIP_TUTORIAL)) {
                 gameInfo.setTutorialMode(false);
+                appInfo.logEpisodeSkipped("CONTACT_SCREEN");
             }
         }
         super.onExitConversationOrder(gsCurrent, lineExited);
