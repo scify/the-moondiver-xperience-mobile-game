@@ -129,3 +129,4 @@ Thumbs.db
 
 /android/assets/config.properties
 /android/google-services.json
+/android/release/*
