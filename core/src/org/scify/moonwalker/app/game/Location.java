@@ -16,6 +16,7 @@ public class Location {
     protected String conversationSuccessFilePath;
     protected String conversationFailureFilePath;
     protected String conversationArrivalFilePath;
+    protected int locationIndex;
 
     public Location(String name, String imgUrl, int posX, int posY, String mission, String conversationPath, String conversationSuccessFilePath, String conversationFailureFilePath, String conversationArrivelFilePath) {
         this.name = name;
@@ -118,5 +119,13 @@ public class Location {
 
     public String getConversationArrivalFilePath() {
         return conversationArrivalFilePath;
+    }
+
+    public int getLocationIndex() {
+        return locationIndex;
+    }
+
+    public void setLocationIndex(int locationIndex) {
+        this.locationIndex = locationIndex;
     }
 }
