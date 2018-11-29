@@ -6,6 +6,7 @@ import org.scify.engine.renderables.Renderable;
 import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.renderables.SingleChoiceConversationRenderable;
 import org.scify.moonwalker.app.ui.actors.TableActor;
+import org.scify.moonwalker.app.ui.actors.Updateable;
 
 /**
  * This class describes the conversation component that is drawn
@@ -16,12 +17,14 @@ import org.scify.moonwalker.app.ui.actors.TableActor;
  * and an image path that represents the conversation participant who is saying
  * the line.
  */
-public class SingleChoiceConversationActor extends TableActor<SingleChoiceConversationRenderable>  {
+public class SingleChoiceConversationActor extends TableActor<SingleChoiceConversationRenderable> implements Updateable<SingleChoiceConversationRenderable> {
 
     protected Label lineLabel;
     protected Button button;
     protected Image avatarImage;
     protected Image avatarBG;
+    //avatar stack
+    protected Stack avatarStack;
 
     public SingleChoiceConversationActor(Skin skin, SingleChoiceConversationRenderable renderable) {
         super(skin, renderable);
@@ -40,8 +43,8 @@ public class SingleChoiceConversationActor extends TableActor<SingleChoiceConver
 
         add().height(height).width(0.01f * width);
 
-        //avatar
-        Stack avatarStack = new Stack();
+        // Init avatar
+        avatarStack = new Stack();
         //BG
         avatarBG = (Image) bookKeeper.getUIRepresentationOfRenderable(renderable.getAvatar_bg());
         avatarBG.setWidth(0.12f * width);
@@ -70,5 +73,21 @@ public class SingleChoiceConversationActor extends TableActor<SingleChoiceConver
         add().height(height).width(0.01f * width);
 
         //debugAll();
+    }
+
+
+    @Override
+    public void update(SingleChoiceConversationRenderable renderable) {
+        float width = renderable.getWidth();
+        float height = renderable.getHeight();
+
+        //CHARACTER IMAGE
+        avatarStack.removeActor(avatarImage); // Remove previous
+        // Create and add new
+        avatarImage = (Image) bookKeeper.getUIRepresentationOfRenderable(renderable.getAvatar());
+        avatarImage.setWidth(0.12f * width);
+        avatarImage.setScaling(Scaling.fillX);
+        avatarStack.add(avatarImage);
+
     }
 }

@@ -13,6 +13,32 @@ public class ActionButtonRenderable extends Renderable {
     protected String imgPath;
     protected String skin;
 
+    /**
+     * Indicates whether it has been clicked once
+     */
+    protected boolean clickedOnce = false;
+
+    public boolean isClickedOnce() {
+        return clickedOnce;
+    }
+
+    public void setClickedOnce(boolean clickedOnce) {
+        this.clickedOnce = clickedOnce;
+    }
+
+    public boolean isOneClickAllowed() {
+        return oneClickAllowed;
+    }
+
+    public void setOneClickAllowed(boolean oneClickAllowed) {
+        this.oneClickAllowed = oneClickAllowed;
+    }
+
+    /**
+     * Identifies whether the button should ignore clicks after the first. Default value: false.
+     */
+    protected boolean oneClickAllowed = false;
+
     public ActionButtonRenderable(float xPos, float yPos, float width, float height, String type, String id) {
         super(xPos, yPos, width, height, type, id);
         skin = ThemeController.SKIN_DEFAULT;

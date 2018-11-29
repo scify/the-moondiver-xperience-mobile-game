@@ -174,7 +174,9 @@ public class Renderable extends Positionable implements EffectTarget {
 
     @Override
     public synchronized Set<Effect> getEffects() {
-        return new HashSet<>(effectInfo);
+        synchronized (effectInfo) {
+            return new HashSet<>(effectInfo);
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.scify.moonwalker.app.ui.actors;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -293,8 +294,18 @@ public class ActorFactory extends ComponentFactory {
     private void addButtonListener(Button button, final ActionButtonRenderable actionButtonRenderable) {
         button.addListener(new ChangeListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public synchronized void changed(ChangeEvent event, Actor actor) {
+                // If already clicked once, and only once is allowed
+                if (actionButtonRenderable.isOneClickAllowed() && actionButtonRenderable.isClickedOnce()) {
+                    // DEBUG LINES
+                    // Gdx.app.log("UI", "Ignoring click after the first on single click button...");
+                    //////////////
+                    return; // Do nothing
+                }
+                // Else send the event
                 userInputHandler.addUserAction(actionButtonRenderable.getUserAction());
+                // and update the renderable appropriately
+                actionButtonRenderable.setClickedOnce(true);
             }
         });
     }

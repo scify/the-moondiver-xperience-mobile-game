@@ -51,6 +51,8 @@ public class QuestionConversationRules extends ConversationRules {
     protected boolean firstTime;
     //minimum correct answers required
     protected int minimumCorrectAnswers;
+    // answer received
+    protected boolean answerReceived = false;
 
     public QuestionConversationRules(String conversationJSONFilePath, String bgImgPath, String quizSuccessFulConversationFilePath, String quizFailedConversationFilePath, String correctAudioPath, String wrongAudioPath, boolean firstTime, int minimumCorrectAnswers) {
         super(conversationJSONFilePath, bgImgPath);
@@ -68,7 +70,7 @@ public class QuestionConversationRules extends ConversationRules {
     }
 
     @Override
-    public GameState getNextState(final GameState gameState, final UserAction userAction) {
+    public synchronized GameState getNextState(final GameState gameState, final UserAction userAction) {
         if (gameState.getAdditionalDataEntry(CORRECT_ANSWERS) == null)
             gameState.setAdditionalDataEntry(CORRECT_ANSWERS, "0");
 
@@ -128,6 +130,13 @@ public class QuestionConversationRules extends ConversationRules {
 
 
         if (gotAnswer(userAction)) {
+            // If already something was received
+            if (answerReceived)
+                // Ignore all next answers (provided, e.g. by quick clicks)
+                return gameState;
+
+            answerReceived = true; // Signal that we have an answer to ignore other answers
+
             // we need to check whether this answer was for a question-type
             // conversation line (which means that we got an answer
             // for a Question and we need to evaluate it)
@@ -157,11 +166,11 @@ public class QuestionConversationRules extends ConversationRules {
      * @param gameState The current game state
      * @param userAction The current user action
      */
-    protected GameState superGetNextState(GameState gameState, UserAction userAction) {
+    protected synchronized GameState superGetNextState(GameState gameState, UserAction userAction) {
         return super.getNextState(gameState, userAction);
     }
 
-    protected void evaluateAnswerAndSetGameInfo(Answer answer, GameState gameState, Renderable source) {
+    protected synchronized void evaluateAnswerAndSetGameInfo(Answer answer, GameState gameState, Renderable source) {
         if (answer.isCorrect()) {
             increaseCorrectAnswers(gameState);
             gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, correctAudioPath));
@@ -174,7 +183,7 @@ public class QuestionConversationRules extends ConversationRules {
     }
 
     @Override
-    protected List<ConversationLine> extractNextLines(GameState currentGameState, UserAction userAction) {
+    protected synchronized List<ConversationLine> extractNextLines(GameState currentGameState, UserAction userAction) {
         lineProcessedIsQuestion = false;
         List<ConversationLine> possibleNextLines = new LinkedList<>(super.extractNextLines(currentGameState, userAction));
         ListIterator<ConversationLine> iLines = possibleNextLines.listIterator();
@@ -189,7 +198,7 @@ public class QuestionConversationRules extends ConversationRules {
     }
 
     @Override
-    protected boolean satisfiesPrerequisite(String prerequisite, GameState currentGameState) {
+    protected synchronized boolean satisfiesPrerequisite(String prerequisite, GameState currentGameState) {
         boolean satisfiesPrerequisite = true;
         if (prerequisite.equals(PLAYER_HAS_ENOUGH_CORRECT)) {
             satisfiesPrerequisite = Integer.valueOf((String) currentGameState.getAdditionalDataEntry(CORRECT_ANSWERS)) >= minimumCorrectAnswers;
@@ -227,17 +236,20 @@ public class QuestionConversationRules extends ConversationRules {
     }
 
     @Override
-    protected void onExitConversationOrder(GameState gsCurrent, ConversationLine lineExited) {
+    protected synchronized void onExitConversationOrder(GameState gsCurrent, ConversationLine lineExited) {
         Set<String> sAllEvents = lineExited.getOnExitCurrentOrderTrigger();
 
         if (sAllEvents.contains(SET_NOTIFICATION_SHOWN_EVENT)) {
             gameInfo.setNoDaysLeftNotificationShown(true);
         }
 
+        // Update answer received to enable next interactions
+        answerReceived = false;
+
         super.onExitConversationOrder(gsCurrent, lineExited);
     }
 
-    protected void increaseCorrectAnswers(GameState currentGameState) {
+    protected synchronized void increaseCorrectAnswers(GameState currentGameState) {
         // Initialize value as needed
         if (!currentGameState.additionalDataEntryExists(CORRECT_ANSWERS)) {
             currentGameState.setAdditionalDataEntry(CORRECT_ANSWERS, String.valueOf(1));
@@ -248,7 +260,7 @@ public class QuestionConversationRules extends ConversationRules {
     }
 
     @Override
-    protected void addSingleChoiceConversationLine(ConversationLine conversationLine, GameState gameState, boolean newSpeaker) {
+    protected synchronized void addSingleChoiceConversationLine(ConversationLine conversationLine, GameState gameState, boolean newSpeaker) {
         // If we do not have a random question/answer line
         if (!(conversationLineHasRandomQuestionEvent(conversationLine) || conversationLineHasRandomResponseEvent(conversationLine)))
             // handle things as usual
@@ -260,14 +272,14 @@ public class QuestionConversationRules extends ConversationRules {
     }
 
 
-    private boolean conversationLineHasRandomQuestionEvent(ConversationLine conversationLine) {
+    private synchronized boolean conversationLineHasRandomQuestionEvent(ConversationLine conversationLine) {
         for (String eventName : conversationLine.getOnEnterCurrentOrderTrigger())
             if (eventName.contains(conversationRules.EVENT_LOAD_QUESTION))
                 return true;
         return false;
     }
 
-    private boolean conversationLineHasRandomResponseEvent(ConversationLine conversationLine) {
+    private synchronized boolean conversationLineHasRandomResponseEvent(ConversationLine conversationLine) {
         for (String eventName : conversationLine.getOnEnterCurrentOrderTrigger())
             if (eventName.contains(conversationRules.EVENT_RANDOM_RESPONSE))
                 return true;
@@ -281,7 +293,7 @@ public class QuestionConversationRules extends ConversationRules {
      * @param lineEntered The line to be replaced.
      * @param gsCurrent   The current game state.
      */
-    protected void replaceSingleLineWithDynamicContent(ConversationLine lineEntered, GameState gsCurrent) {
+    protected synchronized void replaceSingleLineWithDynamicContent(ConversationLine lineEntered, GameState gsCurrent) {
         Set<String> eventTrigger = lineEntered.getOnEnterCurrentOrderTrigger();
 
         for (String eventName : eventTrigger) {
@@ -296,7 +308,7 @@ public class QuestionConversationRules extends ConversationRules {
 
     protected Question question = null;
 
-    protected void loadRandomQuestion(String eventName, ConversationLine lineEntered, GameState gsCurrent) {
+    protected synchronized void loadRandomQuestion(String eventName, ConversationLine lineEntered, GameState gsCurrent) {
         if (minimumCorrectAnswers > 1 || question == null) {
             if (eventName.equals(conversationRules.EVENT_LOAD_QUESTION)) {
                 // load a random question regardless of it's category
@@ -311,7 +323,7 @@ public class QuestionConversationRules extends ConversationRules {
         addQuestionAsRenderable(question, gsCurrent, lineEntered);
     }
 
-    protected void loadResponseForQuestion(ConversationLine lineEntered, GameState gsCurrent) {
+    protected synchronized void loadResponseForQuestion(ConversationLine lineEntered, GameState gsCurrent) {
         ConversationLine responseLine = new ConversationLine();
         try {
             responseLine.setText(randomResponseFactory.getRandomResponseFor(this.lastQuizAnswerCorrect ? EVENT_RANDOM_CORRECT : EVENT_RANDOM_WRONG));
@@ -324,7 +336,7 @@ public class QuestionConversationRules extends ConversationRules {
         addSingleChoiceConversationLine(responseLine, gsCurrent, false);
     }
 
-    protected void addQuestionAsRenderable(Question question, GameState gsCurrent, ConversationLine lineEntered) {
+    protected synchronized void addQuestionAsRenderable(Question question, GameState gsCurrent, ConversationLine lineEntered) {
         List<ConversationLine> lines = new ArrayList<>();
         lineEntered.setPayload(question);
         for (Answer answer : question.getAnswers()) {

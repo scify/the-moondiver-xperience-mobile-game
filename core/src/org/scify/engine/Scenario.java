@@ -1,7 +1,6 @@
 package org.scify.engine;
 
 import com.badlogic.gdx.Gdx;
-import org.scify.moonwalker.app.ui.ThemeController;
 
 import java.util.*;
 
@@ -83,7 +82,14 @@ public abstract class Scenario {
     public void start(RenderingEngine renderingEngine, UserInputHandler userInputHandler) {
         this.renderingEngine = renderingEngine;
         this.userInputHandler = userInputHandler;
-        playCurrentEpisode();
+
+        // While we still have episodes
+        while (currentEpisode != null) {
+            // Play them
+            playCurrentEpisode();
+        }
+
+        Gdx.app.log("Scenario", "Scenario ended.");
     }
 
     EpisodeEndState lastEpisodeEndState;
@@ -123,7 +129,6 @@ public abstract class Scenario {
         }
 
         setCurrentEpisode(getNextEpisode(lastEpisodeEndState));
-        playCurrentEpisode();
     }
 
     /**

@@ -42,15 +42,15 @@ public class MultipleChoiceConversationRenderable extends ConversationRenderable
         }
     }
 
-    public TextLabelRenderable getQuestion() {
+    public synchronized TextLabelRenderable getQuestion() {
         return question;
     }
 
-    private void initSubRenderables() {
+    private synchronized void initSubRenderables() {
         allRenderables = new HashSet<>();
     }
 
-    public void setConversationLines(List<ConversationLine> conversationLines) {
+    public synchronized void setConversationLines(List<ConversationLine> conversationLines) {
         this.conversationLines = conversationLines;
         final ConversationLine conversationLine0 = conversationLines.get(0);
         conversationButtonTopLeft = createTextButton(TOP_LEFT_BUTTON_ID + conversationLine0.getId(),
@@ -73,6 +73,7 @@ public class MultipleChoiceConversationRenderable extends ConversationRenderable
                             }
                         }),
                 false, true, 102, ThemeController.SKIN_DEFAULT);
+        conversationButtonTopLeft.setOneClickAllowed(true);
         allRenderables.add(conversationButtonTopLeft);
 
         final ConversationLine conversationLine1 = conversationLines.get(1);
@@ -95,6 +96,7 @@ public class MultipleChoiceConversationRenderable extends ConversationRenderable
                                 return null;
                             }
                         }), false, true, 102, ThemeController.SKIN_DEFAULT);
+        conversationButtonBottomLeft.setOneClickAllowed(true);
         allRenderables.add(conversationButtonBottomLeft);
 
         final ConversationLine conversationLine2 = conversationLines.get(2);
@@ -116,6 +118,7 @@ public class MultipleChoiceConversationRenderable extends ConversationRenderable
                         return null;
                     }
                 }), false, true, 102, ThemeController.SKIN_DEFAULT);
+        conversationButtonTopRight.setOneClickAllowed(true);
         allRenderables.add(conversationButtonTopRight);
 
         final ConversationLine conversationLine3 = conversationLines.get(3);
@@ -138,6 +141,7 @@ public class MultipleChoiceConversationRenderable extends ConversationRenderable
                                 return null;
                             }
                         }), false, true, 102, ThemeController.SKIN_DEFAULT);
+        conversationButtonBottomRight.setOneClickAllowed(true);
         allRenderables.add(conversationButtonBottomRight);
     }
 

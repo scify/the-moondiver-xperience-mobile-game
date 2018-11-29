@@ -4,8 +4,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Scaling;
 import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.renderables.Renderable;
+import org.scify.engine.renderables.SingleChoiceConversationRenderable;
 import org.scify.engine.renderables.TwoChoiceConversationRenderable;
 import org.scify.moonwalker.app.ui.actors.TableActor;
+import org.scify.moonwalker.app.ui.actors.Updateable;
 
 /**
  * This class describes the conversation component that is drawn
@@ -16,12 +18,14 @@ import org.scify.moonwalker.app.ui.actors.TableActor;
  * and an image path that represents the conversation participant who is saying
  * the line.
  */
-public class TwoChoiceConversationActor extends TableActor<TwoChoiceConversationRenderable> {
+public class TwoChoiceConversationActor extends TableActor<TwoChoiceConversationRenderable> implements Updateable<TwoChoiceConversationRenderable> {
 
     protected Button buttonTop;
     protected Button buttonBottom;
     protected Image avatarImage;
     protected Image avatarBG;
+    protected Stack avatarStack;
+
 
     public TwoChoiceConversationActor(Skin skin, TwoChoiceConversationRenderable renderable) {
         super(skin, renderable);
@@ -41,7 +45,7 @@ public class TwoChoiceConversationActor extends TableActor<TwoChoiceConversation
         add().height(height).width(0.01f * width);
 
         //avatar
-        Stack avatarStack = new Stack();
+        avatarStack = new Stack();
         //BG
         avatarBG = (Image) bookKeeper.getUIRepresentationOfRenderable(renderable.getAvatar_bg());
         avatarBG.setWidth(0.12f * width);
@@ -74,5 +78,20 @@ public class TwoChoiceConversationActor extends TableActor<TwoChoiceConversation
         add(buttonsTable).width(buttonWidth);
 
         add().height(height).width(0.01f * width);
+    }
+
+    @Override
+    public void update(TwoChoiceConversationRenderable renderable) {
+        float width = renderable.getWidth();
+        float height = renderable.getHeight();
+
+        //CHARACTER IMAGE
+        avatarStack.removeActor(avatarImage); // Remove previous
+        // Create and add new
+        avatarImage = (Image) bookKeeper.getUIRepresentationOfRenderable(renderable.getAvatar());
+        avatarImage.setWidth(0.12f * width);
+        avatarImage.setScaling(Scaling.fillX);
+        avatarStack.add(avatarImage);
+
     }
 }

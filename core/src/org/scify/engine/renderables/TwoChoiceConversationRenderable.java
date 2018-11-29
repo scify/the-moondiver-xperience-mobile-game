@@ -5,6 +5,7 @@ import org.scify.engine.UserActionCode;
 import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.renderables.effects.EffectSequence;
 import org.scify.engine.renderables.effects.FadeEffect;
+import org.scify.engine.renderables.effects.FunctionEffect;
 import org.scify.engine.renderables.effects.VisibilityEffect;
 
 import java.util.HashSet;
@@ -47,7 +48,7 @@ public class TwoChoiceConversationRenderable extends ConversationRenderable {
         initSubRenderables();
     }
 
-    private void initSubRenderables() {
+    private synchronized void initSubRenderables() {
         allRenderables = new HashSet<>();
         allRenderables.add(avatar_bg);
     }
@@ -57,7 +58,7 @@ public class TwoChoiceConversationRenderable extends ConversationRenderable {
     }
 
     @Override
-    public void setConversationLines(List<ConversationLine> conversationLines) {
+    public synchronized void setConversationLines(List<ConversationLine> conversationLines) {
         this.conversationLines = conversationLines;
         final ConversationLine conversationLine1 = conversationLines.get(0);
         conversationButtonTop = createTextButton(TOP_BUTTON_ID+ conversationLine1.getId(),parseText(conversationLine1.getText()),
@@ -78,6 +79,7 @@ public class TwoChoiceConversationRenderable extends ConversationRenderable {
                         return null;
                     }
                 }),false, false,102);
+        conversationButtonTop.setOneClickAllowed(true);
         allRenderables.add(conversationButtonTop);
         final ConversationLine conversationLine2 = conversationLines.get(1);
         conversationButtonBottom = createTextButton(BOTTOM_BUTTON_ID+ conversationLine2.getId(),parseText(conversationLine2.getText()),
@@ -98,36 +100,50 @@ public class TwoChoiceConversationRenderable extends ConversationRenderable {
                         return null;
                     }
                 }),false, false,102);
+        conversationButtonBottom.setOneClickAllowed(true);
         allRenderables.add(conversationButtonBottom);
     }
 
-    public void showButtons() {
+    public synchronized void showButtons() {
         EffectSequence es = new EffectSequence();
-        es.addEffect(new FadeEffect(1,0,0));
+        // Make sure they cannot be clicked before appearing
+        conversationButtonTop.setClickedOnce(true);
+        conversationButtonBottom.setClickedOnce(true);
+
+                es.addEffect(new FadeEffect(1,0,0));
         es.addEffect(new VisibilityEffect(true));
         es.addEffect(new FadeEffect(0,1,300));
+        es.addEffect(new FunctionEffect(new Runnable() {
+            @Override
+            public void run() {
+                // Allow clicking
+                conversationButtonTop.setClickedOnce(false);
+                conversationButtonBottom.setClickedOnce(false);
+
+            }
+        }));
         conversationButtonTop.addEffect(es);
         conversationButtonBottom.addEffect(es);
     }
 
-    public void setAvatarImg (String imgPath) {
+    public synchronized void setAvatarImg (String imgPath) {
         avatar = createImageRenderable(AVATAR_IMAGE_ID + imgPath, imgPath,false, true, 103);
         allRenderables.add(avatar);
     }
 
-    public ImageRenderable getAvatar_bg() {
+    public synchronized ImageRenderable getAvatar_bg() {
         return avatar_bg;
     }
 
-    public ImageRenderable getAvatar() {
+    public synchronized ImageRenderable getAvatar() {
         return avatar;
     }
 
-    public ActionButtonRenderable getConversationButtonTop() {
+    public synchronized ActionButtonRenderable getConversationButtonTop() {
         return conversationButtonTop;
     }
 
-    public ActionButtonRenderable getConversationButtonBottom() {
+    public synchronized ActionButtonRenderable getConversationButtonBottom() {
         return conversationButtonBottom;
     }
 

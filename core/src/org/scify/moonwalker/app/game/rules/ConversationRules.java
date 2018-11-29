@@ -120,19 +120,20 @@ public class ConversationRules extends MoonWalkerBaseRules {
     }
 
     @Override
-    public GameState getInitialState() {
+    public synchronized GameState getInitialState() {
         throw new RuntimeException("Conversation Rules cannot initialize a Game State.");
     }
 
     @Override
-    public GameState getNextState(GameState gameState, UserAction userAction) {
+    public synchronized GameState getNextState(GameState gameState, UserAction userAction) {
         // If got an answer (NEXT, TEXT, BUTTON, ...)
         boolean isConversationAnswer = gotAnswer(userAction);
         if (isConversationAnswer) {
+            // Clear previous choices
+            removeActiveConversationComponents(gameState);
+            ConversationLine selected = getSelectedConversationLine(gameState, userAction);
             // Clear paused conversation flag
             resumeConversation(gameState);
-            ConversationLine selected = getSelectedConversationLine(gameState, userAction);
-            removeActiveConversationComponents(gameState);
             if (selected != null) {
                 // Update what line was selected
                 onExitConversationOrder(gameState, selected);
@@ -155,7 +156,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
         return gameState;
     }
 
-    protected void updateCurrentConversationOrder(GameState gameState, UserAction userAction) {
+    protected synchronized void updateCurrentConversationOrder(GameState gameState, UserAction userAction) {
         if (userAction == null)
             normallyUpdateConversationOrder();
         else {
@@ -174,12 +175,12 @@ public class ConversationRules extends MoonWalkerBaseRules {
         }
     }
 
-    protected void normallyUpdateConversationOrder() {
+    protected synchronized void normallyUpdateConversationOrder() {
         currentConversationOrderId = currentConversationOrderId == 0 ? conversationLines.get(0).getOrder() : currentConversationOrderId + 1;
     }
 
     @Override
-    protected void onExitConversationOrder(GameState gsCurrent, ConversationLine lineExited) {
+    protected synchronized void onExitConversationOrder(GameState gsCurrent, ConversationLine lineExited) {
         Set<String> sAllEvents = lineExited.getOnExitCurrentOrderTrigger();
 
         // Examine what the trigger is and handle it
@@ -198,7 +199,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
      *
      * @param gameState The current game state.
      */
-    protected void handleOnEnterConversationOrder(GameState gameState) {
+    protected synchronized void handleOnEnterConversationOrder(GameState gameState) {
         if (nextLines == null)
             return;
 
@@ -219,7 +220,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
      * @param currLine The line the text of which we update.
      * @throws Exception Thrown if we cannot generate an appropriate response text.
      */
-    protected void handleRandomTextEventForCurrentLine(ConversationLine currLine) throws Exception {
+    protected synchronized void handleRandomTextEventForCurrentLine(ConversationLine currLine) throws Exception {
         Set<String> eventNames = currLine.getOnEnterCurrentOrderTrigger();
         for (String eventName : eventNames) {
             if (eventName.equals(EVENT_RANDOM_CORRECT) || eventName.equals(EVENT_RANDOM_WRONG) || eventName.equals(EVENT_RANDOM_BORING))
@@ -228,12 +229,12 @@ public class ConversationRules extends MoonWalkerBaseRules {
     }
 
 
-    protected boolean gotAnswer(UserAction userAction) {
+    protected synchronized boolean gotAnswer(UserAction userAction) {
         return (userAction != null && (userAction.getActionCode().equals(UserActionCode.SINGLE_CHOICE_CONVERSATION_LINE) ||
                 userAction.getActionCode().equals(UserActionCode.MULTIPLE_SELECTION_ANSWER)));
     }
 
-    protected void resumeConversation(GameState gameState) {
+    protected synchronized void resumeConversation(GameState gameState) {
         gameState.removeGameEventsWithType(CONVERSATION_PAUSED);
         setPaused(false);
     }
@@ -243,7 +244,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
      *
      * @param gameState the current game state
      */
-    protected void removeActiveConversationComponents(GameState gameState) {
+    protected synchronized void removeActiveConversationComponents(GameState gameState) {
         for (Renderable oldLine : oldConversationLines) {
             Renderable line = gameState.getRenderable(oldLine);
             // setting a negative z-index value will cause the rendering engine
@@ -270,7 +271,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
      * @param gameState  The current game stage.
      * @param userAction Any user action we may need to handle.
      */
-    protected void handleNextConversationState(GameState gameState, UserAction userAction) {
+    protected synchronized void handleNextConversationState(GameState gameState, UserAction userAction) {
         if (nextLines == null)
             return;
 
@@ -308,7 +309,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
             pause(gameState);
     }
 
-    protected void addSingleChoiceConversationLine(final ConversationLine conversationLine, final GameState gameState, boolean newSpeaker) {
+    protected synchronized void addSingleChoiceConversationLine(final ConversationLine conversationLine, final GameState gameState, boolean newSpeaker) {
         final SingleChoiceConversationRenderable renderable = new SingleChoiceConversationRenderable(conversationLine.getId(), bgImgPath, keepFirstDuringParsing, replaceLexicon);
         if (lastConversationRenderable != null) {
             lastConversationRenderable.addEffect(getOutroEffect());
@@ -336,7 +337,7 @@ public class ConversationRules extends MoonWalkerBaseRules {
 
 
     ConversationRenderable conversationRenderable;
-    protected void addMultipleConversationLines(List<ConversationLine> nextLines, GameState gameState,
+    protected synchronized void addMultipleConversationLines(List<ConversationLine> nextLines, GameState gameState,
                                                 boolean newSpeaker, ConversationRenderable renderable, Effect effect) {
         ConversationLine firstLine = nextLines.get(0);
         if (lastConversationRenderable != null) {
