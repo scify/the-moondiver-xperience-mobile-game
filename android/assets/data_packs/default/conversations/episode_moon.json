@@ -10,5 +10,5 @@
   {"id": "9", "order":"9", "speakerId":"player", "text":"Ναι, μπορούμε να στείλουμε απίστευτες selfies.", "prerequisites":"simple_success"},
   {"id": "10", "order":"10", "speakerId":"oratios", "text":"Ελπίζω να βγάζει καλές φωτό η μπακατέλα σου.", "prerequisites":"simple_success"},
   {"id": "11", "order":"11", "speakerId":"player", "text":"Μπακατέλα; Χα! Εδώ μιλάμε για\nπροηγμένη τεχνολογία, όχι αστεία!", "prerequisites":"simple_success"},
-  {"id": "12", "order":"12", "speakerId":"player", "text":"Μόνο αυτό μπορεί να βγάλει\nφωτό σε αυτές τις συνθήκες… :-)", "prerequisites":"simple_success", "onExitCurrentOrderTrigger":"end"}
+  {"id": "12", "order":"12", "speakerId":"player", "text":"Μόνο αυτό μπορεί να βγάλει\nφωτό σε αυτές τις συνθήκες... :-)", "prerequisites":"simple_success", "onExitCurrentOrderTrigger":"end"}
 ]
