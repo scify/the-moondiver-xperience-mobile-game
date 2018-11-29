@@ -13,6 +13,7 @@ import org.scify.moonwalker.app.screens.GameLauncher;
 import io.sentry.Sentry;
 
 import java.io.*;
+import java.net.URLEncoder;
 import java.util.Properties;
 
 /**
@@ -47,8 +48,8 @@ public class MoonWalker extends Game {
                     .internal("config.properties");
             Properties properties = new Properties();
             properties.load(new BufferedInputStream(propertiesFileHandle.read()));
-            Sentry.init(properties.getProperty("Sentry.DSN"));
-            Sentry.getContext().addExtra("release", properties.getProperty("version"));
+            Sentry.init(properties.getProperty("Sentry.DSN")+"?release="+ URLEncoder.encode(properties.getProperty("release"), "UTF-8"));
+            Sentry.getContext().addExtra("release", properties.getProperty("release"));
             Sentry.getContext().addExtra("platform", Gdx.app.getType());
             Sentry.getContext().addExtra("device_height", Gdx.app.getGraphics().getHeight());
             Sentry.getContext().addExtra("device_width", Gdx.app.getGraphics().getWidth());
