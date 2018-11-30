@@ -94,9 +94,13 @@ public class MoonwalkerUIPainter {
 
 
     public void drawActorFromRenderable(Renderable renderable, Actor aToDraw) {
-        // Update position, when appropriate
-        if (renderable.isPositionDrawable())
+        // Update position and size, when appropriate
+        if (renderable.isPositionDrawable()) {
+            aToDraw.setWidth(renderable.getWidth());
+            aToDraw.setHeight(renderable.getHeight());
             aToDraw.setPosition(renderable.getxPos(), renderable.getyPos());
+        }
+
         // Apply effects
         applyActorEffects(aToDraw, renderable); // Deal with effects
 

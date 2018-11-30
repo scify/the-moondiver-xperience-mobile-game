@@ -162,6 +162,8 @@ public class ActorFactory extends ComponentFactory {
             renderable.setHeight(img.getHeight());
         }
         img.setSize(renderable.getWidth(), renderable.getHeight());
+        img.setX(renderable.getxPos());
+        img.setY(renderable.getyPos());
         img.setZIndex(renderable.getZIndex());
         return img;
     }

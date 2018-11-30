@@ -53,7 +53,7 @@ public class SingleChoiceConversationRenderable extends ConversationRenderable {
 
     public void setAvatarImg(String imgPath) {
         avatar = createImageRenderable(AVATAR_IMAGE_ID + imgPath, imgPath,false, true, 103);
-        needsUpdate();
+        markAsNeedsUpdate();
         allRenderables.add(avatar);
     }
 

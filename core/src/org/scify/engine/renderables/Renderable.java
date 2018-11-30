@@ -160,7 +160,8 @@ public class Renderable extends Positionable implements EffectTarget {
 
     @Override
     public String toString() {
-        return "Type: " + type + " id: " + id + " x: " + xPos + " y: " + yPos + " z: " + zIndex;
+        return "Type: " + type + " id: " + id + " x: " + xPos + " y: " + yPos + "(width,height): (" + width + "," + height + ")"
+        + " z: " + zIndex;
     }
 
     public long getRenderableLastUpdated() {
