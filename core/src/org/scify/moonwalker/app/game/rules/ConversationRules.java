@@ -247,10 +247,13 @@ public class ConversationRules extends MoonWalkerBaseRules {
     protected synchronized void removeActiveConversationComponents(GameState gameState) {
         for (Renderable oldLine : oldConversationLines) {
             Renderable line = gameState.getRenderable(oldLine);
+            // OBSOLETE
             // setting a negative z-index value will cause the rendering engine
             // to hide the corresponding UI instance of the renderable.
-            line.setZIndex(-1);
+            // line.setZIndex(-1);
             line.setVisible(false);
+            // TODO: Enable when removal is supported in rendering engine
+            // gameState.removeRenderable(line);
         }
     }
 

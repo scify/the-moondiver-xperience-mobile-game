@@ -70,7 +70,10 @@ public class RoomRenderable extends ChattableRenderable {
         allRenderables.add(phoneOnRenderable);
         allRenderables.add(phoneOffRenderable);
         UserAction endEpisodeAction = new UserAction(UserActionCode.FINISH_EPISODE);
-        skipDialogButton = createImageButton(SKIP_BUTTON_ID, SKIP_BUTTON_IMG_PATH, endEpisodeAction, false, false, 2);
+        skipDialogButton = createImageButton(SKIP_BUTTON_ID, SKIP_BUTTON_IMG_PATH, endEpisodeAction, true,
+                false, 3);
+        skipDialogButton.setOneClickAllowed(true);
+
         allRenderables.add(skipDialogButton);
     }
 

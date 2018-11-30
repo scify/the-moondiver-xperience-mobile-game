@@ -3,7 +3,10 @@ package org.scify.moonwalker.app.game.rules.episodes;
 
 import org.scify.engine.*;
 import org.scify.engine.conversation.ConversationLine;
+import org.scify.engine.renderables.ActionButtonRenderable;
+import org.scify.engine.renderables.effects.EffectSequence;
 import org.scify.engine.renderables.effects.FadeEffect;
+import org.scify.engine.renderables.effects.VisibilityEffect;
 import org.scify.moonwalker.app.game.SelectedPlayer;
 import org.scify.moonwalker.app.game.rules.ConversationRules;
 import org.scify.moonwalker.app.ui.renderables.RoomRenderable;
@@ -26,10 +29,11 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
     }
 
     @Override
-    public GameState getNextState(GameState gsCurrent, UserAction userAction) {
+    public synchronized GameState getNextState(GameState gsCurrent, UserAction userAction) {
         if (conversationRules != null && conversationRules.isFinished() && !outroInitiated) {
             outroInitiated = true;
             renderable.turnOffPhone();
+
             if (gameInfo.getSelectedPlayer().equals(SelectedPlayer.boy)) {
                 gsCurrent.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI, renderable.BOY_MUSIC_AUDIO_PATH));
             } else {
@@ -48,9 +52,13 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
     }
 
     @Override
-    protected void handleUserAction(GameState gameState, UserAction userAction) {
+    protected synchronized void handleUserAction(GameState gameState, UserAction userAction) {
         switch (userAction.getActionCode()) {
             case UserActionCode.FINISH_EPISODE:
+                // Disable second click
+                ActionButtonRenderable skipBtn = renderable.getSkipDialogButtonRenderable();
+                skipBtn.setClickedOnce(true); // Disable second click
+
                 gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.CLICK_AUDIO_PATH));
                 appInfo.logEpisodeSkipped("ROOM_EPISODE");
                 conversationRules.getLastConversationRenderable().addEffect(new FadeEffect(1,0,1000));
@@ -87,6 +95,34 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
             }
             gameInfo.setMainEpisodeCounter(2);
             gameInfo.save();
+
+            // Support skip button fade out
+            renderable.addBeforeFadeOut(new Runnable() {
+                @Override
+                public void run() {
+                    // Hide skip button
+                    ActionButtonRenderable skipBtn = renderable.getSkipDialogButtonRenderable();
+                    EffectSequence es = new EffectSequence();
+                    es.addEffect(new FadeEffect(1.0, 0.0, 1000));
+                    es.addEffect(new VisibilityEffect(false));
+                    skipBtn.addEffect(es);
+                }
+            });
+
+            // Support skip button fade in
+            renderable.addAfterFadeIn(new Runnable() {
+                @Override
+                public void run() {
+                    // Hide skip button
+                    ActionButtonRenderable skipBtn = renderable.getSkipDialogButtonRenderable();
+                    EffectSequence es = new EffectSequence();
+                    es.addEffect(new FadeEffect(0.0, 0.0, 0));
+                    es.addEffect(new VisibilityEffect(true));
+                    es.addEffect(new FadeEffect(0.0, 1.0, 1000));
+                    skipBtn.addEffect(es);
+                }
+            });
+
             super.episodeStartedEvents(currentState);
         }
     }
