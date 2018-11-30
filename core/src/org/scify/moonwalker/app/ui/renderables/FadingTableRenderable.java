@@ -101,7 +101,7 @@ public class FadingTableRenderable extends TableRenderable {
         for (final Runnable rCur : beforeFadeOut) {
             fadeOutEffects.addEffect(new FunctionEffect(rCur));
         }
-        // Add actutal fade effects
+        // Add actual fade effects
         fadeOutEffects.addEffect(new FadeEffect(1.0, 0.0, 1000));
         fadeOutEffects.addEffect(new VisibilityEffect(false));
 
