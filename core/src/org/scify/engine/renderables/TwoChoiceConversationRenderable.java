@@ -128,6 +128,7 @@ public class TwoChoiceConversationRenderable extends ConversationRenderable {
 
     public synchronized void setAvatarImg (String imgPath) {
         avatar = createImageRenderable(AVATAR_IMAGE_ID + imgPath, imgPath,false, true, 103);
+        markAsNeedsUpdate();
         allRenderables.add(avatar);
     }
 

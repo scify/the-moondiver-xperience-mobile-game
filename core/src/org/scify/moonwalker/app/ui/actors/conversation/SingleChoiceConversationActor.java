@@ -117,7 +117,7 @@ public class SingleChoiceConversationActor extends TableActor<SingleChoiceConver
             avatarStack.add(avatarImage);
 
             // DEBUG LINES
-            Gdx.app.log("DEBUG_UI", renderable.toString() + " updating...");
+            // Gdx.app.log("DEBUG_UI", renderable.toString() + " updating...");
             //////////////
         }
         stackChildren.end();

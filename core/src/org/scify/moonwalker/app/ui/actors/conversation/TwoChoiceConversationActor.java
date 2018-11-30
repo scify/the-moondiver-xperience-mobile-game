@@ -1,13 +1,18 @@
 package org.scify.moonwalker.app.ui.actors.conversation;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.SnapshotArray;
 import org.scify.engine.conversation.ConversationLine;
 import org.scify.engine.renderables.Renderable;
 import org.scify.engine.renderables.SingleChoiceConversationRenderable;
 import org.scify.engine.renderables.TwoChoiceConversationRenderable;
 import org.scify.moonwalker.app.ui.actors.TableActor;
 import org.scify.moonwalker.app.ui.actors.Updateable;
+
+import java.util.concurrent.Semaphore;
 
 /**
  * This class describes the conversation component that is drawn
@@ -25,15 +30,24 @@ public class TwoChoiceConversationActor extends TableActor<TwoChoiceConversation
     protected Image avatarImage;
     protected Image avatarBG;
     protected Stack avatarStack;
+    protected Semaphore sInitOngoing;
 
 
     public TwoChoiceConversationActor(Skin skin, TwoChoiceConversationRenderable renderable) {
         super(skin, renderable);
         this.renderable = renderable;
+        sInitOngoing = new Semaphore(1);
         init();
     }
 
     protected void init() {
+        try {
+            sInitOngoing.acquire();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Cannot initialize conversation.");
+        }
+
         float width = renderable.getWidth();
         float height = renderable.getHeight();
         defaults();
@@ -78,20 +92,39 @@ public class TwoChoiceConversationActor extends TableActor<TwoChoiceConversation
         add(buttonsTable).width(buttonWidth);
 
         add().height(height).width(0.01f * width);
+
+        sInitOngoing.release();
     }
 
     @Override
     public void update(TwoChoiceConversationRenderable renderable) {
+        // If init ongoing
+        if (sInitOngoing.availablePermits() < 1) {
+            return; // do nothing
+        }
+
         float width = renderable.getWidth();
         float height = renderable.getHeight();
 
         //CHARACTER IMAGE
-        avatarStack.removeActor(avatarImage); // Remove previous
-        // Create and add new
-        avatarImage = (Image) bookKeeper.getUIRepresentationOfRenderable(renderable.getAvatar());
-        avatarImage.setWidth(0.12f * width);
-        avatarImage.setScaling(Scaling.fillX);
-        avatarStack.add(avatarImage);
+        Image newAvatarImage = (Image) bookKeeper.getUIRepresentationOfRenderable(renderable.getAvatar());
+        SnapshotArray<Actor> stackChildren = avatarStack.getChildren();
+        stackChildren.begin();
+        if ((newAvatarImage != avatarImage) // If image changed
+                || ((stackChildren.size > 0) && (stackChildren.items[stackChildren.size - 1] != newAvatarImage))) { // or not on top of non-empty stack
+            avatarStack.removeActor(avatarImage); // Remove previous, if different
+            // Create and add new
+            avatarImage = newAvatarImage;
 
-    }
+            avatarImage.setWidth(0.12f * width);
+            avatarImage.setScaling(Scaling.fillX);
+            avatarStack.add(avatarImage);
+
+            // DEBUG LINES
+//            Gdx.app.log("DEBUG_UI", renderable.toString() + " updating...");
+            //////////////
+        }
+        stackChildren.end();
+
+        renderable.wasUpdated();    }
 }
