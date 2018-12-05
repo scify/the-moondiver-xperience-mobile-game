@@ -20,7 +20,7 @@ public class IntroActor extends FadingTableActor<IntroRenderable> {
         init();
     }
 
-    protected void init() {
+    protected synchronized void init() {
         float screenHeight = getHeight();
         float screenWidth = getWidth();
 

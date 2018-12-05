@@ -8,6 +8,7 @@ import org.scify.engine.renderables.effects.FunctionEffect;
 import org.scify.engine.renderables.effects.VisibilityEffect;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FadingTableRenderable extends TableRenderable {
@@ -20,10 +21,10 @@ public class FadingTableRenderable extends TableRenderable {
     public static final String MOON_TAKE_OFF_AUDIO_PATH = "audio/episode_cockpit/moon_take_off.mp3";
 
 
-    protected List<Runnable> beforeFadeIn = new ArrayList<>();
-    protected List<Runnable> afterFadeIn = new ArrayList<>();
-    protected List<Runnable> beforeFadeOut = new ArrayList<>();
-    protected List<Runnable> afterFadeOut = new ArrayList<>();
+    protected List<Runnable> beforeFadeIn = Collections.synchronizedList(new ArrayList<Runnable>());
+    protected List<Runnable> afterFadeIn = Collections.synchronizedList(new ArrayList<Runnable>());
+    protected List<Runnable> beforeFadeOut = Collections.synchronizedList(new ArrayList<Runnable>());
+    protected List<Runnable> afterFadeOut = Collections.synchronizedList(new ArrayList<Runnable>());
 
     public void addBeforeFadeOut(Runnable beforeFadeOut) {
         this.beforeFadeOut.add(beforeFadeOut);
@@ -69,7 +70,7 @@ public class FadingTableRenderable extends TableRenderable {
         setPositionDrawable(false);
     }
 
-    public void fadeIn() {
+    public synchronized void fadeIn() {
         EffectSequence fadeInEffects = new EffectSequence();
         // Add before effects
         for (final Runnable rCur : beforeFadeIn) {
@@ -87,15 +88,15 @@ public class FadingTableRenderable extends TableRenderable {
     }
 
 
-    public void setBeforeFadeIn(Runnable beforeFadeIn) {
+    public synchronized void setBeforeFadeIn(Runnable beforeFadeIn) {
         this.beforeFadeIn.add(beforeFadeIn);
     }
 
-    public void addAfterFadeIn(Runnable afterFadeIn) {
+    public synchronized void addAfterFadeIn(Runnable afterFadeIn) {
         this.afterFadeIn.add(afterFadeIn);
     }
 
-    public void fadeOut() {
+    public synchronized void fadeOut() {
         EffectSequence fadeOutEffects = new EffectSequence();
         // Add before effects
         for (final Runnable rCur : beforeFadeOut) {
@@ -133,7 +134,7 @@ public class FadingTableRenderable extends TableRenderable {
         return tableBGRenderable;
     }
 
-    public void reveal(Renderable renderable) {
+    public synchronized void reveal(Renderable renderable) {
         renderable.addEffect(getShowEffect());
     }
 
