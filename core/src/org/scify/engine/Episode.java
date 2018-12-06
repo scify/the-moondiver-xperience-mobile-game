@@ -82,15 +82,23 @@ public abstract class Episode<T> implements Callable<T>, Cloneable {
 
     public abstract void init();
 
-    protected void disposeEpisodeResources() {
+    protected synchronized Semaphore disposeEpisodeResources() throws InterruptedException {
+        // Keep track of resource disposal
+        final Semaphore sFinished = new Semaphore(1);
+        sFinished.acquire();
+
         rules.disposeResources();
-        // todo move elsewhere
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {
                 gameEngine.disposeResources();
+                // Release resource semaphore when complete
+                sFinished.release();
             }
         });
         rules = null;
+
+        // Return the semaphore to allow synch
+        return sFinished;
     }
 }
