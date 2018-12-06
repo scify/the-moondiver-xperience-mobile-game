@@ -20,6 +20,9 @@ public class FadingTableRenderable extends TableRenderable {
     public static final String NIGHT_AUDIO_PATH = "audio/episode_cockpit/owl.mp3";
     public static final String MOON_TAKE_OFF_AUDIO_PATH = "audio/episode_cockpit/moon_take_off.mp3";
 
+//    public static final int TABLE_BG_DEFAULT_Z_INDEX = 1;
+    public static final int RENDERABLE_DEFAULT_Z_INDEX = 2;
+
 
     protected List<Runnable> beforeFadeIn = Collections.synchronizedList(new ArrayList<Runnable>());
     protected List<Runnable> afterFadeIn = Collections.synchronizedList(new ArrayList<Runnable>());
@@ -36,8 +39,8 @@ public class FadingTableRenderable extends TableRenderable {
 
     public FadingTableRenderable(String type, String id) {
         super(type, id);
-        tableBGRenderable.setZIndex(1);
-        this.setZIndex(1);
+//        tableBGRenderable.setZIndex(TABLE_BG_DEFAULT_Z_INDEX);
+        this.setZIndex(RENDERABLE_DEFAULT_Z_INDEX);
         setPositionDrawable(false);
     }
 
@@ -54,8 +57,8 @@ public class FadingTableRenderable extends TableRenderable {
      */
     public FadingTableRenderable(float xPos, float yPos, float width, float height, String type, String id, String bgImagePath) {
         super(xPos, yPos, width, height, type, id, bgImagePath);
-        tableBGRenderable.setZIndex(1);
-        this.setZIndex(1);
+//        tableBGRenderable.setZIndex(TABLE_BG_DEFAULT_Z_INDEX);
+        this.setZIndex(RENDERABLE_DEFAULT_Z_INDEX);
         setVisible(false);
         setPositionDrawable(false);
     }
@@ -64,8 +67,8 @@ public class FadingTableRenderable extends TableRenderable {
         super(xPos, yPos, width, height, type, id);
 
         tableBGRenderable = new ImageRenderable("bg", bgImagePath);
-        tableBGRenderable.setZIndex(1);
-        this.setZIndex(1);
+//        tableBGRenderable.setZIndex(TABLE_BG_DEFAULT_Z_INDEX);
+        this.setZIndex(RENDERABLE_DEFAULT_Z_INDEX);
         setVisible(bStartVisibility);
         setPositionDrawable(false);
     }
@@ -103,8 +106,7 @@ public class FadingTableRenderable extends TableRenderable {
             fadeOutEffects.addEffect(new FunctionEffect(rCur));
         }
         // Add actual fade effects
-        fadeOutEffects.addEffect(new FadeEffect(1.0, 0.0, 1000));
-        fadeOutEffects.addEffect(new VisibilityEffect(false));
+        fadeOutEffects.addEffect(getFadeOutEffect());
 
         // Add after effects
         for (final Runnable rCur : afterFadeOut) {
@@ -112,6 +114,13 @@ public class FadingTableRenderable extends TableRenderable {
         }
         this.addEffect(fadeOutEffects);
 
+    }
+
+    public EffectSequence getFadeOutEffect() {
+        EffectSequence fadeOutSeq = new EffectSequence();
+        fadeOutSeq.addEffect(new FadeEffect(1.0, 0.0, 1000));
+        fadeOutSeq.addEffect(new VisibilityEffect(false));
+        return fadeOutSeq;
     }
 
     protected ActionButtonRenderable createImageButton(String id, String img, UserAction userAction, boolean positionDrawable, boolean visibility, int zIndex) {
@@ -122,7 +131,7 @@ public class FadingTableRenderable extends TableRenderable {
         return ret;
     }
 
-    protected EffectSequence getShowEffect() {
+    public EffectSequence getShowEffect() {
         EffectSequence ret = new EffectSequence();
         ret.addEffect(new FadeEffect(1,0, 0));
         ret.addEffect(new VisibilityEffect(true));

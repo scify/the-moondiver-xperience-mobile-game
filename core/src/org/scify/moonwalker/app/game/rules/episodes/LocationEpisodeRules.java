@@ -40,7 +40,7 @@ public class LocationEpisodeRules extends FadingEpisodeRules<LocationRenderable>
                     renderable.enableChat();
                 }
             });
-            currentState.addRenderable(renderable);
+            //currentState.addRenderable(renderable);
             currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI));
             currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.LOCATION_AUDIO_PATH));
             appInfo.logEpisodeStarted(this.location.getName());

@@ -66,7 +66,7 @@ public class DreamingRoomEpisodeRules extends FadingEpisodeRules<DreamingRoomRen
             });
             currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_STOP_UI));
             currentState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
-            currentState.addRenderable(renderable);
+            //currentState.addRenderable(renderable);
             currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, renderable.WAKEUP_AUDIO_PATH));
             gameInfo.setMainEpisodeCounter(6);
             gameInfo.save();

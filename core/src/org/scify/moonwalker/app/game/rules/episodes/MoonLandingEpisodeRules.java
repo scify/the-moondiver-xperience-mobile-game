@@ -69,7 +69,7 @@ public class MoonLandingEpisodeRules extends FadingEpisodeRules<MoonLandingRende
                     renderable.enableChat();
                 }
             });
-            currentState.addRenderable(renderable);
+            //currentState.addRenderable(renderable);
             currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI));
             currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.AUDIO_BG_PATH));
 

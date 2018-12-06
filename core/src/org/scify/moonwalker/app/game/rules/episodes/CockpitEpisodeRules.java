@@ -88,9 +88,12 @@ public class CockpitEpisodeRules extends FadingEpisodeRules<CockpitRenderable> {
             setOutsideBackground(episodeLocation, nightMode);
             addAudioGameEvents(gameState);
             gameState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
-            gameState.addRenderable(renderable);
+//            gameState.addRenderable(renderable);
+
+            // Save game
             gameInfo.setMainEpisodeCounter(4);
             gameInfo.save();
+
             appInfo.logEpisodeStarted("Cockpit episode. Location: " + episodeLocation.getName());
             super.episodeStartedEvents(gameState);
         }
