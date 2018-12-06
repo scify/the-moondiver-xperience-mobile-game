@@ -77,11 +77,11 @@ public class LGDXRenderableBookKeeper {
     public synchronized static LGDXRenderableBookKeeper initBookKeeper(ThemeController themeController, UserInputHandler userInputHandler) throws AlreadyInitializedBookKeeperException {
         if (instance == null) {
             instance = new LGDXRenderableBookKeeper(themeController, userInputHandler);
-            return instance;
         } else {
+            instance.reset();
             throw new AlreadyInitializedBookKeeperException("Bookkeeper already initialized.");
         }
-
+        return instance;
     }
 
 
