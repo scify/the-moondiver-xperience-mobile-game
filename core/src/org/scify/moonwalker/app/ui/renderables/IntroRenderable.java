@@ -38,6 +38,7 @@ public class IntroRenderable extends Renderable {
     protected ImageRenderable rightImage;
     protected ActionButtonRenderable arrowButton;
     protected Renderable bg;
+    protected boolean inputEnabled = false;
 
     public Renderable getBgImg() {
         return bg;
@@ -139,4 +140,11 @@ public class IntroRenderable extends Renderable {
         ir.setVisible(false);
         return ir;
     }
+
+    public boolean isReadyForInput() {
+        return inputEnabled;
+    }
+
+    public void setInputEnabled(boolean inputEnabled) { this.inputEnabled = inputEnabled; }
+
 }

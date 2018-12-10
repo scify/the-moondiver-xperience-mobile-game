@@ -38,7 +38,13 @@ public class IntroEpisodeRules extends BaseEpisodeRules {
                 public void run() {
                     introStep = 1;
                     reveal(renderable.getLeftImage(), null);
-                    reveal(renderable.getArrowButton(), null);
+                    reveal(renderable.getArrowButton(), new Runnable() {
+                        @Override
+                        public void run() {
+                            renderable.setInputEnabled(true);
+                        }
+                    });
+
                 }
             });
 
@@ -77,15 +83,18 @@ public class IntroEpisodeRules extends BaseEpisodeRules {
 
         switch (userAction.getActionCode()) {
             case UserActionCode.BUTTON_PRESSED:
-                gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, FadingTableRenderable.CLICK_AUDIO_PATH));
-                if (introStep == 1) {
-                    reveal(renderable.getRightImage(), null);
-                    introStep = 2;
-                }else if (introStep == 2){
-                    introStep ++;
-                    endEpisode(gameState, "");
+            case UserActionCode.SCREEN_TOUCHED:
+                if (renderable.isReadyForInput()) {
+                    gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, FadingTableRenderable.CLICK_AUDIO_PATH));
+                    if (introStep == 1) {
+                        reveal(renderable.getRightImage(), null);
+                        introStep = 2;
+                    } else if (introStep == 2) {
+                        introStep++;
+                        endEpisode(gameState, "");
+                    }
+                    break;
                 }
-                break;
         }
         super.handleUserAction(gameState, userAction);
     }
