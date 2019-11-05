@@ -66,7 +66,7 @@ public class ForestEpisodeRules extends FadingEpisodeRules<ForestRenderable> {
                     renderable.enableChat();
                 }
             });
-            currentState.addRenderable(renderable);
+            //currentState.addRenderable(renderable);
             currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI));
             currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.FOREST_AUDIO_PATH));
 

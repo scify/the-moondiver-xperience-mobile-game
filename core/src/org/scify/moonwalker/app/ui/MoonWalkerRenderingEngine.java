@@ -350,7 +350,10 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
 
     protected synchronized void resetEngine() {
         bDisposalOngoing = true;
-        bookKeeper.reset();
+        // If not already cleared
+        if (bookKeeper != null)
+            // then reset
+            bookKeeper.reset();
         bDisposalOngoing = false;
     }
 

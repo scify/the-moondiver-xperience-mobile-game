@@ -146,6 +146,11 @@ public class CockpitRenderable extends FadingTableRenderable {
         allRenderables.add(energyLabel);
         distanceLabel = createTextLabelRenderable(DESTINATION_DISTANCE_ID, "", false, true, 2);
         allRenderables.add(distanceLabel);
+
+        // Indicate all children as parented
+        for (Renderable rCur : allRenderables) {
+            rCur.setParent(this);
+        }
     }
 
     public void setMotorEfficiencyValue(String motorEfficiency) {

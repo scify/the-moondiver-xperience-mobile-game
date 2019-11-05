@@ -110,7 +110,7 @@ public class TwoChoiceConversationRenderable extends ConversationRenderable {
         conversationButtonTop.setClickedOnce(true);
         conversationButtonBottom.setClickedOnce(true);
 
-                es.addEffect(new FadeEffect(1,0,0));
+        es.addEffect(new FadeEffect(1,0,0));
         es.addEffect(new VisibilityEffect(true));
         es.addEffect(new FadeEffect(0,1,300));
         es.addEffect(new FunctionEffect(new Runnable() {

@@ -18,7 +18,6 @@ public class RoomActor extends FadingTableActor<RoomRenderable> {
 
     public RoomActor(Skin skin, RoomRenderable renderable) {
         super(skin, renderable);
-        this.renderable = renderable;
         setWidth(renderable.getWidth());
         setHeight(renderable.getHeight());
         addBackground(renderable.getTableBGRenderable());
@@ -26,6 +25,7 @@ public class RoomActor extends FadingTableActor<RoomRenderable> {
     }
 
     protected synchronized void init() {
+        // Table elements
         phoneOffImage = (ImageWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getPhoneOffRenderable());
         phoneOnImage = (ImageWithEffect) bookKeeper.getUIRepresentationOfRenderable(renderable.getPhoneOnRenderable());
         StackWithEffect phonesStack = new StackWithEffect<>();
@@ -33,10 +33,10 @@ public class RoomActor extends FadingTableActor<RoomRenderable> {
         phonesStack.add(phoneOnImage);
         add(phonesStack).width(convertWidth(phoneOffImage.getWidth())).height(convertHeight(phoneOffImage.getHeight()));
 
+        // Non-table, positioned elements
         skipDialogButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getSkipDialogButtonRenderable());
         ActionButtonRenderable rSkipBtn = renderable.getSkipDialogButtonRenderable();
-//        Table buttonTable = new Table();
-        float ratio = skipDialogButton.getWidth() /skipDialogButton.getHeight();
+        float ratio = 1.0f;
         float height = getHeight() * 0.15f;
         float width = ratio * height;
         rSkipBtn.setHeight(height);
@@ -44,11 +44,6 @@ public class RoomActor extends FadingTableActor<RoomRenderable> {
         rSkipBtn.setyPos(appInfo.convertY(0.80f * 1080));
         rSkipBtn.setxPos(appInfo.convertX( (0.92f - (width / 1920)) * 1920));
         rSkipBtn.markAsNeedsUpdate();
-
-//        buttonTable.add(skipDialogButton).height(height).width(ratio * height);
-//        buttonTable.padTop(0.03f * getHeight()).padLeft(0.05f * getWidth());
-//        add(buttonTable).expand().top();
-//        add().width(0.2f *getWidth()).height(getHeight());
     }
 
 }

@@ -65,11 +65,8 @@ public class TableActor<T extends Renderable> extends TableWithEffect {
 
         // Update size
         background.setSize(width, height);
+        // set background to the table actor
         setBackground(background.getDrawable());
-//        // Add to important children
-//        getChildrenActorsAndRenderables().put(background, imageRenderable);
-//        // Add it to the table, as an actor
-//        addActor(background);
     }
 
     public void addBackground(ImageRenderable imageRenderable) {

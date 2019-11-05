@@ -86,7 +86,7 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
                 }
             });
             currentState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
-            currentState.addRenderable(renderable);
+
             currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_DISPOSE_UI));
             if (gameInfo.getSelectedPlayer().equals(SelectedPlayer.boy)) {
                 currentState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_LOOP_UI, renderable.BOY_MUSIC_AUDIO_PATH));
@@ -110,7 +110,8 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
             });
 
             // Support skip button fade in
-            renderable.addAfterFadeIn(new Runnable() {
+            // commented since skip button appears with dialog trigger
+            /*renderable.addAfterFadeIn(new Runnable() {
                 @Override
                 public void run() {
                     // Hide skip button
@@ -121,7 +122,7 @@ public class RoomEpisodeRules extends FadingEpisodeRules<RoomRenderable> {
                     es.addEffect(new FadeEffect(0.0, 1.0, 1000));
                     skipBtn.addEffect(es);
                 }
-            });
+            });*/
 
             super.episodeStartedEvents(currentState);
         }

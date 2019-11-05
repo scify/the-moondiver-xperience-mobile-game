@@ -182,13 +182,17 @@ public class Renderable extends Positionable implements EffectTarget {
 
     @Override
     public synchronized EffectTarget addEffect(Effect effectOfInterest) {
-        effectInfo.add(effectOfInterest);
+        synchronized (effectInfo) {
+            effectInfo.add(effectOfInterest);
+        }
         return this;
     }
 
     @Override
     public synchronized EffectTarget removeEffect(Effect eToRemove) {
-        effectInfo.remove(eToRemove);
+        synchronized (effectInfo) {
+            effectInfo.remove(eToRemove);
+        }
         return this;
     }
 

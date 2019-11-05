@@ -1,8 +1,10 @@
 package org.scify.engine;
 
 import com.badlogic.gdx.Gdx;
+import io.sentry.Sentry;
 
 import java.util.*;
+import java.util.concurrent.Semaphore;
 
 /**
  * The Scenario objects provide an episode-based view of an interactive story. It manages the order of appearance
@@ -46,7 +48,7 @@ public abstract class Scenario {
     /**
      * The currently playing episode.
      */
-    protected Episode currentEpisode;
+    protected Episode<EpisodeEndState> currentEpisode;
     /**
      * The episode that played before the currently playing one (can be null).
      */
@@ -79,12 +81,13 @@ public abstract class Scenario {
      * @param renderingEngine The engine that renders the current episode.
      * @param userInputHandler The handler that listens for and handles user events.
      */
-    public void start(RenderingEngine renderingEngine, UserInputHandler userInputHandler) {
+    public synchronized void start(RenderingEngine renderingEngine, UserInputHandler userInputHandler) {
         this.renderingEngine = renderingEngine;
         this.userInputHandler = userInputHandler;
 
         // While we still have episodes
         while (currentEpisode != null) {
+            Gdx.app.log("Scenario", "Running episode: " + currentEpisode.toString());
             // Play them
             playCurrentEpisode();
         }
@@ -96,8 +99,7 @@ public abstract class Scenario {
     /**
      * Executes the actual loop of playing episodes, until there is no candidate episode left.
      */
-    protected void playCurrentEpisode() {
-        //printEpisodeList();
+    protected synchronized void playCurrentEpisode() {
         if(currentEpisode == null) {
             System.out.println("Scenario ended");
             return;
@@ -110,24 +112,41 @@ public abstract class Scenario {
         // the episode was terminated, as well as the current game state
         EpisodePlayResult<EpisodeEndState> playResult = currentEpisode.play(renderingEngine, userInputHandler);
         if (!playResult.isSuccess()) {
-            System.err.println("ERROR : " + playResult.message);
+            Gdx.app.log("ERROR", playResult.message);
             throw new RuntimeException("ERROR : " + playResult.message);
         }
         lastEpisodeEndState = (EpisodeEndState) playResult.value;
 
-        // get the next episode from the list of candidate episodes and set it
-        // as the current episode
-        currentEpisode.disposeEpisodeResources();
+        // Await resources disposal
+        try {
+            Gdx.app.log("INFO", "Awaiting disposal of resources at time " + new Date().getTime());
+            Semaphore sResourcesReleased = currentEpisode.disposeEpisodeResources();
+            while (sResourcesReleased.availablePermits() < 1) {
+                Thread.sleep(100);
+            }
+            Gdx.app.log("INFO", "Disposal complete at time " + new Date().getTime());
+
+        } catch (InterruptedException ie) {
+            System.err.println("DEBUG: Interrupted during episode disposal. Terminating app...");
+            currentEpisode = null;
+            Gdx.app.exit();
+            return;
+        }
+
         if (lastEpisodeEndState.endStateCode.equals(EpisodeEndStateCode.APP_QUIT)) {
+            currentEpisode = null;
             Gdx.app.exit();
             return;
         }
 
         if (lastEpisodeEndState.endStateCode.equals(EpisodeEndStateCode.APP_HIDE)) {
+            currentEpisode = null;
             Gdx.app.exit();
             return;
         }
 
+        // get the next episode from the list of candidate episodes and set it
+        // as the current episode
         setCurrentEpisode(getNextEpisode(lastEpisodeEndState));
     }
 
