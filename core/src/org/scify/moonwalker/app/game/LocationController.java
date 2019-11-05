@@ -57,7 +57,7 @@ public class LocationController {
         france.addOtherLocationAndDistance(italy, 1000);
         france.addOtherLocationAndDistance(germany, 800);
         france.addOtherLocationAndDistance(norway, 1300);
-        france.setLocationIndex(7);
+        france.setLocationIndex(1);
 
         spain.addOtherLocationAndDistance(greece, 2200);
         spain.addOtherLocationAndDistance(uk, 1200);
@@ -81,7 +81,7 @@ public class LocationController {
         germany.addOtherLocationAndDistance(spain, 1800);
         germany.addOtherLocationAndDistance(italy, 1100);
         germany.addOtherLocationAndDistance(norway, 800);
-        germany.setLocationIndex(1);
+        germany.setLocationIndex(7);
 
         norway.addOtherLocationAndDistance(greece, 2700);
         norway.addOtherLocationAndDistance(uk, 1100);
@@ -91,7 +91,7 @@ public class LocationController {
         norway.addOtherLocationAndDistance(germany, 800);
         norway.setLocationIndex(5);
 
-        locations.add(germany);
+        locations.add(france);
         locations.add(spain);
         locations.add(uk);
         locations.add(italy);
@@ -100,7 +100,7 @@ public class LocationController {
         locations.add(france);
 
         initialLocation = greece;
-        afterInitialLocation = germany;
+        afterInitialLocation = france;
     }
 
     public List<Location> getLocations() {

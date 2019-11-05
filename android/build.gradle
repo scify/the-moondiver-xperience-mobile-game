@@ -22,7 +22,7 @@ android {
         applicationId "org.scify.moonwalker.game"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 16
+        versionCode 17
         versionName "1.0"
     }
     buildTypes {
