@@ -48,8 +48,9 @@ public class IntroEpisodeRules extends BaseEpisodeRules {
                 }
             });
 
-            // Add all other renderables
+            // Add all other renderable
             currentState.addRenderables(new ArrayList<>(renderable.getAllRenderables()));
+            currentState.addRenderable(renderable);
 
             super.episodeStartedEvents(currentState);
         }
@@ -87,9 +88,14 @@ public class IntroEpisodeRules extends BaseEpisodeRules {
                 if (renderable.isReadyForInput()) {
                     gameState.addGameEvent(new GameEvent(GAME_EVENT_AUDIO_START_UI, FadingTableRenderable.CLICK_AUDIO_PATH));
                     if (introStep == 1) {
-                        reveal(renderable.getRightImage(), null);
                         introStep = 2;
-                    } else if (introStep == 2) {
+                        reveal(renderable.getRightImage(), new Runnable() {
+                            @Override
+                            public void run() {
+                                introStep = 3;
+                            }
+                        });
+                    } else if (introStep == 3) {
                         introStep++;
                         endEpisode(gameState, "");
                     }
@@ -128,7 +134,6 @@ public class IntroEpisodeRules extends BaseEpisodeRules {
         if (rAfter != null) {
             es.addEffect(new FunctionEffect(rAfter));
         }
-
         renderable.addEffect(es);
     }
 

@@ -2,6 +2,9 @@ package org.scify.moonwalker.app.ui.actors.episode;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import org.scify.engine.renderables.ActionButtonRenderable;
+import org.scify.moonwalker.app.helpers.AppInfo;
+import org.scify.moonwalker.app.ui.LGDXRenderableBookKeeper;
 import org.scify.moonwalker.app.ui.actors.ActorWithEffects;
 import org.scify.moonwalker.app.ui.actors.FadingTableActor;
 import org.scify.moonwalker.app.ui.actors.ImageButtonWithEffect;
@@ -14,11 +17,30 @@ public class IntroActor extends ActorWithEffects {
     protected Button nextButton;
     protected Image rightBanner;
     private final float scale = 1.0f;
+    protected LGDXRenderableBookKeeper bookKeeper = LGDXRenderableBookKeeper.getInstance();
+    protected IntroRenderable renderable;
+    protected AppInfo appInfo;
 
     public IntroActor(Skin skin, IntroRenderable renderable)  {
         super();
         setWidth(renderable.getWidth() * scale);
         setHeight(renderable.getHeight() * scale);
+        this.renderable = renderable;
+        this.appInfo = AppInfo.getInstance();
+        //init();
+    }
+
+    protected synchronized void init() {
+        /*nextButton = (Button) bookKeeper.getUIRepresentationOfRenderable(renderable.getArrowButton());
+        ActionButtonRenderable rNext = renderable.getArrowButton();
+        float arrowRatio = 0.945f;
+        float arrowHeight = getHeight() * 0.15f;
+        float arrowWidth = arrowHeight * arrowRatio;
+        rNext.setHeight(arrowHeight);
+        rNext.setWidth(arrowWidth);
+        rNext.setxPos(appInfo.convertX((1920f - arrowWidth) / 2));
+        rNext.setyPos(0.07f * appInfo.getScreenHeight());
+        rNext.markAsNeedsUpdate();*/
     }
 
 //    protected synchronized void init() {

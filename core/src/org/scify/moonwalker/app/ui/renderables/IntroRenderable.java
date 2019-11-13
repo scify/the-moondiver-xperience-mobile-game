@@ -15,8 +15,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-import static org.scify.engine.renderables.Renderable.ACTOR_EPISODE_INTRO;
-
 public class IntroRenderable extends Renderable {
 
     //Images
@@ -36,7 +34,7 @@ public class IntroRenderable extends Renderable {
 
     protected ImageRenderable leftImage;
     protected ImageRenderable rightImage;
-    protected ActionButtonRenderable arrowButton;
+    protected ImageRenderable arrowButton;
     protected Renderable bg;
     protected boolean inputEnabled = false;
 
@@ -102,12 +100,13 @@ public class IntroRenderable extends Renderable {
         allRenderables.add(rightImage);
 
         // Add arrow
-        arrowButton = new ActionButtonRenderable(Renderable.ACTOR_IMAGE_BUTTON, ARROW_ID);
+        //arrowButton = new ActionButtonRenderable(Renderable.ACTOR_IMAGE_BUTTON, ARROW_ID);
+        arrowButton = new ImageRenderable(Renderable.ACTOR_IMAGE_BUTTON, ARROW_ID);
         arrowButton.setImgPath(ARROW_IMG_PATH);
-        arrowButton.setUserAction(new UserAction(UserActionCode.BUTTON_PRESSED));
+        //arrowButton.setUserAction(new UserAction(UserActionCode.BUTTON_PRESSED));
         arrowButton.setPositionDrawable(true);
         arrowButton.setVisible(false);
-        arrowButton.setZIndex(12);
+        arrowButton.setZIndex(3);
 
         float arrowRatio = 0.945f;
         float arrowHeight = appInfo.getScreenHeight() * 0.15f;
@@ -115,7 +114,12 @@ public class IntroRenderable extends Renderable {
         arrowButton.setHeight(arrowHeight);
         arrowButton.setWidth(arrowWidth);
         arrowButton.setxPos(appInfo.convertX((1920f - arrowWidth) / 2));
-        arrowButton.setyPos(appInfo.convertY(19f));
+        arrowButton.setyPos(0.07f * appInfo.getScreenHeight());
+        //arrowButton.markAsNeedsUpdate();
+        //arrowButton.setyPos(appInfo.getScreenHeight() - 10);
+        //arrowButton.setPadding(0f);
+        //arrowButton.setyPos(appInfo.convertY(19f));
+        //arrowButton.setyPos(appInfo.convertY(500f));
 //        arrowButton.setyPos(0.01f * appInfo.getScreenHeight());
 
         allRenderables.add(arrowButton);
@@ -129,7 +133,7 @@ public class IntroRenderable extends Renderable {
         return rightImage;
     }
 
-    public synchronized ActionButtonRenderable getArrowButton() {
+    public synchronized ImageRenderable getArrowButton() {
         return arrowButton;
     }
 

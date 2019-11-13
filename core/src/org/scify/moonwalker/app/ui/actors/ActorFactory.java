@@ -3,6 +3,7 @@ package org.scify.moonwalker.app.ui.actors;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import org.scify.engine.renderables.*;
 import org.scify.moonwalker.app.ui.ComponentFactory;
 import org.scify.engine.renderables.UnsupportedRenderableTypeException;
@@ -20,6 +22,7 @@ import org.scify.moonwalker.app.ui.actors.conversation.SingleChoiceConversationA
 import org.scify.moonwalker.app.ui.actors.conversation.TwoChoiceConversationActor;
 import org.scify.moonwalker.app.ui.actors.episode.*;
 import org.scify.moonwalker.app.ui.renderables.*;
+import org.scify.moonwalker.app.ui.sprites.SpriteWithEffects;
 
 public class ActorFactory extends ComponentFactory {
 
@@ -191,11 +194,11 @@ public class ActorFactory extends ComponentFactory {
     }
 
     protected void setButtonDimensions(ActionButtonRenderable actionButtonRenderable, Button btn) {
-        btn.setPosition(actionButtonRenderable.getxPos(), actionButtonRenderable.getyPos());
         if (actionButtonRenderable.getWidth() != 0)
             btn.setWidth(actionButtonRenderable.getWidth());
         if (actionButtonRenderable.getHeight() != 0)
             btn.setHeight(actionButtonRenderable.getHeight());
+        btn.setPosition(actionButtonRenderable.getxPos(), actionButtonRenderable.getyPos());
         btn.pad(actionButtonRenderable.getPadding());
     }
 
