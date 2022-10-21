@@ -1,6 +1,12 @@
 
 # The Moondiver Xperience - Mobile Game
 
+<hr>
+
+![Logo](https://play-lh.googleusercontent.com/gQgwhHYWvcCg40oQIIIgbdUNWFjfr4LlOC71SvEYujYNfYFAr9G1Mx5aCRpCEAXosi4=w2560-h1440-rw)
+
+<hr>
+
 This project is about a mobile game for Android devices.
 It was created using [LibGDX](https://github.com/libgdx/libgdx).
 
