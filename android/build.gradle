@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 android {
-    buildToolsVersion "29.0.2"
-    compileSdkVersion 29
+    compileSdkVersion 32
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -20,8 +19,8 @@ android {
     }
     defaultConfig {
         applicationId "org.scify.moonwalker.game"
-        minSdkVersion 15
-        targetSdkVersion 29
+        minSdkVersion 19
+        targetSdkVersion 32
         versionCode 25
         versionName "1.1.25"
     }
@@ -84,33 +83,12 @@ task run(type: Exec) {
     commandLine "$adb", 'shell', 'am', 'start', '-n', 'org.scify.moonwalker.game/AndroidLauncher'
 }
 // sets up the Android Idea project, using the old Ant based build.
-idea {
-    module {
-        sourceDirs += file("src");
-        scopes = [COMPILE: [plus: [project.configurations.compile]]]
-
-        iml {
-            withXml {
-                def node = it.asNode()
-                def builder = NodeBuilder.newInstance();
-                builder.current = node;
-                builder.component(name: "FacetManager") {
-                    facet(type: "android", name: "Android") {
-                        configuration {
-                            option(name: "UPDATE_PROPERTY_FILES", value: "true")
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
 repositories {
     maven { url 'https://maven.google.com' }
-    jcenter()
+    mavenCentral()
 }
 dependencies {
-    implementation 'com.facebook.android:facebook-android-sdk:4.37.0'
-    implementation 'com.google.firebase:firebase-core:16.0.4'
+    implementation 'com.facebook.android:facebook-android-sdk:15.0.1'
+    implementation 'com.google.firebase:firebase-core:21.1.1'
 }
 apply plugin: 'com.google.gms.google-services'

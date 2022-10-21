@@ -11,10 +11,10 @@
         android:theme="@style/GdxTheme" >
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <activity
-            android:name="org.scify.moonwalker.app.AndroidLauncher"
-            android:label="@string/app_name" 
-            android:screenOrientation="landscape"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
+                android:name="org.scify.moonwalker.app.AndroidLauncher"
+                android:label="@string/app_name"
+                android:screenOrientation="landscape"
+                android:configChanges="keyboard|keyboardHidden|orientation|screenSize" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
