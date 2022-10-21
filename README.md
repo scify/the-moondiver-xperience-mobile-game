@@ -3,7 +3,7 @@
 
 <hr>
 
-![Logo](https://play-lh.googleusercontent.com/gQgwhHYWvcCg40oQIIIgbdUNWFjfr4LlOC71SvEYujYNfYFAr9G1Mx5aCRpCEAXosi4=w2560-h1440-rw)
+![Logo](https://play-lh.googleusercontent.com/Bs89RdnZXUHZpmyx3kdWCMDdmY8AgftTe_pCed0eB7W5WW4cxVNqg5qBO-KoT9lwFg=w720-h310)
 
 <hr>
 
