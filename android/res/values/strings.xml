@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">The Moon Diver XPerience</string>
-    <string name="facebook_app_id">561251997644872</string>
+    <string name="app_name" translatable="false">The Moon Diver Xperience</string>
 </resources>
