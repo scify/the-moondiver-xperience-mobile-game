@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeType;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.scify.moonwalker.app.helpers.AppInfo;
@@ -31,9 +30,8 @@ public class ThemeController {
     public static ThemeController getInstance() {
         if (instance == null) {
             instance = new ThemeController();
-            return instance;
-        } else
-            return instance;
+        }
+        return instance;
     }
 
     protected ThemeController() {
