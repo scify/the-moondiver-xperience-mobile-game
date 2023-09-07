@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import io.sentry.Sentry;
-import io.sentry.event.EventBuilder;
 import org.scify.engine.GameEvent;
 import org.scify.engine.RenderingEngine;
 import org.scify.engine.UserInputHandler;
@@ -102,7 +101,7 @@ public class MoonWalkerRenderingEngine implements RenderingEngine<MoonWalkerGame
             System.err.println("WARNING: Keeper already initialized. Full error:");
             e.printStackTrace(System.err);
             // Log anyway
-            Sentry.capture(e);
+            Sentry.captureException(e);
         }
 
         audioEngine.pauseCurrentlyPlayingAudios();

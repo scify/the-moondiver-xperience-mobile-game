@@ -14,8 +14,12 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:7.3.1'
         classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.7'
-        classpath 'com.google.gms:google-services:4.3.14'
+        classpath 'com.google.gms:google-services:4.3.15'
     }
+}
+
+plugins {
+    id "io.sentry.android.gradle" version "3.3.0"
 }
 
 allprojects {
@@ -93,7 +97,7 @@ project(":core") {
         implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        implementation 'io.sentry:sentry:1.7.30'
+        implementation 'io.sentry:sentry-android:6.29.0'
         implementation 'com.google.firebase:firebase-core:21.1.1'
     }
 }

@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -20,8 +20,8 @@ android {
     defaultConfig {
         applicationId "org.scify.moonwalker.game"
         minSdkVersion 19
-        targetSdkVersion 32
-        versionCode 33
+        targetSdkVersion 33
+        versionCode 34
         versionName "1.2"
     }
     buildTypes {

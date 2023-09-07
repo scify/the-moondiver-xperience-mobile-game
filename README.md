@@ -33,7 +33,7 @@ After cloning the project, follow these steps:
         sdk.dir=/home/paul/Android/Sdk
     ```
 3. Copy the `google-services.json` file from the Nextcloud folder to the `/android` directory.
-4. If you are using Intellij, in the left eplorer menu, left click
+4. If you are using Intellij, in the left explorer menu, left-click
    the `android/src/org/scify/moonwalker/app/AndroidLauncher.java` file, and select "Run
    AndroidLauncher".
 

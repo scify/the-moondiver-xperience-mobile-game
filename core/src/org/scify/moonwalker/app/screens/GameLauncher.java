@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ZIndexedStage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import io.sentry.Sentry;
 import org.scify.engine.RenderingEngine;
 import org.scify.engine.Scenario;
 import org.scify.engine.UserInputHandler;
@@ -66,7 +67,7 @@ public class GameLauncher implements Screen {
         final UserInputHandler userInputHandler = UserInputHandlerImpl.getInstance();
         renderingEngine = new MoonWalkerRenderingEngine(userInputHandler, batch, stage);
         final Scenario mainGameScenario = new MoonWalkerScenario();
-
+        Sentry.captureMessage("testing SDK setup");
         app.setScreen(new GamePlayScreen(renderingEngine));
         thread = new Thread(new Runnable() {
             @Override

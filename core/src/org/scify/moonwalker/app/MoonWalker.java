@@ -48,15 +48,18 @@ public class MoonWalker extends Game {
                     .internal("config.properties");
             Properties properties = new Properties();
             properties.load(new BufferedInputStream(propertiesFileHandle.read()));
-            Sentry.init(properties.getProperty("Sentry.DSN")+"?release="+ URLEncoder.encode(properties.getProperty("release"), "UTF-8"));
-            Sentry.getContext().addExtra("release", properties.getProperty("release"));
-            Sentry.getContext().addExtra("platform", Gdx.app.getType());
-            Sentry.getContext().addExtra("device_height", Gdx.app.getGraphics().getHeight());
-            Sentry.getContext().addExtra("device_width", Gdx.app.getGraphics().getWidth());
-            Sentry.getContext().addExtra("device_density", Gdx.app.getGraphics().getDensity());
-            Sentry.getContext().addExtra("device_delta_time", Gdx.app.getGraphics().getDeltaTime());
-            Sentry.getContext().addExtra("device_version", Gdx.app.getVersion());
-            Sentry.getContext().addExtra("full_screen", Gdx.app.getGraphics().isFullscreen());
+            String sentryDSN = properties.getProperty("Sentry.DSN")+"?release="+ URLEncoder.encode(properties.getProperty("release"), "UTF-8");
+            if (sentryDSN.length() > 10) {
+                Sentry.init(sentryDSN);
+                Sentry.setExtra("release", properties.getProperty("release"));
+                Sentry.setExtra("platform", String.valueOf(Gdx.app.getType()));
+                Sentry.setExtra("device_height", String.valueOf(Gdx.app.getGraphics().getHeight()));
+                Sentry.setExtra("device_width", String.valueOf(Gdx.app.getGraphics().getWidth()));
+                Sentry.setExtra("device_density", String.valueOf(Gdx.app.getGraphics().getDensity()));
+                Sentry.setExtra("device_delta_time", String.valueOf(Gdx.app.getGraphics().getDeltaTime()));
+                Sentry.setExtra("device_version", String.valueOf(Gdx.app.getVersion()));
+                Sentry.setExtra("full_screen", String.valueOf(Gdx.app.getGraphics().isFullscreen()));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
