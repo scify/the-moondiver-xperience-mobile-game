@@ -21,6 +21,8 @@
 
 -verbose
 
+-printmapping build/outputs/mapping/release/mapping.txt
+
 -dontwarn android.support.**
 -dontwarn com.badlogic.gdx.backends.android.AndroidFragmentApplication
 -dontwarn com.badlogic.gdx.utils.GdxBuild
@@ -43,3 +45,4 @@
    boolean reportFixture(long);
    float   reportRayFixture(long, float, float, float, float, float);
 }
+
