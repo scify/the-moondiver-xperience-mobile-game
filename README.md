@@ -56,6 +56,12 @@ can install this APK file on any Android device that
 allows [installation from unknown sources](https://developer.android.com/distribute/marketing-tools/alternative-distribution#unknown-sources)
 .
 
+### Signing using Android Studio
+
+The easiest and most convenient way is to produce the Android Bundle (aab) file, using Android Studio.
+Select Build -> Generate Signed Bundle / APK 
+
+### Manual Signing
 In order to sign the unsigned .apk, run:
 
 ```bash
