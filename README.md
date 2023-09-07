@@ -60,6 +60,7 @@ allows [installation from unknown sources](https://developer.android.com/distrib
 
 The easiest and most convenient way is to produce the Android Bundle (aab) file, using Android Studio.
 Select Build -> Generate Signed Bundle / APK 
+Select APK (and not Android App Bundle)
 
 ### Manual Signing
 In order to sign the unsigned .apk, run:

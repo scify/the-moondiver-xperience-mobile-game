@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 android {
+    namespace = "org.scify.moonwalker.game"
     compileSdkVersion 33
     sourceSets {
         main {
@@ -22,7 +23,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 33
         versionCode 34
-        versionName "1.2"
+        versionName "1.2.6"
     }
     buildTypes {
         release {
@@ -39,6 +40,10 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        renderScript true
+        aidl true
     }
 
 }
