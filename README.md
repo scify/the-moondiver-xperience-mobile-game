@@ -83,7 +83,7 @@ allows [installation from unknown sources](https://developer.android.com/distrib
 
 ### Signing using Android Studio
 
-The easiest and most convenient way is to produce the Android Bundle (aab) file, using Android Studio.
+The easiest and most convenient way is to produce the Android .apk file, using Android Studio.
 Select Build -> Generate Signed Bundle / APK
 Select APK (and not Android App Bundle)
 

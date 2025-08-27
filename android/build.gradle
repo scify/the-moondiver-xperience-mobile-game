@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 android {
     namespace = "org.scify.moonwalker.game"
+    // Android 15+ (API 35+) requires apps to support 16 KB memory page sizes
+    // See AndroidManifest.xml for the 16KB page size configuration
     compileSdkVersion 36
     sourceSets {
         main {
@@ -22,8 +24,8 @@ android {
         applicationId "org.scify.moonwalker.game"
         minSdkVersion 19
         targetSdkVersion 36
-        versionCode 38
-        versionName "1.2.3"
+        versionCode 39
+        versionName "1.2.4"
     }
     buildTypes {
         release {
@@ -101,5 +103,6 @@ repositories {
 }
 dependencies {
     implementation 'com.google.firebase:firebase-core:21.1.1'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
 }
 apply plugin: 'com.google.gms.google-services'

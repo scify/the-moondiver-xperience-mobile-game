@@ -1,20 +1,23 @@
 package org.scify.moonwalker.app;
 
+import androidx.annotation.NonNull;
+
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
+
 import org.scify.moonwalker.app.helpers.AnalyticsLogger;
 import org.scify.moonwalker.app.helpers.AppInfo;
 import org.scify.moonwalker.app.screens.GameLauncher;
 
-import io.sentry.Sentry;
-
-import java.io.*;
-import java.net.URLEncoder;
+import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.util.Properties;
+
+import io.sentry.Sentry;
+import io.sentry.SentryOptions; // Added for Sentry.OptionsConfiguration
 
 /**
  * The MoonWalker class describes instances of the MoonWalker game.
@@ -48,10 +51,21 @@ public class MoonWalker extends Game {
                     .internal("config.properties");
             Properties properties = new Properties();
             properties.load(new BufferedInputStream(propertiesFileHandle.read()));
-            String sentryDSN = properties.getProperty("Sentry.DSN")+"?release="+ URLEncoder.encode(properties.getProperty("release"), "UTF-8");
-            if (sentryDSN.length() > 10) {
-                Sentry.init(sentryDSN);
-                Sentry.setExtra("release", properties.getProperty("release"));
+            final String sentryDSNValue = properties.getProperty("Sentry.DSN");
+            final String releaseVersion = properties.getProperty("release");
+
+            if (sentryDSNValue != null && sentryDSNValue.length() > 10) {
+                Sentry.init(new Sentry.OptionsConfiguration<SentryOptions>() {
+                    @Override
+                    public void configure(@NonNull SentryOptions options) {
+                        options.setDsn(sentryDSNValue);
+                        options.setRelease(releaseVersion);
+                        // Disable trace sampling
+                        options.setTracesSampleRate(0.0);
+                    }
+                });
+                // Set extras after init
+                Sentry.setExtra("release", releaseVersion); // Still useful to set as extra for context
                 Sentry.setExtra("platform", String.valueOf(Gdx.app.getType()));
                 Sentry.setExtra("device_height", String.valueOf(Gdx.app.getGraphics().getHeight()));
                 Sentry.setExtra("device_width", String.valueOf(Gdx.app.getGraphics().getWidth()));
